@@ -1,0 +1,658 @@
+/**
+ * Version: 1.3
+ */
+.forge12-plugin {
+    display: flex;
+    flex-flow: column nowrap;
+    width: 100%;
+    padding-top: 20px;
+    padding-right: 20px;
+    box-sizing: border-box;
+}
+
+.forge12-plugin .options {
+    float: right;
+    margin-top: -40px;
+}
+
+.forge12-plugin h1 {
+    padding-bottom: 5px;
+}
+
+.forge12-plugin-header {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    padding: 20px;
+    min-height: 110px;
+    border-radius: 5px 5px 0 0;
+    background: linear-gradient(340deg, rgba(6, 49, 113, 1) 0%, rgb(65 65 173) 47%, rgba(0, 212, 255, 1) 100%);
+}
+
+.forge12-plugin-menu .navbar ul.navbar-nav {
+    display: flex;
+    flex-flow: row nowrap;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.forge12-plugin-menu .navbar ul.navbar-nav li {
+    margin-bottom: 0;
+}
+
+.forge12-plugin-menu {
+    display: flex;
+    flex-flow: row nowrap;
+    border-radius: 0 0 5px 5px;
+    box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.05);
+    padding: 10px;
+    background-color: #f8f9fa !important;
+}
+
+.forge12-plugin-menu .forge12-plugin-menu-item {
+    display: flex;
+}
+
+.forge12-plugin-menu .forge12-plugin-menu-item a {
+    padding: 10px;
+    text-decoration: none;
+}
+
+.forge12-plugin-menu .forge12-plugin-menu-item a.active {
+    /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#258dc8+0,258dc8+100;Blue+Flat+%231 */
+    background: #258dc8; /* Old browsers */
+    background: -moz-linear-gradient(top, #258dc8 0%, #258dc8 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, #258dc8 0%, #258dc8 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, #258dc8 0%, #258dc8 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#258dc8', endColorstr='#258dc8', GradientType=0); /* IE6-9 */
+
+    border-radius: 5px;
+    color: #fff;
+}
+
+.forge12-plugin-content {
+    margin-top: 20px;
+    display: flex;
+    flex-flow: row nowrap;
+}
+
+.forge12-plugin-footer {
+    margin-top: 50px;
+}
+
+.forge12-plugin-footer .forge12-plugin-footer-inner {
+    text-align: center;
+}
+
+.forge12-plugin-content .box {
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.05);
+    padding: 20px;
+    margin-bottom: 20px
+}
+
+.forge12-plugin-content .forge12-plugin-content-main {
+    flex: 1 1 65%;
+    max-width:65%;
+    padding-right: 20px;
+}
+
+.forge12-plugin-content .forge12-plugin-content-sidebar {
+    flex: 1 1 35%;
+    max-width:35%;
+}
+
+.forge12-plugin-header img {
+    width: 300px;
+}
+
+.forge12-plugin-content .tablenav-pages {
+    margin-top: 20px;
+}
+
+/**
+ * Popoup
+ */
+.forge12-plugin-popup {
+    position: fixed;
+    background-color: #f8f9fa;
+    box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.05);
+    width: 470px;
+    left: calc(50% - 225px);
+    top: 150px;
+}
+
+.forge12-plugin-popup .options {
+    margin-bottom: 10px;
+    margin-top: -10px;
+    font-size: 12px;
+}
+
+.forge12-plugin-popup-content {
+    max-height: 600px;
+    overflow-y: scroll;
+    padding: 20px;
+}
+
+.forge12-plugin-popup h2 {
+    margin-top: 0;
+}
+
+.forge12-plugin-popup table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.forge12-plugin-popup table tr:first-child {
+    background-color: #333 !important;
+    color: #fff;
+}
+
+.forge12-plugin-popup table tr td:first-child {
+    min-width: 120px;
+    width: 120px;
+}
+
+.forge12-plugin-popup table tr td:last-child {
+    word-break: break-all;
+}
+
+.forge12-plugin-popup table tr:nth-child(odd) {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.forge12-plugin-popup table td {
+    padding: 10px;
+}
+
+.forge12-plugin-popup .forge12-plugin-popup-close {
+    position: absolute;
+    right: -15px;
+    top: -15px;
+    padding: 8px 12px;
+    cursor: pointer;
+    color: #fff;
+    border-radius: 3px;
+    background: #333;
+}
+
+/**
+ * Table design
+ */
+.forge12-plugin-content a {
+    text-decoration: none;
+}
+
+.forge12-plugin-content table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.forge12-plugin-content table td, .forge12-plugin-content table th {
+    padding: 10px;
+    text-align: left;
+    word-break:break-all;
+}
+
+.forge12-plugin-content tr th:first-child,
+.forge12-plugin-content tr td:first-child {
+    text-align: center;
+    cursor: pointer;
+}
+
+.forge12-plugin-content table tr:first-child th {
+    background-color: #333 !important;
+    color: #fff;
+}
+
+.forge12-plugin-content table tr:nth-child(odd) {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.forge12-license {
+    display: flex;
+    flex-flow: row wrap;
+    width: 100%;
+    max-width: 1600px;
+}
+
+.forge12-license h1 {
+    padding: 0;
+    margin: 0;
+    display: block;
+    width: 100%;
+    margin-bottom: 30px;
+}
+
+.forge12-license table {
+    width: 100%;
+}
+
+.forge12-license table th {
+    background-color: #f0f0f0;
+    padding: 10px;
+}
+
+.forge12-license table tr:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+
+.forge12-license table td {
+    padding: 10px;
+}
+
+.forge12-license form input[type=text] {
+    width: 100%;
+    border-radius: 0;
+}
+
+.forge12-license form table td:first-child {
+    width: 150px;
+    text-align: left;
+}
+
+.forge12-license form {
+    width: 100%;
+}
+
+.alert {
+    display: flex;
+    flex-flow: row wrap;
+    width: 100%;
+    max-width: 1600px;
+    background-color: #fff;
+    border: 1px solid #edeaea;
+    padding: 30px;
+    margin-top: 30px;
+    box-shadow: 0 0 15px 3px rgba(0, 0, 0, 0.1);
+}
+
+.forge12-plugin-content .box.alert-success,
+.alert-success {
+    background-color: #00ab6b;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.05);
+    margin-bottom: 20px;
+    color: #fff;
+}
+
+.forge12-license #remove_license {
+    margin-top: 15px;
+}
+
+/**
+ * Option design
+ */
+.forge12-plugin-content .option {
+    display: flex;
+    flex-flow: row nowrap;
+    margin-bottom: 25px;
+    justify-content: center;
+}
+
+.forge12-plugin-content .option .notice{
+    margin:0!important;
+}
+
+.forge12-plugin-content .option .label {
+    flex: 0 0 250px;
+    padding-top: 15px;
+}
+
+.forge12-plugin-content .forge12-plugin-content-sidebar .option .label {
+    flex: 0 0 125px;
+}
+
+.forge12-plugin-content .option .input {
+    border: 1px solid #edeaea;
+    padding: 15px;
+    flex: 1 1 100%;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+.forge12-plugin-content .option .input input[type=text],
+.forge12-plugin-content .option .input textarea {
+    width: 100%;
+}
+
+/**
+ * Preview
+ */
+.forge12-plugin-content .preview {
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.forge12-plugin-content .preview img {
+    max-width: 230px;
+}
+
+.forge12-plugin-content .preview > div {
+    padding: 10px 10px;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+
+.forge12-plugin-content .preview > div > div {
+    border-width: 5px;
+    border-color: rgba(255, 255, 255, 0.5);
+    border-style: solid;
+    display: flex;
+    flex-flow: row wrap;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.forge12-plugin-content .preview .active {
+    border: 5px solid #2271b1;
+    box-shadow: 0 0 15px 3px rgba(0, 0, 0, 0.1);
+}
+
+/**
+ * Pagination & Filter
+ */
+.ui-table-options,
+.ui-table-filter {
+    display: inline-block;
+}
+
+.ui-table-options li,
+.ui-table-filter li {
+    display: inline;
+}
+
+.ui-table-filter select {
+    margin-top: -3px !important;
+}
+
+.forge12-plugin-content-main table.view-optin tr td {
+    text-align: left;
+}
+
+.forge12-plugin-content-main table.view-optin tr td:first-child {
+    width: 155px;
+}
+
+.forge12-plugin-content-main table.view-optin tr:first-child td {
+    background-color: #333;
+    color: #fff;
+}
+
+/**
+ * Show Sublinks only on hover.
+ */
+.forge12-plugin-content-main table tr td {
+    vertical-align: top;
+}
+
+.forge12-plugin-content-main table .on-hover {
+    visibility: hidden;
+}
+
+.forge12-plugin-content-main table tr:hover .on-hover {
+    visibility: visible;
+}
+
+.forge12-plugin-content-main .dashicons-no {
+    color: #ff0000;
+}
+
+.forge12-plugin-content-main .dashicons-yes {
+    color: #00bb00;
+}
+
+/**
+ * Copy To Clipboard
+ */
+
+.forge12-plugin-content .copy-to-clipboard-wrapper {
+    position: relative;
+    flex: 1 1 auto;
+}
+
+.forge12-plugin-content .copy-to-clipboard-wrapper .copy-icon {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    cursor: pointer;
+}
+
+/**
+ * Highlight
+ */
+
+.forge12-plugin.f12-cf7-doubleoptin .forge12-plugin-content .input pre {
+    display: flex;
+    flex: 1 1 auto;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+}
+
+.forge12-plugin.f12-cf7-doubleoptin .forge12-plugin-content .input pre code {
+    overflow: scroll;
+    max-width: 740px !important;
+    max-height: 740px;
+    min-height: 300px;
+    width: 100%;
+}
+
+/**
+ * Toggle
+ * requires toggle.js
+ */
+.f12-toggle .btn-toggle {
+    position: relative;
+    display: inline-block;
+    width: 55px;
+    height: 24px;
+    border-radius: 30px;
+    -moz-border-radius: 30px;
+    -webkit-border-radius: 30px;
+    border: none;
+    background-color: #ccc;
+    cursor: pointer;
+    transition: .4s;
+    -webkit-transition: .4s;
+    box-shadow: 2px 2px 3px 0px rgb(0 0 0 / 14%) inset;
+    -moz-box-shadow: 2px 2px 3px 0px rgb(0 0 0 / 14%) inset;
+}
+
+.f12-toggle .btn-toggle.active {
+    background-color: #007bff;
+}
+
+.f12-toggle .btn-toggle.active .handle {
+    -webkit-transform: translateX(30px);
+    -ms-transform: translateX(30px);
+    transform: translateX(30px);
+}
+
+.f12-toggle .btn-toggle .handle {
+    position: absolute;
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    top: 2px;
+    left: 2px;
+    right: 0;
+    bottom: 0;
+    -webkit-transition: .4s;
+    transition: .4s;
+    background-color: #fff;
+}
+
+.f12-toggle .btn-toggle:not(.active):before {
+    visibility: hidden;
+    opacity: 0;
+}
+
+.f12-toggle .btn-toggle.active:after {
+    visibility: hidden;
+    opacity: 0;
+}
+
+.f12-toggle .btn-toggle:before,
+.f12-toggle .btn-toggle:after {
+    color: #fff;
+    font-size: 10px;
+    text-transform: uppercase;
+    transition: .4s;
+    -webkit-transition: .4s;
+    position: absolute;
+    top: 5px;
+}
+
+.f12-toggle .btn-toggle:before {
+    content: attr(data-before);
+    left: 9px;
+}
+
+.f12-toggle .btn-toggle:after {
+    content: attr(data-after);
+    right: 9px;
+}
+
+.f12-toggle .btn-toggle .handle {
+    border-radius: 50%;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+}
+
+/**
+ * Dashboard Statistics
+ */
+.doi-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 30px;
+}
+
+.doi-stat-card {
+    background: #fff;
+    border: 1px solid #c3c4c7;
+    border-radius: 6px;
+    padding: 20px;
+    text-align: center;
+    border-left: 4px solid #2271b1;
+}
+
+.doi-stat-card.doi-stat-confirmed {
+    border-left-color: #00a32a;
+}
+
+.doi-stat-card.doi-stat-unconfirmed {
+    border-left-color: #dba617;
+}
+
+.doi-stat-card.doi-stat-rate {
+    border-left-color: #8c5ae0;
+}
+
+.doi-stat-value {
+    font-size: 32px;
+    font-weight: 600;
+    line-height: 1.2;
+    color: #1d2327;
+}
+
+.doi-stat-label {
+    font-size: 13px;
+    color: #646970;
+    margin-top: 6px;
+}
+
+.doi-dashboard-section {
+    margin-bottom: 30px;
+}
+
+.doi-dashboard-section h2 {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.doi-view-all {
+    font-size: 13px;
+    font-weight: 400;
+    text-decoration: none;
+}
+
+.doi-activity-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border: 1px solid #c3c4c7;
+    border-radius: 4px;
+}
+
+.doi-activity-table th,
+.doi-activity-table td {
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid #f0f0f1;
+}
+
+.doi-activity-table tr:first-child th {
+    background: #f6f7f7;
+    font-weight: 600;
+    color: #1d2327;
+    border-bottom: 1px solid #c3c4c7;
+}
+
+.doi-activity-table tr:last-child td {
+    border-bottom: none;
+}
+
+.doi-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.doi-badge-confirmed {
+    background: #d4edda;
+    color: #155724;
+}
+
+.doi-badge-pending {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.doi-quick-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.doi-quick-links li {
+    margin-bottom: 8px;
+}
+
+.doi-quick-links li a {
+    text-decoration: none;
+    color: #2271b1;
+}
+
+.doi-quick-links li a:hover {
+    color: #135e96;
+}
+
+@media screen and (max-width: 960px) {
+    .doi-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .doi-stats-grid {
+        grid-template-columns: 1fr;
+    }
+}

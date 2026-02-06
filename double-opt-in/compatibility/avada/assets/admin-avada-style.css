@@ -1,0 +1,11 @@
+/**
+ * Add styles for avada
+ */
+#pyre_tab_f12cf7doubleoptin .pyre_desc_raw {
+    width:44.5%;
+    float:left;
+}
+
+#pyre_tab_f12cf7doubleoptin .pyre_desc_raw label{
+    font-weight:bold;
+}

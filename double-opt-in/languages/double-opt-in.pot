@@ -1,0 +1,746 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Double Opt-In (Contact Form 7, Avada) - GDPR Ready\n"
+"POT-Creation-Date: 2025-09-23 15:04+0200\n"
+"PO-Revision-Date: 2022-12-16 10:38+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"X-Generator: Poedit 3.5\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-Flags-xgettext: --add-comments=translators:\n"
+"X-Poedit-WPHeader: CF7DoubleOptIn.class.php\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-Mapping: *.php=gettext:PHP\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.min.js\n"
+
+#: compatibility/avada/AvadaFormOptions.class.php:128
+#: compatibility/cf7/CF7Backend.class.php:96
+msgid "Please wait while we load the template..."
+msgstr ""
+
+#: compatibility/avada/AvadaFormOptions.class.php:180
+#: compatibility/cf7/CF7Backend.class.php:138
+msgid "Double-Opt-in"
+msgstr ""
+
+#: compatibility/avada/AvadaFormOptions.class.php:361
+#: compatibility/avada/AvadaFormOptions.class.php:362
+#: compatibility/cf7/CF7Backend.class.php:272
+msgid "Enable"
+msgstr ""
+
+#: compatibility/avada/AvadaFormOptions.class.php:363
+msgid ""
+"Enable this checkbox to activate the Double-Opt-In Mail for this formular."
+msgstr ""
+
+#: compatibility/avada/AvadaFormOptions.class.php:370
+#: compatibility/cf7/CF7Backend.class.php:288 templates/list-optins.php:35
+#: templates/view-optin.php:30
+msgid "Category"
+msgstr ""
+
+#: compatibility/avada/AvadaFormOptions.class.php:372
+msgid "Select the category for the Opt-In."
+msgstr ""
+
+#: compatibility/avada/AvadaFormOptions.class.php:379
+#: compatibility/cf7/CF7Backend.class.php:358
+msgid "Confirmation Page"
+msgstr ""
+
+#: compatibility/avada/AvadaFormOptions.class.php:381
+#: compatibility/cf7/CF7Backend.class.php:368
+msgid ""
+"Select the page that should be displayed after the user clicks on the "
+"confirmation link"
+msgstr ""
+
+#: compatibility/avada/AvadaFormOptions.class.php:388
+#: compatibility/cf7/CF7Backend.class.php:399
+msgid "To"
+msgstr ""
+
+#: compatibility/avada/AvadaFormOptions.class.php:389
+msgid ""
+"This field defines who will receive the Double-Opt-In mail. Use the \"Field "
+"Name\" defined for the User E-Mail."
+msgstr ""
+
+#: compatibility/avada/AvadaFormOptions.class.php:396
+msgid "From E-Mail"
+msgstr ""
+
+#: compatibility/avada/AvadaFormOptions.class.php:398
+#: compatibility/cf7/CF7Backend.class.php:436
+msgid ""
+"This field defines who will sent the mail. You can either enter the e-Mail "
+"(e.g.: your-email@yourdomain.de) or use a placeholder (e.g.: "
+"[_site_admin_email])."
+msgstr ""
+
+#: compatibility/avada/AvadaFormOptions.class.php:405
+#: compatibility/cf7/CF7Backend.class.php:444
+msgid "From Name"
+msgstr ""
+
+#: compatibility/avada/AvadaFormOptions.class.php:407
+msgid "This field defines the name for outgoing mails."
+msgstr ""
+
+#: compatibility/avada/AvadaFormOptions.class.php:414
+#: compatibility/cf7/CF7Backend.class.php:461
+msgid "Subject"
+msgstr ""
+
+#: compatibility/avada/AvadaFormOptions.class.php:416
+#: compatibility/cf7/CF7Backend.class.php:470
+msgid ""
+"Enter a custom subject for the Double-Opt-In mail (e.g.: Please confirm your "
+"registration)."
+msgstr ""
+
+#: compatibility/avada/AvadaFormOptions.class.php:423
+#: compatibility/cf7/CF7Backend.class.php:478
+msgid "Template"
+msgstr ""
+
+#: compatibility/avada/AvadaFormOptions.class.php:424
+msgid "Pick the Template for your double opt-in Mail."
+msgstr ""
+
+#: compatibility/avada/AvadaFormOptions.class.php:431
+#: compatibility/cf7/CF7Backend.class.php:549
+msgid "Message body"
+msgstr ""
+
+#: compatibility/avada/AvadaFormOptions.class.php:433
+msgid ""
+"Enter the Message you want to sent to your customer. Do not forget to add "
+"the Double-Opt-In tag ([doubleoptinlink]) e.g.: <pre><code>&lt;a "
+"href=\"[doubleoptinlink]\"&gt;Confirm the registration&lt;/a&gt;</code></pre>"
+msgstr ""
+
+#: compatibility/cf7/CF7Backend.class.php:268
+msgid "Opt-In Formular Settings"
+msgstr ""
+
+#: compatibility/cf7/CF7Backend.class.php:279 templates/list-optins.php:108
+msgid "Yes"
+msgstr ""
+
+#: compatibility/cf7/CF7Backend.class.php:281
+msgid ""
+"Enable this checkox to activate the Double-Opt-In Mail for this formular."
+msgstr ""
+
+#: compatibility/cf7/CF7Backend.class.php:301
+#: core/CategoryOptions.class.php:192
+msgid "Please select"
+msgstr ""
+
+#: compatibility/cf7/CF7Backend.class.php:317
+msgid "Assign the Opt-In to a Category for an easier administration."
+msgstr ""
+
+#: compatibility/cf7/CF7Backend.class.php:325
+msgid "Dynamic Condition"
+msgstr ""
+
+#: compatibility/cf7/CF7Backend.class.php:330
+msgid "Enable the Opt-In only when the field "
+msgstr ""
+
+#: compatibility/cf7/CF7Backend.class.php:333
+msgid "Disabled"
+msgstr ""
+
+#: compatibility/cf7/CF7Backend.class.php:350
+msgid "has been filled/checked by the visitor."
+msgstr ""
+
+#: compatibility/cf7/CF7Backend.class.php:363
+msgid "default"
+msgstr ""
+
+#: compatibility/cf7/CF7Backend.class.php:395
+msgid "Customize your Opt-In Mail"
+msgstr ""
+
+#: compatibility/cf7/CF7Backend.class.php:408
+msgid ""
+"This field defines who will receive the Double-Opt-In mail. Enter one of the "
+"following tags that represents the mail for the customer:"
+msgstr ""
+
+#: compatibility/cf7/CF7Backend.class.php:427
+msgid "From"
+msgstr ""
+
+#: compatibility/cf7/CF7Backend.class.php:453
+msgid "This field defines the name of the sender (e.g. Max Mustermann)."
+msgstr ""
+
+#: compatibility/cf7/CF7Backend.class.php:558
+msgid ""
+"Enter the Message you want to sent to your customer. Do not forget to add "
+"the Double-Opt-In tag ([doubleoptinlink]) e.g.:"
+msgstr ""
+
+#: compatibility/cf7/CF7Backend.class.php:564
+msgid "These placeholders are available for the opt-in Message body: "
+msgstr ""
+
+#: core/Ajax.class.php:128
+msgid "Ooops!"
+msgstr ""
+
+#: core/Ajax.class.php:130
+msgid "Something went wrong. The given DOI wasn't found. Maybe it got removed?"
+msgstr ""
+
+#: core/Ajax.class.php:160 templates/view-optin.php:49
+msgid "Delete DOI"
+msgstr ""
+
+#: core/Ajax.class.php:162 templates/list-optins.php:62
+msgid "Details"
+msgstr ""
+
+#: core/Ajax.class.php:167 core/Ajax.class.php:201 templates/view-optin.php:54
+#: templates/view-optin.php:138 templates/view-optin.php:170
+msgid "Key"
+msgstr ""
+
+#: core/Ajax.class.php:168 core/Ajax.class.php:202 templates/view-optin.php:55
+#: templates/view-optin.php:139 templates/view-optin.php:171
+msgid "Value"
+msgstr ""
+
+#: core/Ajax.class.php:171 templates/list-optins.php:26
+#: templates/view-optin.php:59 ui/UICategories.class.php:179
+msgid "ID"
+msgstr ""
+
+#: core/Ajax.class.php:175 templates/view-optin.php:67
+msgid "CF7 Form ID"
+msgstr ""
+
+#: core/Ajax.class.php:179 templates/list-optins.php:44
+#: templates/view-optin.php:83 ui/UICategories.class.php:185
+msgid "Registration Date"
+msgstr ""
+
+#: core/Ajax.class.php:183 templates/view-optin.php:93
+msgid "Registration IP"
+msgstr ""
+
+#: core/Ajax.class.php:187 templates/view-optin.php:101
+msgid "Confirmation Date"
+msgstr ""
+
+#: core/Ajax.class.php:193 templates/view-optin.php:113
+msgid "Confirmation IP"
+msgstr ""
+
+#: core/Ajax.class.php:198 templates/view-optin.php:135
+msgid "Form Fields"
+msgstr ""
+
+#: core/Category.class.php:151 core/Category.class.php:213
+#: core/OptIn.class.php:337 core/OptIn.class.php:393 core/OptIn.class.php:449
+msgid "/"
+msgstr ""
+
+#: core/CategoryOptions.class.php:229
+msgid "Change Category to: "
+msgstr ""
+
+#: core/CategoryOptions.class.php:246 ui/UICategoriesView.class.php:279
+#: ui/UIOptinView.class.php:274
+msgid "Update"
+msgstr ""
+
+#: core/OptIn.class.php:1846
+msgid "Deleted"
+msgstr ""
+
+#: core/OptInLimitFilter.class.php:114
+msgid "Show: "
+msgstr ""
+
+#: core/OptInLimitFilter.class.php:130
+msgid "Show"
+msgstr ""
+
+#: core/OptInSearchFilter.class.php:68
+msgid "Search: "
+msgstr ""
+
+#: core/OptInSearchFilter.class.php:71
+msgid "Search"
+msgstr ""
+
+#: core/UIPageForm.class.php:64
+msgid "Settings updated"
+msgstr ""
+
+#: core/UIPageForm.class.php:190
+msgid "Save"
+msgstr ""
+
+#: core/review.php:53
+#, php-format
+msgid ""
+"<strong>Double Opt-In for WordPress</strong> has already confirmed "
+"<strong>%d email subscriptions</strong>. Would you support us with a quick "
+"review? ❤️"
+msgstr ""
+
+#: core/review.php:63
+msgid "Leave a review now"
+msgstr ""
+
+#: core/review.php:67
+msgid "Remind me later"
+msgstr ""
+
+#: core/review.php:71
+msgid "Don’t ask again"
+msgstr ""
+
+#: templates/list-optins.php:29 templates/optout-list.php:20
+msgid "Hash"
+msgstr ""
+
+#: templates/list-optins.php:32 templates/optout-form.php:10
+#: templates/view-optin.php:75
+msgid "E-Mail"
+msgstr ""
+
+#: templates/list-optins.php:38
+msgid "Form ID"
+msgstr ""
+
+#: templates/list-optins.php:41
+msgid "Confirmed ? "
+msgstr ""
+
+#: templates/list-optins.php:60 ui/UICategories.class.php:206
+msgid "Show details"
+msgstr ""
+
+#: templates/list-optins.php:108
+msgid "No"
+msgstr ""
+
+#: templates/list-optins.php:140
+msgid "First Page"
+msgstr ""
+
+#: templates/list-optins.php:148
+msgid "Previous Page"
+msgstr ""
+
+#: templates/list-optins.php:162
+msgid "of"
+msgstr ""
+
+#: templates/list-optins.php:174
+msgid "Next Page"
+msgstr ""
+
+#: templates/list-optins.php:182
+msgid "Last Page"
+msgstr ""
+
+#: templates/optout-form.php:9
+msgid "Opt-Out"
+msgstr ""
+
+#: templates/optout-form.php:12
+msgid "max.mustermann@domain.de"
+msgstr ""
+
+#: templates/optout-form.php:13
+msgid "Submit"
+msgstr ""
+
+#: templates/optout-list.php:23
+msgid "Date"
+msgstr ""
+
+#: templates/optout-list.php:26
+msgid "Status"
+msgstr ""
+
+#: templates/optout-list.php:29
+msgid "Valid until"
+msgstr ""
+
+#: templates/optout-list.php:52
+msgid "&infin;"
+msgstr ""
+
+#: templates/optout-list.php:69
+msgid "Opt-Out now!"
+msgstr ""
+
+#: templates/optout-list.php:79
+msgid "The date indicates when your personal data will be deleted."
+msgstr ""
+
+#: templates/optout-list.php:82
+#, php-format
+msgid ""
+"Please note that even with manual opt-out, your data will be stored. Please "
+"contact the administrator to delete your personal data: %s."
+msgstr ""
+
+#: templates/optout-list.php:84
+#, php-format
+msgid ""
+"Please note that even with manual opt-out, your data will only be deleted in "
+"%d %s."
+msgstr ""
+
+#: templates/view-optin.php:175
+msgid "No entries"
+msgstr ""
+
+#: templates/view-optin.php:197
+msgid "Formular"
+msgstr ""
+
+#: templates/view-optin.php:199
+msgid ""
+"The data above was collected by the following form used from the visitor. "
+"The data has been saved as plain text. You can copy the plain content to a "
+"html file to see the original formular."
+msgstr ""
+
+#: templates/view-optin.php:203 templates/view-optin.php:221
+msgid "HTML:"
+msgstr ""
+
+#: templates/view-optin.php:215
+msgid "Opt-In Mail"
+msgstr ""
+
+#: templates/view-optin.php:217
+msgid ""
+"The following Opt-In mail has been submitted to the visitor to get the "
+"confirmation. The data has been saved as plain text. Depending on the form "
+"it may contain html content."
+msgstr ""
+
+#: ui/UICategories.class.php:26 ui/UICategories.class.php:146
+msgid "Categories"
+msgstr ""
+
+#: ui/UICategories.class.php:43
+msgid "Category deleted"
+msgstr ""
+
+#: ui/UICategories.class.php:49
+msgid "Category not-deleted"
+msgstr ""
+
+#: ui/UICategories.class.php:182
+msgid "Name"
+msgstr ""
+
+#: ui/UICategories.class.php:188
+msgid "Update Date"
+msgstr ""
+
+#: ui/UICategories.class.php:219
+msgid "_"
+msgstr ""
+
+#: ui/UICategories.class.php:220
+msgid "Delete"
+msgstr ""
+
+#: ui/UICategories.class.php:256
+msgid "New Category:"
+msgstr ""
+
+#: ui/UICategories.class.php:263 ui/UICategoriesView.class.php:265
+msgid "Please enter the Name of the Categorie"
+msgstr ""
+
+#: ui/UICategories.class.php:265 ui/UICategoriesView.class.php:267
+msgid "Enter the name of the Categorie and submit."
+msgstr ""
+
+#: ui/UICategories.class.php:277
+msgid "Add"
+msgstr ""
+
+#: ui/UICategories.class.php:313
+msgid "Please enter a valid name for the categorie."
+msgstr ""
+
+#: ui/UICategories.class.php:329
+msgid "New Category added"
+msgstr ""
+
+#: ui/UICategories.class.php:336
+msgid "Something went wrong"
+msgstr ""
+
+#: ui/UICategoriesView.class.php:26
+msgid "Category View"
+msgstr ""
+
+#: ui/UICategoriesView.class.php:85
+msgid "Category name cannot be empty."
+msgstr ""
+
+#: ui/UICategoriesView.class.php:96
+msgid "Category updated"
+msgstr ""
+
+#: ui/UICategoriesView.class.php:101
+msgid "Category update failed"
+msgstr ""
+
+#: ui/UICategoriesView.class.php:195
+msgid "Category: "
+msgstr ""
+
+#: ui/UICategoriesView.class.php:256
+msgid "Edit Category:"
+msgstr ""
+
+#: ui/UIDashboard.class.php:33
+msgid "Dashboard"
+msgstr ""
+
+#: ui/UIDashboard.class.php:105
+msgid "The given DOI has been removed."
+msgstr ""
+
+#: ui/UIDashboard.class.php:111
+msgid "Couldn't delete the DOI, please try again later."
+msgstr ""
+
+#: ui/UIDashboard.class.php:202
+msgid "Latest Opt-ins"
+msgstr ""
+
+#: ui/UIDashboard.class.php:231 ui/UIDatabase.class.php:197
+#: ui/UISettings.class.php:204
+msgid "Hint:"
+msgstr ""
+
+#: ui/UIDashboard.class.php:234 ui/UIDatabase.class.php:200
+msgid ""
+"In the table on the left side, you'll find an list containing all Opt-Ins "
+"and the required information from your customers. Click on the hash to open "
+"aditional informations about the form and the user data. All unconfirmed opt-"
+"ins will be deleted after 7 days."
+msgstr ""
+
+#: ui/UIDashboard.class.php:239
+msgid "Hooks:"
+msgstr ""
+
+#: ui/UIDashboard.class.php:242
+msgid ""
+"You can use the following hooks to adjust the Opt-In to your requirements."
+msgstr ""
+
+#: ui/UIDashboard.class.php:245
+msgid ""
+"An Opt-in link has been called which is already confirmed or has been "
+"deleted."
+msgstr ""
+
+#: ui/UIDashboard.class.php:257
+msgid "An Opt-in link has been called but not yet updated the database."
+msgstr ""
+
+#: ui/UIDashboard.class.php:269
+msgid ""
+"An Opt-in link has been called and the database has been updated already."
+msgstr ""
+
+#: ui/UIDatabase.class.php:27 ui/UIDatabase.class.php:133
+msgid "Database"
+msgstr ""
+
+#: ui/UIDatabase.class.php:72
+msgid "Database cleaned."
+msgstr ""
+
+#: ui/UIDatabase.class.php:105
+msgid "Database reset finished."
+msgstr ""
+
+#: ui/UIDatabase.class.php:143
+msgid "Clean Database"
+msgstr ""
+
+#: ui/UIDatabase.class.php:147
+msgid "Clean All"
+msgstr ""
+
+#: ui/UIDatabase.class.php:149
+msgid "Clean Confirmed"
+msgstr ""
+
+#: ui/UIDatabase.class.php:151
+msgid "Clean Unconfirmed"
+msgstr ""
+
+#: ui/UIDatabase.class.php:153
+msgid ""
+"Make sure you backup your database before clicking one of these buttons."
+msgstr ""
+
+#: ui/UIDatabase.class.php:159
+msgid "Reset Database"
+msgstr ""
+
+#: ui/UIDatabase.class.php:163
+msgid "Reset"
+msgstr ""
+
+#: ui/UIDatabase.class.php:165
+msgid ""
+"Make sure you backup your database before clicking one of these buttons. If "
+"you click this button, all Opt-Ins will be deleted."
+msgstr ""
+
+#: ui/UIOptinView.class.php:27
+msgid "OptIn View"
+msgstr ""
+
+#: ui/UIOptinView.class.php:41
+msgid "Opt-In deleted"
+msgstr ""
+
+#: ui/UIOptinView.class.php:47
+msgid "Opt-In not-deleted"
+msgstr ""
+
+#: ui/UIOptinView.class.php:119
+msgid "Opt-In: "
+msgstr ""
+
+#: ui/UIOptinView.class.php:187
+msgid "Opt-In updated successfully."
+msgstr ""
+
+#: ui/UIOptinView.class.php:192
+msgid "Opt-In update failed."
+msgstr ""
+
+#: ui/UIOptinView.class.php:238
+msgid "Edit Opt-In:"
+msgstr ""
+
+#: ui/UIOptinView.class.php:244
+msgid "Category:"
+msgstr ""
+
+#: ui/UIOptinView.class.php:262
+msgid "Select the category to assign the Opt-In."
+msgstr ""
+
+#: ui/UIOptinView.class.php:280
+msgid "Opt-In:"
+msgstr ""
+
+#: ui/UIOptinView.class.php:285
+msgid "Link:"
+msgstr ""
+
+#: ui/UISettings.class.php:27 ui/UISettings.class.php:60
+msgid "Settings"
+msgstr ""
+
+#: ui/UISettings.class.php:44
+msgid "never"
+msgstr ""
+
+#: ui/UISettings.class.php:65
+msgid "Delete Opt-Ins"
+msgstr ""
+
+#: ui/UISettings.class.php:91
+msgid ""
+"Select the period of time after which all data will be deleted "
+"automatically. As for the european GDPR it is recommend to use the smallest "
+"period of time as possible."
+msgstr ""
+
+#: ui/UISettings.class.php:98
+msgid "Delete unconfirmed Opt-Ins"
+msgstr ""
+
+#: ui/UISettings.class.php:123
+msgid ""
+"Select the period of time after which all unconfirmed data will be deleted "
+"automatically. As for the european GDPR it is recommend to use the smallest "
+"period of time as possible."
+msgstr ""
+
+#: ui/UISettings.class.php:130
+msgid "Telemetry"
+msgstr ""
+
+#: ui/UISettings.class.php:145
+msgid "On"
+msgstr ""
+
+#: ui/UISettings.class.php:146
+msgid "Off"
+msgstr ""
+
+#: ui/UISettings.class.php:155
+msgid ""
+"Enable this option to allow anonymous telemetry data to be sent. This helps "
+"us improve and develop the plugin."
+msgstr ""
+
+#: ui/UISettings.class.php:207
+msgid ""
+"In the table on the left side, you'll find an list global settings. They "
+"will affect all forms using the double opt-in."
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "Double Opt-In (Contact Form 7, Avada) - GDPR Ready"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid ""
+"https://www.forge12.com/blog/so-verwendest-du-das-double-opt-in-fuer-contact-"
+"form-7/"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid ""
+"This plugin allows you to add a double OptIn System to your Contact Form 7 & "
+"Avada Forms."
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "Forge12 Interactive GmbH"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "https://www.forge12.com"
+msgstr ""

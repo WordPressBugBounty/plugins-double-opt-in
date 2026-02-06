@@ -1,0 +1,73 @@
+/**
+ * Email Templates List Styles
+ */
+
+.doi-email-templates-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.doi-email-templates-header h1 {
+    margin: 0;
+}
+
+.doi-no-templates {
+    background: #fff;
+    border: 1px solid #c3c4c7;
+    border-left-width: 4px;
+    border-left-color: #0073aa;
+    padding: 20px;
+    margin: 20px 0;
+}
+
+.doi-no-templates p {
+    margin: 0;
+}
+
+.doi-status {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 3px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.doi-status-published {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.doi-status-draft {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.column-title {
+    width: 40%;
+}
+
+.column-status {
+    width: 15%;
+}
+
+.column-date {
+    width: 20%;
+}
+
+.column-actions {
+    width: 25%;
+}
+
+.column-actions .button {
+    margin-right: 5px;
+}
+
+.button-link-delete {
+    color: #a00 !important;
+}
+
+.button-link-delete:hover {
+    color: #dc3232 !important;
+}

@@ -1,0 +1,1410 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Double Opt-In (Contact Form 7, Avada) - GDPR Ready\n"
+"POT-Creation-Date: 2025-09-23 15:06+0200\n"
+"PO-Revision-Date: 2025-09-23 15:15+0200\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: de_DE@formal\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.5\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-Flags-xgettext: --add-comments=translators:\n"
+"X-Poedit-WPHeader: CF7DoubleOptIn.class.php\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-Mapping: *.php=gettext:PHP\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.min.js\n"
+
+#: compatibility/avada/AvadaFormOptions.class.php:128 compatibility/cf7/CF7Backend.class.php:96
+msgid "Please wait while we load the template..."
+msgstr "Bitte warten Sie, während das Template geladen wird..."
+
+#: compatibility/avada/AvadaFormOptions.class.php:180 compatibility/cf7/CF7Backend.class.php:138
+msgid "Double-Opt-in"
+msgstr "Double-Opt-in"
+
+#: compatibility/avada/AvadaFormOptions.class.php:361 compatibility/avada/AvadaFormOptions.class.php:362 compatibility/cf7/CF7Backend.class.php:272
+msgid "Enable"
+msgstr "Aktivieren"
+
+#: compatibility/avada/AvadaFormOptions.class.php:363
+msgid "Enable this checkbox to activate the Double-Opt-In Mail for this formular."
+msgstr "Aktivieren Sie dieses Kontrollkästchen, um die Double-Opt-In-E-Mail für dieses Formular zu aktivieren."
+
+#: compatibility/avada/AvadaFormOptions.class.php:370 compatibility/cf7/CF7Backend.class.php:288 templates/list-optins.php:35 templates/view-optin.php:30
+msgid "Category"
+msgstr "Kategorie"
+
+#: compatibility/avada/AvadaFormOptions.class.php:372
+msgid "Select the category for the Opt-In."
+msgstr "Wählen Sie die Kategorie für das Opt-In aus."
+
+#: compatibility/avada/AvadaFormOptions.class.php:379 compatibility/cf7/CF7Backend.class.php:358
+msgid "Confirmation Page"
+msgstr "Bestätigungsseite"
+
+#: compatibility/avada/AvadaFormOptions.class.php:381 compatibility/cf7/CF7Backend.class.php:368
+msgid "Select the page that should be displayed after the user clicks on the confirmation link"
+msgstr "Wählen Sie die Seite aus, die angezeigt werden soll, nachdem der Benutzer auf den Bestätigungslink geklickt hat"
+
+#: compatibility/avada/AvadaFormOptions.class.php:388 compatibility/cf7/CF7Backend.class.php:399
+msgid "To"
+msgstr "An"
+
+#: compatibility/avada/AvadaFormOptions.class.php:389
+msgid "This field defines who will receive the Double-Opt-In mail. Use the \"Field Name\" defined for the User E-Mail."
+msgstr "Dieses Feld definiert, wer die Double-Opt-In-E-Mail erhält. Verwenden Sie den \"Feldnamen\", der für die E-Mail des Benutzers definiert wurde."
+
+#: compatibility/avada/AvadaFormOptions.class.php:396
+msgid "From E-Mail"
+msgstr "Absender-E-Mail"
+
+#: compatibility/avada/AvadaFormOptions.class.php:398 compatibility/cf7/CF7Backend.class.php:436
+msgid "This field defines who will sent the mail. You can either enter the e-Mail (e.g.: your-email@yourdomain.de) or use a placeholder (e.g.: [_site_admin_email])."
+msgstr "Dieses Feld definiert, wer die E-Mail sendet. Sie können entweder die E-Mail-Adresse (z. B. Ihre-email@ihre-domain.de) eingeben oder einen Platzhalter verwenden (z. B. [_site_admin_email])."
+
+#: compatibility/avada/AvadaFormOptions.class.php:405 compatibility/cf7/CF7Backend.class.php:444
+msgid "From Name"
+msgstr "Absender-Name"
+
+#: compatibility/avada/AvadaFormOptions.class.php:407
+msgid "This field defines the name for outgoing mails."
+msgstr "Dieses Feld definiert den Namen für ausgehende E-Mails."
+
+#: compatibility/avada/AvadaFormOptions.class.php:414 compatibility/cf7/CF7Backend.class.php:461
+msgid "Subject"
+msgstr "Betreff"
+
+#: compatibility/avada/AvadaFormOptions.class.php:416 compatibility/cf7/CF7Backend.class.php:470
+msgid "Enter a custom subject for the Double-Opt-In mail (e.g.: Please confirm your registration)."
+msgstr "Geben Sie einen benutzerdefinierten Betreff für die Double-Opt-In-E-Mail ein (z. B. Bitte bestätigen Sie Ihre Registrierung)."
+
+#: compatibility/avada/AvadaFormOptions.class.php:423 compatibility/cf7/CF7Backend.class.php:478
+msgid "Template"
+msgstr "Vorlage"
+
+#: compatibility/avada/AvadaFormOptions.class.php:424
+msgid "Pick the Template for your double opt-in Mail."
+msgstr "Wählen Sie die Vorlage für Ihre Double-Opt-In-E-Mail aus."
+
+#: compatibility/avada/AvadaFormOptions.class.php:431 compatibility/cf7/CF7Backend.class.php:549
+msgid "Message body"
+msgstr "Nachrichtentext"
+
+#: compatibility/avada/AvadaFormOptions.class.php:433
+msgid "Enter the Message you want to sent to your customer. Do not forget to add the Double-Opt-In tag ([doubleoptinlink]) e.g.: <pre><code>&lt;a href=\"[doubleoptinlink]\"&gt;Confirm the registration&lt;/a&gt;</code></pre>"
+msgstr "Geben Sie die Nachricht ein, die Sie an Ihren Kunden senden möchten. Vergessen Sie nicht, das Double-Opt-In-Tag ([doubleoptinlink]) hinzuzufügen, z. B.: <pre><code>&lt;a href=\"[doubleoptinlink]\"&gt;Registrierung bestätigen&lt;/a&gt;</code></pre>"
+
+#: compatibility/cf7/CF7Backend.class.php:268
+msgid "Opt-In Formular Settings"
+msgstr "Opt-In Formular-Einstellungen"
+
+#: compatibility/cf7/CF7Backend.class.php:279 templates/list-optins.php:108
+msgid "Yes"
+msgstr "Ja"
+
+#: compatibility/cf7/CF7Backend.class.php:281
+msgid "Enable this checkox to activate the Double-Opt-In Mail for this formular."
+msgstr "Aktivieren Sie dieses Kontrollkästchen, um die Double-Opt-In-E-Mail für dieses Formular zu aktivieren."
+
+#: compatibility/cf7/CF7Backend.class.php:301 core/CategoryOptions.class.php:192
+msgid "Please select"
+msgstr "Bitte auswählen"
+
+#: compatibility/cf7/CF7Backend.class.php:317
+msgid "Assign the Opt-In to a Category for an easier administration."
+msgstr "Weisen Sie das Opt-In einer Kategorie zur einfacheren Verwaltung zu."
+
+#: compatibility/cf7/CF7Backend.class.php:325
+msgid "Dynamic Condition"
+msgstr "Dynamische Bedingung"
+
+#: compatibility/cf7/CF7Backend.class.php:330
+msgid "Enable the Opt-In only when the field "
+msgstr "Aktivieren Sie das Opt-In nur, wenn das Feld "
+
+#: compatibility/cf7/CF7Backend.class.php:333
+msgid "Disabled"
+msgstr "Deaktiviert"
+
+#: compatibility/cf7/CF7Backend.class.php:350
+msgid "has been filled/checked by the visitor."
+msgstr "vom Besucher ausgefüllt/angeklickt wurde."
+
+#: compatibility/cf7/CF7Backend.class.php:363
+msgid "default"
+msgstr "Standard"
+
+#: compatibility/cf7/CF7Backend.class.php:395
+msgid "Customize your Opt-In Mail"
+msgstr "Passen Sie Ihre Opt-In-E-Mail an"
+
+#: compatibility/cf7/CF7Backend.class.php:408
+msgid "This field defines who will receive the Double-Opt-In mail. Enter one of the following tags that represents the mail for the customer:"
+msgstr "Dieses Feld definiert, wer die Double-Opt-In-E-Mail erhält. Geben Sie einen der folgenden Tags ein, der die E-Mail für den Kunden darstellt:"
+
+#: compatibility/cf7/CF7Backend.class.php:427
+msgid "From"
+msgstr "Von"
+
+#: compatibility/cf7/CF7Backend.class.php:453
+msgid "This field defines the name of the sender (e.g. Max Mustermann)."
+msgstr "Dieses Feld definiert den Namen des Absenders (z. B. Max Mustermann)."
+
+#: compatibility/cf7/CF7Backend.class.php:558
+msgid "Enter the Message you want to sent to your customer. Do not forget to add the Double-Opt-In tag ([doubleoptinlink]) e.g.:"
+msgstr "Geben Sie die Nachricht ein, die Sie an Ihren Kunden senden möchten. Vergessen Sie nicht, das Double-Opt-In-Tag ([doubleoptinlink]) hinzuzufügen, z. B.:"
+
+#: compatibility/cf7/CF7Backend.class.php:564
+msgid "These placeholders are available for the opt-in Message body: "
+msgstr "Diese Platzhalter sind für den Opt-In-Nachrichtentext verfügbar: "
+
+#: core/Ajax.class.php:128
+msgid "Ooops!"
+msgstr "Hoppla!"
+
+#: core/Ajax.class.php:130
+msgid "Something went wrong. The given DOI wasn't found. Maybe it got removed?"
+msgstr "Etwas ist schief gelaufen. Der angegebene DOI wurde nicht gefunden. Wurde er vielleicht entfernt?"
+
+#: core/Ajax.class.php:160 templates/view-optin.php:49
+msgid "Delete DOI"
+msgstr "DOI löschen"
+
+#: core/Ajax.class.php:162 templates/list-optins.php:62
+msgid "Details"
+msgstr "Details"
+
+#: core/Ajax.class.php:167 core/Ajax.class.php:201 templates/view-optin.php:54 templates/view-optin.php:138 templates/view-optin.php:170
+msgid "Key"
+msgstr "Schlüssel"
+
+#: core/Ajax.class.php:168 core/Ajax.class.php:202 templates/view-optin.php:55 templates/view-optin.php:139 templates/view-optin.php:171
+msgid "Value"
+msgstr "Wert"
+
+#: core/Ajax.class.php:171 templates/list-optins.php:26 templates/view-optin.php:59 ui/UICategories.class.php:179
+msgid "ID"
+msgstr "ID"
+
+#: core/Ajax.class.php:175 templates/view-optin.php:67
+msgid "CF7 Form ID"
+msgstr "CF7 Formular-ID"
+
+#: core/Ajax.class.php:179 templates/list-optins.php:44 templates/view-optin.php:83 ui/UICategories.class.php:185
+msgid "Registration Date"
+msgstr "Registrierungsdatum"
+
+#: core/Ajax.class.php:183 templates/view-optin.php:93
+msgid "Registration IP"
+msgstr "Registrierungs-IP"
+
+#: core/Ajax.class.php:187 templates/view-optin.php:101
+msgid "Confirmation Date"
+msgstr "Bestätigungsdatum"
+
+#: core/Ajax.class.php:193 templates/view-optin.php:113
+msgid "Confirmation IP"
+msgstr "Bestätigungs-IP"
+
+#: core/Ajax.class.php:198 templates/view-optin.php:135
+msgid "Form Fields"
+msgstr "Formularfelder"
+
+#: core/Category.class.php:151 core/Category.class.php:213 core/OptIn.class.php:337 core/OptIn.class.php:393 core/OptIn.class.php:449
+msgid "/"
+msgstr "/"
+
+#: core/CategoryOptions.class.php:229
+msgid "Change Category to: "
+msgstr "Kategorie ändern zu: "
+
+#: core/CategoryOptions.class.php:246 ui/UICategoriesView.class.php:279 ui/UIOptinView.class.php:274
+msgid "Update"
+msgstr "Aktualisieren"
+
+#: core/OptIn.class.php:1846
+msgid "Deleted"
+msgstr "Gelöscht"
+
+#: core/OptInLimitFilter.class.php:114
+msgid "Show: "
+msgstr "Anzeigen: "
+
+#: core/OptInLimitFilter.class.php:130
+msgid "Show"
+msgstr "Anzeigen"
+
+#: core/OptInSearchFilter.class.php:68
+msgid "Search:"
+msgstr "Suchen:"
+
+#: core/OptInSearchFilter.class.php:71
+msgid "Search"
+msgstr "Suchen"
+
+#: core/UIPageForm.class.php:64
+msgid "Settings updated"
+msgstr "Einstellungen aktualisiert"
+
+#: core/UIPageForm.class.php:190
+msgid "Save"
+msgstr "Speichern"
+
+#: core/review.php:53
+#, php-format
+msgid "<strong>Double Opt-In for WordPress</strong> has already confirmed <strong>%d email subscriptions</strong>. Would you support us with a quick review? ❤️"
+msgstr "<strong>Double Opt-In for WordPress</strong> hat bereits <strong>%d E-Mail-Abonnements</strong> bestätigt. Würden Sie uns mit einer kurzen Bewertung unterstützen? ❤️"
+
+#: core/review.php:63
+msgid "Leave a review now"
+msgstr "Jetzt bewerten"
+
+#: core/review.php:67
+msgid "Remind me later"
+msgstr "Später erinnern"
+
+#: core/review.php:71
+msgid "Don’t ask again"
+msgstr "Nicht mehr fragen"
+
+#: templates/list-optins.php:29 templates/optout-list.php:20
+msgid "Hash"
+msgstr "Hash"
+
+#: templates/list-optins.php:32 templates/optout-form.php:10 templates/view-optin.php:75
+msgid "E-Mail"
+msgstr "E-Mail"
+
+#: templates/list-optins.php:38
+msgid "Form ID"
+msgstr "Formular-ID"
+
+#: templates/list-optins.php:41
+msgid "Confirmed ? "
+msgstr "Bestätigt? "
+
+#: templates/list-optins.php:60 ui/UICategories.class.php:206
+msgid "Show details"
+msgstr "Details anzeigen"
+
+#: templates/list-optins.php:108
+msgid "No"
+msgstr "Nein"
+
+#: templates/list-optins.php:140
+msgid "First Page"
+msgstr "Erste Seite"
+
+#: templates/list-optins.php:148
+msgid "Previous Page"
+msgstr "Vorherige Seite"
+
+#: templates/list-optins.php:162
+msgid "of"
+msgstr "von"
+
+#: templates/list-optins.php:174
+msgid "Next Page"
+msgstr "Nächste Seite"
+
+#: templates/list-optins.php:182
+msgid "Last Page"
+msgstr "Letzte Seite"
+
+#: templates/optout-form.php:9
+msgid "Opt-Out"
+msgstr "Opt-Out"
+
+#: templates/optout-form.php:12
+msgid "max.mustermann@domain.de"
+msgstr "max.mustermann@domain.de"
+
+#: templates/optout-form.php:13
+msgid "Submit"
+msgstr "Absenden"
+
+#: templates/optout-list.php:23
+msgid "Date"
+msgstr "Datum"
+
+#: templates/optout-list.php:26
+msgid "Status"
+msgstr "Status"
+
+#: templates/optout-list.php:29
+msgid "Valid until"
+msgstr "Gültig bis"
+
+#: templates/optout-list.php:52
+msgid "&infin;"
+msgstr "&infin;"
+
+#: templates/optout-list.php:69
+msgid "Opt-Out now!"
+msgstr "Jetzt abmelden!"
+
+#: templates/optout-list.php:79
+msgid "The date indicates when your personal data will be deleted."
+msgstr "Das Datum gibt an, wann Ihre persönlichen Daten gelöscht werden."
+
+#: templates/optout-list.php:82
+#, php-format
+msgid "Please note that even with manual opt-out, your data will be stored. Please contact the administrator to delete your personal data: %s."
+msgstr "Bitte beachten Sie, dass Ihre Daten auch bei einer manuellen Abmeldung gespeichert bleiben. Bitte wenden Sie sich an den Administrator, um Ihre persönlichen Daten zu löschen: %s."
+
+#: templates/optout-list.php:84
+#, php-format
+msgid "Please note that even with manual opt-out, your data will only be deleted in %d %s."
+msgstr "Bitte beachten Sie, dass Ihre Daten auch bei einer manuellen Abmeldung erst in %d %s gelöscht werden."
+
+#: templates/view-optin.php:175
+msgid "No entries"
+msgstr "Keine Einträge"
+
+#: templates/view-optin.php:197
+msgid "Formular"
+msgstr "Formular"
+
+#: templates/view-optin.php:199
+msgid "The data above was collected by the following form used from the visitor. The data has been saved as plain text. You can copy the plain content to a html file to see the original formular."
+msgstr "Die obigen Daten wurden mit dem folgenden Formular des Besuchers gesammelt. Die Daten wurden als einfacher Text gespeichert. Sie können den Inhalt in eine HTML-Datei kopieren, um das ursprüngliche Formular zu sehen."
+
+#: templates/view-optin.php:203 templates/view-optin.php:221
+msgid "HTML:"
+msgstr "HTML:"
+
+#: templates/view-optin.php:215
+msgid "Opt-In Mail"
+msgstr "Opt-In E-Mail"
+
+#: templates/view-optin.php:217
+msgid "The following Opt-In mail has been submitted to the visitor to get the confirmation. The data has been saved as plain text. Depending on the form it may contain html content."
+msgstr "Die folgende Opt-In-E-Mail wurde dem Besucher zur Bestätigung zugesandt. Die Daten wurden als einfacher Text gespeichert. Abhängig vom Formular kann sie HTML-Inhalt enthalten."
+
+#: ui/UICategories.class.php:26 ui/UICategories.class.php:146
+msgid "Categories"
+msgstr "Kategorien"
+
+#: ui/UICategories.class.php:43
+msgid "Category deleted"
+msgstr "Kategorie gelöscht"
+
+#: ui/UICategories.class.php:49
+msgid "Category not-deleted"
+msgstr "Kategorie nicht gelöscht"
+
+#: ui/UICategories.class.php:182
+msgid "Name"
+msgstr "Name"
+
+#: ui/UICategories.class.php:188
+msgid "Update Date"
+msgstr "Aktualisierungsdatum"
+
+#: ui/UICategories.class.php:219
+msgid "_"
+msgstr "_"
+
+#: ui/UICategories.class.php:220
+msgid "Delete"
+msgstr "Löschen"
+
+#: ui/UICategories.class.php:256
+msgid "New Category:"
+msgstr "Neue Kategorie:"
+
+#: ui/UICategories.class.php:263 ui/UICategoriesView.class.php:265
+msgid "Please enter the Name of the Categorie"
+msgstr "Bitte geben Sie den Namen der Kategorie ein"
+
+#: ui/UICategories.class.php:265 ui/UICategoriesView.class.php:267
+msgid "Enter the name of the Categorie and submit."
+msgstr "Geben Sie den Namen der Kategorie ein und senden Sie ab."
+
+#: ui/UICategories.class.php:277
+msgid "Add"
+msgstr "Hinzufügen"
+
+#: ui/UICategories.class.php:313
+msgid "Please enter a valid name for the categorie."
+msgstr "Bitte geben Sie einen gültigen Namen für die Kategorie ein."
+
+#: ui/UICategories.class.php:329
+msgid "New Category added"
+msgstr "Neue Kategorie hinzugefügt"
+
+#: ui/UICategories.class.php:336
+msgid "Something went wrong"
+msgstr "Etwas ist schiefgelaufen"
+
+#: ui/UICategoriesView.class.php:26
+msgid "Category View"
+msgstr "Kategorie-Ansicht"
+
+#: ui/UICategoriesView.class.php:85
+msgid "Category name cannot be empty."
+msgstr "Der Kategoriename darf nicht leer sein."
+
+#: ui/UICategoriesView.class.php:96
+msgid "Category updated"
+msgstr "Kategorie aktualisiert"
+
+#: ui/UICategoriesView.class.php:101
+msgid "Category update failed"
+msgstr "Kategorie-Aktualisierung fehlgeschlagen"
+
+#: ui/UICategoriesView.class.php:195
+msgid "Category: "
+msgstr "Kategorie: "
+
+#: ui/UICategoriesView.class.php:256
+msgid "Edit Category:"
+msgstr "Kategorie bearbeiten:"
+
+#: ui/UIDashboard.class.php:33
+msgid "Dashboard"
+msgstr "Dashboard"
+
+#: ui/UIDashboard.class.php:105
+msgid "The given DOI has been removed."
+msgstr "Der angegebene DOI wurde entfernt."
+
+#: ui/UIDashboard.class.php:111
+msgid "Couldn't delete the DOI, please try again later."
+msgstr "Konnte den DOI nicht löschen, bitte versuchen Sie es später erneut."
+
+#: ui/UIDashboard.class.php:202
+msgid "Latest Opt-ins"
+msgstr "Neueste Opt-ins"
+
+#: ui/UIDashboard.class.php:231 ui/UIDatabase.class.php:197 ui/UISettings.class.php:204
+msgid "Hint:"
+msgstr "Hinweis:"
+
+#: ui/UIDashboard.class.php:234 ui/UIDatabase.class.php:200
+msgid "In the table on the left side, you'll find an list containing all Opt-Ins and the required information from your customers. Click on the hash to open aditional informations about the form and the user data. All unconfirmed opt-ins will be deleted after 7 days."
+msgstr "In der Tabelle auf der linken Seite finden Sie eine Liste aller Opt-ins und der erforderlichen Informationen Ihrer Kunden. Klicken Sie auf den Hash, um zusätzliche Informationen über das Formular und die Benutzerdaten zu öffnen. Alle unbestätigten Opt-ins werden nach 7 Tagen gelöscht."
+
+#: ui/UIDashboard.class.php:239
+msgid "Hooks:"
+msgstr "Hooks:"
+
+#: ui/UIDashboard.class.php:242
+msgid "You can use the following hooks to adjust the Opt-In to your requirements."
+msgstr "Sie können die folgenden Hooks verwenden, um das Opt-In an Ihre Anforderungen anzupassen."
+
+#: ui/UIDashboard.class.php:245
+msgid "An Opt-in link has been called which is already confirmed or has been deleted."
+msgstr "Ein Opt-in-Link wurde aufgerufen, der bereits bestätigt oder gelöscht wurde."
+
+#: ui/UIDashboard.class.php:257
+msgid "An Opt-in link has been called but not yet updated the database."
+msgstr "Ein Opt-in-Link wurde aufgerufen, aber die Datenbank wurde noch nicht aktualisiert."
+
+#: ui/UIDashboard.class.php:269
+msgid "An Opt-in link has been called and the database has been updated already."
+msgstr "Ein Opt-in-Link wurde aufgerufen und die Datenbank wurde bereits aktualisiert."
+
+#: ui/UIDatabase.class.php:27 ui/UIDatabase.class.php:133
+msgid "Database"
+msgstr "Datenbank"
+
+#: ui/UIDatabase.class.php:72
+msgid "Database cleaned."
+msgstr "Datenbank bereinigt."
+
+#: ui/UIDatabase.class.php:105
+msgid "Database reset finished."
+msgstr "Datenbank-Reset abgeschlossen."
+
+#: ui/UIDatabase.class.php:143
+msgid "Clean Database"
+msgstr "Datenbank bereinigen"
+
+#: ui/UIDatabase.class.php:147
+msgid "Clean All"
+msgstr "Alles bereinigen"
+
+#: ui/UIDatabase.class.php:149
+msgid "Clean Confirmed"
+msgstr "Bestätigte bereinigen"
+
+#: ui/UIDatabase.class.php:151
+msgid "Clean Unconfirmed"
+msgstr "Unbestätigte bereinigen"
+
+#: ui/UIDatabase.class.php:153
+msgid "Make sure you backup your database before clicking one of these buttons."
+msgstr "Stellen Sie sicher, dass Sie Ihre Datenbank sichern, bevor Sie auf einen dieser Buttons klicken."
+
+#: ui/UIDatabase.class.php:159
+msgid "Reset Database"
+msgstr "Datenbank zurücksetzen"
+
+#: ui/UIDatabase.class.php:163
+msgid "Reset"
+msgstr "Zurücksetzen"
+
+#: ui/UIDatabase.class.php:165
+msgid "Make sure you backup your database before clicking one of these buttons. If you click this button, all Opt-Ins will be deleted."
+msgstr "Stellen Sie sicher, dass Sie Ihre Datenbank sichern, bevor Sie auf einen dieser Buttons klicken. Wenn Sie diesen Button klicken, werden alle Opt-ins gelöscht."
+
+#: ui/UIOptinView.class.php:27
+msgid "OptIn View"
+msgstr "Opt-In-Ansicht"
+
+#: ui/UIOptinView.class.php:41
+msgid "Opt-In deleted"
+msgstr "Opt-In gelöscht"
+
+#: ui/UIOptinView.class.php:47
+msgid "Opt-In not-deleted"
+msgstr "Opt-In nicht gelöscht"
+
+#: ui/UIOptinView.class.php:119
+msgid "Opt-In: "
+msgstr "Opt-In: "
+
+#: ui/UIOptinView.class.php:187
+msgid "Opt-In updated successfully."
+msgstr "Opt-In erfolgreich aktualisiert."
+
+#: ui/UIOptinView.class.php:192
+msgid "Opt-In update failed."
+msgstr "Opt-In-Aktualisierung fehlgeschlagen."
+
+#: ui/UIOptinView.class.php:238
+msgid "Edit Opt-In:"
+msgstr "Opt-In bearbeiten:"
+
+#: ui/UIOptinView.class.php:244
+msgid "Category:"
+msgstr "Kategorie:"
+
+#: ui/UIOptinView.class.php:262
+msgid "Select the category to assign the Opt-In."
+msgstr "Wählen Sie die Kategorie aus, der das Opt-In zugewiesen werden soll."
+
+#: ui/UIOptinView.class.php:280
+msgid "Opt-In:"
+msgstr "Opt-In:"
+
+#: ui/UIOptinView.class.php:285
+msgid "Link:"
+msgstr "Link:"
+
+#: ui/UISettings.class.php:27 ui/UISettings.class.php:60
+msgid "Settings"
+msgstr "Einstellungen"
+
+#: ui/UISettings.class.php:44
+msgid "never"
+msgstr "nie"
+
+#: ui/UISettings.class.php:65
+msgid "Delete Opt-Ins"
+msgstr "Opt-ins löschen"
+
+#: ui/UISettings.class.php:91
+msgid "Select the period of time after which all data will be deleted automatically. As for the european GDPR it is recommend to use the smallest period of time as possible."
+msgstr "Wählen Sie den Zeitraum aus, nach dem alle Daten automatisch gelöscht werden. Im Sinne der europäischen DSGVO wird empfohlen, den kürzestmöglichen Zeitraum zu verwenden."
+
+#: ui/UISettings.class.php:98
+msgid "Delete unconfirmed Opt-Ins"
+msgstr "Unbestätigte Opt-ins löschen"
+
+#: ui/UISettings.class.php:123
+msgid "Select the period of time after which all unconfirmed data will be deleted automatically. As for the european GDPR it is recommend to use the smallest period of time as possible."
+msgstr "Wählen Sie den Zeitraum aus, nach dem alle unbestätigten Daten automatisch gelöscht werden. Im Sinne der europäischen DSGVO wird empfohlen, den kürzestmöglichen Zeitraum zu verwenden."
+
+#: ui/UISettings.class.php:130
+msgid "Telemetry"
+msgstr "Telemetrie"
+
+#: ui/UISettings.class.php:145
+msgid "On"
+msgstr "An"
+
+#: ui/UISettings.class.php:146
+msgid "Off"
+msgstr "Aus"
+
+#: ui/UISettings.class.php:155
+msgid "Enable this option to allow anonymous telemetry data to be sent. This helps us improve and develop the plugin."
+msgstr "Aktivieren Sie diese Option, um die Übermittlung anonymer Telemetriedaten zu erlauben. Dies hilft uns, das Plugin zu verbessern und weiterzuentwickeln."
+
+#: ui/UISettings.class.php:207
+msgid "In the table on the left side, you'll find an list global settings. They will affect all forms using the double opt-in."
+msgstr "In der Tabelle auf der linken Seite finden Sie eine Liste der globalen Einstellungen. Diese betreffen alle Formulare, die das Double-Opt-In verwenden."
+
+#. Plugin Name of the plugin/theme
+msgid "Double Opt-In (Contact Form 7, Avada) - GDPR Ready"
+msgstr "Double Opt-In (Contact Form 7, Avada) - DSGVO-konform"
+
+#. Plugin URI of the plugin/theme
+msgid "https://www.forge12.com/blog/so-verwendest-du-das-double-opt-in-fuer-contact-form-7/"
+msgstr "https://www.forge12.com/blog/so-verwendest-du-das-double-opt-in-fuer-contact-form-7/"
+
+#. Description of the plugin/theme
+msgid "This plugin allows you to add a double OptIn System to your Contact Form 7 & Avada Forms."
+msgstr "Dieses Plugin ermöglicht Ihnen die Hinzufügung eines Double-Opt-In-Systems zu Ihren Contact Form 7 & Avada Formularen."
+
+#. Author of the plugin/theme
+msgid "Forge12 Interactive GmbH"
+msgstr "Forge12 Interactive GmbH"
+
+#. Author URI of the plugin/theme
+msgid "https://www.forge12.com"
+msgstr "https://www.forge12.com"
+
+#: src/Admin/ResendController.php:69
+msgid "Resend Confirmation Mail"
+msgstr "Bestätigungs-E-Mail erneut senden"
+
+#: ui/UISettings.class.php:163
+msgid "GDPR / Privacy"
+msgstr "DSGVO / Datenschutz"
+
+#: ui/UISettings.class.php:167
+msgid "Privacy Policy Page"
+msgstr "Datenschutz-Seite"
+
+#: ui/UISettings.class.php:174
+msgid "&mdash; Select &mdash;"
+msgstr "&mdash; Auswählen &mdash;"
+
+#: ui/UISettings.class.php:180
+msgid "Select the privacy policy page. This is used for the [doubleoptin_privacy_url] placeholder in email templates. Falls back to the WordPress Privacy Policy page if not set."
+msgstr "Wählen Sie die Datenschutz-Seite aus. Diese wird für den Platzhalter [doubleoptin_privacy_url] in E-Mail-Vorlagen verwendet. Falls nicht gesetzt, wird die WordPress-Datenschutzseite verwendet."
+
+#: ui/UISettings.class.php:185
+msgid "Security"
+msgstr "Sicherheit"
+
+#: ui/UISettings.class.php:189
+msgid "Token Expiry (Hours)"
+msgstr "Token-Ablauf (Stunden)"
+
+#: ui/UISettings.class.php:196
+msgid "Number of hours after which a confirmation link expires. Set to 0 to disable expiry."
+msgstr "Anzahl der Stunden, nach denen ein Bestätigungslink abläuft. Auf 0 setzen, um den Ablauf zu deaktivieren."
+
+#: ui/UISettings.class.php:203
+msgid "Rate Limit (IP)"
+msgstr "Rate Limit (IP)"
+
+#: ui/UISettings.class.php:210
+msgid "Maximum number of opt-in submissions per IP address within the time window. Set to 0 to disable."
+msgstr "Maximale Anzahl an Opt-in-Einsendungen pro IP-Adresse innerhalb des Zeitfensters. Auf 0 setzen zum Deaktivieren."
+
+#: ui/UISettings.class.php:217
+msgid "Rate Limit (Email)"
+msgstr "Rate Limit (E-Mail)"
+
+#: ui/UISettings.class.php:224
+msgid "Maximum number of opt-in submissions per email address within the time window. Set to 0 to disable."
+msgstr "Maximale Anzahl an Opt-in-Einsendungen pro E-Mail-Adresse innerhalb des Zeitfensters. Auf 0 setzen zum Deaktivieren."
+
+#: ui/UISettings.class.php:231
+msgid "Rate Limit Window (Minutes)"
+msgstr "Rate Limit Zeitfenster (Minuten)"
+
+#: ui/UISettings.class.php:238
+msgid "Time window in minutes for the rate limit counters."
+msgstr "Zeitfenster in Minuten für die Rate-Limit-Zähler."
+
+#: ui/UISettings.class.php:243
+msgid "Reminder"
+msgstr "Erinnerung"
+
+#: ui/UISettings.class.php:253
+msgid "Enable Reminder"
+msgstr "Erinnerung aktivieren"
+
+#: ui/UISettings.class.php:274
+msgid "Automatically send a reminder email to unconfirmed opt-ins after the configured delay."
+msgstr "Senden Sie automatisch eine Erinnerungs-E-Mail an unbestätigte Opt-ins nach der konfigurierten Verzögerung."
+
+#: ui/UISettings.class.php:288
+msgid "Reminder Delay (Hours)"
+msgstr "Erinnerungsverzögerung (Stunden)"
+
+#: ui/UISettings.class.php:295
+msgid "Number of hours to wait after opt-in submission before sending a reminder. Default: 24 hours."
+msgstr "Anzahl der Stunden, die nach der Opt-in-Einreichung gewartet wird, bevor eine Erinnerung gesendet wird. Standard: 24 Stunden."
+
+#: ui/UISettings.class.php:303
+msgid "Warning:"
+msgstr "Warnung:"
+
+#: ui/UISettings.class.php:304
+msgid "The reminder delay is equal to or greater than the token expiry. The confirmation link in the reminder may already be expired."
+msgstr "Die Erinnerungsverzögerung ist gleich oder größer als der Token-Ablauf. Der Bestätigungslink in der Erinnerung ist möglicherweise bereits abgelaufen."
+
+#: ui/UISettings.class.php:323
+msgid "The reminder delay is equal to or greater than the unconfirmed opt-in cleanup threshold. Reminders may never be sent because entries are deleted first."
+msgstr "Die Erinnerungsverzögerung ist gleich oder größer als der Löschzeitraum für unbestätigte Opt-ins. Erinnerungen werden möglicherweise nie gesendet, da die Einträge zuerst gelöscht werden."
+
+#: ui/UISettings.class.php:333
+msgid "Reminder Template"
+msgstr "Erinnerungs-Vorlage"
+
+#: ui/UISettings.class.php:337
+msgid "&mdash; Use form template &mdash;"
+msgstr "&mdash; Formular-Vorlage verwenden &mdash;"
+
+#: ui/UISettings.class.php:358
+msgid "Select a custom email template for the reminder. Leave empty to use the same template as the original opt-in email."
+msgstr "Wählen Sie eine benutzerdefinierte E-Mail-Vorlage für die Erinnerung. Leer lassen, um dieselbe Vorlage wie die ursprüngliche Opt-in-E-Mail zu verwenden."
+
+#: ui/UISettings.class.php:365
+msgid "Reminder Subject"
+msgstr "Erinnerungs-Betreff"
+
+#: ui/UISettings.class.php:372
+msgid "Custom subject line for the reminder email. Leave empty to use \"Reminder: {original subject}\"."
+msgstr "Benutzerdefinierter Betreff für die Erinnerungs-E-Mail. Leer lassen, um \"Erinnerung: {ursprünglicher Betreff}\" zu verwenden."
+
+#: ui/UISettings.class.php:377
+msgid "E-Mail Validation"
+msgstr "E-Mail-Validierung"
+
+#: ui/UISettings.class.php:381
+msgid "MX Record Validation"
+msgstr "MX-Record-Validierung"
+
+#: ui/UISettings.class.php:402
+msgid "Validate the email domain via MX record lookup before sending the confirmation email. This prevents opt-ins for mistyped domains (e.g. gmial.com) and saves resources."
+msgstr "Validieren Sie die E-Mail-Domain über einen MX-Record-Lookup, bevor die Bestätigungs-E-Mail gesendet wird. Dies verhindert Opt-ins für falsch geschriebene Domains (z.B. gmial.com) und spart Ressourcen."
+
+#: ui/UISettings.class.php:416
+msgid "Validation Behavior"
+msgstr "Validierungsverhalten"
+
+#: ui/UISettings.class.php:421
+msgid "Silent rejection (form appears normal, no opt-in created)"
+msgstr "Stille Ablehnung (Formular erscheint normal, kein Opt-in wird erstellt)"
+
+#: ui/UISettings.class.php:424
+msgid "Show error message (form displays an error to the user)"
+msgstr "Fehlermeldung anzeigen (Formular zeigt dem Benutzer einen Fehler)"
+
+#: ui/UISettings.class.php:428
+msgid "Choose how to handle submissions with an invalid email domain. \"Silent\" discards the submission without notifying the user. \"Block\" shows an error message so the user can correct the email address."
+msgstr "Wählen Sie, wie Einsendungen mit einer ungültigen E-Mail-Domain behandelt werden sollen. \"Stumm\" verwirft die Einsendung ohne Benachrichtigung. \"Blockieren\" zeigt eine Fehlermeldung, damit der Benutzer die E-Mail-Adresse korrigieren kann."
+
+#: ui/UISettings.class.php:435
+msgid "Custom Error Message"
+msgstr "Benutzerdefinierte Fehlermeldung"
+
+#: ui/UISettings.class.php:441
+msgid "The email domain does not appear to accept emails. Please check your email address."
+msgstr "Die E-Mail-Domain scheint keine E-Mails zu akzeptieren. Bitte überprüfen Sie Ihre E-Mail-Adresse."
+
+#: ui/UISettings.class.php:443
+msgid "Optional custom error message shown when the email domain fails MX validation. Only used when behavior is set to \"Block\". Leave empty to use the default message."
+msgstr "Optionale benutzerdefinierte Fehlermeldung, die angezeigt wird, wenn die E-Mail-Domain die MX-Validierung nicht besteht. Wird nur verwendet, wenn das Verhalten auf \"Blockieren\" eingestellt ist. Leer lassen für die Standardmeldung."
+
+#: ui/UISettings.class.php:452
+msgid "How does MX validation work?"
+msgstr "Wie funktioniert die MX-Validierung?"
+
+#: ui/UISettings.class.php:454
+msgid "Before sending a confirmation email, the plugin checks whether the email domain has valid MX (Mail Exchange) records. If no MX record is found, it falls back to an A record check. This catches common typos like \"gmial.com\" or \"gogle.com\" before wasting email resources. DNS results are cached to minimize lookup overhead. If a DNS lookup fails or times out, the domain is treated as valid (fail-open) to avoid false positives."
+msgstr "Vor dem Senden einer Bestätigungs-E-Mail prüft das Plugin, ob die E-Mail-Domain gültige MX-Records (Mail Exchange) hat. Wenn kein MX-Record gefunden wird, wird auf einen A-Record-Check zurückgegriffen. Dies fängt häufige Tippfehler wie \"gmial.com\" oder \"gogle.com\" ab, bevor E-Mail-Ressourcen verschwendet werden. DNS-Ergebnisse werden zwischengespeichert, um den Lookup-Aufwand zu minimieren. Wenn ein DNS-Lookup fehlschlägt oder das Zeitlimit überschreitet, wird die Domain als gültig behandelt (fail-open), um Fehlalarme zu vermeiden."
+
+#: ui/UISettings.class.php:462
+msgid "Domain Blocklist"
+msgstr "Domain-Blockliste"
+
+#: ui/UISettings.class.php:483
+msgid "Block specific email domains (e.g. disposable email services) from submitting opt-in forms."
+msgstr "Blockieren Sie bestimmte E-Mail-Domains (z.B. Wegwerf-E-Mail-Dienste) beim Absenden von Opt-in-Formularen."
+
+#: ui/UISettings.class.php:497
+msgid "Blocked Domains"
+msgstr "Blockierte Domains"
+
+#: ui/UISettings.class.php:503
+msgid "Enter one domain per line. Emails from these domains will be rejected during opt-in submission."
+msgstr "Geben Sie eine Domain pro Zeile ein. E-Mails von diesen Domains werden bei der Opt-in-Einreichung abgelehnt."
+
+#: ui/UISettings.class.php:510
+msgid "Blocklist Behavior"
+msgstr "Blocklisten-Verhalten"
+
+#: ui/UISettings.class.php:522
+msgid "Choose how to handle submissions from blocked email domains. \"Silent\" discards the submission without notifying the user. \"Block\" shows an error message so the user can use a different email address."
+msgstr "Wählen Sie, wie Einsendungen von blockierten E-Mail-Domains behandelt werden sollen. \"Stumm\" verwirft die Einsendung ohne Benachrichtigung. \"Blockieren\" zeigt eine Fehlermeldung, damit der Benutzer eine andere E-Mail-Adresse verwenden kann."
+
+#: ui/UISettings.class.php:535
+msgid "This email domain is not allowed. Please use a different email address."
+msgstr "Diese E-Mail-Domain ist nicht erlaubt. Bitte verwenden Sie eine andere E-Mail-Adresse."
+
+#: ui/UISettings.class.php:537
+msgid "Optional custom error message shown when a blocked domain is used. Only used when behavior is set to \"Block\". Leave empty to use the default message."
+msgstr "Optionale benutzerdefinierte Fehlermeldung, die angezeigt wird, wenn eine blockierte Domain verwendet wird. Wird nur verwendet, wenn das Verhalten auf \"Blockieren\" eingestellt ist. Leer lassen für die Standardmeldung."
+
+#: ui/UISettings.class.php:546
+msgid "How does the Domain Blocklist work?"
+msgstr "Wie funktioniert die Domain-Blockliste?"
+
+#: ui/UISettings.class.php:548
+msgid "The domain blocklist prevents opt-in submissions from disposable or unwanted email domains. When enabled, the plugin extracts the domain from the submitted email address and checks it against your configured list. This is useful for blocking temporary email services (e.g. tempmail.com, guerrillamail.com) that are commonly used for spam. The check is case-insensitive and runs alongside other validations like MX record checking."
+msgstr "Die Domain-Blockliste verhindert Opt-in-Einsendungen von Wegwerf- oder unerwünschten E-Mail-Domains. Wenn aktiviert, extrahiert das Plugin die Domain aus der eingegebenen E-Mail-Adresse und prüft sie gegen Ihre konfigurierte Liste. Dies ist nützlich, um temporäre E-Mail-Dienste (z.B. tempmail.com, guerrillamail.com) zu blockieren, die häufig für Spam verwendet werden. Die Prüfung ist nicht case-sensitive und läuft parallel zu anderen Validierungen wie der MX-Record-Prüfung."
+
+#: ui/UIForms.class.php:48
+msgid "Forms"
+msgstr "Formulare"
+
+#: ui/UIForms.class.php:108
+msgid "Loading..."
+msgstr "Wird geladen..."
+
+#: ui/UIForms.class.php:109
+msgid "Saving..."
+msgstr "Wird gespeichert..."
+
+#: ui/UIForms.class.php:110
+msgid "Saved!"
+msgstr "Gespeichert!"
+
+#: ui/UIForms.class.php:111
+msgid "Error"
+msgstr "Fehler"
+
+#: ui/UIForms.class.php:112
+msgid "Are you sure?"
+msgstr "Sind Sie sicher?"
+
+#: ui/UIForms.class.php:115
+msgid "Configure"
+msgstr "Konfigurieren"
+
+#: ui/UIForms.class.php:116
+msgid "Close"
+msgstr "Schließen"
+
+#: ui/UIForms.class.php:117
+msgid "Save Settings"
+msgstr "Einstellungen speichern"
+
+#: ui/UIForms.class.php:118
+msgid "No forms found."
+msgstr "Keine Formulare gefunden."
+
+#: ui/UIForms.class.php:149
+msgid "Central Form Management"
+msgstr "Zentrale Formularverwaltung"
+
+#: ui/UIForms.class.php:151
+msgid "Configure Double Opt-In settings for all your forms in one place. Click on \"Configure\" to edit the settings for each form."
+msgstr "Konfigurieren Sie die Double Opt-In Einstellungen für alle Ihre Formulare an einem Ort. Klicken Sie auf \"Konfigurieren\", um die Einstellungen für jedes Formular zu bearbeiten."
+
+#: ui/UIForms.class.php:155
+msgid "Quick Actions"
+msgstr "Schnellaktionen"
+
+#: ui/UIForms.class.php:157
+msgid "Use the toggle switch to quickly enable or disable Double Opt-In for a form."
+msgstr "Verwenden Sie den Schalter, um Double Opt-In für ein Formular schnell zu aktivieren oder zu deaktivieren."
+
+#: ui/UIForms.class.php:181
+msgid "Form Management"
+msgstr "Formularverwaltung"
+
+#: ui/UIForms.class.php:183
+msgid "Manage Double Opt-In settings for all your forms across different integrations."
+msgstr "Verwalten Sie die Double Opt-In Einstellungen für alle Ihre Formulare über verschiedene Integrationen hinweg."
+
+#: ui/UIForms.class.php:188
+msgid "No forms found. Please install a supported form plugin (Contact Form 7, Avada Forms)."
+msgstr "Keine Formulare gefunden. Bitte installieren Sie ein unterstütztes Formular-Plugin (Contact Form 7, Avada Forms)."
+
+#: ui/UIForms.class.php:201
+msgid "Elementor Forms:"
+msgstr "Elementor Formulare:"
+
+#: ui/UIForms.class.php:202
+msgid "To enable Double Opt-In, add the action in Elementor. Configuration is done here."
+msgstr "Um Double Opt-In zu aktivieren, fügen Sie die Aktion in Elementor hinzu. Die Konfiguration erfolgt hier."
+
+#: ui/UIForms.class.php:205
+msgid "Edit the page in Elementor → Select Form widget → \"Actions After Submit\""
+msgstr "Bearbeiten Sie die Seite in Elementor → Wählen Sie das Formular-Widget → \"Aktionen nach dem Absenden\""
+
+#: ui/UIForms.class.php:206
+msgid "Add \"Forge12 Double Opt-In\" action and save"
+msgstr "Fügen Sie die Aktion \"Forge12 Double Opt-In\" hinzu und speichern Sie"
+
+#: ui/UIForms.class.php:207
+msgid "Return here and click \"Configure\" to set up the email settings"
+msgstr "Kehren Sie hierher zurück und klicken Sie auf \"Konfigurieren\", um die E-Mail-Einstellungen einzurichten"
+
+#: ui/UIForms.class.php:216
+msgid "Form"
+msgstr "Formular"
+
+#: ui/UIForms.class.php:218
+msgid "Actions"
+msgstr "Aktionen"
+
+#: ui/UIForms.class.php:227
+msgid "Action is added in Elementor"
+msgstr "Aktion wurde in Elementor hinzugefügt"
+
+#: ui/UIForms.class.php:229
+msgid "Active"
+msgstr "Aktiv"
+
+#: ui/UIForms.class.php:232
+msgid "Add action in Elementor to enable"
+msgstr "Fügen Sie Aktion in Elementor hinzu, um zu aktivieren"
+
+#: ui/UIForms.class.php:234
+msgid "Not Active"
+msgstr "Nicht aktiv"
+
+#: ui/UIForms.class.php:263
+msgid "Add DOI action in Elementor first"
+msgstr "Fügen Sie zuerst die DOI-Aktion in Elementor hinzu"
+
+#: ui/UIForms.class.php:269
+msgid "Edit in Elementor"
+msgstr "In Elementor bearbeiten"
+
+#: ui/UIForms.class.php:269
+msgid "Edit Form"
+msgstr "Formular bearbeiten"
+
+#: ui/UIForms.class.php:294
+msgid "Loading settings..."
+msgstr "Einstellungen werden geladen..."
+
+#: ui/UIForms.class.php:303
+msgid "Enable Double Opt-In"
+msgstr "Double Opt-In aktivieren"
+
+#: ui/UIForms.class.php:305
+msgid "Activate Double Opt-In for this form."
+msgstr "Aktivieren Sie Double Opt-In für dieses Formular."
+
+#: ui/UIForms.class.php:321
+msgid "Elementor forms are enabled/disabled via \"Actions After Submit\" in Elementor."
+msgstr "Elementor-Formulare werden über \"Aktionen nach dem Absenden\" in Elementor aktiviert/deaktiviert."
+
+#: ui/UIForms.class.php:326
+msgid "Consent Text (GDPR)"
+msgstr "Einwilligungstext (DSGVO)"
+
+#: ui/UIForms.class.php:327
+msgid "e.g. I agree to receive the newsletter and accept the privacy policy..."
+msgstr "z.B. Ich stimme zu, den Newsletter zu erhalten und akzeptiere die Datenschutzerklärung..."
+
+#: ui/UIForms.class.php:328
+msgid "The consent text is saved as a snapshot with each opt-in record for GDPR Art. 7 compliance. This proves what the user agreed to at the time of submission."
+msgstr "Der Einwilligungstext wird als Momentaufnahme mit jedem Opt-in-Eintrag für die Einhaltung von DSGVO Art. 7 gespeichert. Dies beweist, was der Benutzer zum Zeitpunkt der Einreichung zugestimmt hat."
+
+#: ui/UIForms.class.php:335
+msgid "Assign opt-ins to a category for easier management."
+msgstr "Weisen Sie Opt-ins einer Kategorie zu, um die Verwaltung zu erleichtern."
+
+#: ui/UIForms.class.php:344
+msgid "Only enable opt-in when this field is filled/checked."
+msgstr "Aktivieren Sie das Opt-in nur, wenn dieses Feld ausgefüllt/angekreuzt ist."
+
+#: ui/UIForms.class.php:351
+msgid "Page shown after confirmation link is clicked."
+msgstr "Seite, die nach dem Klick auf den Bestätigungslink angezeigt wird."
+
+#: ui/UIForms.class.php:355
+msgid "Email Settings"
+msgstr "E-Mail-Einstellungen"
+
+#: ui/UIForms.class.php:359
+msgid "Recipient Field"
+msgstr "Empfängerfeld"
+
+#: ui/UIForms.class.php:363
+msgid "Toggle manual input"
+msgstr "Manuelle Eingabe umschalten"
+
+#: ui/UIForms.class.php:367
+msgid "Form field containing the recipient email. Use field name in brackets, e.g., [email] or [your-email]."
+msgstr "Formularfeld mit der Empfänger-E-Mail. Verwenden Sie den Feldnamen in Klammern, z.B. [email] oder [your-email]."
+
+#: ui/UIForms.class.php:372
+msgid "From Email"
+msgstr "Absender-E-Mail"
+
+#: ui/UIForms.class.php:374
+msgid "Sender email address (e.g., noreply@example.com or [_site_admin_email])."
+msgstr "Absender-E-Mail-Adresse (z.B. noreply@example.com oder [_site_admin_email])."
+
+#: ui/UIForms.class.php:381
+msgid "Sender name displayed in the email."
+msgstr "Absendername, der in der E-Mail angezeigt wird."
+
+#: ui/UIForms.class.php:388
+msgid "Email subject line."
+msgstr "E-Mail-Betreffzeile."
+
+#: ui/UIForms.class.php:393
+msgid "Email Template"
+msgstr "E-Mail-Vorlage"
+
+#: ui/UIForms.class.php:395
+msgid "Select an email template."
+msgstr "Wählen Sie eine E-Mail-Vorlage aus."
+
+#: ui/UIForms.class.php:400
+msgid "Message Body"
+msgstr "Nachrichtentext"
+
+#: ui/UIForms.class.php:406
+msgid "Email content. Include [doubleoptinlink] for the confirmation link."
+msgstr "E-Mail-Inhalt. Fügen Sie [doubleoptinlink] für den Bestätigungslink ein."
+
+#: ui/UIForms.class.php:409
+msgid "Available Placeholders:"
+msgstr "Verfügbare Platzhalter:"
+
+#: ui/UIForms.class.php:427
+msgid "Custom Template Selected"
+msgstr "Benutzerdefinierte Vorlage ausgewählt"
+
+#: ui/UIForms.class.php:428
+msgid "This template was created with the Email Designer. The message body is managed within the template."
+msgstr "Diese Vorlage wurde mit dem E-Mail-Designer erstellt. Der Nachrichtentext wird innerhalb der Vorlage verwaltet."
+
+#: ui/UIForms.class.php:434
+msgid "Edit in Email Designer"
+msgstr "Im E-Mail-Designer bearbeiten"
+
+#: ui/UIForms.class.php:453
+msgid "Cancel"
+msgstr "Abbrechen"
+
+#: compatibility/settings/ControllerSettings.class.php
+msgid "When enabled, it is only possible to register with a single email address only once for the double opt-in forms."
+msgstr "Wenn aktiviert, kann eine einzelne E-Mail-Adresse nur einmal für die Double-Opt-in-Formulare registriert werden."
+
+#: ui/UIEmailTemplates.class.php
+msgid "Email Templates"
+msgstr "E-Mail-Vorlagen"
+
+#: ui/UIEmailTemplates.class.php
+msgid "Add New Template"
+msgstr "Neue Vorlage hinzufügen"
+
+#: ui/UIEmailTemplates.class.php
+msgid "Title"
+msgstr "Titel"
+
+#: ui/UIEmailTemplates.class.php
+msgid "Edit"
+msgstr "Bearbeiten"
+
+#: ui/UIEmailTemplates.class.php
+msgid "Duplicate"
+msgstr "Duplizieren"
+
+#: ui/UIEmailTemplates.class.php
+msgid "Are you sure you want to delete this template?"
+msgstr "Sind Sie sicher, dass Sie diese Vorlage löschen möchten?"
+
+#: ui/UIEmailTemplates.class.php
+msgid "About Email Templates"
+msgstr "Über E-Mail-Vorlagen"
+
+#: ui/UIEmailTemplates.class.php
+msgid "Create custom email templates using our drag-and-drop editor. Templates can be used for Double Opt-In confirmation emails in Contact Form 7 and Avada Forms."
+msgstr "Erstellen Sie benutzerdefinierte E-Mail-Vorlagen mit unserem Drag-and-Drop-Editor. Vorlagen können für Double Opt-In Bestätigungs-E-Mails in Contact Form 7 und Avada Forms verwendet werden."
+
+#: ui/UIEmailTemplates.class.php
+msgid "Available Placeholders"
+msgstr "Verfügbare Platzhalter"
+
+#: ui/UIEmailTemplates.class.php
+msgid "Confirmation link"
+msgstr "Bestätigungslink"
+
+#: ui/UIEmailTemplates.class.php
+msgid "Opt-out link"
+msgstr "Abmelde-Link"
+
+#: ui/UIEmailTemplates.class.php
+msgid "Submission date"
+msgstr "Einsendedatum"
+
+#: ui/UIEmailTemplates.class.php
+msgid "Submission time"
+msgstr "Einsendezeit"
+
+#: ui/UIEmailTemplates.class.php
+msgid "Custom form fields"
+msgstr "Benutzerdefinierte Formularfelder"
+
+#: ui/UIDatabase.class.php
+msgid "Export Consent Records (GDPR)"
+msgstr "Einwilligungsdaten exportieren (DSGVO)"
+
+#: ui/UIDatabase.class.php
+msgid "Export consent records for GDPR compliance documentation."
+msgstr "Exportieren Sie Einwilligungsdaten für die DSGVO-Dokumentation."
+
+#: ui/UIDatabase.class.php
+msgid "Format"
+msgstr "Format"
+
+#: ui/UIDatabase.class.php
+msgid "Scope"
+msgstr "Umfang"
+
+#: ui/UIDatabase.class.php
+msgid "All Records"
+msgstr "Alle Einträge"
+
+#: ui/UIDatabase.class.php
+msgid "By Email"
+msgstr "Nach E-Mail"
+
+#: ui/UIDatabase.class.php
+msgid "Export"
+msgstr "Exportieren"
+
+#: ui/UIOptIns.class.php
+msgid "Click on a hash to open additional information about the form submission and user data. Use the search and filter options to find specific entries."
+msgstr "Klicken Sie auf einen Hash, um zusätzliche Informationen zur Formularübermittlung und zu den Benutzerdaten zu öffnen. Nutzen Sie die Such- und Filteroptionen, um bestimmte Einträge zu finden."
+
+#: ui/UIDashboard.class.php
+msgid "Activity"
+msgstr "Aktivität"
+
+#: ui/UIDashboard.class.php
+msgid "Period"
+msgstr "Zeitraum"
+
+#: ui/UIDashboard.class.php
+msgid "New Opt-Ins"
+msgstr "Neue Opt-Ins"
+
+#: ui/UIDashboard.class.php
+msgid "Last 24 Hours"
+msgstr "Letzte 24 Stunden"
+
+#: ui/UIDashboard.class.php
+msgid "Last 7 Days"
+msgstr "Letzte 7 Tage"
+
+#: ui/UIDashboard.class.php
+msgid "Last 30 Days"
+msgstr "Letzte 30 Tage"
+
+#: ui/UIDashboard.class.php
+msgid "Top Forms"
+msgstr "Top-Formulare"
+
+#: ui/UIDashboard.class.php
+msgid "Recent Opt-Ins"
+msgstr "Aktuelle Opt-Ins"
+
+#: ui/UIDashboard.class.php
+msgid "View All"
+msgstr "Alle anzeigen"
+
+#: ui/UIDashboard.class.php
+msgid "Pending"
+msgstr "Ausstehend"
+
+#: ui/UIDashboard.class.php
+msgid "Quick Info"
+msgstr "Kurzinfo"
+
+#: ui/UIDashboard.class.php
+msgid "Version:"
+msgstr "Version:"
+
+#: ui/UIDashboard.class.php
+msgid "Token Expiry:"
+msgstr "Token-Ablauf:"
+
+#: ui/UIDashboard.class.php
+#, php-format
+msgid "%d hour"
+msgid_plural "%d hours"
+msgstr[0] "%d Stunde"
+msgstr[1] "%d Stunden"
+
+#: ui/UIDashboard.class.php
+msgid "Retention:"
+msgstr "Aufbewahrung:"
+
+#: ui/UIDashboard.class.php
+msgid "Rate Limit:"
+msgstr "Rate Limit:"
+
+#: ui/UIDashboard.class.php
+#, php-format
+msgid "%d per IP / %d min"
+msgstr "%d pro IP / %d Min."
+
+#: ui/UIDashboard.class.php
+msgid "Quick Links"
+msgstr "Schnellzugriff"
+
+#: ui/UIDashboard.class.php
+msgid "All Opt-Ins"
+msgstr "Alle Opt-Ins"
+
+#: ui/UIDashboard.class.php
+msgid "Form Settings"
+msgstr "Formulareinstellungen"
+
+#: ui/UIDashboard.class.php
+msgid "Global Settings"
+msgstr "Globale Einstellungen"
+
+#: ui/UIDashboard.class.php
+msgid "Database Management"
+msgstr "Datenbankverwaltung"
+
+#: ui/UIAnalytics.class.php
+msgid "Analytics"
+msgstr "Statistiken"
+
+#: ui/UIAnalytics.class.php
+msgid "About Analytics"
+msgstr "Über die Statistiken"
+
+#: ui/UIAnalytics.class.php
+msgid "This page shows conversion metrics for your double opt-in forms."
+msgstr "Diese Seite zeigt Konversionsmetriken für Ihre Double-Opt-In-Formulare."
+
+#: ui/UIAnalytics.class.php
+msgid "Metrics Explained"
+msgstr "Metriken erklärt"
+
+#: ui/UIAnalytics.class.php
+msgid "Conversion Rate"
+msgstr "Konversionsrate"
+
+#: ui/UIAnalytics.class.php
+msgid "Percentage of opt-ins that were confirmed by clicking the confirmation link."
+msgstr "Prozentsatz der Opt-Ins, die durch Klicken auf den Bestätigungslink bestätigt wurden."
+
+#: ui/UIAnalytics.class.php
+msgid "Avg. Confirmation Time"
+msgstr "Durchschn. Bestätigungszeit"
+
+#: ui/UIAnalytics.class.php
+msgid "Average time between opt-in submission and confirmation click."
+msgstr "Durchschnittliche Zeit zwischen Opt-In-Einreichung und Bestätigungsklick."
+
+#: ui/UIAnalytics.class.php
+msgid "Tips"
+msgstr "Tipps"
+
+#: ui/UIAnalytics.class.php
+msgid "Low conversion rates may indicate email delivery issues or unclear confirmation emails."
+msgstr "Niedrige Konversionsraten können auf E-Mail-Zustellungsprobleme oder unklare Bestätigungs-E-Mails hinweisen."
+
+#: ui/UIAnalytics.class.php
+msgid "Use the Reminder feature to automatically follow up with unconfirmed opt-ins."
+msgstr "Verwenden Sie die Erinnerungsfunktion, um automatisch bei unbestätigten Opt-Ins nachzufassen."
+
+#: ui/UIAnalytics.class.php
+msgid "Total Opt-Ins"
+msgstr "Opt-Ins gesamt"
+
+#: ui/UIAnalytics.class.php
+msgid "Unconfirmed"
+msgstr "Unbestätigt"
+
+#: ui/UIAnalytics.class.php
+msgid "No data available for the selected period."
+msgstr "Keine Daten für den ausgewählten Zeitraum verfügbar."
+
+#: ui/UIAnalytics.class.php
+msgid "No data available."
+msgstr "Keine Daten verfügbar."
+
+#: ui/UIAnalytics.class.php
+msgid "Total"
+msgstr "Gesamt"
+
+#: ui/UIAnalytics.class.php
+msgid "Rate"
+msgstr "Rate"
+
+#: ui/UIAnalytics.class.php
+msgid "Avg. Time"
+msgstr "Durchschn. Zeit"
+
+#: ui/UIAnalytics.class.php
+msgid "Active Forms"
+msgstr "Aktive Formulare"
+
+#: ui/UIAnalytics.class.php
+msgid "Back to Overview"
+msgstr "Zurück zur Übersicht"
+
+#: ui/UIAnalytics.class.php
+msgid "Last 90 Days"
+msgstr "Letzte 90 Tage"
+
+#: ui/UIAnalytics.class.php
+msgid "All Time"
+msgstr "Gesamter Zeitraum"
+
+#: ui/UIDashboard.class.php
+msgid "Overview of your Double Opt-In activity"
+msgstr "Übersicht Ihrer Double Opt-In Aktivität"
+
+#: ui/UIDashboard.class.php
+msgid "No form data available yet."
+msgstr "Noch keine Formulardaten verfügbar."
+
+#: ui/UIDashboard.class.php
+msgid "No opt-ins recorded yet."
+msgstr "Noch keine Opt-Ins erfasst."
+
+#: ui/UIDashboard.class.php
+#, php-format
+msgid "Form #%d"
+msgstr "Formular #%d"
+
+#: ui/UIDashboard.class.php
+msgid "Opt-Ins"
+msgstr "Opt-Ins"
+
+#: ui/UIForms.class.php
+msgid "Total Forms"
+msgstr "Formulare gesamt"
+
+#: ui/UIForms.class.php
+msgid "DOI Active"
+msgstr "DOI aktiv"
+
+#: ui/UIForms.class.php
+msgid "DOI Inactive"
+msgstr "DOI inaktiv"
+
+#: ui/UIForms.class.php
+msgid "No Forms Found"
+msgstr "Keine Formulare gefunden"
+
+#: ui/UIForms.class.php
+msgid "Please install a supported form plugin (Contact Form 7, Avada Forms, Elementor Pro)."
+msgstr "Bitte installieren Sie ein unterstütztes Formular-Plugin (Contact Form 7, Avada Forms, Elementor Pro)."
+
+#: ui/UIForms.class.php
+#, php-format
+msgid "Toggle Double Opt-In for %s"
+msgstr "Double Opt-In für %s umschalten"

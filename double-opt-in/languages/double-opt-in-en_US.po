@@ -1,0 +1,504 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Double Opt-In (Contact Form 7, Avada) - GDPR Ready\n"
+"POT-Creation-Date: 2025-09-23 15:06+0200\n"
+"PO-Revision-Date: 2025-09-23 15:17+0200\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: en_US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.5\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-Flags-xgettext: --add-comments=translators:\n"
+"X-Poedit-WPHeader: CF7DoubleOptIn.class.php\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-Mapping: *.php=gettext:PHP\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.min.js\n"
+
+msgid "Please wait while we load the template..."
+msgstr "Please wait while we load the template..."
+
+msgid "Double-Opt-in"
+msgstr "Double Opt-In"
+
+msgid "Enable"
+msgstr "Enable"
+
+msgid "Enable this checkbox to activate the Double-Opt-In Mail for this formular."
+msgstr "Enable this checkbox to activate the Double Opt-In email for this form."
+
+msgid "Category"
+msgstr "Category"
+
+msgid "Select the category for the Opt-In."
+msgstr "Select a category for the Opt-In."
+
+msgid "Confirmation Page"
+msgstr "Confirmation Page"
+
+msgid "Select the page that should be displayed after the user clicks on the confirmation link"
+msgstr "Select the page to be displayed after the user clicks the confirmation link"
+
+msgid "To"
+msgstr "To"
+
+msgid "This field defines who will receive the Double-Opt-In mail. Use the \"Field Name\" defined for the User E-Mail."
+msgstr "This field defines who receives the Double Opt-In email. Use the \"Field Name\" defined for the user's email."
+
+msgid "From E-Mail"
+msgstr "From Email"
+
+msgid "This field defines who will sent the mail. You can either enter the e-Mail (e.g.: your-email@yourdomain.de) or use a placeholder (e.g.: [_site_admin_email])."
+msgstr "This field defines who sends the email. You can either enter an email address (e.g., your-email@yourdomain.com) or use a placeholder (e.g., [_site_admin_email])."
+
+msgid "From Name"
+msgstr "From Name"
+
+msgid "This field defines the name for outgoing mails."
+msgstr "This field defines the name for outgoing emails."
+
+msgid "Subject"
+msgstr "Subject"
+
+msgid "Enter a custom subject for the Double-Opt-In mail (e.g.: Please confirm your registration)."
+msgstr "Enter a custom subject for the Double Opt-In email (e.g., Please confirm your registration)."
+
+msgid "Template"
+msgstr "Template"
+
+msgid "Pick the Template for your double opt-in Mail."
+msgstr "Select the template for your Double Opt-In email."
+
+msgid "Message body"
+msgstr "Message Body"
+
+msgid ""
+"Enter the Message you want to sent to your customer. Do not forget to add the Double-Opt-In tag ([doubleoptinlink]) e.g.: <pre><code>&lt;a href=\"[doubleoptinlink]\"&gt;Confirm the registration&lt;/a&gt;</code></pre>"
+msgstr "Enter the message you want to send to your customer. Don't forget to add the Double Opt-In tag ([doubleoptinlink]) e.g.: <pre><code>&lt;a href=\"[doubleoptinlink]\"&gt;Confirm registration&lt;/a&gt;</code></pre>"
+
+msgid "Opt-In Formular Settings"
+msgstr "Opt-In Form Settings"
+
+msgid "Yes"
+msgstr "Yes"
+
+msgid "Enable this checkox to activate the Double-Opt-In Mail for this formular."
+msgstr "Enable this checkbox to activate the Double Opt-In email for this form."
+
+msgid "Please select"
+msgstr "Please select"
+
+msgid "Assign the Opt-In to a Category for an easier administration."
+msgstr "Assign the Opt-In to a category for easier administration."
+
+msgid "Dynamic Condition"
+msgstr "Dynamic Condition"
+
+msgid "Enable the Opt-In only when the field "
+msgstr "Enable the Opt-In only when the field "
+
+msgid "Disabled"
+msgstr "Disabled"
+
+msgid "has been filled/checked by the visitor."
+msgstr "has been filled/checked by the visitor."
+
+msgid "default"
+msgstr "default"
+
+msgid "Customize your Opt-In Mail"
+msgstr "Customize Your Opt-In Email"
+
+msgid "This field defines who will receive the Double-Opt-In mail. Enter one of the following tags that represents the mail for the customer:"
+msgstr "This field defines who receives the Double Opt-In email. Enter one of the following tags that represents the customer's email:"
+
+msgid "From"
+msgstr "From"
+
+msgid "This field defines the name of the sender (e.g. Max Mustermann)."
+msgstr "This field defines the name of the sender (e.g., Jane Doe)."
+
+msgid "Enter the Message you want to sent to your customer. Do not forget to add the Double-Opt-In tag ([doubleoptinlink]) e.g.:"
+msgstr "Enter the message you want to send to your customer. Don't forget to add the Double Opt-In tag ([doubleoptinlink]) e.g.:"
+
+msgid "These placeholders are available for the opt-in Message body: "
+msgstr "These placeholders are available for the Opt-In message body: "
+
+msgid "Ooops!"
+msgstr "Oops!"
+
+msgid "Something went wrong. The given DOI wasn't found. Maybe it got removed?"
+msgstr "Something went wrong. The DOI was not found. It may have been removed?"
+
+msgid "Delete DOI"
+msgstr "Delete DOI"
+
+msgid "Details"
+msgstr "Details"
+
+msgid "Key"
+msgstr "Key"
+
+msgid "Value"
+msgstr "Value"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "CF7 Form ID"
+msgstr "CF7 Form ID"
+
+msgid "Registration Date"
+msgstr "Registration Date"
+
+msgid "Registration IP"
+msgstr "Registration IP"
+
+msgid "Confirmation Date"
+msgstr "Confirmation Date"
+
+msgid "Confirmation IP"
+msgstr "Confirmation IP"
+
+msgid "Form Fields"
+msgstr "Form Fields"
+
+msgid "/"
+msgstr "/"
+
+msgid "Change Category to: "
+msgstr "Change Category to: "
+
+msgid "Update"
+msgstr "Update"
+
+msgid "Deleted"
+msgstr "Deleted"
+
+msgid "Show: "
+msgstr "Show: "
+
+msgid "Show"
+msgstr "Show"
+
+msgid "Search: "
+msgstr "Search: "
+
+msgid "Search"
+msgstr "Search"
+
+msgid "Settings updated"
+msgstr "Settings updated. "
+
+msgid "Save"
+msgstr "Save"
+
+msgid "<strong>Double Opt-In for WordPress</strong> has already confirmed <strong>%d email subscriptions</strong>. Would you support us with a quick review? ❤️"
+msgstr "<strong>Double Opt-In for WordPress</strong> has already confirmed <strong>%d email subscriptions</strong>. Would you support us with a quick review? ❤️"
+
+msgid "Leave a review now"
+msgstr "Leave a review now"
+
+msgid "Remind me later"
+msgstr "Remind me later"
+
+msgid "Don’t ask again"
+msgstr "Don’t ask again"
+
+msgid "Hash"
+msgstr "Hash"
+
+msgid "E-Mail"
+msgstr "Email"
+
+msgid "Form ID"
+msgstr "Form ID"
+
+msgid "Confirmed ? "
+msgstr "Confirmed?"
+
+msgid "Show details"
+msgstr "Show details"
+
+msgid "No"
+msgstr "No"
+
+msgid "First Page"
+msgstr "First Page"
+
+msgid "Previous Page"
+msgstr "Previous Page"
+
+msgid "of"
+msgstr "of"
+
+msgid "Next Page"
+msgstr "Next Page"
+
+msgid "Last Page"
+msgstr "Last Page"
+
+msgid "Opt-Out"
+msgstr "Opt-Out"
+
+msgid "max.mustermann@domain.de"
+msgstr "max.mustermann@domain.com"
+
+msgid "Submit"
+msgstr "Submit"
+
+msgid "Date"
+msgstr "Date"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "Valid until"
+msgstr "Valid Until"
+
+msgid "&infin;"
+msgstr "&infin;"
+
+msgid "Opt-Out now!"
+msgstr "Opt-Out now!"
+
+msgid "The date indicates when your personal data will be deleted."
+msgstr "The date indicates when your personal data will be deleted."
+
+msgid "Please note that even with manual opt-out, your data will be stored. Please contact the administrator to delete your personal data: %s."
+msgstr "Please note that even with a manual opt-out, your data will be stored. Please contact the administrator to delete your personal data: %s."
+
+msgid "Please note that even with manual opt-out, your data will only be deleted in %d %s."
+msgstr "Please note that even with a manual opt-out, your data will only be deleted in %d %s."
+
+msgid "No entries"
+msgstr "No entries"
+
+msgid "Formular"
+msgstr "Form"
+
+msgid "The data above was collected by the following form used from the visitor. The data has been saved as plain text. You can copy the plain content to a html file to see the original formular."
+msgstr "The data above was collected using the following form. The data has been saved as plain text. You can copy the plain content to an HTML file to view the original form."
+
+msgid "HTML:"
+msgstr "HTML:"
+
+msgid "Opt-In Mail"
+msgstr "Opt-In Email"
+
+msgid "The following Opt-In mail has been submitted to the visitor to get the confirmation. The data has been saved as plain text. Depending on the form it may contain html content."
+msgstr "The following Opt-In email was sent to the visitor for confirmation. The data has been saved as plain text. Depending on the form, it may contain HTML content."
+
+msgid "Categories"
+msgstr "Categories"
+
+msgid "Category deleted"
+msgstr "Category deleted."
+
+msgid "Category not-deleted"
+msgstr "Category not deleted."
+
+msgid "Name"
+msgstr "Name"
+
+msgid "Update Date"
+msgstr "Update Date"
+
+msgid "_"
+msgstr "_"
+
+msgid "Delete"
+msgstr "Delete"
+
+msgid "New Category:"
+msgstr "New Category:"
+
+msgid "Please enter the Name of the Categorie"
+msgstr "Please enter the name of the category."
+
+msgid "Enter the name of the Categorie and submit."
+msgstr "Enter the name of the category and submit."
+
+msgid "Add"
+msgstr "Add"
+
+msgid "Please enter a valid name for the categorie."
+msgstr "Please enter a valid name for the category."
+
+msgid "New Category added"
+msgstr "New category added."
+
+msgid "Something went wrong"
+msgstr "Something went wrong."
+
+msgid "Category View"
+msgstr "Category View"
+
+msgid "Category name cannot be empty."
+msgstr "Category name cannot be empty."
+
+msgid "Category updated"
+msgstr "Category updated."
+
+msgid "Category update failed"
+msgstr "Category update failed."
+
+msgid "Category: "
+msgstr "Category: "
+
+msgid "Edit Category:"
+msgstr "Edit Category:"
+
+msgid "Dashboard"
+msgstr "Dashboard"
+
+msgid "The given DOI has been removed."
+msgstr "The DOI has been removed."
+
+msgid "Couldn't delete the DOI, please try again later."
+msgstr "Couldn't delete the DOI. Please try again later."
+
+msgid "Latest Opt-ins"
+msgstr "Latest Opt-Ins"
+
+msgid "Hint:"
+msgstr "Hint:"
+
+msgid ""
+"In the table on the left side, you'll find an list containing all Opt-Ins and the required information from your customers. Click on the hash to open aditional informations about the form and the user data. All "
+"unconfirmed opt-ins will be deleted after 7 days."
+msgstr "The table on the left shows a list of all Opt-Ins and the required customer information. Click the hash to view additional details about the form and user data. All unconfirmed opt-ins will be deleted after 7 days."
+
+msgid "Hooks:"
+msgstr "Hooks:"
+
+msgid "You can use the following hooks to adjust the Opt-In to your requirements."
+msgstr "You can use the following hooks to customize the Opt-In to your requirements."
+
+msgid "An Opt-in link has been called which is already confirmed or has been deleted."
+msgstr "An Opt-In link has been called that is already confirmed or has been deleted."
+
+msgid "An Opt-in link has been called but not yet updated the database."
+msgstr "An Opt-In link has been called but has not yet updated the database."
+
+msgid "An Opt-in link has been called and the database has been updated already."
+msgstr "An Opt-In link has been called and the database has already been updated."
+
+msgid "Database"
+msgstr "Database"
+
+msgid "Database cleaned."
+msgstr "Database cleaned."
+
+msgid "Database reset finished."
+msgstr "Database reset finished."
+
+msgid "Clean Database"
+msgstr "Clean Database"
+
+msgid "Clean All"
+msgstr "Clean All"
+
+msgid "Clean Confirmed"
+msgstr "Clean Confirmed"
+
+msgid "Clean Unconfirmed"
+msgstr "Clean Unconfirmed"
+
+msgid "Make sure you backup your database before clicking one of these buttons."
+msgstr "Make sure you back up your database before clicking any of these buttons."
+
+msgid "Reset Database"
+msgstr "Reset Database"
+
+msgid "Reset"
+msgstr "Reset"
+
+msgid "Make sure you backup your database before clicking one of these buttons. If you click this button, all Opt-Ins will be deleted."
+msgstr "Make sure you back up your database before clicking any of these buttons. If you click this button, all Opt-Ins will be deleted."
+
+msgid "OptIn View"
+msgstr "Opt-In View"
+
+msgid "Opt-In deleted"
+msgstr "Opt-In deleted."
+
+msgid "Opt-In not-deleted"
+msgstr "Opt-In not deleted."
+
+msgid "Opt-In: "
+msgstr "Opt-In: "
+
+msgid "Opt-In updated successfully."
+msgstr "Opt-In updated successfully."
+
+msgid "Opt-In update failed."
+msgstr "Opt-In update failed."
+
+msgid "Edit Opt-In:"
+msgstr "Edit Opt-In:"
+
+msgid "Category:"
+msgstr "Category:"
+
+msgid "Select the category to assign the Opt-In."
+msgstr "Select the category to assign the Opt-In."
+
+msgid "Opt-In:"
+msgstr "Opt-In:"
+
+msgid "Link:"
+msgstr "Link:"
+
+msgid "Settings"
+msgstr "Settings"
+
+msgid "never"
+msgstr "never"
+
+msgid "Delete Opt-Ins"
+msgstr "Delete Opt-Ins"
+
+msgid "Select the period of time after which all data will be deleted automatically. As for the european GDPR it is recommend to use the smallest period of time as possible."
+msgstr "Select the period after which all data will be automatically deleted. For GDPR compliance, it's recommended to use the shortest possible time period."
+
+msgid "Delete unconfirmed Opt-Ins"
+msgstr "Delete Unconfirmed Opt-Ins"
+
+msgid "Select the period of time after which all unconfirmed data will be deleted automatically. As for the european GDPR it is recommend to use the smallest period of time as possible."
+msgstr "Select the period after which all unconfirmed data will be automatically deleted. For GDPR compliance, it's recommended to use the shortest possible time period."
+
+msgid "Telemetry"
+msgstr "Telemetry"
+
+msgid "On"
+msgstr "On"
+
+msgid "Off"
+msgstr "Off"
+
+msgid "Enable this option to allow anonymous telemetry data to be sent. This helps us improve and develop the plugin."
+msgstr "Enable this option to allow anonymous telemetry data to be sent. This helps us improve and develop the plugin."
+
+msgid "In the table on the left side, you'll find an list global settings. They will affect all forms using the double opt-in."
+msgstr "The table on the left shows a list of global settings that will affect all forms using the Double Opt-In."
+
+msgid "Double Opt-In (Contact Form 7, Avada) - GDPR Ready"
+msgstr "Double Opt-In (Contact Form 7, Avada) - GDPR Ready"
+
+msgid "https://www.forge12.com/blog/so-verwendest-du-das-double-opt-in-fuer-contact-form-7/"
+msgstr "https://www.forge12.com/blog/so-verwendest-du-das-double-opt-in-fuer-contact-form-7/"
+
+msgid "This plugin allows you to add a double OptIn System to your Contact Form 7 & Avada Forms."
+msgstr "This plugin allows you to add a Double Opt-In System to your Contact Form 7 & Avada Forms."
+
+msgid "Forge12 Interactive GmbH"
+msgstr "Forge12 Interactive GmbH"
+
+msgid "https://www.forge12.com"
+msgstr "https://www.forge12.com"
