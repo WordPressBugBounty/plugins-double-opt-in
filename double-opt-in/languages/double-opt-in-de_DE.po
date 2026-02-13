@@ -317,15 +317,15 @@ msgstr "Einstellungen aktualisiert"
 msgid "Save"
 msgstr "Speichern"
 
-#: core/review.php:53
+#: core/review.php:58
 #, php-format
 msgid ""
-"<strong>Double Opt-In for WordPress</strong> has already confirmed <strong>%d "
-"email subscriptions</strong>. Would you support us with a quick review? ❤️"
+"<strong>Double Opt-In for WordPress</strong> has already confirmed <strong>"
+"%d email subscriptions</strong>. Would you support us with a quick review?"
 msgstr ""
 "<strong>Double Opt-In for WordPress</strong> hat bereits <strong>%d E-Mail-"
 "Abonnements</strong> bestätigt. Würdest du uns mit einer kurzen Bewertung "
-"unterstützen? ❤️"
+"unterstützen?"
 
 #: core/review.php:63
 msgid "Leave a review now"
@@ -335,8 +335,8 @@ msgstr "Jetzt bewerten"
 msgid "Remind me later"
 msgstr "Später erinnern"
 
-#: core/review.php:71
-msgid "Don’t ask again"
+#: core/review.php:78
+msgid "Don't ask again"
 msgstr "Nicht mehr fragen"
 
 #: templates/list-optins.php:29 templates/optout-list.php:20
@@ -2052,3 +2052,827 @@ msgstr "Bitte installiere ein unterstütztes Formular-Plugin (Contact Form 7, Av
 #, php-format
 msgid "Toggle Double Opt-In for %s"
 msgstr "Double Opt-In für %s umschalten"
+
+#: ui/UIForms.class.php
+msgid "Name (Full)"
+msgstr "Name (Vollständig)"
+
+#: ui/UIForms.class.php
+msgid "First Name"
+msgstr "Vorname"
+
+#: ui/UIForms.class.php
+msgid "Last Name"
+msgstr "Nachname"
+
+#: ui/UIForms.class.php
+msgid "Phone"
+msgstr "Telefon"
+
+#: ui/UIForms.class.php
+msgid "Company"
+msgstr "Firma"
+
+#: ui/UIForms.class.php
+msgid "Message"
+msgstr "Nachricht"
+
+#: ui/UIForms.class.php
+msgid "Address"
+msgstr "Adresse"
+
+#: ui/UIForms.class.php
+msgid "City"
+msgstr "Stadt"
+
+#: ui/UIForms.class.php
+msgid "ZIP/Postal Code"
+msgstr "PLZ"
+
+#: ui/UIForms.class.php
+msgid "Country"
+msgstr "Land"
+
+#: ui/UIForms.class.php
+msgid "Auto-detected"
+msgstr "Automatisch erkannt"
+
+#: ui/UIForms.class.php
+msgid "-- Not mapped --"
+msgstr "-- Nicht zugeordnet --"
+
+#: ui/UIForms.class.php
+msgid "Select field..."
+msgstr "Feld auswählen..."
+
+#: ui/UIForms.class.php
+msgid "Field Mapping"
+msgstr "Feld-Zuordnung"
+
+#: ui/UIForms.class.php
+msgid "Map form fields to standard placeholders. Auto-detection is used if not configured."
+msgstr "Ordne Formularfelder den Standard-Platzhaltern zu. Automatische Erkennung wird verwendet, wenn nicht konfiguriert."
+
+#: ui/UIForms.class.php
+msgid "Tip: Standard placeholders like [doi_email] work across all forms."
+msgstr "Tipp: Standard-Platzhalter wie [doi_email] funktionieren in allen Formularen."
+
+#: ui/UIForms.class.php
+msgid "Standard Field Placeholders:"
+msgstr "Standard-Feld-Platzhalter:"
+
+#: ui/UIForms.class.php
+msgid "Form Fields:"
+msgstr "Formularfelder:"
+
+#: ui/UIForms.class.php
+msgid "Unique Email"
+msgstr "Einmalige E-Mail"
+
+#: ui/UIForms.class.php
+msgid "Each email address may only be used once per form."
+msgstr "Jede E-Mail-Adresse darf nur einmal pro Formular verwendet werden."
+
+#: ui/UIForms.class.php
+msgid "Behavior"
+msgstr "Verhalten"
+
+#: ui/UIForms.class.php
+msgid "Show error message"
+msgstr "Fehlermeldung anzeigen"
+
+#: ui/UIForms.class.php
+msgid "Silent rejection"
+msgstr "Stille Ablehnung"
+
+#: ui/UIForms.class.php
+msgid "How to handle duplicate email submissions."
+msgstr "Wie doppelte E-Mail-Einsendungen behandelt werden sollen."
+
+#: ui/UIForms.class.php
+msgid "Only check confirmed opt-ins"
+msgstr "Nur bestätigte Opt-Ins prüfen"
+
+#: ui/UIForms.class.php
+msgid "Check all opt-ins (including unconfirmed)"
+msgstr "Alle Opt-Ins prüfen (auch unbestätigte)"
+
+#: ui/UIForms.class.php
+msgid "Whether to check only confirmed or all opt-in records."
+msgstr "Ob nur bestätigte oder alle Opt-In-Einträge geprüft werden sollen."
+
+#: ui/UIForms.class.php
+msgid "This email address has already been used for this form."
+msgstr "Diese E-Mail-Adresse wurde bereits für dieses Formular verwendet."
+
+#: ui/UIForms.class.php
+msgid "Leave empty to use the default message."
+msgstr "Leer lassen, um die Standardmeldung zu verwenden."
+
+#: ui/UIForms.class.php
+msgid "When enabled, users receive a confirmation email with a link they must click to verify their submission."
+msgstr "Wenn aktiviert, erhalten Nutzer eine Bestätigungs-E-Mail mit einem Link, den sie anklicken müssen, um ihre Eingabe zu verifizieren."
+
+#: ui/UIForms.class.php
+msgid "The text entered here is stored as a snapshot with each opt-in record. In case of a dispute, it proves what the user agreed to."
+msgstr "Der hier eingegebene Text wird als Snapshot mit jedem Opt-In-Eintrag gespeichert. Im Streitfall dient er als Nachweis, dem der Nutzer zugestimmt hat."
+
+#: ui/UIForms.class.php
+msgid "Categories help you organize and filter opt-ins — e.g., by newsletter, event, or contact form."
+msgstr "Kategorien helfen dir, Opt-Ins zu organisieren und zu filtern – z. B. nach Newsletter, Event oder Kontaktformular."
+
+#: ui/UIForms.class.php
+msgid "Select a form field. The opt-in is only triggered when this field has been filled in or checked by the visitor."
+msgstr "Wähle ein Formularfeld aus. Das Opt-In wird nur ausgelöst, wenn dieses Feld vom Besucher ausgefüllt oder angehakt wurde."
+
+#: ui/UIForms.class.php
+msgid "This page is displayed after the user clicks the confirmation link in the email. Leave empty for the default page."
+msgstr "Diese Seite wird angezeigt, nachdem der Nutzer den Bestätigungslink in der E-Mail angeklickt hat. Leer lassen für die Standardseite."
+
+#: ui/UIForms.class.php
+msgid "Enter the CF7 field name in brackets that contains the recipient's email address, e.g. [your-email]."
+msgstr "Gib den CF7-Feldnamen in eckigen Klammern ein, der die E-Mail-Adresse des Empfängers enthält, z. B. [your-email]."
+
+#: ui/UIForms.class.php
+msgid "The email address used as the sender of the confirmation email. You can also use [_site_admin_email]."
+msgstr "Die E-Mail-Adresse, die als Absender der Bestätigungs-E-Mail verwendet wird. Du kannst auch [_site_admin_email] verwenden."
+
+#: ui/UIForms.class.php
+msgid "The name displayed as the sender in the email, e.g. your company name or website name."
+msgstr "Der Name, der als Absender in der E-Mail angezeigt wird, z. B. dein Firmenname oder Website-Name."
+
+#: ui/UIForms.class.php
+msgid "The subject line of the confirmation email. You can also use placeholders like [doi_name]."
+msgstr "Die Betreffzeile der Bestätigungs-E-Mail. Du kannst auch Platzhalter wie [doi_name] verwenden."
+
+#: ui/UIForms.class.php
+msgid "Select a template for the confirmation email. Custom templates can be created in the Email Designer."
+msgstr "Wähle eine Vorlage für die Bestätigungs-E-Mail. Eigene Vorlagen können im E-Mail-Designer erstellt werden."
+
+#: ui/UIForms.class.php
+msgid "Map your form fields to standard placeholders to use them in email templates and the dashboard. Unmapped fields are auto-detected."
+msgstr "Ordne deine Formularfelder den Standard-Platzhaltern zu, um sie in E-Mail-Vorlagen und im Dashboard zu verwenden. Nicht zugeordnete Felder werden automatisch erkannt."
+
+#: ui/UIForms.class.php
+msgid "The content of the confirmation email. Use [doubleoptinlink] as a placeholder for the confirmation link."
+msgstr "Der Inhalt der Bestätigungs-E-Mail. Verwende [doubleoptinlink] als Platzhalter für den Bestätigungslink."
+
+#: ui/UIForms.class.php
+msgid "Prevents the same email address from being used more than once for this form. Useful for one-time registrations."
+msgstr "Verhindert, dass dieselbe E-Mail-Adresse mehr als einmal für dieses Formular verwendet wird. Nützlich für einmalige Registrierungen."
+
+#: ui/UIForms.class.php
+msgid "Determines how the system reacts when a duplicate email address is detected."
+msgstr "Bestimmt, wie das System reagiert, wenn eine doppelte E-Mail-Adresse erkannt wird."
+
+#: ui/UIForms.class.php
+msgid "Determines whether only confirmed or also unconfirmed opt-ins are checked for duplicates."
+msgstr "Bestimmt, ob nur bestätigte oder auch unbestätigte Opt-Ins auf Duplikate geprüft werden."
+
+#: ui/UIForms.class.php
+msgid "Custom error message shown to the user when a duplicate email is detected. Leave empty for the default message."
+msgstr "Eigene Fehlermeldung, die dem Nutzer angezeigt wird, wenn eine doppelte E-Mail erkannt wird. Leer lassen für die Standardmeldung."
+
+#: src/Admin/ResendController.php
+msgid "Re-sends the original confirmation email with the opt-in link to the recipient."
+msgstr "Sendet die ursprüngliche Bestätigungsmail mit dem Opt-In-Link erneut an den Empfänger."
+
+#: core/ReminderController.php
+msgid "Sends a separate reminder email. Can only be sent once per opt-in and must be enabled in Settings."
+msgstr "Sendet eine separate Erinnerungsmail. Kann nur einmal pro Opt-In gesendet werden und muss in den Einstellungen aktiviert sein."
+
+#: src/Integration/OptInError.php
+msgid "The form submission has been cancelled."
+msgstr "Die Formularübermittlung wurde abgebrochen."
+
+#: src/Integration/OptInError.php
+msgid "No valid email address was found."
+msgstr "Es wurde keine gültige E-Mail-Adresse gefunden."
+
+#: src/Integration/OptInError.php
+msgid "Too many requests. Please try again later."
+msgstr "Zu viele Anfragen. Bitte versuche es später erneut."
+
+#: src/Integration/OptInError.php
+msgid "Too many requests for this email address. Please try again later."
+msgstr "Zu viele Anfragen für diese E-Mail-Adresse. Bitte versuche es später erneut."
+
+#: src/Integration/OptInError.php
+msgid "The email address could not be verified."
+msgstr "Die E-Mail-Adresse konnte nicht verifiziert werden."
+
+#: src/Integration/OptInError.php
+msgid "An error occurred. Please try again."
+msgstr "Es ist ein Fehler aufgetreten. Bitte versuche es erneut."
+
+#: src/Integration/OptInError.php
+msgid "This email address has already been used."
+msgstr "Diese E-Mail-Adresse wurde bereits verwendet."
+
+#: ui/UIForms.class.php
+msgid "Redirect to page"
+msgstr "Auf Seite weiterleiten"
+
+#: ui/UIForms.class.php
+msgid "Redirect Page"
+msgstr "Weiterleitungsseite"
+
+#: ui/UIForms.class.php
+msgid "The page the user is redirected to when a duplicate email is detected. The error code is appended as a query parameter."
+msgstr "Die Seite, auf die der Benutzer weitergeleitet wird, wenn eine doppelte E-Mail-Adresse erkannt wird. Der Fehlercode wird als Query-Parameter angehängt."
+
+#: ui/UIForms.class.php
+msgid "Select the page to redirect to when a duplicate email is submitted."
+msgstr "Wähle die Seite, auf die bei einer doppelten E-Mail-Adresse weitergeleitet werden soll."
+
+#: ui/UIForms.class.php compatibility/cf7/templates/admin-panel.php
+msgid "Error Redirect Page"
+msgstr "Fehler-Weiterleitungsseite"
+
+#: ui/UIForms.class.php
+msgid "If set, users are redirected to this page when an OptIn error occurs (e.g. rate limit, invalid email). The error code is appended as a query parameter. Leave on default to show a toast notification instead."
+msgstr "Wenn gesetzt, werden Benutzer bei einem OptIn-Fehler (z.B. Rate-Limit, ungueltige E-Mail) auf diese Seite weitergeleitet. Der Fehlercode wird als Query-Parameter angehängt. Auf Standard lassen für Toast-Benachrichtigung."
+
+#: ui/UIForms.class.php
+msgid "Page to redirect to when an error occurs. Leave on default for toast notification."
+msgstr "Seite, auf die bei einem Fehler weitergeleitet wird. Auf Standard lassen für Toast-Benachrichtigung."
+
+#: compatibility/cf7/templates/admin-panel.php
+msgid "Select the page to redirect to when an error occurs (e.g. rate limit). Leave on default for toast notification."
+msgstr "Wähle die Seite, auf die bei einem Fehler weitergeleitet wird (z.B. Rate-Limit). Auf Standard lassen für Toast-Benachrichtigung."
+
+#: src/FormSettings/FormSettingsValidator.php
+msgid "Invalid error redirect page selected."
+msgstr "Ungültige Fehler-Weiterleitungsseite ausgewählt."
+
+#: templates/view-optin.php
+msgid "Delete Opt-In"
+msgstr "Opt-In löschen"
+
+#: templates/view-optin.php
+msgid "Are you sure you want to permanently delete this Opt-In? This action cannot be undone."
+msgstr "Bist du sicher, dass du dieses Opt-In unwiderruflich löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden."
+
+#. =============================================
+#. Missing translations added 2026-02-13
+#. =============================================
+
+#: CF7DoubleOptIn.class.php
+msgid "⚠️ Important: Major Update – Please backup before updating!"
+msgstr "⚠️ Wichtig: Großes Update – Bitte erstelle vorher ein Backup!"
+
+#: CF7DoubleOptIn.class.php
+msgid "This version includes significant changes to the form management system, email templates, and database structure. We strongly recommend creating a full site backup before updating."
+msgstr "Diese Version enthält wesentliche Änderungen am Formularverwaltungssystem, den E-Mail-Vorlagen und der Datenbankstruktur. Wir empfehlen dringend, vorher ein vollständiges Backup zu erstellen."
+
+#: compatibility/OptInFrontend.class.php
+msgid "Your opt-in has already been confirmed."
+msgstr "Dein Opt-In wurde bereits bestätigt."
+
+#: compatibility/OptInFrontend.class.php
+msgid "This confirmation link has expired. Please submit the form again."
+msgstr "Dieser Bestätigungslink ist abgelaufen. Bitte sende das Formular erneut ab."
+
+#: compatibility/OptInFrontend.class.php
+msgid "This confirmation link is invalid."
+msgstr "Dieser Bestätigungslink ist ungültig."
+
+#: compatibility/avada/AvadaFormOptions.class.php
+msgid "Manage"
+msgstr "Verwalten"
+
+#: compatibility/avada/AvadaFormOptions.class.php
+msgid "Or select a custom template:"
+msgstr "Oder eine benutzerdefinierte Vorlage auswählen:"
+
+#: compatibility/cf7/CF7Backend.class.php
+#: compatibility/cf7/templates/admin-panel.php
+msgid "Standard Placeholders Mapping"
+msgstr "Standard-Platzhalter-Zuordnung"
+
+#: compatibility/cf7/CF7Backend.class.php
+msgid "Map your form fields to standard placeholders. This allows you to use the same email template across different forms. Fields are auto-detected based on common naming patterns, but you can override them."
+msgstr "Ordne deine Formularfelder den Standard-Platzhaltern zu. So kannst du die gleiche E-Mail-Vorlage für verschiedene Formulare verwenden. Felder werden automatisch anhand gängiger Benennungsmuster erkannt, können aber überschrieben werden."
+
+#: compatibility/cf7/templates/admin-panel.php
+msgid "Map your form fields to standard placeholders. This allows you to use the same email template across different forms."
+msgstr "Ordne deine Formularfelder den Standard-Platzhaltern zu. So kannst du die gleiche E-Mail-Vorlage für verschiedene Formulare verwenden."
+
+#: compatibility/cf7/CF7Backend.class.php
+#: compatibility/cf7/templates/admin-panel.php
+msgid "Standard Placeholder"
+msgstr "Standard-Platzhalter"
+
+#: compatibility/cf7/CF7Backend.class.php
+#: compatibility/cf7/templates/admin-panel.php
+msgid "Auto-Detected"
+msgstr "Automatisch erkannt"
+
+#: compatibility/cf7/CF7Backend.class.php
+#: compatibility/cf7/templates/admin-panel.php
+msgid "Custom Mapping (Override)"
+msgstr "Benutzerdefinierte Zuordnung (Überschreiben)"
+
+#: compatibility/cf7/CF7Backend.class.php
+#: compatibility/cf7/templates/admin-panel.php
+msgid "Not detected"
+msgstr "Nicht erkannt"
+
+#: compatibility/cf7/CF7Backend.class.php
+#: compatibility/cf7/templates/admin-panel.php
+#, php-format
+msgid "Use auto-detected: [%s]"
+msgstr "Automatisch erkannt verwenden: [%s]"
+
+#: compatibility/cf7/CF7Backend.class.php
+#: compatibility/cf7/templates/admin-panel.php
+msgid "-- Select field --"
+msgstr "-- Feld auswählen --"
+
+#: compatibility/cf7/CF7Backend.class.php
+#: ui/UIEmailTemplateEditor.class.php
+msgid "How to use"
+msgstr "Anleitung"
+
+#: compatibility/cf7/CF7Backend.class.php
+msgid "In your email template, use these standard placeholders instead of form-specific ones:"
+msgstr "Verwende in deiner E-Mail-Vorlage diese Standard-Platzhalter anstelle der formularspezifischen:"
+
+#: compatibility/cf7/CF7Backend.class.php
+msgid "System Placeholders (always available):"
+msgstr "System-Platzhalter (immer verfügbar):"
+
+#: core/OptIn.class.php
+msgid "Unknown"
+msgstr "Unbekannt"
+
+#: core/OptIn.class.php
+msgid "Deleted Form"
+msgstr "Gelöschtes Formular"
+
+#: core/OptIn.class.php
+msgid "Untitled Form"
+msgstr "Unbenanntes Formular"
+
+#: src/Admin/ResendController.php
+msgid "Invalid Opt-In ID."
+msgstr "Ungültige Opt-In-ID."
+
+#: src/EmailTemplates/EmailTemplateIntegration.php
+msgid "Manage Templates"
+msgstr "Vorlagen verwalten"
+
+#: src/EmailTemplates/EmailTemplateIntegration.php
+msgid "Or select a custom template from the Email Editor:"
+msgstr "Oder eine benutzerdefinierte Vorlage aus dem E-Mail-Editor auswählen:"
+
+#: src/EmailTemplates/EmailTemplatePostType.php
+msgctxt "Overrides the \"Featured Image\" phrase"
+msgid "Email Template Cover Image"
+msgstr "E-Mail-Vorlagen-Titelbild"
+
+#: src/EmailTemplates/EmailTemplatePostType.php
+msgctxt "Overrides the \"Set featured image\" phrase"
+msgid "Set cover image"
+msgstr "Titelbild festlegen"
+
+#: src/EmailTemplates/EmailTemplatePostType.php
+msgctxt "Overrides the \"Remove featured image\" phrase"
+msgid "Remove cover image"
+msgstr "Titelbild entfernen"
+
+#: src/EmailTemplates/EmailTemplatePostType.php
+msgctxt "Overrides the \"Use as featured image\" phrase"
+msgid "Use as cover image"
+msgstr "Als Titelbild verwenden"
+
+#: src/EmailTemplates/EmailTemplatePostType.php
+msgctxt "The post type archive label"
+msgid "Email Template archives"
+msgstr "E-Mail-Vorlagen-Archiv"
+
+#: src/EmailTemplates/EmailTemplatePostType.php
+msgctxt "Overrides the \"Insert into post\" phrase"
+msgid "Insert into email template"
+msgstr "In E-Mail-Vorlage einfügen"
+
+#: src/EmailTemplates/EmailTemplatePostType.php
+msgctxt "Overrides the \"Uploaded to this post\" phrase"
+msgid "Uploaded to this email template"
+msgstr "Zu dieser E-Mail-Vorlage hochgeladen"
+
+#: src/EmailTemplates/EmailTemplatePostType.php
+msgctxt "Screen reader text"
+msgid "Filter email templates list"
+msgstr "E-Mail-Vorlagen-Liste filtern"
+
+#: src/EmailTemplates/EmailTemplatePostType.php
+msgctxt "Screen reader text"
+msgid "Email templates list navigation"
+msgstr "E-Mail-Vorlagen-Listennavigation"
+
+#: src/EmailTemplates/EmailTemplatePostType.php
+msgctxt "Screen reader text"
+msgid "Email templates list"
+msgstr "E-Mail-Vorlagen-Liste"
+
+#: src/EmailTemplates/EmailTemplatePresets.php
+msgid "Dear Mr./Mrs.,<br><br>This email address was just used ([doubleoptin_form_date], [doubleoptin_form_time]) to request our newsletter on [doubleoptin_form_url]. If you did not submit this request, please ignore this email and we apologize for disturbing you.<br><br>If you would like to receive our newsletter by email, please confirm your request by clicking on the link below. We will then add you to our newsletter mailing list. You can unsubscribe at any time in the future from our newsletter.<br><br>By clicking on this link, you confirm your registration for our newsletter."
+msgstr "Sehr geehrte/r Frau/Herr,<br><br>Diese E-Mail-Adresse wurde soeben ([doubleoptin_form_date], [doubleoptin_form_time]) verwendet, um unseren Newsletter auf [doubleoptin_form_url] anzufordern. Falls Sie diese Anfrage nicht gestellt haben, ignorieren Sie bitte diese E-Mail und entschuldigen Sie die Störung.<br><br>Wenn Sie unseren Newsletter per E-Mail erhalten möchten, bestätigen Sie bitte Ihre Anfrage, indem Sie auf den unten stehenden Link klicken. Wir werden Sie dann in unseren Newsletter-Verteiler aufnehmen. Sie können sich jederzeit in Zukunft von unserem Newsletter abmelden.<br><br>Mit dem Klick auf diesen Link bestätigen Sie Ihre Registrierung für unseren Newsletter."
+
+#: src/EmailTemplates/EmailTemplatePresets.php
+msgid "Dear Mr./Mrs.,<br><br>This email address was just used to request access to the opt-out page on <a href=\"[doubleoptin_optout_url]\">[doubleoptin_optout_url]</a>. If you did not submit this request, please ignore this email and we apologize for disturbing you."
+msgstr "Sehr geehrte/r Frau/Herr,<br><br>Diese E-Mail-Adresse wurde soeben verwendet, um Zugang zur Opt-Out-Seite auf <a href=\"[doubleoptin_optout_url]\">[doubleoptin_optout_url]</a> anzufordern. Falls Sie diese Anfrage nicht gestellt haben, ignorieren Sie bitte diese E-Mail und entschuldigen Sie die Störung."
+
+#: src/EmailTemplates/EmailTemplatePresets.php
+msgid "If you have trouble clicking on the button above please copy the following link into your internet browser:<br><a href=\"[doubleoptin_optout_url]\">[doubleoptin_optout_url]</a>"
+msgstr "Falls der Button oben nicht funktioniert, kopiere bitte den folgenden Link in deinen Internetbrowser:<br><a href=\"[doubleoptin_optout_url]\">[doubleoptin_optout_url]</a>"
+
+#: src/EmailTemplates/EmailTemplatePresets.php
+msgid "Thank you for registering.<br>Kind regards,<br>Your Newsletter Team."
+msgstr "Vielen Dank für deine Registrierung.<br>Mit freundlichen Grüßen,<br>Dein Newsletter-Team."
+
+#: src/Integration/CF7Integration.php
+msgid "Please save the contact form first before configuring Double Opt-In."
+msgstr "Bitte speichere zuerst das Kontaktformular, bevor du Double Opt-In konfigurierst."
+
+#: src/Integration/OptInError.php
+msgid "An unknown error occurred."
+msgstr "Ein unbekannter Fehler ist aufgetreten."
+
+#: templates/optout-list.php
+msgid "Opt-In now!"
+msgstr "Jetzt bestätigen!"
+
+#: templates/view-optin.php
+msgid "Export Consent Record (GDPR)"
+msgstr "Einwilligungsnachweis exportieren (DSGVO)"
+
+#: templates/view-optin.php
+msgid "Export JSON"
+msgstr "JSON exportieren"
+
+#: templates/view-optin.php
+msgid "Export CSV"
+msgstr "CSV exportieren"
+
+#: templates/view-optin.php
+msgid "Not recorded (record created before consent text tracking)"
+msgstr "Nicht aufgezeichnet (Eintrag wurde vor der Einwilligungstext-Erfassung erstellt)"
+
+#: ui/UIDatabase.class.php ui/UIOptIns.class.php
+msgid "Security Error"
+msgstr "Sicherheitsfehler"
+
+#: ui/UIDatabase.class.php ui/UIOptIns.class.php
+msgid "Security check failed. Please try again."
+msgstr "Sicherheitsüberprüfung fehlgeschlagen. Bitte versuche es erneut."
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "Email Editor"
+msgstr "E-Mail-Editor"
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "Saved"
+msgstr "Gespeichert"
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "Publish"
+msgstr "Veröffentlichen"
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "Preview"
+msgstr "Vorschau"
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "Undo"
+msgstr "Rückgängig"
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "Redo"
+msgstr "Wiederherstellen"
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "Blocks"
+msgstr "Blöcke"
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "Structure"
+msgstr "Struktur"
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "Content"
+msgstr "Inhalt"
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "Placeholders"
+msgstr "Platzhalter"
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "Global Styles"
+msgstr "Globale Stile"
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "Template Name"
+msgstr "Vorlagenname"
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "Drag a block here"
+msgstr "Block hierher ziehen"
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "Delete Block"
+msgstr "Block löschen"
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "Duplicate Block"
+msgstr "Block duplizieren"
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "Move Up"
+msgstr "Nach oben"
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "Move Down"
+msgstr "Nach unten"
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "Form Date"
+msgstr "Formulardatum"
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "Form Time"
+msgstr "Formularzeit"
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "Custom Field"
+msgstr "Benutzerdefiniertes Feld"
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "Header"
+msgstr "Kopfzeile"
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "Heading"
+msgstr "Überschrift"
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "Text"
+msgstr "Text"
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "Button"
+msgstr "Button"
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "Image"
+msgstr "Bild"
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "Divider"
+msgstr "Trennlinie"
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "Spacer"
+msgstr "Abstand"
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "Social Icons"
+msgstr "Social-Media-Icons"
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "Footer"
+msgstr "Fußzeile"
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "1 Column"
+msgstr "1 Spalte"
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "2 Columns"
+msgstr "2 Spalten"
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "2 Columns (Sidebar)"
+msgstr "2 Spalten (Seitenleiste)"
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "3 Columns"
+msgstr "3 Spalten"
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "Row"
+msgstr "Zeile"
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "Wrapper"
+msgstr "Container"
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "Error saving template. Please try again."
+msgstr "Fehler beim Speichern der Vorlage. Bitte versuche es erneut."
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "Template saved successfully."
+msgstr "Vorlage erfolgreich gespeichert."
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "Back to Templates"
+msgstr "Zurück zu den Vorlagen"
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "Click on a placeholder to copy it. Then paste it into any text field."
+msgstr "Klicke auf einen Platzhalter, um ihn zu kopieren. Füge ihn dann in ein beliebiges Textfeld ein."
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "Standard Placeholders"
+msgstr "Standard-Platzhalter"
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "These work across all forms. Configure mapping in form settings."
+msgstr "Diese funktionieren in allen Formularen. Zuordnung in den Formulareinstellungen konfigurieren."
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "System Placeholders"
+msgstr "System-Platzhalter"
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "Add a Text or Button block to your template"
+msgstr "Füge einen Text- oder Button-Block zu deiner Vorlage hinzu"
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "Click a placeholder above to copy it"
+msgstr "Klicke oben auf einen Platzhalter, um ihn zu kopieren"
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "Paste it in the Content field in Settings"
+msgstr "Füge ihn im Inhaltsfeld in den Einstellungen ein"
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "Choose a Template"
+msgstr "Vorlage auswählen"
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "Select a starting point for your email template or start from scratch."
+msgstr "Wähle einen Ausgangspunkt für deine E-Mail-Vorlage oder starte von Grund auf."
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "Start Blank"
+msgstr "Leer starten"
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "Create Template"
+msgstr "Vorlage erstellen"
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "Creating..."
+msgstr "Wird erstellt..."
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "Send Test"
+msgstr "Test senden"
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "Send Test Email"
+msgstr "Test-E-Mail senden"
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "Send a test email to preview how your template looks in real email clients."
+msgstr "Sende eine Test-E-Mail, um zu sehen, wie deine Vorlage in echten E-Mail-Clients aussieht."
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "Sent!"
+msgstr "Gesendet!"
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "Error sending test email."
+msgstr "Fehler beim Senden der Test-E-Mail."
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "Enter email address"
+msgstr "E-Mail-Adresse eingeben"
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "Sending..."
+msgstr "Wird gesendet..."
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "Brand Kit"
+msgstr "Marken-Kit"
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "Logo URL"
+msgstr "Logo-URL"
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "Logo Width"
+msgstr "Logo-Breite"
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "Brand Primary Color"
+msgstr "Primäre Markenfarbe"
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "Brand Secondary Color"
+msgstr "Sekundäre Markenfarbe"
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "Brand Accent Color"
+msgstr "Akzentfarbe"
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "Apply to Template"
+msgstr "Auf Vorlage anwenden"
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "Desktop"
+msgstr "Desktop"
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "Mobile"
+msgstr "Mobil"
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "Conditional Content"
+msgstr "Bedingter Inhalt"
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "Advanced"
+msgstr "Erweitert"
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "Custom CSS"
+msgstr "Benutzerdefiniertes CSS"
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "Enter inline CSS properties (e.g., background: #fff; border: 1px solid #ccc;)"
+msgstr "CSS-Eigenschaften eingeben (z. B. background: #fff; border: 1px solid #ccc;)"
+
+#: ui/UIEmailTemplateEditor.class.php
+#, php-format
+msgid "Edit: %s"
+msgstr "Bearbeiten: %s"
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "Create New Email Template"
+msgstr "Neue E-Mail-Vorlage erstellen"
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "Loading editor..."
+msgstr "Editor wird geladen..."
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "Email Editor Not Built"
+msgstr "E-Mail-Editor nicht erstellt"
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "The email template editor needs to be built before it can be used. Please run the following commands in your terminal:"
+msgstr "Der E-Mail-Vorlagen-Editor muss zuerst erstellt werden, bevor er verwendet werden kann. Bitte führe die folgenden Befehle in deinem Terminal aus:"
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "After building, refresh this page to use the editor."
+msgstr "Nach dem Erstellen aktualisiere diese Seite, um den Editor zu verwenden."
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "Keyboard Shortcuts"
+msgstr "Tastenkombinationen"
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "Save template"
+msgstr "Vorlage speichern"
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "Delete selected block"
+msgstr "Ausgewählten Block löschen"
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "Pro Feature"
+msgstr "Pro-Funktion"
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "The \"{block}\" block requires the Pro version."
+msgstr "Der Block \"{block}\" erfordert die Pro-Version."
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "Upgrade to Pro"
+msgstr "Auf Pro upgraden"
+
+#: ui/UIEmailTemplateEditor.class.php
+msgid "Maybe Later"
+msgstr "Vielleicht später"
+
+#: ui/UIEmailTemplates.class.php
+msgid "Published"
+msgstr "Veröffentlicht"
+
+#: ui/UIEmailTemplates.class.php
+msgid "Draft"
+msgstr "Entwurf"
+
+#: ui/UIEmailTemplates.class.php
+msgid "No email templates found. Create your first template to get started."
+msgstr "Keine E-Mail-Vorlagen gefunden. Erstelle deine erste Vorlage, um loszulegen."
+
+#: ui/UIEmailTemplates.class.php
+msgid "Template duplicated successfully."
+msgstr "Vorlage erfolgreich dupliziert."

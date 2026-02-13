@@ -15,14 +15,22 @@ namespace forge12\contactform7\CF7DoubleOptIn {
 	 * Description: This plugin allows you to add a double OptIn System to your Contact Form 7 & Avada Forms.
 	 * Text Domain: double-opt-in
 	 * Domain Path: /languages
-	 * Version: 3.2.1
+	 * Version: 3.4.0
 	 * Author: Forge12 Interactive GmbH
 	 * Author URI: https://www.forge12.com
 	 */
-	define( 'FORGE12_OPTIN_VERSION', '3.2.1' );
-	define( 'FORGE12_OPTIN_SLUG', 'f12-cf7-doubleoptin' );
-	define( 'FORGE12_OPTIN_BASENAME', plugin_basename( __FILE__ ) );
-	define( 'F12_DOUBLEOPTIN_PLUGIN_FILE', __FILE__ );
+	if ( ! defined( 'FORGE12_OPTIN_VERSION' ) ) {
+		define( 'FORGE12_OPTIN_VERSION', '3.4.0' );
+	}
+	if ( ! defined( 'FORGE12_OPTIN_SLUG' ) ) {
+		define( 'FORGE12_OPTIN_SLUG', 'f12-cf7-doubleoptin' );
+	}
+	if ( ! defined( 'FORGE12_OPTIN_BASENAME' ) ) {
+		define( 'FORGE12_OPTIN_BASENAME', plugin_basename( __FILE__ ) );
+	}
+	if ( ! defined( 'F12_DOUBLEOPTIN_PLUGIN_FILE' ) ) {
+		define( 'F12_DOUBLEOPTIN_PLUGIN_FILE', __FILE__ );
+	}
 
 
 	/**
@@ -58,7 +66,9 @@ namespace forge12\contactform7\CF7DoubleOptIn {
 	require_once( 'core/Category.class.php' );
 	require_once( 'core/CategoryOptions.class.php' );
 	require_once( 'core/Pagination.class.php' );
-	require_once( 'core/TestEmailBlocker.class.php' );
+	if ( file_exists( __DIR__ . '/core/TestEmailBlocker.class.php' ) ) {
+		require_once( 'core/TestEmailBlocker.class.php' );
+	}
 
 	/**
 	 * PSR-4 Autoloader for new Enterprise Architecture (v4.0+)
@@ -174,7 +184,9 @@ namespace forge12\contactform7\CF7DoubleOptIn {
 			$this->logger = Logger::getInstance();
 
 			// Initialize test email blocker (blocks @example.com during E2E tests)
-			TestEmailBlocker::init();
+			if ( class_exists( __NAMESPACE__ . '\\TestEmailBlocker' ) ) {
+				TestEmailBlocker::init();
+			}
 
 			// Initialize the DI Container and Service Providers (v4.0+ Enterprise Architecture)
 			$this->initializeContainer();
@@ -195,15 +207,17 @@ namespace forge12\contactform7\CF7DoubleOptIn {
 				'method' => __METHOD__,
 			] );
 
-			load_plugin_textdomain(
-				'double-opt-in',
-				false,
-				dirname( plugin_basename( __FILE__ ) ) . '/languages'
-			);
-			$this->get_logger()->debug( 'Textdomain loaded', [
-				'plugin' => 'double-opt-in',
-				'domain' => 'double-opt-in',
-			] );
+			add_action( 'init', function () {
+				load_plugin_textdomain(
+					'double-opt-in',
+					false,
+					dirname( plugin_basename( __FILE__ ) ) . '/languages'
+				);
+				$this->get_logger()->debug( 'Textdomain loaded', [
+					'plugin' => 'double-opt-in',
+					'domain' => 'double-opt-in',
+				] );
+			} );
 
 			do_action( 'f12_cf7_doubleoptin_init', $this );
 			$this->get_logger()->debug( 'Action f12_cf7_doubleoptin_init executed', [

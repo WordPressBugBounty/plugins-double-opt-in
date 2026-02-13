@@ -631,6 +631,25 @@
 }
 
 /* ==========================================================================
+   Pro Label
+   ========================================================================== */
+
+.doi-pro-label {
+	display: inline-block;
+	background: linear-gradient(135deg, #e6a817, #d4941a);
+	color: #fff;
+	font-size: 10px;
+	font-weight: 700;
+	line-height: 1;
+	padding: 3px 6px;
+	border-radius: 3px;
+	letter-spacing: 0.5px;
+	text-transform: uppercase;
+	vertical-align: middle;
+	margin-left: 6px;
+}
+
+/* ==========================================================================
    Settings Form
    ========================================================================== */
 
@@ -972,6 +991,61 @@
 		max-width: none !important;
 		width: auto !important;
 	}
+}
+
+/* ==========================================================================
+   Tooltips
+   ========================================================================== */
+
+.doi-tooltip {
+	position: relative;
+	display: inline-block;
+	cursor: help;
+	margin-left: 4px;
+	vertical-align: middle;
+}
+
+.doi-tooltip .dashicons {
+	font-size: 16px;
+	width: 16px;
+	height: 16px;
+	color: #8c8f94;
+	transition: color .2s;
+}
+
+.doi-tooltip:hover .dashicons {
+	color: #2271b1;
+}
+
+.doi-tooltip-text {
+	display: none;
+	position: fixed;
+	background: #1d2327;
+	color: #fff;
+	padding: 8px 12px;
+	border-radius: 4px;
+	font-size: 12px;
+	font-weight: 400;
+	line-height: 1.5;
+	white-space: normal;
+	width: 260px;
+	z-index: 100002;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, .25);
+	pointer-events: none;
+}
+
+.doi-tooltip:hover .doi-tooltip-text {
+	display: block;
+}
+
+.doi-tooltip-text::after {
+	content: '';
+	position: absolute;
+	top: 100%;
+	left: 50%;
+	transform: translateX(-50%);
+	border: 6px solid transparent;
+	border-top-color: #1d2327;
 }
 
 /* ==========================================================================

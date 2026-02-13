@@ -70,6 +70,15 @@ class FormSettingsDTO {
 	public int $confirmationPage = -1;
 
 	/**
+	 * The error redirect page ID.
+	 * When set to a valid page ID, users are redirected there on OptIn errors
+	 * instead of seeing the toast notification.
+	 *
+	 * @var int
+	 */
+	public int $errorRedirectPage = -1;
+
+	/**
 	 * The dynamic condition field.
 	 *
 	 * @var string
@@ -130,11 +139,19 @@ class FormSettingsDTO {
 		$dto->body             = (string) ( $data['body'] ?? '' );
 		$dto->recipient        = (string) ( $data['recipient'] ?? '' );
 		$dto->confirmationPage = (int) ( $data['page'] ?? $data['confirmationPage'] ?? -1 );
+		$dto->errorRedirectPage = (int) ( $data['error_page'] ?? $data['errorRedirectPage'] ?? -1 );
 		$dto->conditions       = (string) ( $data['conditions'] ?? 'disabled' );
 		$dto->template         = (string) ( $data['template'] ?? '' );
 		$dto->category         = (int) ( $data['category'] ?? 0 );
 		$dto->consentText      = (string) ( $data['consent_text'] ?? $data['consentText'] ?? '' );
 		$dto->fieldMapping     = (array) ( $data['field_mapping'] ?? $data['fieldMapping'] ?? [] );
+
+		// Unique Email settings (Pro)
+		$dto->extensionData['unique_email_enabled']       = (int) ( $data['unique_email_enabled'] ?? 0 );
+		$dto->extensionData['unique_email_behavior']      = (string) ( $data['unique_email_behavior'] ?? 'block' );
+		$dto->extensionData['unique_email_scope']         = (string) ( $data['unique_email_scope'] ?? 'confirmed' );
+		$dto->extensionData['unique_email_message']       = (string) ( $data['unique_email_message'] ?? '' );
+		$dto->extensionData['unique_email_redirect_page'] = (int) ( $data['unique_email_redirect_page'] ?? -1 );
 
 		/**
 		 * Filter to allow extensions (e.g., Pro version) to add additional fields to the DTO.
@@ -165,6 +182,7 @@ class FormSettingsDTO {
 			'body'          => $this->body,
 			'recipient'     => $this->recipient,
 			'page'          => $this->confirmationPage,
+			'error_page'    => $this->errorRedirectPage,
 			'conditions'    => $this->conditions,
 			'template'      => $this->template,
 			'category'      => $this->category,
@@ -202,6 +220,7 @@ class FormSettingsDTO {
 			'body'             => $this->body,
 			'recipient'        => $this->recipient,
 			'confirmationPage' => $this->confirmationPage,
+			'errorRedirectPage' => $this->errorRedirectPage,
 			'conditions'       => $this->conditions,
 			'template'         => $this->template,
 			'category'         => $this->category,

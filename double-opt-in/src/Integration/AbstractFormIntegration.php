@@ -14,6 +14,7 @@ use Forge12\DoubleOptIn\EventSystem\EventDispatcherInterface;
 use Forge12\DoubleOptIn\Events\Integration\FormSubmissionEvent;
 use Forge12\DoubleOptIn\Events\Lifecycle\OptInConfirmedEvent;
 use Forge12\DoubleOptIn\Events\Lifecycle\OptInCreatedEvent;
+use Forge12\DoubleOptIn\Frontend\ErrorNotification;
 use Forge12\DoubleOptIn\Service\RateLimiter;
 use forge12\contactform7\CF7DoubleOptIn\CF7DoubleOptIn;
 use forge12\contactform7\CF7DoubleOptIn\IPHelper;
@@ -49,11 +50,25 @@ abstract class AbstractFormIntegration implements FormIntegrationInterface {
 	private static string $validationStatus = '';
 
 	/**
-	 * Recipient validation error from the last createOptIn() call.
+	 * Stored hCaptcha CF7 instance for restore after mail send.
 	 *
-	 * @var string
+	 * @var object|null
 	 */
-	private static string $recipientValidationError = '';
+	private $hcaptchaCf7Instance = null;
+
+	/**
+	 * Stored hCaptcha CF7 filter priority for restore after mail send.
+	 *
+	 * @var int
+	 */
+	private int $hcaptchaCf7Priority = 20;
+
+	/**
+	 * Last error from the most recent createOptIn() call.
+	 *
+	 * @var OptInError|null
+	 */
+	private static ?OptInError $lastError = null;
 
 	/**
 	 * Get the validation status from the last validateOptIn() call.
@@ -74,19 +89,44 @@ abstract class AbstractFormIntegration implements FormIntegrationInterface {
 	}
 
 	/**
+	 * Get the last error from the most recent createOptIn() call.
+	 *
+	 * @return OptInError|null The error, or null if no error occurred.
+	 */
+	public static function getLastError(): ?OptInError {
+		return self::$lastError;
+	}
+
+	/**
+	 * Clear the last error.
+	 */
+	private static function clearLastError(): void {
+		self::$lastError = null;
+	}
+
+	/**
+	 * Set the last error and store it for the frontend notification system.
+	 *
+	 * @param OptInError $error  The error that occurred.
+	 * @param int        $formId The form ID.
+	 */
+	private static function setLastError( OptInError $error, int $formId ): void {
+		self::$lastError = $error;
+		ErrorNotification::store( $error, $formId );
+	}
+
+	/**
 	 * Get the recipient validation error from the last createOptIn() call.
+	 *
+	 * @deprecated Use getLastError() instead.
 	 *
 	 * @return string The error message, or empty string if no error.
 	 */
 	public static function getLastRecipientValidationError(): string {
-		return self::$recipientValidationError;
-	}
-
-	/**
-	 * Clear the recipient validation error.
-	 */
-	private static function clearRecipientValidationError(): void {
-		self::$recipientValidationError = '';
+		if ( self::$lastError && self::$lastError->getCode() === OptInError::RECIPIENT_INVALID ) {
+			return self::$lastError->getMessage();
+		}
+		return '';
 	}
 
 	/**
@@ -177,13 +217,21 @@ abstract class AbstractFormIntegration implements FormIntegrationInterface {
 			'form_type' => $formData->getFormType(),
 		] );
 
+		// Clear previous error
+		self::clearLastError();
+
 		// Dispatch FormSubmissionEvent to allow modifications/cancellation
+
 		$event = $this->dispatchFormSubmissionEvent( $formData );
 		if ( $event && $event->shouldSkipOptIn() ) {
 			$this->getLogger()->info( 'OptIn skipped by FormSubmissionEvent', [
 				'plugin'  => 'double-opt-in',
 				'form_id' => $formData->getFormId(),
 			] );
+			self::setLastError(
+				OptInError::fromCode( OptInError::SUBMISSION_CANCELLED, [ 'form_id' => $formData->getFormId() ] ),
+				$formData->getFormId()
+			);
 			return null;
 		}
 
@@ -201,6 +249,10 @@ abstract class AbstractFormIntegration implements FormIntegrationInterface {
 				'plugin'  => 'double-opt-in',
 				'form_id' => $formData->getFormId(),
 			] );
+			self::setLastError(
+				OptInError::fromCode( OptInError::NO_RECIPIENT, [ 'form_id' => $formData->getFormId() ] ),
+				$formData->getFormId()
+			);
 			return null;
 		}
 
@@ -219,6 +271,10 @@ abstract class AbstractFormIntegration implements FormIntegrationInterface {
 				'form_id' => $formData->getFormId(),
 			] );
 			do_action( 'f12_cf7_doubleoptin_rate_limited', 'ip', $ip, $formData->getFormId() );
+			self::setLastError(
+				OptInError::fromCode( OptInError::RATE_LIMIT_IP, [ 'ip' => $ip, 'form_id' => $formData->getFormId() ] ),
+				$formData->getFormId()
+			);
 			return null;
 		}
 
@@ -229,11 +285,12 @@ abstract class AbstractFormIntegration implements FormIntegrationInterface {
 				'form_id' => $formData->getFormId(),
 			] );
 			do_action( 'f12_cf7_doubleoptin_rate_limited', 'email', $recipient, $formData->getFormId() );
+			self::setLastError(
+				OptInError::fromCode( OptInError::RATE_LIMIT_EMAIL, [ 'email' => $recipient, 'form_id' => $formData->getFormId() ] ),
+				$formData->getFormId()
+			);
 			return null;
 		}
-
-		// Clear previous validation error
-		self::clearRecipientValidationError();
 
 		// Validate recipient (extensible via Pro MX check)
 		$recipientValid = apply_filters(
@@ -244,8 +301,15 @@ abstract class AbstractFormIntegration implements FormIntegrationInterface {
 		);
 
 		if ( $recipientValid !== true ) {
-			$errorMsg = is_string( $recipientValid ) ? $recipientValid : '';
-			self::$recipientValidationError = $errorMsg;
+			$errorMsg  = is_string( $recipientValid ) ? $recipientValid : '';
+			$errorCode = OptInError::RECIPIENT_INVALID;
+
+			// Unique Email rejection gets its own error code
+			if ( $errorMsg === 'unique_email_rejected' ) {
+				$errorCode = OptInError::UNIQUE_EMAIL_DUPLICATE;
+				$errorMsg  = OptInError::fromCode( OptInError::UNIQUE_EMAIL_DUPLICATE )->getMessage();
+			}
+
 			$this->getLogger()->warning( 'Recipient validation failed', [
 				'plugin'  => 'double-opt-in',
 				'email'   => $recipient,
@@ -253,6 +317,14 @@ abstract class AbstractFormIntegration implements FormIntegrationInterface {
 				'reason'  => $errorMsg,
 			] );
 			do_action( 'f12_cf7_doubleoptin_recipient_invalid', $recipient, $formData->getFormId(), $errorMsg );
+			self::setLastError(
+				new OptInError(
+					$errorCode,
+					! empty( $errorMsg ) ? $errorMsg : OptInError::fromCode( OptInError::RECIPIENT_INVALID )->getMessage(),
+					[ 'email' => $recipient, 'form_id' => $formData->getFormId() ]
+				),
+				$formData->getFormId()
+			);
 			return null;
 		}
 
@@ -295,6 +367,11 @@ abstract class AbstractFormIntegration implements FormIntegrationInterface {
 		] );
 
 		do_action( 'f12_cf7_doubleoptin_creation_failed', $formData->getFormId(), $recipient );
+
+		self::setLastError(
+			OptInError::fromCode( OptInError::SAVE_FAILED, [ 'form_id' => $formData->getFormId() ] ),
+			$formData->getFormId()
+		);
 
 		return null;
 	}
@@ -593,6 +670,9 @@ abstract class AbstractFormIntegration implements FormIntegrationInterface {
 		// Remove reCAPTCHA filter
 		remove_filter( 'wpcf7_spam', 'wpcf7_recaptcha_verify_response', 9 );
 
+		// Remove hCaptcha validation filter
+		$this->removeHCaptchaFilter();
+
 		$this->getLogger()->debug( 'Spam protection disabled for confirmation mail', [
 			'plugin' => 'double-opt-in',
 		] );
@@ -616,9 +696,59 @@ abstract class AbstractFormIntegration implements FormIntegrationInterface {
 			add_action( 'wpcf7_mail_sent', '\forge12\contactform7\CF7Captcha\CF7IPLog::doLogIP', 100, 1 );
 		}
 
+		// Re-add hCaptcha validation filter
+		$this->restoreHCaptchaFilter();
+
 		$this->getLogger()->debug( 'Spam protection re-enabled', [
 			'plugin' => 'double-opt-in',
 		] );
+	}
+
+	/**
+	 * Remove hCaptcha CF7 validation filter and store the instance for later restore.
+	 *
+	 * @return void
+	 */
+	private function removeHCaptchaFilter(): void {
+		if ( ! class_exists( '\HCaptcha\CF7\CF7' ) ) {
+			return;
+		}
+
+		global $wp_filter;
+
+		if ( ! isset( $wp_filter['wpcf7_validate'] ) ) {
+			return;
+		}
+
+		foreach ( $wp_filter['wpcf7_validate']->callbacks as $priority => $hooks ) {
+			foreach ( $hooks as $key => $hook ) {
+				if ( is_array( $hook['function'] ) && $hook['function'][0] instanceof \HCaptcha\CF7\CF7 ) {
+					$this->hcaptchaCf7Instance = $hook['function'][0];
+					$this->hcaptchaCf7Priority = $priority;
+					remove_filter( 'wpcf7_validate', $hook['function'], $priority );
+					$this->getLogger()->debug( 'hCaptcha CF7 validation filter removed', [
+						'plugin' => 'double-opt-in',
+					] );
+
+					return;
+				}
+			}
+		}
+	}
+
+	/**
+	 * Re-add hCaptcha CF7 validation filter if it was previously removed.
+	 *
+	 * @return void
+	 */
+	private function restoreHCaptchaFilter(): void {
+		if ( isset( $this->hcaptchaCf7Instance ) ) {
+			add_filter( 'wpcf7_validate', [ $this->hcaptchaCf7Instance, 'verify_hcaptcha' ], $this->hcaptchaCf7Priority, 2 );
+			$this->getLogger()->debug( 'hCaptcha CF7 validation filter re-added', [
+				'plugin' => 'double-opt-in',
+			] );
+			unset( $this->hcaptchaCf7Instance, $this->hcaptchaCf7Priority );
+		}
 	}
 
 	/**
@@ -693,12 +823,16 @@ abstract class AbstractFormIntegration implements FormIntegrationInterface {
 			$container = Container::getInstance();
 			if ( $container->has( EventDispatcherInterface::class ) ) {
 				$dispatcher = $container->get( EventDispatcherInterface::class );
+
+				$formData = maybe_unserialize( $optIn->get_content() );
+
 				$event = new OptInConfirmedEvent(
 					$optIn->get_id(),
 					$hash,
 					$optIn->get_email(),
 					$optIn->get_ipaddr_confirmation(),
-					(int) $optIn->get_cf_form_id()
+					(int) $optIn->get_cf_form_id(),
+					is_array( $formData ) ? $formData : []
 				);
 				$dispatcher->dispatch( $event );
 			}

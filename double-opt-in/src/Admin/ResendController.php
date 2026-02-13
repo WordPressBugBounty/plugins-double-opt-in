@@ -72,6 +72,12 @@ class ResendController {
 			<span style="display:inline-block;background:linear-gradient(135deg,#e6a817,#d4941a);color:#fff;font-size:10px;font-weight:700;line-height:1;padding:3px 6px;border-radius:3px;letter-spacing:.5px;text-transform:uppercase;"
 			      title="<?php esc_attr_e( 'This feature is available in the Pro version.', 'double-opt-in' ); ?>">PRO</span>
 		<?php endif; ?>
+		<span class="doi-tooltip">
+			<span class="dashicons dashicons-info-outline"></span>
+			<span class="doi-tooltip-text"><?php
+				esc_html_e( 'Re-sends the original confirmation email with the opt-in link to the recipient.', 'double-opt-in' );
+			?></span>
+		</span>
 		<span id="doi-resend-feedback" style="font-size:13px;"></span>
 		<?php if ( $is_pro && ! $disabled ) : ?>
 		<script>

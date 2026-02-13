@@ -157,4 +157,15 @@ interface OptInRepositoryInterface {
 	 * @return OptIn[]
 	 */
 	public function findEligibleForReminder( int $delaySeconds, int $safetyFloorSeconds = 0, int $limit = 50 ): array;
+
+	/**
+	 * Check if an active (non-opted-out) OptIn exists for the given email and form ID.
+	 *
+	 * @param string $email         The email address.
+	 * @param int    $formId        The form ID.
+	 * @param bool   $confirmedOnly Whether to check only confirmed opt-ins.
+	 *
+	 * @return bool
+	 */
+	public function existsByEmailAndFormId( string $email, int $formId, bool $confirmedOnly = true ): bool;
 }

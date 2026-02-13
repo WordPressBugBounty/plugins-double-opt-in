@@ -39,6 +39,18 @@
         bindEvents: function() {
             var self = this;
 
+            // Tooltip positioning (fixed)
+            $(document).on('mouseenter', '.doi-tooltip', function() {
+                var $tip = $(this).find('.doi-tooltip-text');
+                var rect = this.getBoundingClientRect();
+                var tipW = 260;
+                var left = rect.left + rect.width / 2 - tipW / 2;
+                // Keep tooltip within viewport
+                if (left < 8) left = 8;
+                if (left + tipW > window.innerWidth - 8) left = window.innerWidth - tipW - 8;
+                $tip.css({ left: left + 'px', bottom: (window.innerHeight - rect.top + 8) + 'px' });
+            });
+
             // Toggle switch
             $(document).on('change', '.doi-toggle-input', function() {
                 self.toggleForm($(this));
@@ -111,6 +123,16 @@
             // Template selection change - toggle body editor vs custom template notice
             $(document).on('change', '#doi-template', function() {
                 self.handleTemplateChange($(this).val());
+            });
+
+            // Unique Email: toggle options visibility
+            $(document).on('change', '#doi-unique-email-enabled', function() {
+                $('#doi-unique-email-options').toggle($(this).is(':checked'));
+            });
+
+            // Unique Email: toggle redirect page field based on behavior
+            $(document).on('change', '#doi-unique-email-behavior', function() {
+                $('#doi-unique-email-redirect-field').toggle($(this).val() === 'redirect');
             });
 
         },
@@ -313,6 +335,14 @@
             });
             $page.val(settings.confirmationPage || -1);
 
+            // Populate error redirect page select
+            var $errorPage = $('#doi-error-redirect-page');
+            $errorPage.empty();
+            $.each(pages, function(id, title) {
+                $errorPage.append($('<option>', { value: id, text: title }));
+            });
+            $errorPage.val(settings.errorRedirectPage || -1);
+
             // Populate recipient field (select + manual input)
             var $recipientSelect = $('#doi-recipient-select');
             var $recipientInput = $('#doi-recipient');
@@ -376,6 +406,26 @@
             // Consent Text (GDPR)
             $('#doi-consent-text').val(settings.consentText || '');
 
+            // Unique Email settings
+            $('#doi-unique-email-enabled').prop('checked', settings.unique_email_enabled == 1);
+            $('#doi-unique-email-behavior').val(settings.unique_email_behavior || 'block');
+            $('#doi-unique-email-scope').val(settings.unique_email_scope || 'confirmed');
+            $('#doi-unique-email-message').val(settings.unique_email_message || '');
+            $('#doi-unique-email-options').toggle(settings.unique_email_enabled == 1);
+
+            // Populate unique email redirect page
+            var $ueRedirectPage = $('#doi-unique-email-redirect-page');
+            $ueRedirectPage.empty();
+            $.each(pages, function(id, title) {
+                $ueRedirectPage.append($('<option>', { value: id, text: title }));
+            });
+            $ueRedirectPage.val(settings.unique_email_redirect_page || -1);
+
+            // Show/hide redirect page based on behavior
+            $('#doi-unique-email-redirect-field').toggle(
+                $('#doi-unique-email-behavior').val() === 'redirect'
+            );
+
             // Handle template change to show/hide body editor
             this.handleTemplateChange(selectedTemplate);
 
@@ -418,6 +468,7 @@
                 category: $('#doi-category').val(),
                 conditions: $('#doi-conditions').val(),
                 confirmationPage: $('#doi-confirmation-page').val(),
+                errorRedirectPage: $('#doi-error-redirect-page').val(),
                 recipient: $('#doi-recipient').val(),
                 sender: $('#doi-sender').val(),
                 senderName: $('#doi-sender-name').val(),
@@ -425,7 +476,12 @@
                 template: $('#doi-template').val(),
                 body: $('#doi-body').val(),
                 consentText: $('#doi-consent-text').val(),
-                fieldMapping: this.collectFieldMapping()
+                fieldMapping: this.collectFieldMapping(),
+                unique_email_enabled: $('#doi-unique-email-enabled').is(':checked') ? 1 : 0,
+                unique_email_behavior: $('#doi-unique-email-behavior').val() || 'block',
+                unique_email_scope: $('#doi-unique-email-scope').val() || 'confirmed',
+                unique_email_message: $('#doi-unique-email-message').val() || '',
+                unique_email_redirect_page: $('#doi-unique-email-redirect-page').val() || -1
             };
 
             /**
@@ -582,6 +638,7 @@
                 'body':             'doi-body',
                 'template':         'doi-template',
                 'confirmationPage': 'doi-confirmation-page',
+                'errorRedirectPage': 'doi-error-redirect-page',
                 'category':         'doi-category',
                 'conditions':       'doi-conditions',
                 'consentText':      'doi-consent-text'

@@ -112,41 +112,61 @@
 }
 
 /**
- * Popoup
+ * Popup
  */
-.forge12-plugin-popup {
+.forge12-plugin-popup-overlay {
     position: fixed;
-    background-color: #f8f9fa;
-    box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.05);
-    width: 470px;
-    left: calc(50% - 225px);
-    top: 150px;
+    inset: 0;
+    background: rgba(0, 0, 0, .5);
+    z-index: 100000;
 }
 
-.forge12-plugin-popup .options {
-    margin-bottom: 10px;
-    margin-top: -10px;
-    font-size: 12px;
+.forge12-plugin-popup {
+    position: fixed;
+    width: 680px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, .18);
+    background: #fff;
+    z-index: 100001;
 }
 
 .forge12-plugin-popup-content {
-    max-height: 600px;
-    overflow-y: scroll;
-    padding: 20px;
+    padding: 24px 28px;
+    max-height: 70vh;
+    overflow-y: auto;
 }
 
 .forge12-plugin-popup h2 {
     margin-top: 0;
+    font-size: 15px;
+    word-break: break-all;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #e0e0e0;
+    margin-bottom: 16px;
+}
+
+.forge12-plugin-popup .options {
+    margin: 0 0 16px;
+    display: flex;
+    gap: 8px;
+    font-size: 13px;
 }
 
 .forge12-plugin-popup table {
     width: 100%;
     border-collapse: collapse;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    overflow: hidden;
 }
 
 .forge12-plugin-popup table tr:first-child {
-    background-color: #333 !important;
-    color: #fff;
+    background: #f6f7f7;
+    color: #1d2327;
+    font-weight: 600;
 }
 
 .forge12-plugin-popup table tr td:first-child {
@@ -159,22 +179,142 @@
 }
 
 .forge12-plugin-popup table tr:nth-child(odd) {
-    background-color: rgba(0, 0, 0, 0.05);
+    background-color: rgba(0, 0, 0, .03);
 }
 
 .forge12-plugin-popup table td {
-    padding: 10px;
+    padding: 10px 14px;
+}
+
+.forge12-plugin-popup h3 {
+    margin: 20px 0 12px;
+    font-size: 14px;
+    font-weight: 600;
 }
 
 .forge12-plugin-popup .forge12-plugin-popup-close {
     position: absolute;
-    right: -15px;
-    top: -15px;
-    padding: 8px 12px;
+    top: 16px;
+    right: 16px;
+    border: none;
+    background: none;
+    color: #646970;
     cursor: pointer;
+    padding: 0;
+    line-height: 1;
+}
+
+.forge12-plugin-popup .forge12-plugin-popup-close:hover {
+    color: #d63638;
+}
+
+.forge12-plugin-popup .forge12-plugin-popup-close .dashicons {
+    font-size: 26px;
+    width: 26px;
+    height: 26px;
+}
+
+.forge12-plugin-popup .doi-tooltip {
+    position: relative;
+    display: inline-block;
+    cursor: help;
+    margin-left: 4px;
+    vertical-align: middle;
+}
+
+.forge12-plugin-popup .doi-tooltip .dashicons {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+    color: #646970;
+    transition: color .2s;
+}
+
+.forge12-plugin-popup .doi-tooltip:hover .dashicons {
+    color: #2271b1;
+}
+
+.forge12-plugin-popup .doi-tooltip-text {
+    display: none;
+    position: fixed;
+    background: #1d2327;
     color: #fff;
-    border-radius: 3px;
-    background: #333;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    line-height: 1.5;
+    width: 260px;
+    z-index: 100002;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .2);
+    pointer-events: none;
+}
+
+.forge12-plugin-popup .doi-tooltip:hover .doi-tooltip-text {
+    display: block;
+}
+
+.forge12-plugin-popup .doi-tooltip-text::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-top-color: #1d2327;
+}
+
+/* Unscoped tooltip styles — used outside the popup (e.g. view-optin page) */
+.doi-tooltip {
+    position: relative;
+    display: inline-block;
+    cursor: help;
+    margin-left: 4px;
+    vertical-align: middle;
+}
+
+.doi-tooltip .dashicons {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+    color: #646970;
+    transition: color .2s;
+}
+
+.doi-tooltip:hover .dashicons {
+    color: #2271b1;
+}
+
+.doi-tooltip-text {
+    display: none;
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1d2327;
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    line-height: 1.5;
+    width: 260px;
+    z-index: 100002;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .2);
+    pointer-events: none;
+    white-space: normal;
+}
+
+.doi-tooltip:hover .doi-tooltip-text {
+    display: block;
+}
+
+.doi-tooltip-text::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-top-color: #1d2327;
 }
 
 /**
@@ -443,6 +583,18 @@
  * Toggle
  * requires toggle.js
  */
+.f12-checkbox-toggle {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.f12-checkbox-toggle .toggle-container {
+    flex: 0 0 auto;
+}
+
 .f12-toggle .btn-toggle {
     position: relative;
     display: inline-block;
@@ -650,6 +802,17 @@
         grid-template-columns: repeat(2, 1fr);
     }
 }
+
+/**
+ * Confirmation Modal
+ */
+.doi-modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:100000; display:flex; align-items:center; justify-content:center; }
+.doi-modal { background:#fff; border-radius:8px; padding:24px 28px; max-width:420px; width:90%; box-shadow:0 8px 32px rgba(0,0,0,.2); }
+.doi-modal h3 { margin:0 0 12px; font-size:16px; }
+.doi-modal p  { color:#50575e; margin:0 0 20px; line-height:1.5; }
+.doi-modal-actions { display:flex; justify-content:flex-end; gap:8px; }
+.doi-button-delete { background:#d63638 !important; border-color:#d63638 !important; color:#fff !important; }
+.doi-button-delete:hover { background:#b32d2e !important; border-color:#b32d2e !important; }
 
 @media screen and (max-width: 600px) {
     .doi-stats-grid {

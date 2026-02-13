@@ -253,8 +253,15 @@ class CF7Integration extends AbstractFormIntegration implements AdminPanelInterf
 		$optIn = $this->createOptIn( $formData, $formParameter );
 
 		if ( ! $optIn ) {
-			$validationError = self::getLastRecipientValidationError();
-			if ( ! empty( $validationError ) && apply_filters( 'f12_cf7_doubleoptin_show_validation_error', false ) ) {
+			// Always prevent the original CF7 mail from being sent when opt-in creation fails
+			add_filter( 'wpcf7_skip_mail', '__return_true' );
+
+			$error = self::getLastError();
+			if ( $error && apply_filters( 'f12_cf7_doubleoptin_show_validation_error', false ) ) {
+				$message = apply_filters( 'f12_cf7_doubleoptin_error_message', $error->getMessage(), $error, $formId );
+				if ( method_exists( $submission, 'set_response' ) ) {
+					$submission->set_response( $message );
+				}
 				$abort = true;
 			}
 			return;

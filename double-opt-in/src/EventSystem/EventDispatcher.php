@@ -74,7 +74,7 @@ class EventDispatcher implements EventDispatcherInterface {
 		] );
 
 		// Bridge to WordPress hooks for backward compatibility
-		if ( $this->bridgeToWordPress && $event instanceof Event ) {
+		if ( $this->bridgeToWordPress && $event instanceof Event && $event->shouldBridgeToWordPress() ) {
 			$wpHookName = $event::getWordPressHookName();
 			if ( ! empty( $wpHookName ) ) {
 				/**

@@ -127,7 +127,6 @@ final class FormIntegrationRegistry {
 
 		$this->log( 'info', 'Integration registered', [
 			'identifier' => $identifier,
-			'name'       => $integration->getName(),
 			'available'  => $integration->isAvailable(),
 		] );
 
@@ -386,7 +385,7 @@ final class FormIntegrationRegistry {
 				$dispatcher = $container->get( EventDispatcherInterface::class );
 				$event = new IntegrationRegisteredEvent(
 					$integration->getIdentifier(),
-					$integration->getName(),
+					$integration->getIdentifier(),
 					$integration->isAvailable()
 				);
 				$dispatcher->dispatch( $event );

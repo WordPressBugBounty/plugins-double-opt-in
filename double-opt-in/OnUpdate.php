@@ -140,6 +140,23 @@ function onUpdate() {
 		] );
 	}
 
+	// Safety net: Ensure both tables always exist regardless of stored version.
+	// Handles edge cases such as database migrations, manual file uploads, or
+	// restored backups that are missing the custom tables.
+	global $wpdb;
+	$optinTable    = $wpdb->prefix . 'f12_cf7_doubleoptin';
+	$categoryTable = $wpdb->prefix . 'f12_cf7_doubleoptin_categories';
+
+	if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $optinTable ) ) !== $optinTable ) {
+		$logger->warning( 'OptIn table missing – recreating.', [ 'plugin' => 'double-opt-in', 'table' => $optinTable ] );
+		createTableOptin();
+	}
+
+	if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $categoryTable ) ) !== $categoryTable ) {
+		$logger->warning( 'Categories table missing – recreating.', [ 'plugin' => 'double-opt-in', 'table' => $categoryTable ] );
+		createTableOptinCategories();
+	}
+
 	$logger->info( 'onUpdate routine finished', [
 		'plugin' => 'double-opt-in',
 	] );

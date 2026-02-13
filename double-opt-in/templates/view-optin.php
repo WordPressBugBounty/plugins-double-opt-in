@@ -44,10 +44,33 @@ function flatten_array( $array, $prefix = '' ) {
 		 */
 		do_action( 'f12_cf7_doubleoptin_ui_view_optin_options', $optin );
 		?>
-        <a href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin.php?page=f12-cf7-doubleoptin_optins&option=delete&hash=' . $optin->get_hash() ), 'doi-delete-optin-' . $optin->get_hash( ) )); ?>"
-           class="button"
-        ><?php _e( 'Delete DOI', 'double-opt-in' ); ?></a>
+        <a href="#" class="button" id="doi-delete-trigger"><?php _e( 'Delete DOI', 'double-opt-in' ); ?></a>
     </div>
+
+    <?php
+    $delete_url = esc_url( wp_nonce_url( admin_url( 'admin.php?page=f12-cf7-doubleoptin_optins&option=delete&hash=' . $optin->get_hash() ), 'doi-delete-optin-' . $optin->get_hash() ) );
+    ?>
+    <div id="doi-delete-modal" class="doi-modal-overlay" style="display:none;">
+        <div class="doi-modal">
+            <h3><?php _e( 'Delete Opt-In', 'double-opt-in' ); ?></h3>
+            <p><?php _e( 'Are you sure you want to permanently delete this Opt-In? This action cannot be undone.', 'double-opt-in' ); ?></p>
+            <div class="doi-modal-actions">
+                <button type="button" class="button" id="doi-delete-cancel"><?php _e( 'Cancel', 'double-opt-in' ); ?></button>
+                <a href="<?php echo $delete_url; ?>" class="button doi-button-delete"><?php _e( 'Delete', 'double-opt-in' ); ?></a>
+            </div>
+        </div>
+    </div>
+    <script>
+    (function(){
+        var trigger = document.getElementById('doi-delete-trigger');
+        var modal   = document.getElementById('doi-delete-modal');
+        var cancel  = document.getElementById('doi-delete-cancel');
+        trigger.addEventListener('click', function(e){ e.preventDefault(); modal.style.display=''; });
+        cancel.addEventListener('click', function(){ modal.style.display='none'; });
+        modal.addEventListener('click', function(e){ if(e.target===this) this.style.display='none'; });
+        document.addEventListener('keydown', function(e){ if(e.key==='Escape' && modal.style.display!=='none') modal.style.display='none'; });
+    })();
+    </script>
 <?php endif; ?>
 <table class="view-optin">
     <tr>

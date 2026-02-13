@@ -103,7 +103,7 @@ namespace forge12\contactform7\CF7DoubleOptIn {
 				'formsUrl'   => admin_url( 'admin.php?page=f12-cf7-doubleoptin_forms' ),
 				'editorUrl'  => admin_url( 'admin.php?page=f12-cf7-doubleoptin_f12-doi-email-editor' ),
 				'isProActive' => apply_filters( 'f12_doi_is_pro_active', false ),
-				'upgradeUrl' => apply_filters( 'f12_doi_upgrade_url', 'https://forge12.com/plugins/double-opt-in-pro' ),
+				'upgradeUrl' => apply_filters( 'f12_doi_upgrade_url', 'https://www.forge12.com/product/contact-form-7-double-opt-in/' ),
 				'standardPlaceholders' => [
 					'doi_email'      => __( 'E-Mail', 'double-opt-in' ),
 					'doi_name'       => __( 'Name (Full)', 'double-opt-in' ),
@@ -376,6 +376,10 @@ namespace forge12\contactform7\CF7DoubleOptIn {
 								<label class="doi-field-label">
 									<input type="checkbox" name="enabled" id="doi-enabled" value="1">
 									<?php _e( 'Enable Double Opt-In', 'double-opt-in' ); ?>
+									<span class="doi-tooltip">
+										<span class="dashicons dashicons-editor-help"></span>
+										<span class="doi-tooltip-text"><?php esc_html_e( 'When enabled, users receive a confirmation email with a link they must click to verify their submission.', 'double-opt-in' ); ?></span>
+									</span>
 								</label>
 								<p class="description"><?php _e( 'Activate Double Opt-In for this form.', 'double-opt-in' ); ?></p>
 							</div>
@@ -398,21 +402,39 @@ namespace forge12\contactform7\CF7DoubleOptIn {
 
 							<!-- Consent Text (GDPR) -->
 							<div class="doi-field">
-								<label for="doi-consent-text"><?php _e( 'Consent Text (GDPR)', 'double-opt-in' ); ?></label>
+								<label for="doi-consent-text">
+								<?php _e( 'Consent Text (GDPR)', 'double-opt-in' ); ?>
+								<span class="doi-tooltip">
+									<span class="dashicons dashicons-editor-help"></span>
+									<span class="doi-tooltip-text"><?php esc_html_e( 'The text entered here is stored as a snapshot with each opt-in record. In case of a dispute, it proves what the user agreed to.', 'double-opt-in' ); ?></span>
+								</span>
+							</label>
 								<textarea name="consentText" id="doi-consent-text" rows="4" class="large-text" placeholder="<?php esc_attr_e( 'e.g. I agree to receive the newsletter and accept the privacy policy...', 'double-opt-in' ); ?>"></textarea>
 								<p class="description"><?php _e( 'The consent text is saved as a snapshot with each opt-in record for GDPR Art. 7 compliance. This proves what the user agreed to at the time of submission.', 'double-opt-in' ); ?></p>
 							</div>
 
 							<!-- Category -->
 							<div class="doi-field">
-								<label for="doi-category"><?php _e( 'Category', 'double-opt-in' ); ?></label>
+								<label for="doi-category">
+								<?php _e( 'Category', 'double-opt-in' ); ?>
+								<span class="doi-tooltip">
+									<span class="dashicons dashicons-editor-help"></span>
+									<span class="doi-tooltip-text"><?php esc_html_e( 'Categories help you organize and filter opt-ins — e.g., by newsletter, event, or contact form.', 'double-opt-in' ); ?></span>
+								</span>
+							</label>
 								<select name="category" id="doi-category" class="regular-text"></select>
 								<p class="description"><?php _e( 'Assign opt-ins to a category for easier management.', 'double-opt-in' ); ?></p>
 							</div>
 
 							<!-- Conditions -->
 							<div class="doi-field">
-								<label for="doi-conditions"><?php _e( 'Dynamic Condition', 'double-opt-in' ); ?></label>
+								<label for="doi-conditions">
+								<?php _e( 'Dynamic Condition', 'double-opt-in' ); ?>
+								<span class="doi-tooltip">
+									<span class="dashicons dashicons-editor-help"></span>
+									<span class="doi-tooltip-text"><?php esc_html_e( 'Select a form field. The opt-in is only triggered when this field has been filled in or checked by the visitor.', 'double-opt-in' ); ?></span>
+								</span>
+							</label>
 								<select name="conditions" id="doi-conditions" class="regular-text">
 									<option value="disabled"><?php _e( 'Disabled', 'double-opt-in' ); ?></option>
 								</select>
@@ -421,9 +443,28 @@ namespace forge12\contactform7\CF7DoubleOptIn {
 
 							<!-- Confirmation Page -->
 							<div class="doi-field">
-								<label for="doi-confirmation-page"><?php _e( 'Confirmation Page', 'double-opt-in' ); ?></label>
+								<label for="doi-confirmation-page">
+								<?php _e( 'Confirmation Page', 'double-opt-in' ); ?>
+								<span class="doi-tooltip">
+									<span class="dashicons dashicons-editor-help"></span>
+									<span class="doi-tooltip-text"><?php esc_html_e( 'This page is displayed after the user clicks the confirmation link in the email. Leave empty for the default page.', 'double-opt-in' ); ?></span>
+								</span>
+							</label>
 								<select name="confirmationPage" id="doi-confirmation-page" class="regular-text"></select>
 								<p class="description"><?php _e( 'Page shown after confirmation link is clicked.', 'double-opt-in' ); ?></p>
+							</div>
+
+							<!-- Error Redirect Page -->
+							<div class="doi-field">
+								<label for="doi-error-redirect-page">
+								<?php _e( 'Error Redirect Page', 'double-opt-in' ); ?>
+								<span class="doi-tooltip">
+									<span class="dashicons dashicons-editor-help"></span>
+									<span class="doi-tooltip-text"><?php esc_html_e( 'If set, users are redirected to this page when an OptIn error occurs (e.g. rate limit, invalid email). The error code is appended as a query parameter. Leave on default to show a toast notification instead.', 'double-opt-in' ); ?></span>
+								</span>
+							</label>
+								<select name="errorRedirectPage" id="doi-error-redirect-page" class="regular-text"></select>
+								<p class="description"><?php _e( 'Page to redirect to when an error occurs. Leave on default for toast notification.', 'double-opt-in' ); ?></p>
 							</div>
 
 							<hr>
@@ -431,7 +472,13 @@ namespace forge12\contactform7\CF7DoubleOptIn {
 
 							<!-- Recipient -->
 							<div class="doi-field">
-								<label for="doi-recipient"><?php _e( 'Recipient Field', 'double-opt-in' ); ?></label>
+								<label for="doi-recipient">
+								<?php _e( 'Recipient Field', 'double-opt-in' ); ?>
+								<span class="doi-tooltip">
+									<span class="dashicons dashicons-editor-help"></span>
+									<span class="doi-tooltip-text"><?php esc_html_e( 'Enter the CF7 field name in brackets that contains the recipient\'s email address, e.g. [your-email].', 'double-opt-in' ); ?></span>
+								</span>
+							</label>
 								<div class="doi-recipient-wrapper">
 									<select name="recipient_select" id="doi-recipient-select" class="regular-text"></select>
 									<input type="text" name="recipient" id="doi-recipient" class="regular-text" placeholder="[email]" style="display: none;">
@@ -444,35 +491,65 @@ namespace forge12\contactform7\CF7DoubleOptIn {
 
 							<!-- Sender -->
 							<div class="doi-field">
-								<label for="doi-sender"><?php _e( 'From Email', 'double-opt-in' ); ?></label>
+								<label for="doi-sender">
+								<?php _e( 'From Email', 'double-opt-in' ); ?>
+								<span class="doi-tooltip">
+									<span class="dashicons dashicons-editor-help"></span>
+									<span class="doi-tooltip-text"><?php esc_html_e( 'The email address used as the sender of the confirmation email. You can also use [_site_admin_email].', 'double-opt-in' ); ?></span>
+								</span>
+							</label>
 								<input type="text" name="sender" id="doi-sender" class="regular-text">
 								<p class="description"><?php _e( 'Sender email address (e.g., noreply@example.com or [_site_admin_email]).', 'double-opt-in' ); ?></p>
 							</div>
 
 							<!-- Sender Name -->
 							<div class="doi-field">
-								<label for="doi-sender-name"><?php _e( 'From Name', 'double-opt-in' ); ?></label>
+								<label for="doi-sender-name">
+								<?php _e( 'From Name', 'double-opt-in' ); ?>
+								<span class="doi-tooltip">
+									<span class="dashicons dashicons-editor-help"></span>
+									<span class="doi-tooltip-text"><?php esc_html_e( 'The name displayed as the sender in the email, e.g. your company name or website name.', 'double-opt-in' ); ?></span>
+								</span>
+							</label>
 								<input type="text" name="senderName" id="doi-sender-name" class="regular-text">
 								<p class="description"><?php _e( 'Sender name displayed in the email.', 'double-opt-in' ); ?></p>
 							</div>
 
 							<!-- Subject -->
 							<div class="doi-field">
-								<label for="doi-subject"><?php _e( 'Subject', 'double-opt-in' ); ?></label>
+								<label for="doi-subject">
+								<?php _e( 'Subject', 'double-opt-in' ); ?>
+								<span class="doi-tooltip">
+									<span class="dashicons dashicons-editor-help"></span>
+									<span class="doi-tooltip-text"><?php esc_html_e( 'The subject line of the confirmation email. You can also use placeholders like [doi_name].', 'double-opt-in' ); ?></span>
+								</span>
+							</label>
 								<input type="text" name="subject" id="doi-subject" class="regular-text">
 								<p class="description"><?php _e( 'Email subject line.', 'double-opt-in' ); ?></p>
 							</div>
 
 							<!-- Template -->
 							<div class="doi-field">
-								<label for="doi-template"><?php _e( 'Email Template', 'double-opt-in' ); ?></label>
+								<label for="doi-template">
+								<?php _e( 'Email Template', 'double-opt-in' ); ?>
+								<span class="doi-tooltip">
+									<span class="dashicons dashicons-editor-help"></span>
+									<span class="doi-tooltip-text"><?php esc_html_e( 'Select a template for the confirmation email. Custom templates can be created in the Email Designer.', 'double-opt-in' ); ?></span>
+								</span>
+							</label>
 								<select name="template" id="doi-template" class="regular-text"></select>
 								<p class="description"><?php _e( 'Select an email template.', 'double-opt-in' ); ?></p>
 							</div>
 
 							<!-- Field Mapping -->
 							<div class="doi-field" id="doi-field-mapping-section">
-								<label><?php _e( 'Field Mapping', 'double-opt-in' ); ?></label>
+								<label>
+									<?php _e( 'Field Mapping', 'double-opt-in' ); ?>
+									<span class="doi-tooltip">
+										<span class="dashicons dashicons-editor-help"></span>
+										<span class="doi-tooltip-text"><?php esc_html_e( 'Map your form fields to standard placeholders to use them in email templates and the dashboard. Unmapped fields are auto-detected.', 'double-opt-in' ); ?></span>
+									</span>
+								</label>
 								<p class="description" style="margin-bottom: 10px;">
 									<?php _e( 'Map form fields to standard placeholders. Auto-detection is used if not configured.', 'double-opt-in' ); ?>
 								</p>
@@ -488,7 +565,13 @@ namespace forge12\contactform7\CF7DoubleOptIn {
 
 							<!-- Body -->
 							<div class="doi-field" id="doi-body-field">
-								<label for="doi-body"><?php _e( 'Message Body', 'double-opt-in' ); ?></label>
+								<label for="doi-body">
+								<?php _e( 'Message Body', 'double-opt-in' ); ?>
+								<span class="doi-tooltip">
+									<span class="dashicons dashicons-editor-help"></span>
+									<span class="doi-tooltip-text"><?php esc_html_e( 'The content of the confirmation email. Use [doubleoptinlink] as a placeholder for the confirmation link.', 'double-opt-in' ); ?></span>
+								</span>
+							</label>
 
 								<!-- Standard Template Body Editor -->
 								<div id="doi-body-editor">
@@ -535,6 +618,87 @@ namespace forge12\contactform7\CF7DoubleOptIn {
 											</a>
 										</div>
 									</div>
+								</div>
+							</div>
+
+							<?php
+							// Pro-gating variables for Unique Email section
+							$is_pro            = apply_filters( 'f12_doi_is_pro_active', false );
+							$pro_disabled      = $is_pro ? '' : ' disabled';
+							$pro_style_wrap    = $is_pro ? '' : 'opacity:.6;';
+							$pro_style_toggle  = $is_pro ? '' : 'pointer-events:none;opacity:.6;';
+							?>
+
+							<hr>
+							<h3><?php _e( 'Unique Email', 'double-opt-in' ); ?>
+								<span class="doi-pro-label">PRO</span>
+							</h3>
+
+							<div class="doi-field" style="<?php echo esc_attr( $pro_style_toggle ); ?>">
+								<label class="doi-field-label">
+									<input type="checkbox" id="doi-unique-email-enabled"<?php echo $pro_disabled; ?>>
+									<?php _e( 'Each email address may only be used once per form.', 'double-opt-in' ); ?>
+									<span class="doi-tooltip">
+										<span class="dashicons dashicons-editor-help"></span>
+										<span class="doi-tooltip-text"><?php esc_html_e( 'Prevents the same email address from being used more than once for this form. Useful for one-time registrations.', 'double-opt-in' ); ?></span>
+									</span>
+								</label>
+							</div>
+
+							<div id="doi-unique-email-options" style="display:none;<?php echo esc_attr( $pro_style_wrap ); ?>">
+								<div class="doi-field">
+									<label for="doi-unique-email-behavior">
+									<?php _e( 'Behavior', 'double-opt-in' ); ?>
+									<span class="doi-tooltip">
+										<span class="dashicons dashicons-editor-help"></span>
+										<span class="doi-tooltip-text"><?php esc_html_e( 'Determines how the system reacts when a duplicate email address is detected.', 'double-opt-in' ); ?></span>
+									</span>
+								</label>
+									<select id="doi-unique-email-behavior" class="regular-text"<?php echo $pro_disabled; ?>>
+										<option value="block"><?php _e( 'Show error message', 'double-opt-in' ); ?></option>
+										<option value="silent"><?php _e( 'Silent rejection', 'double-opt-in' ); ?></option>
+										<option value="redirect"><?php _e( 'Redirect to page', 'double-opt-in' ); ?></option>
+									</select>
+									<p class="description"><?php _e( 'How to handle duplicate email submissions.', 'double-opt-in' ); ?></p>
+								</div>
+
+								<div class="doi-field" id="doi-unique-email-redirect-field" style="display:none;">
+									<label for="doi-unique-email-redirect-page">
+									<?php _e( 'Redirect Page', 'double-opt-in' ); ?>
+									<span class="doi-tooltip">
+										<span class="dashicons dashicons-editor-help"></span>
+										<span class="doi-tooltip-text"><?php esc_html_e( 'The page the user is redirected to when a duplicate email is detected. The error code is appended as a query parameter.', 'double-opt-in' ); ?></span>
+									</span>
+								</label>
+									<select id="doi-unique-email-redirect-page" class="regular-text"<?php echo $pro_disabled; ?>></select>
+									<p class="description"><?php _e( 'Select the page to redirect to when a duplicate email is submitted.', 'double-opt-in' ); ?></p>
+								</div>
+
+								<div class="doi-field">
+									<label for="doi-unique-email-scope">
+									<?php _e( 'Scope', 'double-opt-in' ); ?>
+									<span class="doi-tooltip">
+										<span class="dashicons dashicons-editor-help"></span>
+										<span class="doi-tooltip-text"><?php esc_html_e( 'Determines whether only confirmed or also unconfirmed opt-ins are checked for duplicates.', 'double-opt-in' ); ?></span>
+									</span>
+								</label>
+									<select id="doi-unique-email-scope" class="regular-text"<?php echo $pro_disabled; ?>>
+										<option value="confirmed"><?php _e( 'Only check confirmed opt-ins', 'double-opt-in' ); ?></option>
+										<option value="all"><?php _e( 'Check all opt-ins (including unconfirmed)', 'double-opt-in' ); ?></option>
+									</select>
+									<p class="description"><?php _e( 'Whether to check only confirmed or all opt-in records.', 'double-opt-in' ); ?></p>
+								</div>
+
+								<div class="doi-field">
+									<label for="doi-unique-email-message">
+									<?php _e( 'Custom Error Message', 'double-opt-in' ); ?>
+									<span class="doi-tooltip">
+										<span class="dashicons dashicons-editor-help"></span>
+										<span class="doi-tooltip-text"><?php esc_html_e( 'Custom error message shown to the user when a duplicate email is detected. Leave empty for the default message.', 'double-opt-in' ); ?></span>
+									</span>
+								</label>
+									<input type="text" id="doi-unique-email-message" class="regular-text"<?php echo $pro_disabled; ?> placeholder="<?php esc_attr_e( 'This email address has already been used for this form.', 'double-opt-in' ); ?>">
+									<p class="description"><?php _e( 'Leave empty to use the default message.', 'double-opt-in' ); ?></p>
 								</div>
 							</div>
 

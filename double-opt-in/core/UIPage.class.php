@@ -155,7 +155,7 @@ namespace forge12\contactform7\CF7DoubleOptIn {
 					'plugin' => $this->domain,
 				] );
 			}
-			echo esc_html( $messages_html );
+			echo wp_kses_post( $messages_html );
 
 			// Trigger actions before the main content box
 			$this->get_logger()->info( 'Triggering "f12_cf7_doubleoptin_ui_' . $page . '_before_box" action.', [

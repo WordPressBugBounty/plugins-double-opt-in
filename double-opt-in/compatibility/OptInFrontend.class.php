@@ -8,6 +8,8 @@ use Forge12\DoubleOptIn\EmailTemplates\PlaceholderMapper;
 use Forge12\DoubleOptIn\EventSystem\EventDispatcherInterface;
 use Forge12\DoubleOptIn\Events\Lifecycle\OptInConfirmedEvent;
 use Forge12\DoubleOptIn\Events\Lifecycle\OptInCreatedEvent;
+use Forge12\DoubleOptIn\Frontend\ErrorNotification;
+use Forge12\DoubleOptIn\Integration\OptInError;
 use Forge12\DoubleOptIn\Service\RateLimiter;
 use Forge12\Shared\Logger;
 use Forge12\Shared\LoggerInterface;
@@ -36,11 +38,32 @@ abstract class OptInFrontend {
 	private LoggerInterface $logger;
 
 	/**
+	 * Stored hCaptcha CF7 instance for restore after mail send.
+	 *
+	 * @var object|null
+	 */
+	private $hcaptchaCf7Instance = null;
+
+	/**
+	 * Stored hCaptcha CF7 filter priority for restore after mail send.
+	 *
+	 * @var int
+	 */
+	private int $hcaptchaCf7Priority = 20;
+
+	/**
 	 * Validation status from the last validateOptIn() call.
 	 *
 	 * @var string
 	 */
 	private static string $validationStatus = '';
+
+	/**
+	 * Last error from maybeCreateOptIn(), if any.
+	 *
+	 * @var OptInError|null
+	 */
+	protected ?OptInError $lastCreationError = null;
 
 	/**
 	 * Get the validation status from the last validateOptIn() call.
@@ -215,6 +238,9 @@ abstract class OptInFrontend {
 		$this->get_logger()->debug( 'Google reCAPTCHA filter removed', [
 			'plugin' => 'double-opt-in',
 		] );
+
+		// Remove hCaptcha validation filter
+		$this->removeHCaptchaFilter();
 	}
 
 
@@ -256,7 +282,7 @@ abstract class OptInFrontend {
 		] );
 
 		// re-add the filter to ensure for all other forms the reCAPTCHA is used
-		if ( function_exists( 'wpcf7_recaptcha_verifiy_response' ) ) {
+		if ( function_exists( 'wpcf7_recaptcha_verify_response' ) ) {
 			add_filter( 'wpcf7_spam', 'wpcf7_recaptcha_verify_response', 9, 2 );
 			$this->get_logger()->debug( 'Google reCAPTCHA filter re-added', [
 				'plugin' => 'double-opt-in',
@@ -272,6 +298,56 @@ abstract class OptInFrontend {
 			$this->get_logger()->debug( 'Forge12 CF7Captcha filters and actions re-added', [
 				'plugin' => 'double-opt-in',
 			] );
+		}
+
+		// re-add hCaptcha validation filter
+		$this->restoreHCaptchaFilter();
+	}
+
+	/**
+	 * Remove hCaptcha CF7 validation filter and store the instance for later restore.
+	 *
+	 * @return void
+	 */
+	private function removeHCaptchaFilter(): void {
+		if ( ! class_exists( '\HCaptcha\CF7\CF7' ) ) {
+			return;
+		}
+
+		global $wp_filter;
+
+		if ( ! isset( $wp_filter['wpcf7_validate'] ) ) {
+			return;
+		}
+
+		foreach ( $wp_filter['wpcf7_validate']->callbacks as $priority => $hooks ) {
+			foreach ( $hooks as $key => $hook ) {
+				if ( is_array( $hook['function'] ) && $hook['function'][0] instanceof \HCaptcha\CF7\CF7 ) {
+					$this->hcaptchaCf7Instance = $hook['function'][0];
+					$this->hcaptchaCf7Priority = $priority;
+					remove_filter( 'wpcf7_validate', $hook['function'], $priority );
+					$this->get_logger()->debug( 'hCaptcha CF7 validation filter removed', [
+						'plugin' => 'double-opt-in',
+					] );
+
+					return;
+				}
+			}
+		}
+	}
+
+	/**
+	 * Re-add hCaptcha CF7 validation filter if it was previously removed.
+	 *
+	 * @return void
+	 */
+	private function restoreHCaptchaFilter(): void {
+		if ( isset( $this->hcaptchaCf7Instance ) ) {
+			add_filter( 'wpcf7_validate', [ $this->hcaptchaCf7Instance, 'verify_hcaptcha' ], $this->hcaptchaCf7Priority, 2 );
+			$this->get_logger()->debug( 'hCaptcha CF7 validation filter re-added', [
+				'plugin' => 'double-opt-in',
+			] );
+			$this->hcaptchaCf7Instance = null;
 		}
 	}
 
@@ -737,6 +813,10 @@ abstract class OptInFrontend {
 			$this->get_logger()->warning( 'No recipient found, skipping OptIn creation', [
 				'plugin' => 'double-opt-in',
 			] );
+			ErrorNotification::store(
+				OptInError::fromCode( OptInError::NO_RECIPIENT, [ 'form_id' => $formId ] ),
+				$formId
+			);
 			return null;
 		}
 
@@ -757,6 +837,10 @@ abstract class OptInFrontend {
 				'formId' => $formId,
 			] );
 			do_action( 'f12_cf7_doubleoptin_rate_limited', 'ip', $ip, $formId );
+			ErrorNotification::store(
+				OptInError::fromCode( OptInError::RATE_LIMIT_IP, [ 'ip' => $ip, 'form_id' => $formId ] ),
+				$formId
+			);
 			return null;
 		}
 
@@ -767,6 +851,53 @@ abstract class OptInFrontend {
 				'formId' => $formId,
 			] );
 			do_action( 'f12_cf7_doubleoptin_rate_limited', 'email', $recipient, $formId );
+			ErrorNotification::store(
+				OptInError::fromCode( OptInError::RATE_LIMIT_EMAIL, [ 'email' => $recipient, 'form_id' => $formId ] ),
+				$formId
+			);
+			return null;
+		}
+
+		/**
+		 * Validate recipient (extensible via Pro plugin: MX check, unique email, etc.)
+		 * Uses a lightweight proxy so filters that expect FormDataInterface::getFormId() keep working.
+		 */
+		$formDataProxy = new class( $formId ) {
+			private int $formId;
+			public function __construct( int $formId ) { $this->formId = $formId; }
+			public function getFormId(): int { return $this->formId; }
+		};
+
+		$recipientValid = \apply_filters(
+			'f12_cf7_doubleoptin_validate_recipient',
+			true,
+			$recipient,
+			$formDataProxy
+		);
+
+		if ( $recipientValid !== true ) {
+			$errorMsg  = is_string( $recipientValid ) ? $recipientValid : '';
+			$errorCode = OptInError::RECIPIENT_INVALID;
+
+			if ( $errorMsg === 'unique_email_rejected' ) {
+				$errorCode = OptInError::UNIQUE_EMAIL_DUPLICATE;
+				$errorMsg  = OptInError::fromCode( OptInError::UNIQUE_EMAIL_DUPLICATE )->getMessage();
+			}
+
+			$this->get_logger()->warning( 'Recipient validation failed', [
+				'plugin'  => 'double-opt-in',
+				'email'   => $recipient,
+				'form_id' => $formId,
+				'reason'  => $errorMsg,
+			] );
+
+			$this->lastCreationError = new OptInError(
+				$errorCode,
+				! empty( $errorMsg ) ? $errorMsg : OptInError::fromCode( OptInError::RECIPIENT_INVALID )->getMessage(),
+				[ 'email' => $recipient, 'form_id' => $formId ]
+			);
+
+			ErrorNotification::store( $this->lastCreationError, $formId );
 			return null;
 		}
 
@@ -836,6 +967,11 @@ abstract class OptInFrontend {
 		] );
 
 		do_action( 'f12_cf7_doubleoptin_creation_failed', $formId, $recipient );
+
+		ErrorNotification::store(
+			OptInError::fromCode( OptInError::SAVE_FAILED, [ 'form_id' => $formId ] ),
+			$formId
+		);
 
 		return null;
 	}
@@ -1100,12 +1236,16 @@ abstract class OptInFrontend {
 			$container = Container::getInstance();
 			if ( $container->has( EventDispatcherInterface::class ) ) {
 				$dispatcher = $container->get( EventDispatcherInterface::class );
+
+				$formData = maybe_unserialize( $optIn->get_content() );
+
 				$event = new OptInConfirmedEvent(
 					$optIn->get_id(),
 					$hash,
 					$optIn->get_email(),
 					$optIn->get_ipaddr_confirmation(),
-					(int) $optIn->get_cf_form_id()
+					(int) $optIn->get_cf_form_id(),
+					is_array( $formData ) ? $formData : []
 				);
 				$dispatcher->dispatch( $event );
 

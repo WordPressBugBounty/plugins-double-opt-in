@@ -249,11 +249,16 @@ class AvadaIntegration extends AbstractFormIntegration implements AdminPanelInte
 		$optIn = $this->createOptIn( $normalizedData, $parameter );
 
 		if ( ! $optIn ) {
-			$validationError = self::getLastRecipientValidationError();
-			if ( ! empty( $validationError ) && apply_filters( 'f12_cf7_doubleoptin_show_validation_error', false ) ) {
+			// Error is already stored via ErrorNotification::store() inside createOptIn().
+			// The universal toast notification will display it automatically.
+			// We still die() to prevent Avada from showing a false "success" message.
+			$error = self::getLastError();
+			if ( $error ) {
+				$message = apply_filters( 'f12_cf7_doubleoptin_error_message', $error->getMessage(), $error, $formId );
 				die( wp_json_encode( [
-					'status' => 'error',
-					'info'   => 'validation_failed',
+					'status'  => 'error',
+					'info'    => $error->getCode(),
+					'message' => $message,
 				] ) );
 			}
 			return $formParameter;

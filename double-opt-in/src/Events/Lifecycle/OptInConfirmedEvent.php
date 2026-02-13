@@ -26,6 +26,7 @@ class OptInConfirmedEvent extends Event {
 	private string $email;
 	private string $confirmedIp;
 	private int $formId;
+	private array $formData;
 
 	/**
 	 * Constructor.
@@ -35,13 +36,15 @@ class OptInConfirmedEvent extends Event {
 	 * @param string $email       The subscriber email.
 	 * @param string $confirmedIp The IP address that confirmed.
 	 * @param int    $formId      The original form ID.
+	 * @param array  $formData    The submitted form field data (key-value pairs).
 	 */
 	public function __construct(
 		int $optInId,
 		string $hash,
 		string $email,
 		string $confirmedIp,
-		int $formId
+		int $formId,
+		array $formData = []
 	) {
 		parent::__construct();
 		$this->optInId     = $optInId;
@@ -49,6 +52,7 @@ class OptInConfirmedEvent extends Event {
 		$this->email       = $email;
 		$this->confirmedIp = $confirmedIp;
 		$this->formId      = $formId;
+		$this->formData    = $formData;
 	}
 
 	/**
@@ -56,6 +60,20 @@ class OptInConfirmedEvent extends Event {
 	 */
 	public static function getWordPressHookName(): string {
 		return 'f12_cf7_doubleoptin_after_confirm';
+	}
+
+	/**
+	 * Prevent the EventDispatcher from bridging this event to a WordPress hook.
+	 *
+	 * The legacy do_action( 'f12_cf7_doubleoptin_after_confirm', $hash, $optIn )
+	 * is fired manually in AbstractFormIntegration and OptInFrontend with the
+	 * original parameters for backward compatibility. Bridging here would cause
+	 * the hook to fire twice.
+	 *
+	 * @return bool
+	 */
+	public function shouldBridgeToWordPress(): bool {
+		return false;
 	}
 
 	public function getOptInId(): int {
@@ -76,5 +94,17 @@ class OptInConfirmedEvent extends Event {
 
 	public function getFormId(): int {
 		return $this->formId;
+	}
+
+	/**
+	 * Get the submitted form field data.
+	 *
+	 * Returns the deserialized key-value pairs that the user submitted
+	 * with the original form (e.g. ['your-name' => 'John', 'your-email' => 'john@example.com']).
+	 *
+	 * @return array
+	 */
+	public function getFormData(): array {
+		return $this->formData;
 	}
 }

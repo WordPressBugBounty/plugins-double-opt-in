@@ -13,6 +13,7 @@ use Forge12\DoubleOptIn\Container\BootableProviderInterface;
 use Forge12\DoubleOptIn\Integration\FormIntegrationRegistry;
 use Forge12\DoubleOptIn\Integration\CF7Integration;
 use Forge12\DoubleOptIn\Integration\AvadaIntegration;
+use Forge12\DoubleOptIn\Frontend\ErrorNotification;
 use Forge12\Shared\LoggerInterface;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -91,6 +92,10 @@ class IntegrationServiceProvider implements BootableProviderInterface {
 			}
 			return;
 		}
+
+		// Register universal error notification system
+		$errorNotification = new ErrorNotification();
+		$errorNotification->register();
 
 		$registry = $container->get( FormIntegrationRegistry::class );
 

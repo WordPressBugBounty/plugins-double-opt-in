@@ -122,6 +122,22 @@ $categories = Category::get_list( $atts, $numberOfPages );
 					</div>
 				</div>
 
+				<div class="option">
+					<div class="label">
+						<label for="doubleoptin[error_page]">
+							<?php esc_html_e( 'Error Redirect Page', 'double-opt-in' ); ?>
+						</label>
+					</div>
+					<div class="input">
+						<?php wp_dropdown_pages( [
+							'show_option_none' => __( 'default', 'double-opt-in' ),
+							'name'             => 'doubleoptin[error_page]',
+							'selected'         => $metadata['error_page'] ?? -1,
+						] ); ?>
+						<p><?php esc_html_e( 'Select the page to redirect to when an error occurs (e.g. rate limit). Leave on default for toast notification.', 'double-opt-in' ); ?></p>
+					</div>
+				</div>
+
 				<?php
 				echo apply_filters( 'f12_cf7_formular_settings_after_cf7', '', $metadata );
 				do_action( 'f12_cf7_formular_settings_after', 'cf7', $metadata );

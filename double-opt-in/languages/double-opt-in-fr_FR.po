@@ -500,3 +500,267 @@ msgstr "Forge12 Interactive GmbH"
 
 msgid "https://www.forge12.com"
 msgstr "https://www.forge12.com"
+
+#: ui/UIForms.class.php
+msgid "Name (Full)"
+msgstr "Nom (Complet)"
+
+#: ui/UIForms.class.php
+msgid "First Name"
+msgstr "Prénom"
+
+#: ui/UIForms.class.php
+msgid "Last Name"
+msgstr "Nom de famille"
+
+#: ui/UIForms.class.php
+msgid "Phone"
+msgstr "Téléphone"
+
+#: ui/UIForms.class.php
+msgid "Company"
+msgstr "Entreprise"
+
+#: ui/UIForms.class.php
+msgid "Message"
+msgstr "Message"
+
+#: ui/UIForms.class.php
+msgid "Address"
+msgstr "Adresse"
+
+#: ui/UIForms.class.php
+msgid "City"
+msgstr "Ville"
+
+#: ui/UIForms.class.php
+msgid "ZIP/Postal Code"
+msgstr "Code postal"
+
+#: ui/UIForms.class.php
+msgid "Country"
+msgstr "Pays"
+
+#: ui/UIForms.class.php
+msgid "Auto-detected"
+msgstr "Détecté automatiquement"
+
+#: ui/UIForms.class.php
+msgid "-- Not mapped --"
+msgstr "-- Non attribué --"
+
+#: ui/UIForms.class.php
+msgid "Select field..."
+msgstr "Sélectionner un champ..."
+
+#: ui/UIForms.class.php
+msgid "Field Mapping"
+msgstr "Attribution des champs"
+
+#: ui/UIForms.class.php
+msgid "Map form fields to standard placeholders. Auto-detection is used if not configured."
+msgstr "Attribuez les champs du formulaire aux placeholders standard. La détection automatique est utilisée si non configuré."
+
+#: ui/UIForms.class.php
+msgid "Tip: Standard placeholders like [doi_email] work across all forms."
+msgstr "Astuce : Les placeholders standard comme [doi_email] fonctionnent dans tous les formulaires."
+
+#: ui/UIForms.class.php
+msgid "Standard Field Placeholders:"
+msgstr "Placeholders de champs standard :"
+
+#: ui/UIForms.class.php
+msgid "Form Fields:"
+msgstr "Champs du formulaire :"
+
+#: ui/UIForms.class.php
+msgid "Unique Email"
+msgstr "E-mail unique"
+
+#: ui/UIForms.class.php
+msgid "Each email address may only be used once per form."
+msgstr "Chaque adresse e-mail ne peut être utilisée qu'une seule fois par formulaire."
+
+#: ui/UIForms.class.php
+msgid "Behavior"
+msgstr "Comportement"
+
+#: ui/UIForms.class.php
+msgid "Show error message"
+msgstr "Afficher un message d'erreur"
+
+#: ui/UIForms.class.php
+msgid "Silent rejection"
+msgstr "Rejet silencieux"
+
+#: ui/UIForms.class.php
+msgid "How to handle duplicate email submissions."
+msgstr "Comment traiter les soumissions avec une adresse e-mail en double."
+
+#: ui/UIForms.class.php
+msgid "Only check confirmed opt-ins"
+msgstr "Vérifier uniquement les opt-ins confirmés"
+
+#: ui/UIForms.class.php
+msgid "Check all opt-ins (including unconfirmed)"
+msgstr "Vérifier tous les opt-ins (y compris non confirmés)"
+
+#: ui/UIForms.class.php
+msgid "Whether to check only confirmed or all opt-in records."
+msgstr "Vérifier uniquement les enregistrements confirmés ou tous les enregistrements."
+
+#: ui/UIForms.class.php
+msgid "This email address has already been used for this form."
+msgstr "Cette adresse e-mail a déjà été utilisée pour ce formulaire."
+
+#: ui/UIForms.class.php
+msgid "Leave empty to use the default message."
+msgstr "Laisser vide pour utiliser le message par défaut."
+
+#: ui/UIForms.class.php
+msgid "When enabled, users receive a confirmation email with a link they must click to verify their submission."
+msgstr "Lorsque cette option est activée, les utilisateurs reçoivent un e-mail de confirmation avec un lien sur lequel ils doivent cliquer pour vérifier leur soumission."
+
+#: ui/UIForms.class.php
+msgid "The text entered here is stored as a snapshot with each opt-in record. In case of a dispute, it proves what the user agreed to."
+msgstr "Le texte saisi ici est enregistré comme instantané avec chaque enregistrement d'opt-in. En cas de litige, il prouve ce à quoi l'utilisateur a consenti."
+
+#: ui/UIForms.class.php
+msgid "Categories help you organize and filter opt-ins — e.g., by newsletter, event, or contact form."
+msgstr "Les catégories vous aident à organiser et filtrer les opt-ins — par ex. par newsletter, événement ou formulaire de contact."
+
+#: ui/UIForms.class.php
+msgid "Select a form field. The opt-in is only triggered when this field has been filled in or checked by the visitor."
+msgstr "Sélectionnez un champ de formulaire. L'opt-in n'est déclenché que lorsque ce champ a été rempli ou coché par le visiteur."
+
+#: ui/UIForms.class.php
+msgid "This page is displayed after the user clicks the confirmation link in the email. Leave empty for the default page."
+msgstr "Cette page est affichée après que l'utilisateur a cliqué sur le lien de confirmation dans l'e-mail. Laisser vide pour la page par défaut."
+
+#: ui/UIForms.class.php
+msgid "Enter the CF7 field name in brackets that contains the recipient's email address, e.g. [your-email]."
+msgstr "Entrez le nom du champ CF7 entre crochets contenant l'adresse e-mail du destinataire, par ex. [your-email]."
+
+#: ui/UIForms.class.php
+msgid "The email address used as the sender of the confirmation email. You can also use [_site_admin_email]."
+msgstr "L'adresse e-mail utilisée comme expéditeur de l'e-mail de confirmation. Vous pouvez aussi utiliser [_site_admin_email]."
+
+#: ui/UIForms.class.php
+msgid "The name displayed as the sender in the email, e.g. your company name or website name."
+msgstr "Le nom affiché comme expéditeur dans l'e-mail, par ex. le nom de votre entreprise ou de votre site web."
+
+#: ui/UIForms.class.php
+msgid "The subject line of the confirmation email. You can also use placeholders like [doi_name]."
+msgstr "L'objet de l'e-mail de confirmation. Vous pouvez aussi utiliser des espaces réservés comme [doi_name]."
+
+#: ui/UIForms.class.php
+msgid "Select a template for the confirmation email. Custom templates can be created in the Email Designer."
+msgstr "Sélectionnez un modèle pour l'e-mail de confirmation. Des modèles personnalisés peuvent être créés dans le designer d'e-mails."
+
+#: ui/UIForms.class.php
+msgid "Map your form fields to standard placeholders to use them in email templates and the dashboard. Unmapped fields are auto-detected."
+msgstr "Associez vos champs de formulaire aux espaces réservés standard pour les utiliser dans les modèles d'e-mail et le tableau de bord. Les champs non associés sont détectés automatiquement."
+
+#: ui/UIForms.class.php
+msgid "The content of the confirmation email. Use [doubleoptinlink] as a placeholder for the confirmation link."
+msgstr "Le contenu de l'e-mail de confirmation. Utilisez [doubleoptinlink] comme espace réservé pour le lien de confirmation."
+
+#: ui/UIForms.class.php
+msgid "Prevents the same email address from being used more than once for this form. Useful for one-time registrations."
+msgstr "Empêche l'utilisation de la même adresse e-mail plus d'une fois pour ce formulaire. Utile pour les inscriptions uniques."
+
+#: ui/UIForms.class.php
+msgid "Determines how the system reacts when a duplicate email address is detected."
+msgstr "Détermine comment le système réagit lorsqu'une adresse e-mail en double est détectée."
+
+#: ui/UIForms.class.php
+msgid "Determines whether only confirmed or also unconfirmed opt-ins are checked for duplicates."
+msgstr "Détermine si seuls les opt-ins confirmés ou également les non confirmés sont vérifiés pour les doublons."
+
+#: ui/UIForms.class.php
+msgid "Custom error message shown to the user when a duplicate email is detected. Leave empty for the default message."
+msgstr "Message d'erreur personnalisé affiché à l'utilisateur lorsqu'un e-mail en double est détecté. Laisser vide pour le message par défaut."
+
+#: src/Admin/ResendController.php
+msgid "Re-sends the original confirmation email with the opt-in link to the recipient."
+msgstr "Renvoie l'e-mail de confirmation original avec le lien d'opt-in au destinataire."
+
+#: core/ReminderController.php
+msgid "Sends a separate reminder email. Can only be sent once per opt-in and must be enabled in Settings."
+msgstr "Envoie un e-mail de rappel séparé. Ne peut être envoyé qu'une seule fois par opt-in et doit être activé dans les paramètres."
+
+#: src/Integration/OptInError.php
+msgid "The form submission has been cancelled."
+msgstr "La soumission du formulaire a été annulée."
+
+#: src/Integration/OptInError.php
+msgid "No valid email address was found."
+msgstr "Aucune adresse e-mail valide n'a été trouvée."
+
+#: src/Integration/OptInError.php
+msgid "Too many requests. Please try again later."
+msgstr "Trop de requêtes. Veuillez réessayer plus tard."
+
+#: src/Integration/OptInError.php
+msgid "Too many requests for this email address. Please try again later."
+msgstr "Trop de requêtes pour cette adresse e-mail. Veuillez réessayer plus tard."
+
+#: src/Integration/OptInError.php
+msgid "The email address could not be verified."
+msgstr "L'adresse e-mail n'a pas pu être vérifiée."
+
+#: src/Integration/OptInError.php
+msgid "An error occurred. Please try again."
+msgstr "Une erreur s'est produite. Veuillez réessayer."
+
+#: src/Integration/OptInError.php
+msgid "This email address has already been used."
+msgstr "Cette adresse e-mail a déjà été utilisée."
+
+#: ui/UIForms.class.php
+msgid "Redirect to page"
+msgstr "Rediriger vers une page"
+
+#: ui/UIForms.class.php
+msgid "Redirect Page"
+msgstr "Page de redirection"
+
+#: ui/UIForms.class.php
+msgid "The page the user is redirected to when a duplicate email is detected. The error code is appended as a query parameter."
+msgstr "La page vers laquelle l'utilisateur est redirigé lorsqu'un e-mail en double est détecté. Le code d'erreur est ajouté en paramètre."
+
+#: ui/UIForms.class.php
+msgid "Select the page to redirect to when a duplicate email is submitted."
+msgstr "Sélectionnez la page vers laquelle rediriger lorsqu'un e-mail en double est soumis."
+
+#: ui/UIForms.class.php compatibility/cf7/templates/admin-panel.php
+msgid "Error Redirect Page"
+msgstr "Page de redirection en cas d'erreur"
+
+#: ui/UIForms.class.php
+msgid "If set, users are redirected to this page when an OptIn error occurs (e.g. rate limit, invalid email). The error code is appended as a query parameter. Leave on default to show a toast notification instead."
+msgstr "Si défini, les utilisateurs sont redirigés vers cette page en cas d'erreur OptIn (ex. limite de requêtes, e-mail invalide). Le code d'erreur est ajouté en paramètre. Laisser par défaut pour afficher une notification toast."
+
+#: ui/UIForms.class.php
+msgid "Page to redirect to when an error occurs. Leave on default for toast notification."
+msgstr "Page vers laquelle rediriger en cas d'erreur. Laisser par défaut pour la notification toast."
+
+#: compatibility/cf7/templates/admin-panel.php
+msgid "Select the page to redirect to when an error occurs (e.g. rate limit). Leave on default for toast notification."
+msgstr "Sélectionnez la page vers laquelle rediriger en cas d'erreur (ex. limite de requêtes). Laisser par défaut pour la notification toast."
+
+#: src/FormSettings/FormSettingsValidator.php
+msgid "Invalid error redirect page selected."
+msgstr "Page de redirection en cas d'erreur invalide sélectionnée."
+
+#: templates/view-optin.php
+msgid "Delete Opt-In"
+msgstr "Supprimer l'Opt-In"
+
+#: templates/view-optin.php
+msgid "Are you sure you want to permanently delete this Opt-In? This action cannot be undone."
+msgstr "Êtes-vous sûr de vouloir supprimer définitivement cet Opt-In ? Cette action est irréversible."
+
+#: templates/view-optin.php
+msgid "Cancel"
+msgstr "Annuler"

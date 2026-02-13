@@ -49,8 +49,9 @@ class FormSettingsValidator {
 			$errors['subject'] = __( 'Email subject is required.', 'double-opt-in' );
 		}
 
-		// Validate body contains opt-in link
-		if ( ! empty( $settings->body ) && strpos( $settings->body, '[doubleoptinlink]' ) === false ) {
+		// Validate body contains opt-in link (skip when a custom template is used,
+		// because the template's block structure contains the placeholder)
+		if ( empty( $settings->template ) && ! empty( $settings->body ) && strpos( $settings->body, '[doubleoptinlink]' ) === false ) {
 			$errors['body'] = __( 'Email body must contain the [doubleoptinlink] placeholder.', 'double-opt-in' );
 		}
 
@@ -59,6 +60,14 @@ class FormSettingsValidator {
 			$page = get_post( $settings->confirmationPage );
 			if ( ! $page || $page->post_type !== 'page' ) {
 				$errors['confirmationPage'] = __( 'Invalid confirmation page selected.', 'double-opt-in' );
+			}
+		}
+
+		// Validate error redirect page
+		if ( $settings->errorRedirectPage > 0 ) {
+			$page = get_post( $settings->errorRedirectPage );
+			if ( ! $page || $page->post_type !== 'page' ) {
+				$errors['errorRedirectPage'] = __( 'Invalid error redirect page selected.', 'double-opt-in' );
 			}
 		}
 
@@ -109,6 +118,10 @@ class FormSettingsValidator {
 			? (int) ( $data['confirmationPage'] ?? $data['page'] )
 			: -1;
 
+		$dto->errorRedirectPage = isset( $data['errorRedirectPage'] ) || isset( $data['error_page'] )
+			? (int) ( $data['errorRedirectPage'] ?? $data['error_page'] )
+			: -1;
+
 		$dto->conditions = isset( $data['conditions'] )
 			? sanitize_text_field( $data['conditions'] )
 			: 'disabled';
@@ -124,6 +137,13 @@ class FormSettingsValidator {
 		$dto->consentText = isset( $data['consentText'] ) || isset( $data['consent_text'] )
 			? sanitize_textarea_field( $data['consentText'] ?? $data['consent_text'] )
 			: '';
+
+		// Unique Email settings (Pro)
+		$dto->extensionData['unique_email_enabled']       = (int) ( $data['unique_email_enabled'] ?? 0 );
+		$dto->extensionData['unique_email_behavior']      = in_array( $v = (string) ( $data['unique_email_behavior'] ?? '' ), [ 'silent', 'block', 'redirect' ], true ) ? $v : 'block';
+		$dto->extensionData['unique_email_scope']         = in_array( $v = (string) ( $data['unique_email_scope'] ?? '' ), [ 'confirmed', 'all' ], true ) ? $v : 'confirmed';
+		$dto->extensionData['unique_email_message']       = sanitize_text_field( (string) ( $data['unique_email_message'] ?? '' ) );
+		$dto->extensionData['unique_email_redirect_page'] = (int) ( $data['unique_email_redirect_page'] ?? -1 );
 
 		return $dto;
 	}

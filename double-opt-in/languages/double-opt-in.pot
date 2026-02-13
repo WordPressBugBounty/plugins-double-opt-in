@@ -741,6 +741,78 @@ msgstr ""
 msgid "Forge12 Interactive GmbH"
 msgstr ""
 
+#: src/Admin/ResendController.php
+msgid "Re-sends the original confirmation email with the opt-in link to the recipient."
+msgstr ""
+
+#: core/ReminderController.php
+msgid "Sends a separate reminder email. Can only be sent once per opt-in and must be enabled in Settings."
+msgstr ""
+
+#: src/Integration/OptInError.php
+msgid "The form submission has been cancelled."
+msgstr ""
+
+#: src/Integration/OptInError.php
+msgid "No valid email address was found."
+msgstr ""
+
+#: src/Integration/OptInError.php
+msgid "Too many requests. Please try again later."
+msgstr ""
+
+#: src/Integration/OptInError.php
+msgid "Too many requests for this email address. Please try again later."
+msgstr ""
+
+#: src/Integration/OptInError.php
+msgid "The email address could not be verified."
+msgstr ""
+
+#: src/Integration/OptInError.php
+msgid "An error occurred. Please try again."
+msgstr ""
+
+#: src/Integration/OptInError.php
+msgid "This email address has already been used."
+msgstr ""
+
+#: ui/UIForms.class.php
+msgid "Redirect to page"
+msgstr ""
+
+#: ui/UIForms.class.php
+msgid "Redirect Page"
+msgstr ""
+
+#: ui/UIForms.class.php
+msgid "The page the user is redirected to when a duplicate email is detected. The error code is appended as a query parameter."
+msgstr ""
+
+#: ui/UIForms.class.php
+msgid "Select the page to redirect to when a duplicate email is submitted."
+msgstr ""
+
+#: ui/UIForms.class.php compatibility/cf7/templates/admin-panel.php
+msgid "Error Redirect Page"
+msgstr ""
+
+#: ui/UIForms.class.php
+msgid "If set, users are redirected to this page when an OptIn error occurs (e.g. rate limit, invalid email). The error code is appended as a query parameter. Leave on default to show a toast notification instead."
+msgstr ""
+
+#: ui/UIForms.class.php
+msgid "Page to redirect to when an error occurs. Leave on default for toast notification."
+msgstr ""
+
+#: compatibility/cf7/templates/admin-panel.php
+msgid "Select the page to redirect to when an error occurs (e.g. rate limit). Leave on default for toast notification."
+msgstr ""
+
+#: src/FormSettings/FormSettingsValidator.php
+msgid "Invalid error redirect page selected."
+msgstr ""
+
 #. Author URI of the plugin/theme
 msgid "https://www.forge12.com"
 msgstr ""

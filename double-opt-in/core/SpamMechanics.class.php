@@ -53,6 +53,7 @@ class SpamMechanics
 
         $this->disableForge12Captcha();
         $this->disableGoogleRecaptcha();
+        $this->disableHCaptcha();
 
         $this->logDebug('All spam protection filters removed');
     }
@@ -88,6 +89,30 @@ class SpamMechanics
     {
         remove_filter('wpcf7_spam', 'wpcf7_recaptcha_verify_response', 9);
         $this->logDebug('Google reCAPTCHA filter removed');
+    }
+
+    /**
+     * Deaktiviert hCaptcha-Validierung für CF7.
+     *
+     * @return void
+     */
+    private function disableHCaptcha()
+    {
+        if (class_exists('\HCaptcha\CF7\CF7')) {
+            global $wp_filter;
+
+            if (isset($wp_filter['wpcf7_validate'])) {
+                foreach ($wp_filter['wpcf7_validate']->callbacks as $priority => $hooks) {
+                    foreach ($hooks as $key => $hook) {
+                        if (is_array($hook['function']) && $hook['function'][0] instanceof \HCaptcha\CF7\CF7) {
+                            remove_filter('wpcf7_validate', $hook['function'], $priority);
+                            $this->logDebug('hCaptcha CF7 validation filter removed');
+                            return;
+                        }
+                    }
+                }
+            }
+        }
     }
 
     /**

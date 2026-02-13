@@ -148,13 +148,10 @@ namespace forge12\contactform7\CF7DoubleOptIn {
 
 
 								?>
-                                <label for="<?php esc_attr_e( $field_name ); ?>"
-                                       class="toggle-label"></label>
                             </div>
-                            <label for="<?php esc_attr_e( $field_name ); ?>">
+                            <label for="<?php echo esc_attr( $field_name ); ?>">
 	                            <?php _e( 'Enable this option to allow anonymous telemetry data to be sent. This helps us improve and develop the plugin.', 'double-opt-in' ); ?>
                             </label>
-                            <label class="overlay" for="<?php esc_attr_e( $field_name ); ?>"></label>
                         </div>
                     </div>
                 </div>
@@ -267,13 +264,10 @@ namespace forge12\contactform7\CF7DoubleOptIn {
 									esc_attr__( 'Off', 'double-opt-in' )
 								);
 								?>
-                                <label for="<?php echo esc_attr( $field_name ); ?>"
-                                       class="toggle-label"></label>
                             </div>
                             <label for="<?php echo esc_attr( $field_name ); ?>">
 								<?php _e( 'Automatically send a reminder email to unconfirmed opt-ins after the configured delay.', 'double-opt-in' ); ?>
                             </label>
-                            <label class="overlay" for="<?php echo esc_attr( $field_name ); ?>"></label>
                         </div>
                     </div>
 					<?php if ( ! $is_pro ) : ?>
@@ -395,13 +389,10 @@ namespace forge12\contactform7\CF7DoubleOptIn {
 									esc_attr__( 'Off', 'double-opt-in' )
 								);
 								?>
-                                <label for="<?php echo esc_attr( $field_name ); ?>"
-                                       class="toggle-label"></label>
                             </div>
                             <label for="<?php echo esc_attr( $field_name ); ?>">
 								<?php _e( 'Validate the email domain via MX record lookup before sending the confirmation email. This prevents opt-ins for mistyped domains (e.g. gmial.com) and saves resources.', 'double-opt-in' ); ?>
                             </label>
-                            <label class="overlay" for="<?php echo esc_attr( $field_name ); ?>"></label>
                         </div>
                     </div>
 					<?php if ( ! $is_pro ) : ?>
@@ -476,13 +467,10 @@ namespace forge12\contactform7\CF7DoubleOptIn {
 									esc_attr__( 'Off', 'double-opt-in' )
 								);
 								?>
-                                <label for="<?php echo esc_attr( $field_name ); ?>"
-                                       class="toggle-label"></label>
                             </div>
                             <label for="<?php echo esc_attr( $field_name ); ?>">
 								<?php _e( 'Block specific email domains (e.g. disposable email services) from submitting opt-in forms.', 'double-opt-in' ); ?>
                             </label>
-                            <label class="overlay" for="<?php echo esc_attr( $field_name ); ?>"></label>
                         </div>
                     </div>
 					<?php if ( ! $is_pro ) : ?>

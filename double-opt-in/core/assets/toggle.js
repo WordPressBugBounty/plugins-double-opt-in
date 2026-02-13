@@ -61,6 +61,19 @@ if (typeof ToggleButton !== "function") {
             jQuery(document).on('click', '#' + this.id, function () {
                 c.onClick(jQuery(this).attr('data-switch-target'));
             });
+
+            // Handle clicks on labels within the toggle wrapper
+            var $wrapper = this.dom.closest('.f12-checkbox-toggle');
+            if ($wrapper.length) {
+                $wrapper.on('click', function (e) {
+                    // Skip if clicking the toggle button itself
+                    if (jQuery(e.target).closest('.btn-toggle').length) {
+                        return;
+                    }
+                    e.preventDefault();
+                    c.onClick(c.dom.attr('name'));
+                });
+            }
         }
 
         this.init();

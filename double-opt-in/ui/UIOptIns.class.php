@@ -83,7 +83,10 @@ namespace forge12\contactform7\CF7DoubleOptIn {
 				<p><strong><?php _e( 'An Opt-in link has been called and the database has been updated already.', 'double-opt-in' ); ?></strong></p>
 				<div class="option">
 					<div class="input">
-						<p>add_action('f12_cf7_doubleoptin_after_confirm', $hash, $OptIn)</p>
+						<p><strong>Legacy:</strong> add_action('f12_cf7_doubleoptin_after_confirm', $callback, 10, 2);</p>
+						<p><code>function my_after_confirm( $hash, $optIn ) { $data = maybe_unserialize( $optIn-&gt;get_content() ); }</code></p>
+						<p style="margin-top:6px"><strong>Event (4.0+):</strong> OptInConfirmedEvent</p>
+						<p><code>$event-&gt;getFormData(); $event-&gt;getEmail(); $event-&gt;getHash();</code></p>
 					</div>
 				</div>
 			</div>

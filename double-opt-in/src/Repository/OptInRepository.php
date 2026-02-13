@@ -496,6 +496,26 @@ class OptInRepository implements OptInRepositoryInterface {
 	}
 
 	/**
+	 * {@inheritdoc}
+	 */
+	public function existsByEmailAndFormId( string $email, int $formId, bool $confirmedOnly = true ): bool {
+		$sql = "SELECT COUNT(*) FROM {$this->table} WHERE email = %s AND cf_form_id = %d";
+
+		if ( $confirmedOnly ) {
+			$sql .= " AND doubleoptin = 1";
+		}
+
+		// Opt-Outs release the email (non-opted-out entries only)
+		$sql .= " AND (optouttime IS NULL OR optouttime = '' OR optouttime = '0')";
+
+		$count = (int) $this->wpdb->get_var(
+			$this->wpdb->prepare( $sql, sanitize_email( $email ), $formId )
+		);
+
+		return $count > 0;
+	}
+
+	/**
 	 * Get the logger instance.
 	 *
 	 * @return LoggerInterface

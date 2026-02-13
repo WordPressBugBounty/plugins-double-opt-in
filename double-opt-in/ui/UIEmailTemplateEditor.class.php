@@ -105,7 +105,7 @@ namespace forge12\contactform7\CF7DoubleOptIn {
 					'placeholders'      => class_exists( PlaceholderMapper::class ) ? PlaceholderMapper::getAvailablePlaceholdersForEditor() : [],
 					'blockAvailability' => $blockRegistry->getBlockAvailability(),
 					'isProActive'       => $blockRegistry->isProActive(),
-					'upgradeUrl'        => admin_url( 'admin.php?page=' . FORGE12_OPTIN_SLUG . '_license' ),
+					'upgradeUrl'        => apply_filters( 'f12_doi_upgrade_url', 'https://www.forge12.com/product/contact-form-7-double-opt-in/' ),
 					'templateLimit'     => $blockRegistry->getTemplateLimit(),
 					'templateCount'     => $this->repository->countPublished(),
 				] );
@@ -215,6 +215,12 @@ namespace forge12\contactform7\CF7DoubleOptIn {
 				'advanced'                => __( 'Advanced', 'double-opt-in' ),
 				'customCss'               => __( 'Custom CSS', 'double-opt-in' ),
 				'customCssHint'           => __( 'Enter inline CSS properties (e.g., background: #fff; border: 1px solid #ccc;)', 'double-opt-in' ),
+				// Pro upgrade prompt
+				'proFeature'              => __( 'Pro Feature', 'double-opt-in' ),
+				'proBlockMessage'         => __( 'The "{block}" block requires the Pro version.', 'double-opt-in' ),
+				'proUpgradeMessage'       => __( 'This feature requires the Pro version.', 'double-opt-in' ),
+				'upgradeToPro'            => __( 'Upgrade to Pro', 'double-opt-in' ),
+				'maybeLater'              => __( 'Maybe Later', 'double-opt-in' ),
 			];
 		}
 

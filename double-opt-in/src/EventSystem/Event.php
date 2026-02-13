@@ -96,6 +96,18 @@ abstract class Event implements StoppableEventInterface {
 	}
 
 	/**
+	 * Whether the EventDispatcher should bridge this event to a WordPress do_action() call.
+	 *
+	 * Override and return false when the WordPress hook is already fired manually
+	 * (e.g. with legacy-compatible parameters) to prevent double-firing.
+	 *
+	 * @return bool
+	 */
+	public function shouldBridgeToWordPress(): bool {
+		return true;
+	}
+
+	/**
 	 * Get the WordPress hook name for backward compatibility.
 	 *
 	 * This method must return the legacy WordPress action/filter name
