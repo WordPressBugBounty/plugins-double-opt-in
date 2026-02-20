@@ -355,8 +355,14 @@ class CF7Integration extends AbstractFormIntegration implements AdminPanelInterf
 		// Add attachment hook
 		add_action( 'wpcf7_before_send_mail', [ $this, 'attachExtraAttachments' ], 10, 3 );
 
+		// Disable validation and spam checks before creating submission
+		$this->beforeSendConfirmationMail();
+
 		// Create submission and send mail
 		$submission = \WPCF7_Submission::get_instance( $contactForm );
+
+		// Re-enable validation and spam checks
+		$this->afterSendConfirmationMail();
 
 		$this->getLogger()->info( 'Confirmation mail triggered via CF7', [
 			'plugin'   => 'double-opt-in',

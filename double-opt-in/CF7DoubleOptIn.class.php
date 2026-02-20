@@ -15,12 +15,12 @@ namespace forge12\contactform7\CF7DoubleOptIn {
 	 * Description: This plugin allows you to add a double OptIn System to your Contact Form 7 & Avada Forms.
 	 * Text Domain: double-opt-in
 	 * Domain Path: /languages
-	 * Version: 3.4.0
+	 * Version: 3.5.0
 	 * Author: Forge12 Interactive GmbH
 	 * Author URI: https://www.forge12.com
 	 */
 	if ( ! defined( 'FORGE12_OPTIN_VERSION' ) ) {
-		define( 'FORGE12_OPTIN_VERSION', '3.4.0' );
+		define( 'FORGE12_OPTIN_VERSION', '3.5.0' );
 	}
 	if ( ! defined( 'FORGE12_OPTIN_SLUG' ) ) {
 		define( 'FORGE12_OPTIN_SLUG', 'f12-cf7-doubleoptin' );

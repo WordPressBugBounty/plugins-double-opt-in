@@ -175,7 +175,22 @@ namespace forge12\contactform7\CF7DoubleOptIn {
 				'plugin' => 'double-opt-in',
 			] );
 
+			// Disable CF7 validation and spam checks for confirmation mail resend.
+			// CF7 re-runs all form validations (required fields, quiz, acceptance checkboxes)
+			// when creating a WPCF7_Submission instance, which fails in a GET request context.
+			$clearValidation = function( $result ) {
+				return new \WPCF7_Validation();
+			};
+			add_filter( 'wpcf7_validate', $clearValidation, 999 );
+			add_filter( 'wpcf7_spam', '__return_false', 0 );
+			add_filter( 'wpcf7_skip_spam_check', '__return_true', 0 );
+
 			$submission = \WPCF7_Submission::get_instance( $ContactForm );
+
+			// Re-enable validation and spam checks
+			remove_filter( 'wpcf7_validate', $clearValidation, 999 );
+			remove_filter( 'wpcf7_spam', '__return_false', 0 );
+			remove_filter( 'wpcf7_skip_spam_check', '__return_true', 0 );
 
 			if ( $submission ) {
 				$this->get_logger()->info( 'WPCF7 submission prepared for sendDefaultMail', [

@@ -5,7 +5,7 @@ Tags: contact form 7, double opt-in, avada, gdpr, email verification
 Requires at least: 5.0
 Tested up to: 6.9
 Requires PHP: 8.0
-Stable tag: 3.4.0
+Stable tag: 3.5.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -233,6 +233,10 @@ Telemetry is used **only for product improvement and maintenance**.
 
 == Upgrade Notice ==
 
+= 3.5.0 =
+Fixed confirmation mail not being sent for forms with Quiz, Acceptance, or required fields.
+CF7 validation is now bypassed during opt-in confirmation mail delivery. Safe to update.
+
 = 3.4.0 =
 Fixed translation loading issues on WordPress 6.7+, review notice not displaying, and database table missing errors.
 Added 133+ missing German translations for the Email Editor and related features. Safe to update.
@@ -261,6 +265,17 @@ New features: Visual email editor, centralized form settings, GDPR anonymization
 Adds optional anonymous telemetry (opt-out). No breaking changes.
 
 == Changelog ==
+
+= 3.5.0 =
+
+**Bug Fixes:**
+
+* Fix: Fixed confirmation mail not being sent after opt-in verification for forms using Quiz fields (`[quiz]`), Acceptance checkboxes (`[acceptance]`), or other validated field types. CF7 re-ran all form validations when creating a `WPCF7_Submission` instance during confirmation, which failed because quiz answers and checkbox states are not available in a GET request context. Validation is now bypassed during confirmation mail delivery.
+* Fix: Applied the same validation bypass to the legacy `CF7Frontend::sendDefaultMail()` code path, which had the same issue.
+
+**Improvements:**
+
+* Improved: `beforeSendConfirmationMail()` now disables CF7 field validation (`wpcf7_validate`), spam detection (`wpcf7_spam`), and spam check (`wpcf7_skip_spam_check`) in addition to the existing CAPTCHA bypasses. All filters are properly restored in `afterSendConfirmationMail()`.
 
 = 3.4.0 =
 

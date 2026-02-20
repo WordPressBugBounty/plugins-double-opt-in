@@ -664,6 +664,14 @@ abstract class AbstractFormIntegration implements FormIntegrationInterface {
 	 * @return void
 	 */
 	protected function beforeSendConfirmationMail(): void {
+		// Disable CF7 validation for confirmation mail resend.
+		// CF7 re-runs all form validations (required fields, quiz, acceptance checkboxes)
+		// when creating a WPCF7_Submission instance. Since this is a confirmed opt-in
+		// (not a real form submit), these validations must be bypassed.
+		add_filter( 'wpcf7_validate', [ $this, 'clearValidationResult' ], 999 );
+		add_filter( 'wpcf7_spam', '__return_false', 0 );
+		add_filter( 'wpcf7_skip_spam_check', '__return_true', 0 );
+
 		// Disable CF7 Captcha if present
 		add_filter( 'f12_cf7_captcha_is_installed_cf7', '__return_false', 999 );
 
@@ -673,9 +681,20 @@ abstract class AbstractFormIntegration implements FormIntegrationInterface {
 		// Remove hCaptcha validation filter
 		$this->removeHCaptchaFilter();
 
-		$this->getLogger()->debug( 'Spam protection disabled for confirmation mail', [
+		$this->getLogger()->debug( 'Validation and spam protection disabled for confirmation mail', [
 			'plugin' => 'double-opt-in',
 		] );
+	}
+
+	/**
+	 * Clear CF7 validation result to bypass field validation during confirmation mail.
+	 *
+	 * @param \WPCF7_Validation $result The validation result.
+	 *
+	 * @return \WPCF7_Validation A clean validation result with no errors.
+	 */
+	public function clearValidationResult( $result ) {
+		return new \WPCF7_Validation();
 	}
 
 	/**
@@ -684,6 +703,11 @@ abstract class AbstractFormIntegration implements FormIntegrationInterface {
 	 * @return void
 	 */
 	protected function afterSendConfirmationMail(): void {
+		// Re-enable CF7 validation
+		remove_filter( 'wpcf7_validate', [ $this, 'clearValidationResult' ], 999 );
+		remove_filter( 'wpcf7_spam', '__return_false', 0 );
+		remove_filter( 'wpcf7_skip_spam_check', '__return_true', 0 );
+
 		// Re-add reCAPTCHA filter
 		if ( function_exists( 'wpcf7_recaptcha_verify_response' ) ) {
 			add_filter( 'wpcf7_spam', 'wpcf7_recaptcha_verify_response', 9, 2 );
@@ -699,7 +723,7 @@ abstract class AbstractFormIntegration implements FormIntegrationInterface {
 		// Re-add hCaptcha validation filter
 		$this->restoreHCaptchaFilter();
 
-		$this->getLogger()->debug( 'Spam protection re-enabled', [
+		$this->getLogger()->debug( 'Validation and spam protection re-enabled', [
 			'plugin' => 'double-opt-in',
 		] );
 	}
