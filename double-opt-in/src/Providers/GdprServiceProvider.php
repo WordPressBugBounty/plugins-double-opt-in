@@ -8,11 +8,10 @@
 
 namespace Forge12\DoubleOptIn\Providers;
 
-use Forge12\DoubleOptIn\Admin\ConsentExportController;
+use Forge12\DoubleOptIn\Admin\SingleConsentExportController;
 use Forge12\DoubleOptIn\Container\BootableProviderInterface;
 use Forge12\DoubleOptIn\Container\Container;
 use Forge12\DoubleOptIn\Repository\OptInRepositoryInterface;
-use Forge12\DoubleOptIn\Service\ConsentExportService;
 use Forge12\DoubleOptIn\Service\PrivacyIntegration;
 use Forge12\Shared\LoggerInterface;
 
@@ -31,22 +30,15 @@ class GdprServiceProvider implements BootableProviderInterface {
 	 * {@inheritdoc}
 	 */
 	public function register( Container $container ): void {
-		$container->singleton( ConsentExportService::class, function ( Container $c ) {
-			return new ConsentExportService(
+		$container->singleton( PrivacyIntegration::class, function ( Container $c ) {
+			return new PrivacyIntegration(
 				$c->get( LoggerInterface::class ),
 				$c->get( OptInRepositoryInterface::class )
 			);
 		} );
 
-		$container->singleton( ConsentExportController::class, function ( Container $c ) {
-			return new ConsentExportController(
-				$c->get( LoggerInterface::class ),
-				$c->get( ConsentExportService::class )
-			);
-		} );
-
-		$container->singleton( PrivacyIntegration::class, function ( Container $c ) {
-			return new PrivacyIntegration(
+		$container->singleton( SingleConsentExportController::class, function ( Container $c ) {
+			return new SingleConsentExportController(
 				$c->get( LoggerInterface::class ),
 				$c->get( OptInRepositoryInterface::class )
 			);
@@ -57,10 +49,10 @@ class GdprServiceProvider implements BootableProviderInterface {
 	 * {@inheritdoc}
 	 */
 	public function boot( Container $container ): void {
-		// Register AJAX actions for consent export
-		$container->get( ConsentExportController::class )->registerActions();
-
 		// Register WordPress Privacy Tools hooks
 		$container->get( PrivacyIntegration::class )->register();
+
+		// Register single-record consent export (fallback if Pro is not active)
+		$container->get( SingleConsentExportController::class )->registerActions();
 	}
 }

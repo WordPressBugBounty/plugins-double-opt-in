@@ -5,7 +5,7 @@ Tags: contact form 7, double opt-in, avada, gdpr, email verification
 Requires at least: 5.0
 Tested up to: 6.9
 Requires PHP: 8.0
-Stable tag: 3.5.0
+Stable tag: 3.6.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -233,6 +233,10 @@ Telemetry is used **only for product improvement and maintenance**.
 
 == Upgrade Notice ==
 
+= 3.6.0 =
+Moved consent export to Pro plugin. The export UI and AJAX endpoint are no longer available without the Pro plugin.
+Added `f12_doi_database_page_after_forms` hook for extensibility. Safe to update.
+
 = 3.5.0 =
 Fixed confirmation mail not being sent for forms with Quiz, Acceptance, or required fields.
 CF7 validation is now bypassed during opt-in confirmation mail delivery. Safe to update.
@@ -265,6 +269,14 @@ New features: Visual email editor, centralized form settings, GDPR anonymization
 Adds optional anonymous telemetry (opt-out). No breaking changes.
 
 == Changelog ==
+
+= 3.6.0 =
+
+**Architecture:**
+
+* Moved: Consent export (CSV/JSON) is now a Pro-only feature. The `ConsentExportController` and `ConsentExportService` have been removed from the free plugin and moved to the Pro plugin.
+* Security: The `doi_export_consent` AJAX endpoint is no longer registered in the free plugin, preventing unauthorized access without a Pro license.
+* New: Added `f12_doi_database_page_after_forms` action hook on the Database admin page, allowing extensions to render additional UI after the built-in database management forms.
 
 = 3.5.0 =
 

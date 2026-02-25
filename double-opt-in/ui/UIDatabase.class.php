@@ -206,66 +206,7 @@ namespace forge12\contactform7\CF7DoubleOptIn {
                 </div>
             </form>
 
-			<?php if ( apply_filters( 'f12_doi_is_pro_active', false ) ) : ?>
-            <hr>
-            <h2><?php _e( 'Export Consent Records (GDPR)', 'double-opt-in' ); ?></h2>
-            <p><?php _e( 'Export consent records for GDPR compliance documentation.', 'double-opt-in' ); ?></p>
-            <form action="<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>" method="post" target="_blank">
-                <input type="hidden" name="action" value="doi_export_consent">
-				<?php wp_nonce_field( 'doi_consent_export' ); ?>
-
-                <div class="option">
-                    <div class="label">
-                        <label for="doi-export-format"><?php _e( 'Format', 'double-opt-in' ); ?></label>
-                    </div>
-                    <div class="input">
-                        <select name="format" id="doi-export-format">
-                            <option value="csv">CSV</option>
-                            <option value="json">JSON</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="option">
-                    <div class="label">
-                        <label for="doi-export-scope"><?php _e( 'Scope', 'double-opt-in' ); ?></label>
-                    </div>
-                    <div class="input">
-                        <select name="scope" id="doi-export-scope">
-                            <option value="all"><?php _e( 'All Records', 'double-opt-in' ); ?></option>
-                            <option value="email"><?php _e( 'By Email', 'double-opt-in' ); ?></option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="option" id="doi-export-email-field" style="display:none;">
-                    <div class="label">
-                        <label for="doi-export-email"><?php _e( 'Email', 'double-opt-in' ); ?></label>
-                    </div>
-                    <div class="input">
-                        <input type="email" name="email" id="doi-export-email" class="regular-text" placeholder="user@example.com">
-                    </div>
-                </div>
-
-                <div class="option">
-                    <div class="label"></div>
-                    <div class="input">
-                        <input type="submit" class="button button-primary" value="<?php esc_attr_e( 'Export', 'double-opt-in' ); ?>">
-                    </div>
-                </div>
-            </form>
-            <script>
-                (function() {
-                    var scopeSelect = document.getElementById('doi-export-scope');
-                    var emailField = document.getElementById('doi-export-email-field');
-                    if (scopeSelect && emailField) {
-                        scopeSelect.addEventListener('change', function() {
-                            emailField.style.display = this.value === 'email' ? '' : 'none';
-                        });
-                    }
-                })();
-            </script>
-			<?php endif; ?>
+			<?php do_action( 'f12_doi_database_page_after_forms' ); ?>
 			<?php
 			$this->get_logger()->notice('Database management page content rendered successfully.', [
 				'plugin' => $this->domain,
