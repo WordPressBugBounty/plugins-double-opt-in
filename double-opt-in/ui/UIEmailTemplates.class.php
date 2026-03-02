@@ -161,7 +161,7 @@ namespace forge12\contactform7\CF7DoubleOptIn {
 					<p><?php _e( 'No email templates found. Create your first template to get started.', 'double-opt-in' ); ?></p>
 				</div>
 			<?php else : ?>
-				<table class="wp-list-table widefat fixed striped">
+				<table class="wp-list-table widefat fixed striped doi-table">
 					<thead>
 						<tr>
 							<th scope="col" class="manage-column column-title"><?php _e( 'Title', 'double-opt-in' ); ?></th>

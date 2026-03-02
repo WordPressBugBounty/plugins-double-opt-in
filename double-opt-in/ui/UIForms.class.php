@@ -269,7 +269,7 @@ namespace forge12\contactform7\CF7DoubleOptIn {
 						<?php endif; ?>
 
 						<div class="doi-forms-table-wrapper">
-							<table class="doi-forms-table">
+							<table class="doi-forms-table doi-table">
 								<thead>
 									<tr>
 										<th class="column-status"><?php _e( 'Status', 'double-opt-in' ); ?></th>

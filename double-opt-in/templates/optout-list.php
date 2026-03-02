@@ -14,7 +14,7 @@ $admin_email = get_option('admin_email');
 ?>
 <div class="f12-cf7-doubleoptin-optout f12-cf7-doubleoptin-optout-list">
     <div class="f12-cf7-doubleoptin-optout-list--inner">
-        <table>
+        <table class="doi-table">
             <tr>
                 <th>
                     <?php _e('Hash', 'double-opt-in'); ?>

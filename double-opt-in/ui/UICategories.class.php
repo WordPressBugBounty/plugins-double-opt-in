@@ -173,7 +173,7 @@ namespace forge12\contactform7\CF7DoubleOptIn {
 			] );
 			?>
 
-            <table>
+            <table class="doi-table">
                 <tr>
                     <th>
 						<?php _e( 'ID', 'double-opt-in' ); ?>

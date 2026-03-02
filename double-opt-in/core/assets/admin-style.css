@@ -326,7 +326,12 @@
 
 .forge12-plugin-content table {
     border-collapse: collapse;
-    width: 100%;
+    width: auto;
+}
+
+.doi-table {
+    width: 100% !important;
+    border-collapse: collapse;
 }
 
 .forge12-plugin-content table td, .forge12-plugin-content table th {
@@ -366,7 +371,7 @@
 }
 
 .forge12-license table {
-    width: 100%;
+    width: auto;
 }
 
 .forge12-license table th {
@@ -420,6 +425,12 @@
 
 .forge12-license #remove_license {
     margin-top: 15px;
+}
+
+/* License page: use border instead of box-shadow for all content boxes */
+.forge12-plugin-content-main:has(.forge12-license) .box {
+    box-shadow: none;
+    border: 1px solid #e0e0e0;
 }
 
 /**

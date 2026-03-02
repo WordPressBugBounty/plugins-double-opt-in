@@ -19,7 +19,7 @@
 </form>
 
 <form action="" method="post">
-    <table>
+    <table class="doi-table">
         <tr>
             <th></th>
             <th>

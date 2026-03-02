@@ -5,7 +5,7 @@ Tags: contact form 7, double opt-in, avada, gdpr, email verification
 Requires at least: 5.0
 Tested up to: 6.9
 Requires PHP: 8.0
-Stable tag: 3.6.0
+Stable tag: 3.7.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -233,6 +233,9 @@ Telemetry is used **only for product improvement and maintenance**.
 
 == Upgrade Notice ==
 
+= 3.7.0 =
+CSS fix for table width on admin pages. Improved compatibility with Pro 3.7.0 license system. Safe to update.
+
 = 3.6.0 =
 Moved consent export to Pro plugin. The export UI and AJAX endpoint are no longer available without the Pro plugin.
 Added `f12_doi_database_page_after_forms` hook for extensibility. Safe to update.
@@ -269,6 +272,16 @@ New features: Visual email editor, centralized form settings, GDPR anonymization
 Adds optional anonymous telemetry (opt-out). No breaking changes.
 
 == Changelog ==
+
+= 3.7.0 =
+
+**Bug Fixes:**
+
+* Fix: Fixed `.doi-table` not using full width on admin pages due to conflicting CSS rules. Table width now uses `!important` to ensure consistent layout.
+
+**Compatibility:**
+
+* Updated: Full compatibility with Pro version 3.7.0 and its new license management system.
 
 = 3.6.0 =
 
