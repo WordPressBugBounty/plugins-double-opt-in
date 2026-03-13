@@ -5,7 +5,7 @@ Tags: contact form 7, double opt-in, avada, gdpr, email verification
 Requires at least: 5.0
 Tested up to: 6.9
 Requires PHP: 8.0
-Stable tag: 3.7.0
+Stable tag: 3.7.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -46,7 +46,7 @@ Enable Double Opt-In per form, customize confirmation emails with a visual edito
 
 * **Visual Email Editor** -- drag & drop block-based email template editor with live preview and mobile preview
 * **Double Opt-In for Contact Form 7** -- per-form activation with full CF7 integration
-* **Double Opt-In for Avada Forms** -- works with Avada's built-in form builder
+* **Double Opt-In for Avada Forms** -- works with Avada's built-in form builder *(Note: Moving to Pro in version 3.8.0)*
 * **Centralized Form Settings** -- manage all form integrations from a single admin panel
 * **Email Template Presets** -- choose from pre-built templates or create your own
 * **Send Test Email** -- preview your confirmation emails before going live
@@ -233,6 +233,9 @@ Telemetry is used **only for product improvement and maintenance**.
 
 == Upgrade Notice ==
 
+= 3.7.1 =
+Bugfix: Fixed toggle switch, Avada DOI settings, and Avada recipient field resolution. **Important:** Avada Forms support will move to the Pro version in 3.8.0 -- upgrade now to keep using it. Contact Form 7 remains free. Safe to update.
+
 = 3.7.0 =
 CSS fix for table width on admin pages. Improved compatibility with Pro 3.7.0 license system. Safe to update.
 
@@ -272,6 +275,21 @@ New features: Visual email editor, centralized form settings, GDPR anonymization
 Adds optional anonymous telemetry (opt-out). No breaking changes.
 
 == Changelog ==
+
+= 3.7.1 =
+
+**Bug Fixes:**
+
+* Fix: Fixed the toggle switch in the admin form list showing an incorrect state for forms with custom conditions. The `getForms()` method used the runtime `isOptInEnabled()` check (which evaluates `$_GET['optin']` and `$_POST` condition fields) instead of reading the stored database value. This caused the toggle to display as "off" even when DOI was enabled, and clicking "enable" would actually disable it.
+* Fix: Fixed Avada forms ignoring Double Opt-In settings entirely. The conditions check in `isOptInEnabled()` looked for form field values in `$_POST[$condition]`, but Avada sends form data inside `$_POST['formData']` as a URL-encoded string. The `AvadaIntegration` now overrides `isOptInEnabled()` to parse Avada's POST format correctly.
+* Fix: Fixed Avada forms showing "No valid email address was found" error on submission. `AvadaIntegration::resolveRecipient()` did not strip square brackets from the recipient field name (e.g. `[email]` → `email`), so the field was never matched in the form data. Now uses the same bracket-stripping logic as `CF7Integration`.
+
+**Announcements:**
+
+* Notice: Starting with version 3.8.0, Avada Forms integration will move to the Pro version. Contact Form 7 support remains free.
+* New: Dismissible admin notice for sites with active Avada/Fusion Builder, informing about the upcoming change.
+* New: Yellow info banner on the Forms management page in the Avada section.
+* New: Plugin update message warning when Avada is active.
 
 = 3.7.0 =
 

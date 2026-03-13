@@ -53,6 +53,55 @@ class AvadaIntegration extends AbstractFormIntegration implements AdminPanelInte
 
 	/**
 	 * {@inheritdoc}
+	 *
+	 * Overrides the parent method to handle Avada's POST data format.
+	 * Avada sends form field values inside $_POST['formData'] as a URL-encoded string,
+	 * not as individual $_POST['fieldname'] values. The parent method checks $_POST[$condition]
+	 * directly, which never finds the field for Avada forms.
+	 */
+	public function isOptInEnabled( int $formId ): bool {
+		// Disable if opt-in confirmation is in progress
+		if ( isset( $_GET['optin'] ) ) {
+			return false;
+		}
+
+		$parameter = $this->getFormParameter( $formId );
+
+		if ( (int) ( $parameter['enable'] ?? 0 ) !== 1 ) {
+			$this->getLogger()->debug( 'Opt-in not enabled in form parameter', [
+				'plugin'  => 'double-opt-in',
+				'form_id' => $formId,
+			] );
+			return false;
+		}
+
+		// Check the custom condition using Avada's formData format
+		if ( isset( $parameter['conditions'] ) ) {
+			$condition = sanitize_text_field( $parameter['conditions'] );
+
+			if ( $condition !== 'disable' && $condition !== 'disabled' ) {
+				// Parse Avada's formData from POST
+				$formFields = [];
+				if ( isset( $_POST['formData'] ) ) {
+					parse_str( wp_unslash( $_POST['formData'] ), $formFields );
+				}
+
+				if ( empty( $formFields[ $condition ] ) ) {
+					$this->getLogger()->debug( 'Opt-in disabled due to unmet custom condition (Avada)', [
+						'plugin'    => 'double-opt-in',
+						'condition' => $condition,
+						'form_id'   => $formId,
+					] );
+					return false;
+				}
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * {@inheritdoc}
 	 */
 	protected function getPostType(): string {
 		return 'fusion_form';
@@ -162,7 +211,7 @@ class AvadaIntegration extends AbstractFormIntegration implements AdminPanelInte
 			return '';
 		}
 
-		$recipientField = $formParameter['recipient'];
+		$recipientField = str_replace( [ '[', ']' ], '', $formParameter['recipient'] );
 		$fields         = $formData->getFields();
 
 		if ( isset( $fields[ $recipientField ] ) ) {

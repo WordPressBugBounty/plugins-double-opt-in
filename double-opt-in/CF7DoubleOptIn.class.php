@@ -15,12 +15,12 @@ namespace forge12\contactform7\CF7DoubleOptIn {
 	 * Description: This plugin allows you to add a double OptIn System to your Contact Form 7 & Avada Forms.
 	 * Text Domain: double-opt-in
 	 * Domain Path: /languages
-	 * Version: 3.7.0
+	 * Version: 3.7.1
 	 * Author: Forge12 Interactive GmbH
 	 * Author URI: https://www.forge12.com
 	 */
 	if ( ! defined( 'FORGE12_OPTIN_VERSION' ) ) {
-		define( 'FORGE12_OPTIN_VERSION', '3.7.0' );
+		define( 'FORGE12_OPTIN_VERSION', '3.7.1' );
 	}
 	if ( ! defined( 'FORGE12_OPTIN_SLUG' ) ) {
 		define( 'FORGE12_OPTIN_SLUG', 'f12-cf7-doubleoptin' );
@@ -40,6 +40,7 @@ namespace forge12\contactform7\CF7DoubleOptIn {
 	require_once('core/helpers/uuid.php');
 	require_once( 'core/telemetry.php' );
 	require_once( 'core/review.php' );
+	require_once( 'core/avada-deprecation-notice.php' );
 	require_once( 'core/cron.php' );
 	require_once( 'core/BaseController.class.php' );
 
@@ -492,6 +493,17 @@ namespace forge12\contactform7\CF7DoubleOptIn {
 			);
 
 			echo wp_kses_post( $upgrade_notice );
+		}
+
+		// Show Avada deprecation warning when Avada is active
+		if ( class_exists( 'Fusion_Form_Builder' ) ) {
+			$avada_notice = sprintf(
+				'</p><div class="notice inline notice-warning notice-alt" style="margin: 10px 0; padding: 10px; border-left-color: #ffb900;"><p><strong>%s</strong></p><p>%s</p></div><p style="display:none;">',
+				esc_html__( '⚠️ Avada Forms: Upcoming Change', 'double-opt-in' ),
+				esc_html__( 'Starting with version 3.8.0, the Avada Forms integration will only be available in the Pro version. Contact Form 7 support remains free.', 'double-opt-in' )
+			);
+
+			echo wp_kses_post( $avada_notice );
 		}
 	}, 10, 2 );
 

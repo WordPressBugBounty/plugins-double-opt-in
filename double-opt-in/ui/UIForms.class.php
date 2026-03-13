@@ -254,6 +254,18 @@ namespace forge12\contactform7\CF7DoubleOptIn {
 							</h2>
 						</div>
 
+						<?php if ( $integration === 'avada' && ! apply_filters( 'f12_doi_is_pro_active', false ) ) : ?>
+							<div class="doi-elementor-info" style="border-left-color: #ffb900; background: #fff8e5;">
+								<p>
+									<strong><?php _e( 'Upcoming Change:', 'double-opt-in' ); ?></strong>
+									<?php _e( 'Avada Forms support will only be available in the Pro version starting with version 3.8.0. Contact Form 7 support remains free.', 'double-opt-in' ); ?>
+									<a href="<?php echo esc_url( apply_filters( 'f12_doi_upgrade_url', 'https://www.forge12.com/product/contact-form-7-double-opt-in/' ) ); ?>" target="_blank">
+										<?php _e( 'Upgrade to Pro', 'double-opt-in' ); ?>
+									</a>
+								</p>
+							</div>
+						<?php endif; ?>
+
 						<?php if ( $integration === 'elementor' ) : ?>
 							<div class="doi-elementor-info">
 								<p>

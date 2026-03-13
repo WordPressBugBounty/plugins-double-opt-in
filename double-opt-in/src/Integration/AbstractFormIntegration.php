@@ -891,11 +891,12 @@ abstract class AbstractFormIntegration implements FormIntegrationInterface {
 
 		$forms = [];
 		foreach ( $posts as $post ) {
+			$parameter = $this->getFormParameter( $post->ID );
 			$forms[] = [
 				'id'          => $post->ID,
 				'title'       => $post->post_title,
 				'integration' => $this->getIdentifier(),
-				'enabled'     => $this->isOptInEnabled( $post->ID ),
+				'enabled'     => (int) ( $parameter['enable'] ?? 0 ) === 1,
 				'edit_url'    => $this->getFormEditUrl( $post->ID ),
 			];
 		}
