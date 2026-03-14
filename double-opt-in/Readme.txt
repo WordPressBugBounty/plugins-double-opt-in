@@ -5,7 +5,7 @@ Tags: contact form 7, double opt-in, avada, gdpr, email verification
 Requires at least: 5.0
 Tested up to: 6.9
 Requires PHP: 8.0
-Stable tag: 3.7.1
+Stable tag: 3.7.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -233,6 +233,9 @@ Telemetry is used **only for product improvement and maintenance**.
 
 == Upgrade Notice ==
 
+= 3.7.2 =
+Bugfix: Fixed placeholder replacement and admin display broken for Avada forms. Form field placeholders like `[doi_email]` and `[doi_name]` now work correctly in emails. Admin detail view and AJAX modal now show actual form data instead of metadata keys. Added missing `[doubleoptin_privacy_url]` system placeholder. Safe to update.
+
 = 3.7.1 =
 Bugfix: Fixed toggle switch, Avada DOI settings, and Avada recipient field resolution. **Important:** Avada Forms support will move to the Pro version in 3.8.0 -- upgrade now to keep using it. Contact Form 7 remains free. Safe to update.
 
@@ -275,6 +278,16 @@ New features: Visual email editor, centralized form settings, GDPR anonymization
 Adds optional anonymous telemetry (opt-out). No breaking changes.
 
 == Changelog ==
+
+= 3.7.2 =
+
+**Bug Fixes:**
+
+* Fix: Fixed all form field placeholders (`[doi_email]`, `[doi_name]`, `[doi_phone]`, etc.) not being replaced in confirmation emails for Avada forms. The Avada integration stores opt-in content in a nested structure (`{data: {...}, field_labels: {...}}`), but the placeholder replacement expected a flat field array. The nested `data` key is now extracted correctly before replacement.
+* Fix: Applied the same nested content handling to the legacy `OptInFrontend::addPlaceholders()` code path.
+* Fix: Added missing `[doubleoptin_privacy_url]` system placeholder to the new `AbstractFormIntegration::addSystemPlaceholders()` method. This placeholder was available in the legacy code but was not ported to the 4.0.0 integration architecture, causing it to appear unreplaced in emails.
+* Fix: Fixed the admin opt-in detail view displaying Avada metadata keys (`data`, `field_labels`, `field_types`, etc.) instead of actual form field values. The nested content structure is now unwrapped before rendering.
+* Fix: Fixed the AJAX opt-in detail modal showing the same incorrect metadata for Avada opt-ins.
 
 = 3.7.1 =
 

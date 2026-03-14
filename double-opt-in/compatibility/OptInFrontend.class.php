@@ -503,9 +503,12 @@ abstract class OptInFrontend {
 		// Replace standard placeholders (doi_email, doi_name, etc.)
 		$formData = maybe_unserialize( $OptIn->get_content() );
 		if ( is_array( $formData ) ) {
+			// Handle nested content structure (e.g., Avada stores {data: {...}, field_labels: {...}, ...})
+			$fieldData = isset( $formData['data'] ) && is_array( $formData['data'] ) ? $formData['data'] : $formData;
+
 			$body = PlaceholderMapper::replacePlaceholders(
 				$body,
-				$formData,
+				$fieldData,
 				$OptIn->get_cf_form_id(),
 				[],
 				$this->type

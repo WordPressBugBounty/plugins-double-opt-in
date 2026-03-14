@@ -3,7 +3,11 @@
  * @var \forge12\contactform7\CF7DoubleOptIn\OptIn $optin
  * @var string                                     $domain
  */
-$formfields = maybe_unserialize( $optin->get_content() );;
+$formfields = maybe_unserialize( $optin->get_content() );
+// Handle nested content structure (e.g., Avada stores {data: {...}, field_labels: {...}, ...})
+if ( is_array( $formfields ) && isset( $formfields['data'] ) && is_array( $formfields['data'] ) && ! isset( $formfields['fields'] ) ) {
+	$formfields = $formfields['data'];
+}
 $Category      = \forge12\contactform7\CF7DoubleOptIn\Category::get_by_id( $optin->get_category() );
 $category_html = '---';
 

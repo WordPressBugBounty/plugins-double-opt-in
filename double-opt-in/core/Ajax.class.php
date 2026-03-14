@@ -155,6 +155,10 @@ namespace forge12\contactform7\CF7DoubleOptIn {
 				] );
 
 				$formfields = maybe_unserialize( $OptIn->get_content() );
+				// Handle nested content structure (e.g., Avada stores {data: {...}, field_labels: {...}, ...})
+				if ( is_array( $formfields ) && isset( $formfields['data'] ) && is_array( $formfields['data'] ) && ! isset( $formfields['fields'] ) ) {
+					$formfields = $formfields['data'];
+				}
 				ob_start();
 				?>
                 <h2><?php echo esc_html( $OptIn->get_hash() ); ?></h2>

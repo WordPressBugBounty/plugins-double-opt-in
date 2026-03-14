@@ -392,9 +392,13 @@ abstract class AbstractFormIntegration implements FormIntegrationInterface {
 		// Replace form field placeholders
 		$formData = maybe_unserialize( $optIn->get_content() );
 		if ( is_array( $formData ) ) {
+			// Handle nested content structure (e.g., Avada stores {data: {...}, field_labels: {...}, ...})
+			// Extract the flat field data for placeholder replacement
+			$fieldData = isset( $formData['data'] ) && is_array( $formData['data'] ) ? $formData['data'] : $formData;
+
 			$body = PlaceholderMapper::replacePlaceholders(
 				$body,
-				$formData,
+				$fieldData,
 				$optIn->get_cf_form_id(),
 				[],
 				$this->getIdentifier()
@@ -428,6 +432,7 @@ abstract class AbstractFormIntegration implements FormIntegrationInterface {
 			'doubleoptin_form_email'   => get_option( 'admin_email' ),
 			'doubleoptinlink'          => $optIn->get_link_optin( $formParameter ),
 			'doubleoptoutlink'         => $optIn->get_link_optout(),
+			'doubleoptin_privacy_url'  => $this->getPrivacyPolicyUrl(),
 		];
 
 		foreach ( $placeholders as $key => $value ) {
@@ -438,6 +443,34 @@ abstract class AbstractFormIntegration implements FormIntegrationInterface {
 		}
 
 		return $body;
+	}
+
+	/**
+	 * Get the privacy policy URL.
+	 *
+	 * @return string The privacy policy URL or empty string.
+	 */
+	protected function getPrivacyPolicyUrl(): string {
+		$settings = CF7DoubleOptIn::getInstance()->getSettings();
+		$pageId   = (int) ( $settings['privacy_policy_page'] ?? 0 );
+
+		if ( $pageId > 0 ) {
+			$url = get_permalink( $pageId );
+			if ( $url ) {
+				return $url;
+			}
+		}
+
+		// Fallback to WordPress privacy policy page
+		$wpPrivacyPageId = (int) get_option( 'wp_page_for_privacy_policy', 0 );
+		if ( $wpPrivacyPageId > 0 ) {
+			$url = get_permalink( $wpPrivacyPageId );
+			if ( $url ) {
+				return $url;
+			}
+		}
+
+		return '';
 	}
 
 	/**
