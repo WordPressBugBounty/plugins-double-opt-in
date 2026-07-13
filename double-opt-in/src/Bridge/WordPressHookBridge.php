@@ -51,10 +51,13 @@ class WordPressHookBridge {
 	 * @return void
 	 */
 	public function registerBridges(): void {
-		$this->logger->info( 'Registering WordPress hook bridges', [
-			'plugin'    => 'double-opt-in',
-			'component' => 'hook-bridge',
-		] );
+		$this->logger->info(
+			'Registering WordPress hook bridges',
+			array(
+				'plugin'    => 'double-opt-in',
+				'component' => 'hook-bridge',
+			)
+		);
 
 		// Register listeners for legacy hooks that should trigger typed events
 		$this->registerLegacyHookListeners();
@@ -72,35 +75,59 @@ class WordPressHookBridge {
 	 */
 	private function registerLegacyHookListeners(): void {
 		// Legacy: f12_cf7_doubleoptin_sent (old hook when OptIn is created)
-		add_action( 'f12_cf7_doubleoptin_sent', function ( $form, $formId ) {
-			$this->logger->debug( 'Legacy hook f12_cf7_doubleoptin_sent received', [
-				'plugin'  => 'double-opt-in',
-				'form_id' => $formId,
-			] );
-			// Note: The typed event should be dispatched by the new code,
-			// this is just for logging/monitoring legacy usage
-		}, 1, 2 );
+		add_action(
+			'f12_cf7_doubleoptin_sent',
+			function ( $form, $formId ) {
+				$this->logger->debug(
+					'Legacy hook f12_cf7_doubleoptin_sent received',
+					array(
+						'plugin'  => 'double-opt-in',
+						'form_id' => $formId,
+					)
+				);
+				// Note: The typed event should be dispatched by the new code,
+				// this is just for logging/monitoring legacy usage
+			},
+			1,
+			2
+		);
 
 		// Legacy: f12_cf7_doubleoptin_before_confirm
-		add_action( 'f12_cf7_doubleoptin_before_confirm', function ( $hash, $optIn ) {
-			$this->logger->debug( 'Legacy hook f12_cf7_doubleoptin_before_confirm received', [
-				'plugin' => 'double-opt-in',
-				'hash'   => $hash,
-			] );
-		}, 1, 2 );
+		add_action(
+			'f12_cf7_doubleoptin_before_confirm',
+			function ( $hash, $optIn ) {
+				$this->logger->debug(
+					'Legacy hook f12_cf7_doubleoptin_before_confirm received',
+					array(
+						'plugin' => 'double-opt-in',
+						'hash'   => $hash,
+					)
+				);
+			},
+			1,
+			2
+		);
 
 		// Legacy: f12_cf7_doubleoptin_after_confirm
-		add_action( 'f12_cf7_doubleoptin_after_confirm', function ( $hashOrEvent, $optIn = null ) {
-			// Skip if this is already a typed event (dispatched by EventDispatcher)
-			if ( $hashOrEvent instanceof OptInConfirmedEvent ) {
-				return;
-			}
+		add_action(
+			'f12_cf7_doubleoptin_after_confirm',
+			function ( $hashOrEvent, $optIn = null ) {
+				// Skip if this is already a typed event (dispatched by EventDispatcher)
+				if ( $hashOrEvent instanceof OptInConfirmedEvent ) {
+					return;
+				}
 
-			$this->logger->debug( 'Legacy hook f12_cf7_doubleoptin_after_confirm received', [
-				'plugin' => 'double-opt-in',
-				'hash'   => is_string( $hashOrEvent ) ? $hashOrEvent : 'event',
-			] );
-		}, 1, 2 );
+				$this->logger->debug(
+					'Legacy hook f12_cf7_doubleoptin_after_confirm received',
+					array(
+						'plugin' => 'double-opt-in',
+						'hash'   => is_string( $hashOrEvent ) ? $hashOrEvent : 'event',
+					)
+				);
+			},
+			1,
+			2
+		);
 	}
 
 	/**
@@ -115,10 +142,13 @@ class WordPressHookBridge {
 		$this->dispatcher->addListener(
 			OptInCreatedEvent::class,
 			function ( OptInCreatedEvent $event ) {
-				$this->logger->debug( 'Bridging OptInCreatedEvent to legacy hooks', [
-					'plugin'   => 'double-opt-in',
-					'optin_id' => $event->getOptInId(),
-				] );
+				$this->logger->debug(
+					'Bridging OptInCreatedEvent to legacy hooks',
+					array(
+						'plugin'   => 'double-opt-in',
+						'optin_id' => $event->getOptInId(),
+					)
+				);
 
 				/**
 				 * Legacy action for backward compatibility.
@@ -143,11 +173,14 @@ class WordPressHookBridge {
 		$this->dispatcher->addListener(
 			OptInConfirmedEvent::class,
 			function ( OptInConfirmedEvent $event ) {
-				$this->logger->debug( 'OptInConfirmedEvent dispatched', [
-					'plugin'   => 'double-opt-in',
-					'optin_id' => $event->getOptInId(),
-					'hash'     => $event->getHash(),
-				] );
+				$this->logger->debug(
+					'OptInConfirmedEvent dispatched',
+					array(
+						'plugin'   => 'double-opt-in',
+						'optin_id' => $event->getOptInId(),
+						'hash'     => $event->getHash(),
+					)
+				);
 			},
 			5
 		);
@@ -156,11 +189,14 @@ class WordPressHookBridge {
 		$this->dispatcher->addListener(
 			OptInDeletedEvent::class,
 			function ( OptInDeletedEvent $event ) {
-				$this->logger->debug( 'OptInDeletedEvent dispatched', [
-					'plugin'     => 'double-opt-in',
-					'hash'       => $event->getHash(),
-					'deleted_by' => $event->getDeletedBy(),
-				] );
+				$this->logger->debug(
+					'OptInDeletedEvent dispatched',
+					array(
+						'plugin'     => 'double-opt-in',
+						'hash'       => $event->getHash(),
+						'deleted_by' => $event->getDeletedBy(),
+					)
+				);
 			},
 			5
 		);
@@ -169,11 +205,14 @@ class WordPressHookBridge {
 		$this->dispatcher->addListener(
 			OptInExpiredEvent::class,
 			function ( OptInExpiredEvent $event ) {
-				$this->logger->notice( 'OptInExpiredEvent dispatched', [
-					'plugin'       => 'double-opt-in',
-					'cleanup_type' => $event->getCleanupType(),
-					'rows_deleted' => $event->getRowsDeleted(),
-				] );
+				$this->logger->notice(
+					'OptInExpiredEvent dispatched',
+					array(
+						'plugin'       => 'double-opt-in',
+						'cleanup_type' => $event->getCleanupType(),
+						'rows_deleted' => $event->getRowsDeleted(),
+					)
+				);
 			},
 			5
 		);
@@ -182,11 +221,14 @@ class WordPressHookBridge {
 		$this->dispatcher->addListener(
 			MailPreparingEvent::class,
 			function ( MailPreparingEvent $event ) {
-				$this->logger->debug( 'MailPreparingEvent dispatched', [
-					'plugin'    => 'double-opt-in',
-					'optin_id'  => $event->getOptInId(),
-					'recipient' => $event->getRecipient(),
-				] );
+				$this->logger->debug(
+					'MailPreparingEvent dispatched',
+					array(
+						'plugin'    => 'double-opt-in',
+						'optin_id'  => $event->getOptInId(),
+						'recipient' => $event->getRecipient(),
+					)
+				);
 			},
 			5
 		);
@@ -195,20 +237,26 @@ class WordPressHookBridge {
 		$this->dispatcher->addListener(
 			MailSentEvent::class,
 			function ( MailSentEvent $event ) {
-				$this->logger->info( 'MailSentEvent dispatched', [
-					'plugin'    => 'double-opt-in',
-					'optin_id'  => $event->getOptInId(),
-					'success'   => $event->wasSuccessful(),
-					'mail_type' => $event->getMailType(),
-				] );
+				$this->logger->info(
+					'MailSentEvent dispatched',
+					array(
+						'plugin'    => 'double-opt-in',
+						'optin_id'  => $event->getOptInId(),
+						'success'   => $event->wasSuccessful(),
+						'mail_type' => $event->getMailType(),
+					)
+				);
 			},
 			5
 		);
 
-		$this->logger->info( 'Typed event bridges registered', [
-			'plugin'    => 'double-opt-in',
-			'component' => 'hook-bridge',
-		] );
+		$this->logger->info(
+			'Typed event bridges registered',
+			array(
+				'plugin'    => 'double-opt-in',
+				'component' => 'hook-bridge',
+			)
+		);
 	}
 
 	/**

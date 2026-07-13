@@ -24,7 +24,7 @@ class EmailHtmlGenerator {
 	 *
 	 * @var array
 	 */
-	private array $defaultStyles = [
+	private array $defaultStyles = array(
 		'fontFamily'      => 'Arial, Helvetica, sans-serif',
 		'fontSize'        => '16px',
 		'lineHeight'      => '1.5',
@@ -33,14 +33,14 @@ class EmailHtmlGenerator {
 		'primaryColor'    => '#0073aa',
 		'textColor'       => '#333333',
 		'linkColor'       => '#0073aa',
-	];
+	);
 
 	/**
 	 * Current global styles.
 	 *
 	 * @var array
 	 */
-	private array $globalStyles = [];
+	private array $globalStyles = array();
 
 	/**
 	 * Block Registry for Pro checks.
@@ -56,14 +56,14 @@ class EmailHtmlGenerator {
 	 * @param array $globalStyles Optional. Global styles.
 	 * @return string Generated HTML.
 	 */
-	public function generate( array $blocks, array $globalStyles = [] ): string {
-		$this->globalStyles = wp_parse_args( $globalStyles, $this->defaultStyles );
+	public function generate( array $blocks, array $globalStyles = array() ): string {
+		$this->globalStyles  = wp_parse_args( $globalStyles, $this->defaultStyles );
 		$this->blockRegistry = new BlockRegistry();
 
-		$contentWidth = (int) $this->globalStyles['contentWidth'];
+		$contentWidth    = (int) $this->globalStyles['contentWidth'];
 		$backgroundColor = esc_attr( $this->globalStyles['backgroundColor'] );
-		$fontFamily = esc_attr( $this->globalStyles['fontFamily'] );
-		$textColor = esc_attr( $this->globalStyles['textColor'] );
+		$fontFamily      = esc_attr( $this->globalStyles['fontFamily'] );
+		$textColor       = esc_attr( $this->globalStyles['textColor'] );
 
 		$blocksHtml = $this->renderBlocks( $blocks );
 
@@ -147,10 +147,10 @@ HTML;
 	 * @return string Rendered HTML.
 	 */
 	private function renderBlock( array $block, string $parentBgColor = '' ): string {
-		$type = $block['type'] ?? '';
-		$attributes = $block['attributes'] ?? [];
-		$children = $block['children'] ?? [];
-		$customCss = $attributes['customCss'] ?? '';
+		$type       = $block['type'] ?? '';
+		$attributes = $block['attributes'] ?? array();
+		$children   = $block['children'] ?? array();
+		$customCss  = $attributes['customCss'] ?? '';
 
 		$html = $this->renderBlockContent( $type, $attributes, $children, $parentBgColor );
 
@@ -268,7 +268,7 @@ HTML;
 
 		// Pass row's own bg color if set, otherwise inherit parent's
 		$childBgColor = ( $bgColor !== 'transparent' && ! empty( $bgColor ) ) ? $bgColor : $parentBgColor;
-		$innerHtml = $this->renderBlocks( $children, $childBgColor );
+		$innerHtml    = $this->renderBlocks( $children, $childBgColor );
 
 		return <<<HTML
 <tr>
@@ -294,30 +294,30 @@ HTML;
 		} else {
 			switch ( $type ) {
 				case 'columns-1':
-					$widths = [ 100 ];
+					$widths = array( 100 );
 					break;
 				case 'columns-2':
-					$widths = [ 50, 50 ];
+					$widths = array( 50, 50 );
 					break;
 				case 'columns-2-sidebar':
-					$widths = ( $attrs['layout'] ?? '70-30' ) === '70-30' ? [ 70, 30 ] : [ 30, 70 ];
+					$widths = ( $attrs['layout'] ?? '70-30' ) === '70-30' ? array( 70, 30 ) : array( 30, 70 );
 					break;
 				case 'columns-3':
-					$widths = [ 33, 34, 33 ];
+					$widths = array( 33, 34, 33 );
 					break;
 				default:
-					$widths = [ 100 ];
+					$widths = array( 100 );
 			}
 		}
 
 		$contentWidth = (int) $this->globalStyles['contentWidth'];
 
 		$childBgColor = ( $bgColor !== 'transparent' && ! empty( $bgColor ) ) ? $bgColor : $parentBgColor;
-		$columnsHtml = '';
+		$columnsHtml  = '';
 		foreach ( $children as $index => $child ) {
-			$width = $widths[ $index ] ?? $widths[0];
+			$width      = $widths[ $index ] ?? $widths[0];
 			$pixelWidth = (int) ( $contentWidth * $width / 100 );
-			$childHtml = $this->renderBlock( $child, $childBgColor );
+			$childHtml  = $this->renderBlock( $child, $childBgColor );
 
 			$columnsHtml .= <<<HTML
 <!--[if mso]>
@@ -355,19 +355,19 @@ HTML;
 	 * Render header block.
 	 */
 	private function renderHeader( array $attrs ): string {
-		$bgColor = esc_attr( $attrs['backgroundColor'] ?? $this->globalStyles['primaryColor'] );
-		$padding = esc_attr( $attrs['padding'] ?? '30px 20px' );
-		$logoUrl = esc_url( $attrs['logoUrl'] ?? '' );
-		$logoAlt = esc_attr( $attrs['logoAlt'] ?? get_bloginfo( 'name' ) );
+		$bgColor   = esc_attr( $attrs['backgroundColor'] ?? $this->globalStyles['primaryColor'] );
+		$padding   = esc_attr( $attrs['padding'] ?? '30px 20px' );
+		$logoUrl   = esc_url( $attrs['logoUrl'] ?? '' );
+		$logoAlt   = esc_attr( $attrs['logoAlt'] ?? get_bloginfo( 'name' ) );
 		$logoWidth = (int) ( $attrs['logoWidth'] ?? 200 );
-		$align = esc_attr( $attrs['align'] ?? 'center' );
+		$align     = esc_attr( $attrs['align'] ?? 'center' );
 
 		$logoHtml = '';
 		if ( $logoUrl ) {
 			$logoHtml = "<img src=\"{$logoUrl}\" alt=\"{$logoAlt}\" width=\"{$logoWidth}\" style=\"display: block; max-width: 100%; height: auto;\">";
 		} else {
 			$siteTitle = esc_html( get_bloginfo( 'name' ) );
-			$logoHtml = "<h1 style=\"margin: 0; color: #ffffff; font-size: 24px;\">{$siteTitle}</h1>";
+			$logoHtml  = "<h1 style=\"margin: 0; color: #ffffff; font-size: 24px;\">{$siteTitle}</h1>";
 		}
 
 		return <<<HTML
@@ -385,13 +385,13 @@ HTML;
 	private function renderHeading( array $attrs ): string {
 		$level = (int) ( $attrs['level'] ?? 2 );
 		$level = max( 1, min( 6, $level ) );
-		$tag = "h{$level}";
+		$tag   = "h{$level}";
 
-		$text = wp_kses_post( $attrs['text'] ?? '' );
-		$color = esc_attr( $attrs['color'] ?? $this->globalStyles['textColor'] );
-		$align = esc_attr( $attrs['align'] ?? 'left' );
+		$text     = wp_kses_post( $attrs['text'] ?? '' );
+		$color    = esc_attr( $attrs['color'] ?? $this->globalStyles['textColor'] );
+		$align    = esc_attr( $attrs['align'] ?? 'left' );
 		$fontSize = esc_attr( $attrs['fontSize'] ?? $this->getHeadingFontSize( $level ) );
-		$padding = esc_attr( $attrs['padding'] ?? '10px 0' );
+		$padding  = esc_attr( $attrs['padding'] ?? '10px 0' );
 
 		return <<<HTML
 <tr>
@@ -406,14 +406,14 @@ HTML;
 	 * Get default font size for heading level.
 	 */
 	private function getHeadingFontSize( int $level ): string {
-		$sizes = [
+		$sizes = array(
 			1 => '32px',
 			2 => '28px',
 			3 => '24px',
 			4 => '20px',
 			5 => '18px',
 			6 => '16px',
-		];
+		);
 		return $sizes[ $level ] ?? '16px';
 	}
 
@@ -421,18 +421,18 @@ HTML;
 	 * Render text block.
 	 */
 	private function renderText( array $attrs ): string {
-		$content = wp_kses_post( $attrs['content'] ?? '' );
-		$color = esc_attr( $attrs['color'] ?? $this->globalStyles['textColor'] );
-		$fontSize = esc_attr( $attrs['fontSize'] ?? $this->globalStyles['fontSize'] );
+		$content    = wp_kses_post( $attrs['content'] ?? '' );
+		$color      = esc_attr( $attrs['color'] ?? $this->globalStyles['textColor'] );
+		$fontSize   = esc_attr( $attrs['fontSize'] ?? $this->globalStyles['fontSize'] );
 		$lineHeight = esc_attr( $attrs['lineHeight'] ?? $this->globalStyles['lineHeight'] );
-		$align = esc_attr( $attrs['align'] ?? 'left' );
-		$padding = esc_attr( $attrs['padding'] ?? '10px 0' );
+		$align      = esc_attr( $attrs['align'] ?? 'left' );
+		$padding    = esc_attr( $attrs['padding'] ?? '10px 0' );
 		$fontFamily = esc_attr( $this->globalStyles['fontFamily'] );
 
 		return <<<HTML
 <tr>
     <td style="padding: {$padding};">
-        <p style="margin: 0; color: {$color}; font-size: {$fontSize}; line-height: {$lineHeight}; text-align: {$align}; font-family: {$fontFamily};">{$content}</p>
+        <div style="margin: 0; color: {$color}; font-size: {$fontSize}; line-height: {$lineHeight}; text-align: {$align}; font-family: {$fontFamily};">{$content}</div>
     </td>
 </tr>
 HTML;
@@ -442,7 +442,7 @@ HTML;
 	 * Render button block.
 	 */
 	private function renderButton( array $attrs ): string {
-		$text = esc_html( $attrs['text'] ?? __( 'Click Here', 'double-opt-in' ) );
+		$text   = esc_html( $attrs['text'] ?? __( 'Click Here', 'double-opt-in' ) );
 		$rawUrl = $attrs['url'] ?? '#';
 		// Check if URL is a placeholder (contains [...]) - don't escape it to avoid adding http:// prefix
 		// Placeholders will be replaced later with actual URLs that already have proper protocols
@@ -451,15 +451,15 @@ HTML;
 		} else {
 			$url = esc_url( $rawUrl );
 		}
-		$bgColor = esc_attr( $attrs['backgroundColor'] ?? $this->globalStyles['primaryColor'] );
-		$textColor = esc_attr( $attrs['textColor'] ?? '#ffffff' );
+		$bgColor      = esc_attr( $attrs['backgroundColor'] ?? $this->globalStyles['primaryColor'] );
+		$textColor    = esc_attr( $attrs['textColor'] ?? '#ffffff' );
 		$borderRadius = (int) ( $attrs['borderRadius'] ?? 4 );
-		$fontSize = esc_attr( $attrs['fontSize'] ?? '16px' );
-		$paddingV = (int) ( $attrs['paddingV'] ?? 12 );
-		$paddingH = (int) ( $attrs['paddingH'] ?? 24 );
-		$align = esc_attr( $attrs['align'] ?? 'center' );
-		$padding = esc_attr( $attrs['padding'] ?? '10px 0' );
-		$width = esc_attr( $attrs['width'] ?? 'auto' );
+		$fontSize     = esc_attr( $attrs['fontSize'] ?? '16px' );
+		$paddingV     = (int) ( $attrs['paddingV'] ?? 12 );
+		$paddingH     = (int) ( $attrs['paddingH'] ?? 24 );
+		$align        = esc_attr( $attrs['align'] ?? 'center' );
+		$padding      = esc_attr( $attrs['padding'] ?? '10px 0' );
+		$width        = esc_attr( $attrs['width'] ?? 'auto' );
 
 		// Build width styles
 		$tableWidth = ( $width !== 'auto' ) ? ' width="100%"' : '';
@@ -493,9 +493,9 @@ HTML;
 	 * Render image block.
 	 */
 	private function renderImage( array $attrs ): string {
-		$url = esc_url( $attrs['url'] ?? '' );
-		$alt = esc_attr( $attrs['alt'] ?? '' );
-		$width = esc_attr( $attrs['width'] ?? '100%' );
+		$url     = esc_url( $attrs['url'] ?? '' );
+		$alt     = esc_attr( $attrs['alt'] ?? '' );
+		$width   = esc_attr( $attrs['width'] ?? '100%' );
 		$rawLink = $attrs['link'] ?? '';
 		// Check if link is a placeholder (contains [...]) - don't escape it to avoid adding http:// prefix
 		if ( ! empty( $rawLink ) && preg_match( '/\[.+\]/', $rawLink ) ) {
@@ -503,7 +503,7 @@ HTML;
 		} else {
 			$link = esc_url( $rawLink );
 		}
-		$align = esc_attr( $attrs['align'] ?? 'center' );
+		$align   = esc_attr( $attrs['align'] ?? 'center' );
 		$padding = esc_attr( $attrs['padding'] ?? '10px 0' );
 
 		if ( empty( $url ) ) {
@@ -529,10 +529,10 @@ HTML;
 	 * Render divider block.
 	 */
 	private function renderDivider( array $attrs ): string {
-		$color = esc_attr( $attrs['color'] ?? '#dddddd' );
+		$color     = esc_attr( $attrs['color'] ?? '#dddddd' );
 		$thickness = (int) ( $attrs['thickness'] ?? 1 );
-		$style = esc_attr( $attrs['style'] ?? 'solid' );
-		$padding = esc_attr( $attrs['padding'] ?? '20px 0' );
+		$style     = esc_attr( $attrs['style'] ?? 'solid' );
+		$padding   = esc_attr( $attrs['padding'] ?? '20px 0' );
 
 		return <<<HTML
 <tr>
@@ -551,7 +551,7 @@ HTML;
 	 * Render spacer block.
 	 */
 	private function renderSpacer( array $attrs, string $parentBgColor = '' ): string {
-		$height = (int) ( $attrs['height'] ?? 20 );
+		$height  = (int) ( $attrs['height'] ?? 20 );
 		$bgColor = ! empty( $attrs['backgroundColor'] ) && $attrs['backgroundColor'] !== 'transparent'
 			? esc_attr( $attrs['backgroundColor'] )
 			: ( ! empty( $parentBgColor ) ? esc_attr( $parentBgColor ) : 'transparent' );
@@ -567,26 +567,26 @@ HTML;
 	 * Render social icons block.
 	 */
 	private function renderSocialIcons( array $attrs ): string {
-		$icons = $attrs['icons'] ?? [];
+		$icons    = $attrs['icons'] ?? array();
 		$iconSize = (int) ( $attrs['iconSize'] ?? 32 );
-		$align = esc_attr( $attrs['align'] ?? 'center' );
-		$padding = esc_attr( $attrs['padding'] ?? '20px 0' );
-		$spacing = (int) ( $attrs['spacing'] ?? 10 );
+		$align    = esc_attr( $attrs['align'] ?? 'center' );
+		$padding  = esc_attr( $attrs['padding'] ?? '20px 0' );
+		$spacing  = (int) ( $attrs['spacing'] ?? 10 );
 
-		$iconColors = [
+		$iconColors = array(
 			'facebook'  => '#1877f2',
 			'twitter'   => '#1da1f2',
 			'instagram' => '#e4405f',
 			'linkedin'  => '#0a66c2',
 			'youtube'   => '#ff0000',
-		];
+		);
 
 		$iconsHtml = '';
 		foreach ( $icons as $icon ) {
 			$network = esc_attr( $icon['network'] ?? '' );
-			$url = esc_url( $icon['url'] ?? '#' );
-			$color = esc_attr( $iconColors[ $network ] ?? '#666666' );
-			$label = ucfirst( $network );
+			$url     = esc_url( $icon['url'] ?? '#' );
+			$color   = esc_attr( $iconColors[ $network ] ?? '#666666' );
+			$label   = ucfirst( $network );
 
 			// Simple text-based icons for email compatibility
 			$iconsHtml .= <<<HTML
@@ -617,23 +617,23 @@ HTML;
 	 * Render footer block.
 	 */
 	private function renderFooter( array $attrs ): string {
-		$bgColor = esc_attr( $attrs['backgroundColor'] ?? '#f4f4f4' );
+		$bgColor   = esc_attr( $attrs['backgroundColor'] ?? '#f4f4f4' );
 		$textColor = esc_attr( $attrs['textColor'] ?? '#666666' );
-		$content = wp_kses_post( $attrs['content'] ?? '' );
-		$padding = esc_attr( $attrs['padding'] ?? '30px 20px' );
-		$align = esc_attr( $attrs['align'] ?? 'center' );
-		$fontSize = esc_attr( $attrs['fontSize'] ?? '12px' );
+		$content   = wp_kses_post( $attrs['content'] ?? '' );
+		$padding   = esc_attr( $attrs['padding'] ?? '30px 20px' );
+		$align     = esc_attr( $attrs['align'] ?? 'center' );
+		$fontSize  = esc_attr( $attrs['fontSize'] ?? '12px' );
 
 		if ( empty( $content ) ) {
-			$year = date( 'Y' );
+			$year     = date( 'Y' );
 			$siteName = esc_html( get_bloginfo( 'name' ) );
-			$content = "&copy; {$year} {$siteName}. All rights reserved.";
+			$content  = "&copy; {$year} {$siteName}. All rights reserved.";
 		}
 
 		return <<<HTML
 <tr>
     <td style="background-color: {$bgColor}; padding: {$padding};">
-        <p style="margin: 0; color: {$textColor}; font-size: {$fontSize}; text-align: {$align}; line-height: 1.5;">{$content}</p>
+        <div style="margin: 0; color: {$textColor}; font-size: {$fontSize}; text-align: {$align}; line-height: 1.5;">{$content}</div>
     </td>
 </tr>
 HTML;
@@ -669,11 +669,13 @@ HTML;
 		$value    = esc_attr( $attrs['value'] ?? '' );
 		$padding  = esc_attr( $attrs['padding'] ?? '0' );
 
-		$condition = wp_json_encode( [
-			'field'    => $field,
-			'operator' => $operator,
-			'value'    => $value,
-		] );
+		$condition = wp_json_encode(
+			array(
+				'field'    => $field,
+				'operator' => $operator,
+				'value'    => $value,
+			)
+		);
 
 		$innerHtml = $this->renderBlocks( $children, $parentBgColor );
 
@@ -689,10 +691,10 @@ HTML;
 
 		if ( $display === 'button' ) {
 			// Render as a styled button placeholder
-			$bgColor = esc_attr( $attrs['backgroundColor'] ?? $this->globalStyles['primaryColor'] );
+			$bgColor   = esc_attr( $attrs['backgroundColor'] ?? $this->globalStyles['primaryColor'] );
 			$textColor = esc_attr( $attrs['textColor'] ?? '#ffffff' );
-			$text = esc_html( $attrs['buttonText'] ?? __( 'Confirm', 'double-opt-in' ) );
-			$align = esc_attr( $attrs['align'] ?? 'center' );
+			$text      = esc_html( $attrs['buttonText'] ?? __( 'Confirm', 'double-opt-in' ) );
+			$align     = esc_attr( $attrs['align'] ?? 'center' );
 
 			return <<<HTML
 <tr>

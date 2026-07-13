@@ -29,7 +29,7 @@ class OptInLinkGenerator {
 	 *
 	 * @return string The confirmation URL.
 	 */
-	public function generateOptInLink( OptIn $optIn, array $parameter = [] ): string {
+	public function generateOptInLink( OptIn $optIn, array $parameter = array() ): string {
 		if ( empty( $optIn->getHash() ) ) {
 			return '';
 		}
@@ -133,13 +133,13 @@ class OptInLinkGenerator {
 	 *
 	 * @return string The text with replaced placeholders.
 	 */
-	public function replacePlaceholders( string $text, OptIn $optIn, array $parameter = [] ): string {
-		$replacements = [
+	public function replacePlaceholders( string $text, OptIn $optIn, array $parameter = array() ): string {
+		$replacements = array(
 			'[doubleoptinlink]'   => $this->generateOptInLink( $optIn, $parameter ),
 			'[doubleoptoutlink]'  => $this->generateOptOutLink( $optIn ),
 			'[doubleoptinhash]'   => $optIn->getHash(),
 			'[doubleoptin_email]' => $optIn->getEmail(),
-		];
+		);
 
 		return str_replace(
 			array_keys( $replacements ),

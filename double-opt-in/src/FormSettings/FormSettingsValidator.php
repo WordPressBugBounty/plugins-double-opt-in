@@ -27,32 +27,27 @@ class FormSettingsValidator {
 	 * @return array Array of validation errors. Empty if valid.
 	 */
 	public function validate( FormSettingsDTO $settings ): array {
-		$errors = [];
+		$errors = array();
 
 		// Only validate if enabled
 		if ( ! $settings->enabled ) {
 			return $errors;
 		}
 
-		// Validate sender email
+		// Hart-required fields — delegate to the DTO so save-time and
+		// completeness-gate share one source of truth (plan/doi-completeness-gate.md §2.1).
+		// The DTO returns stable string IDs; we map them to translatable messages here.
+		foreach ( $settings->getMissingRequiredFields() as $field ) {
+			$errors[ $field ] = $this->messageForMissingField( $field );
+		}
+
+		// Format-only checks live in the Validator (the DTO is shape-only,
+		// no I/O — page existence and category lookups need wpdb).
+
+		// Validate sender email format (soft-required: empty is OK,
+		// falls back to WP admin email at runtime — plan §5.3)
 		if ( ! empty( $settings->sender ) && ! $this->isValidEmailOrPlaceholder( $settings->sender ) ) {
 			$errors['sender'] = __( 'Invalid sender email format.', 'double-opt-in' );
-		}
-
-		// Validate recipient field
-		if ( empty( $settings->recipient ) ) {
-			$errors['recipient'] = __( 'Recipient field is required.', 'double-opt-in' );
-		}
-
-		// Validate subject
-		if ( empty( $settings->subject ) ) {
-			$errors['subject'] = __( 'Email subject is required.', 'double-opt-in' );
-		}
-
-		// Validate body contains opt-in link (skip when a custom template is used,
-		// because the template's block structure contains the placeholder)
-		if ( empty( $settings->template ) && ! empty( $settings->body ) && strpos( $settings->body, '[doubleoptinlink]' ) === false ) {
-			$errors['body'] = __( 'Email body must contain the [doubleoptinlink] placeholder.', 'double-opt-in' );
 		}
 
 		// Validate confirmation page
@@ -138,14 +133,64 @@ class FormSettingsValidator {
 			? sanitize_textarea_field( $data['consentText'] ?? $data['consent_text'] )
 			: '';
 
-		// Unique Email settings (Pro)
-		$dto->extensionData['unique_email_enabled']       = (int) ( $data['unique_email_enabled'] ?? 0 );
-		$dto->extensionData['unique_email_behavior']      = in_array( $v = (string) ( $data['unique_email_behavior'] ?? '' ), [ 'silent', 'block', 'redirect' ], true ) ? $v : 'block';
-		$dto->extensionData['unique_email_scope']         = in_array( $v = (string) ( $data['unique_email_scope'] ?? '' ), [ 'confirmed', 'all' ], true ) ? $v : 'confirmed';
-		$dto->extensionData['unique_email_message']       = sanitize_text_field( (string) ( $data['unique_email_message'] ?? '' ) );
-		$dto->extensionData['unique_email_redirect_page'] = (int) ( $data['unique_email_redirect_page'] ?? -1 );
+		// Consent acknowledgment field — name of the form field that
+		// captures the user's explicit consent (e.g. CF7 [acceptance]).
+		// Stored as a sanitize_key string since it must match a real
+		// form-field name at submit time.
+		$dto->consentField = isset( $data['consentField'] ) || isset( $data['consent_field'] )
+			? sanitize_key( (string) ( $data['consentField'] ?? $data['consent_field'] ) )
+			: '';
+
+		// Field-mapping (placeholder-tag → form-field-name) for the
+		// Mapping tab. Sanitize each key + value to text-safe strings
+		// since both end up in the email body / database meta.
+		$rawMapping = $data['fieldMapping'] ?? $data['field_mapping'] ?? array();
+		if ( is_array( $rawMapping ) ) {
+			$mapping = array();
+			foreach ( $rawMapping as $key => $value ) {
+				$mapping[ sanitize_key( (string) $key ) ] = sanitize_text_field( (string) $value );
+			}
+			$dto->fieldMapping = $mapping;
+		}
+
+		/**
+		 * Filter to allow addons to sanitize and contribute their own
+		 * extensionData fields. Mirrors `f12_doi_settings_dto_from_array`
+		 * (load-side) so save and load are symmetric — both go through
+		 * the same addon-side filter chain. An addon that registers one
+		 * filter without the other silently loses data on roundtrip.
+		 *
+		 * @since 4.4.0
+		 *
+		 * @param FormSettingsDTO $dto  The DTO populated with Core fields.
+		 * @param array           $data The raw input array.
+		 */
+		$dto = apply_filters( 'f12_doi_settings_dto_sanitize', $dto, $data );
 
 		return $dto;
+	}
+
+	/**
+	 * Map a missing-required-field ID (as returned by
+	 * {@see FormSettingsDTO::getMissingRequiredFields()}) to a translatable
+	 * user-facing error message.
+	 *
+	 * Addon-contributed IDs fall through to a generic message; addons
+	 * that need bespoke wording should filter the messages array via
+	 * `f12_doi_form_missing_field_messages` (registered at apply_filters
+	 * time below).
+	 */
+	private function messageForMissingField( string $field ): string {
+		$messages = apply_filters(
+			'f12_doi_form_missing_field_messages',
+			array(
+				'recipient'        => __( 'Recipient field is required.', 'double-opt-in' ),
+				'subject'          => __( 'Email subject is required.', 'double-opt-in' ),
+				'body_or_template' => __( 'Email body must contain the [doubleoptinlink] placeholder or a template must be selected.', 'double-opt-in' ),
+			)
+		);
+
+		return $messages[ $field ] ?? __( 'Required field is missing.', 'double-opt-in' );
 	}
 
 	/**
@@ -198,9 +243,9 @@ class FormSettingsValidator {
 		$allowedHtml = wp_kses_allowed_html( 'post' );
 
 		// Add additional tags commonly used in emails
-		$allowedHtml['style'] = [];
-		$allowedHtml['center'] = [];
-		$allowedHtml['table'] = [
+		$allowedHtml['style']  = array();
+		$allowedHtml['center'] = array();
+		$allowedHtml['table']  = array(
 			'class'       => true,
 			'id'          => true,
 			'style'       => true,
@@ -211,14 +256,14 @@ class FormSettingsValidator {
 			'border'      => true,
 			'align'       => true,
 			'bgcolor'     => true,
-		];
-		$allowedHtml['tr'] = [
-			'class' => true,
-			'style' => true,
-			'align' => true,
+		);
+		$allowedHtml['tr']     = array(
+			'class'  => true,
+			'style'  => true,
+			'align'  => true,
 			'valign' => true,
-		];
-		$allowedHtml['td'] = [
+		);
+		$allowedHtml['td']     = array(
 			'class'   => true,
 			'style'   => true,
 			'width'   => true,
@@ -228,11 +273,11 @@ class FormSettingsValidator {
 			'bgcolor' => true,
 			'colspan' => true,
 			'rowspan' => true,
-		];
-		$allowedHtml['th'] = $allowedHtml['td'];
-		$allowedHtml['thead'] = [];
-		$allowedHtml['tbody'] = [];
-		$allowedHtml['tfoot'] = [];
+		);
+		$allowedHtml['th']     = $allowedHtml['td'];
+		$allowedHtml['thead']  = array();
+		$allowedHtml['tbody']  = array();
+		$allowedHtml['tfoot']  = array();
 
 		return wp_kses( $body, $allowedHtml );
 	}

@@ -33,52 +33,78 @@ class EmailTemplateServiceProvider implements BootableProviderInterface {
 	 */
 	public function register( Container $container ): void {
 		// Register Post Type
-		$container->singleton( EmailTemplatePostType::class, function () {
-			return new EmailTemplatePostType();
-		} );
+		$container->singleton(
+			EmailTemplatePostType::class,
+			function () {
+				return new EmailTemplatePostType();
+			}
+		);
 
 		// Register Repository
-		$container->singleton( EmailTemplateRepository::class, function () {
-			return new EmailTemplateRepository();
-		} );
+		$container->singleton(
+			EmailTemplateRepository::class,
+			function () {
+				return new EmailTemplateRepository();
+			}
+		);
 
 		// Register HTML Generator
-		$container->singleton( EmailHtmlGenerator::class, function () {
-			return new EmailHtmlGenerator();
-		} );
+		$container->singleton(
+			EmailHtmlGenerator::class,
+			function () {
+				return new EmailHtmlGenerator();
+			}
+		);
 
 		// Register REST Controller
-		$container->singleton( EmailTemplateRestController::class, function ( Container $c ) {
-			return new EmailTemplateRestController(
-				$c->get( EmailTemplateRepository::class ),
-				$c->get( EmailHtmlGenerator::class )
-			);
-		} );
+		$container->singleton(
+			EmailTemplateRestController::class,
+			function ( Container $c ) {
+				return new EmailTemplateRestController(
+					$c->get( EmailTemplateRepository::class ),
+					$c->get( EmailHtmlGenerator::class )
+				);
+			}
+		);
 
 		// Register Block Registry
-		$container->singleton( BlockRegistry::class, function () {
-			return new BlockRegistry();
-		} );
+		$container->singleton(
+			BlockRegistry::class,
+			function () {
+				return new BlockRegistry();
+			}
+		);
 
 		// Register Integration
-		$container->singleton( EmailTemplateIntegration::class, function () {
-			return new EmailTemplateIntegration();
-		} );
+		$container->singleton(
+			EmailTemplateIntegration::class,
+			function () {
+				return new EmailTemplateIntegration();
+			}
+		);
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
 	public function boot( Container $container ): void {
-		// Initialize Post Type
+		// Initialize Post Type — needed even on free sites so that
+		// existing template posts in wp_posts continue to behave like
+		// the registered post type (admin column, capabilities, etc.).
 		$postType = $container->get( EmailTemplatePostType::class );
 		$postType->init();
 
-		// Initialize REST Controller
-		$restController = $container->get( EmailTemplateRestController::class );
-		$restController->init();
+		// REST controller registration is OWNED BY addon-email-editor:
+		// its boot() picks the controller up from the same container
+		// and calls init() only when the addon is licensed + active.
+		// Free / unlicensed sites get no API surface, which is the
+		// intent of Pro-gating the editor + templates feature.
 
-		// Initialize Integration with CF7/Avada
+		// Initialize Integration with CF7/Avada — used by the email
+		// pipeline for templates referenced in form settings, so it
+		// stays in Core (otherwise free users couldn't send templated
+		// confirmation mails for templates created earlier or via the
+		// legacy UI).
 		$integration = $container->get( EmailTemplateIntegration::class );
 		$integration->init();
 	}

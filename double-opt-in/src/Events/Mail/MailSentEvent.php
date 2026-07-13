@@ -17,7 +17,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Class MailSentEvent
  *
+ * @api
+ *
  * Dispatched after an opt-in verification email is sent.
+ * Covered by the Addon API semver policy as of Core API 4.3.0.
  */
 class MailSentEvent extends Event {
 

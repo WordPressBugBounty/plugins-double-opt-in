@@ -40,6 +40,15 @@ class ErrorNotification {
 	private const TRANSIENT_PREFIX = 'doi_error_';
 
 	/**
+	 * Transient prefix for success-confirmation storage.
+	 *
+	 * Parallel to the error store: integrations that die() early and
+	 * bypass the form plugin's own confirmation message (Avada) stash the
+	 * "opt-in email sent" message here so the frontend toast can show it.
+	 */
+	private const SUCCESS_TRANSIENT_PREFIX = 'doi_success_';
+
+	/**
 	 * How long the error transient lives (in seconds).
 	 */
 	private const TRANSIENT_TTL = 60;
@@ -50,9 +59,9 @@ class ErrorNotification {
 	 * @return void
 	 */
 	public function register(): void {
-		add_action( 'wp_ajax_doi_check_submission_error', [ $this, 'handleAjax' ] );
-		add_action( 'wp_ajax_nopriv_doi_check_submission_error', [ $this, 'handleAjax' ] );
-		add_action( 'wp_enqueue_scripts', [ $this, 'enqueueAssets' ] );
+		add_action( 'wp_ajax_doi_check_submission_error', array( $this, 'handleAjax' ) );
+		add_action( 'wp_ajax_nopriv_doi_check_submission_error', array( $this, 'handleAjax' ) );
+		add_action( 'wp_enqueue_scripts', array( $this, 'enqueueAssets' ) );
 	}
 
 	/**
@@ -66,13 +75,17 @@ class ErrorNotification {
 	public static function store( OptInError $error, int $formId ): void {
 		$key = self::getTransientKey();
 
-		set_transient( $key, [
-			'code'              => $error->getCode(),
-			'message'           => $error->getMessage(),
-			'form_id'           => $formId,
-			'time'              => time(),
-			'hide_confirmation' => (bool) apply_filters( 'f12_cf7_doubleoptin_show_validation_error', false ),
-		], self::TRANSIENT_TTL );
+		set_transient(
+			$key,
+			array(
+				'code'              => $error->getCode(),
+				'message'           => $error->getMessage(),
+				'form_id'           => $formId,
+				'time'              => time(),
+				'hide_confirmation' => (bool) apply_filters( 'f12_cf7_doubleoptin_show_validation_error', false ),
+			),
+			self::TRANSIENT_TTL
+		);
 	}
 
 	/**
@@ -94,6 +107,46 @@ class ErrorNotification {
 	}
 
 	/**
+	 * Store a success-confirmation message for later retrieval by the
+	 * frontend. Used by integrations (Avada) that terminate the request
+	 * early and therefore skip the form plugin's own "sent" message.
+	 *
+	 * @param string $message The confirmation message to show.
+	 * @param int    $formId  The form ID the opt-in came from.
+	 *
+	 * @return void
+	 */
+	public static function storeSuccess( string $message, int $formId ): void {
+		set_transient(
+			self::getSuccessTransientKey(),
+			array(
+				'message' => $message,
+				'form_id' => $formId,
+				'time'    => time(),
+			),
+			self::TRANSIENT_TTL
+		);
+	}
+
+	/**
+	 * Retrieve and delete the stored success message for the current client.
+	 *
+	 * @return array|null The success data or null if none exists.
+	 */
+	public static function retrieveSuccess(): ?array {
+		$key  = self::getSuccessTransientKey();
+		$data = get_transient( $key );
+
+		if ( ! is_array( $data ) || empty( $data['message'] ) ) {
+			return null;
+		}
+
+		delete_transient( $key );
+
+		return $data;
+	}
+
+	/**
 	 * AJAX handler: check for a stored submission error.
 	 *
 	 * @return void
@@ -104,7 +157,17 @@ class ErrorNotification {
 		$data = self::retrieve();
 
 		if ( ! $data ) {
-			wp_send_json_success( [ 'error' => null ] );
+			// No error stored — surface a success confirmation if one was
+			// stashed by an integration that die()s early (Avada). Other
+			// integrations show their own message and never store one, so
+			// this stays empty for them (no duplicate toast).
+			$success = self::retrieveSuccess();
+			wp_send_json_success(
+				array(
+					'error'           => null,
+					'success_message' => is_array( $success ) ? $success['message'] : null,
+				)
+			);
 			return;
 		}
 
@@ -117,13 +180,13 @@ class ErrorNotification {
 			$data['form_id']
 		);
 
-		$response = [
-			'error' => [
+		$response = array(
+			'error' => array(
 				'code'              => $data['code'],
 				'message'           => $message,
 				'hide_confirmation' => ! empty( $data['hide_confirmation'] ),
-			],
-		];
+			),
+		);
 
 		// Add redirect URL if configured for this form
 		if ( ! empty( $data['form_id'] ) ) {
@@ -154,22 +217,26 @@ class ErrorNotification {
 		wp_enqueue_style(
 			'doi-error-notification',
 			plugins_url( 'core/assets/doi-error-notification.css', F12_DOUBLEOPTIN_PLUGIN_FILE ),
-			[],
+			array(),
 			defined( 'FORGE12_OPTIN_VERSION' ) ? FORGE12_OPTIN_VERSION : '4.2.0'
 		);
 
 		wp_enqueue_script(
 			'doi-error-notification',
 			plugins_url( 'core/assets/doi-error-notification.js', F12_DOUBLEOPTIN_PLUGIN_FILE ),
-			[],
+			array(),
 			defined( 'FORGE12_OPTIN_VERSION' ) ? FORGE12_OPTIN_VERSION : '4.2.0',
 			true
 		);
 
-		wp_localize_script( 'doi-error-notification', 'doiErrorNotification', [
-			'ajaxUrl' => admin_url( 'admin-ajax.php' ),
-			'nonce'   => wp_create_nonce( 'doi_error_notification' ),
-		] );
+		wp_localize_script(
+			'doi-error-notification',
+			'doiErrorNotification',
+			array(
+				'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+				'nonce'   => wp_create_nonce( 'doi_error_notification' ),
+			)
+		);
 	}
 
 	/**
@@ -230,5 +297,20 @@ class ErrorNotification {
 		$userAgent = $_SERVER['HTTP_USER_AGENT'] ?? '';
 
 		return self::TRANSIENT_PREFIX . md5( $ip . '|' . $userAgent );
+	}
+
+	/**
+	 * Build the success-confirmation transient key for the current client.
+	 *
+	 * Same client fingerprint as {@see self::getTransientKey()} but a
+	 * distinct prefix so a stored success and a stored error never collide.
+	 *
+	 * @return string The transient key.
+	 */
+	public static function getSuccessTransientKey(): string {
+		$ip        = class_exists( IPHelper::class ) ? IPHelper::getIPAdress() : ( $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0' );
+		$userAgent = $_SERVER['HTTP_USER_AGENT'] ?? '';
+
+		return self::SUCCESS_TRANSIENT_PREFIX . md5( $ip . '|' . $userAgent );
 	}
 }

@@ -12,7 +12,6 @@ use Forge12\DoubleOptIn\Container\Container;
 use Forge12\DoubleOptIn\Container\BootableProviderInterface;
 use Forge12\DoubleOptIn\Integration\FormIntegrationRegistry;
 use Forge12\DoubleOptIn\Integration\CF7Integration;
-use Forge12\DoubleOptIn\Integration\AvadaIntegration;
 use Forge12\DoubleOptIn\Frontend\ErrorNotification;
 use Forge12\Shared\LoggerInterface;
 
@@ -40,29 +39,34 @@ class IntegrationServiceProvider implements BootableProviderInterface {
 	 */
 	public function register( Container $container ): void {
 		// Register the integration registry as a singleton
-		$container->singleton( FormIntegrationRegistry::class, function () use ( $container ) {
-			$registry = FormIntegrationRegistry::getInstance();
+		$container->singleton(
+			FormIntegrationRegistry::class,
+			function () use ( $container ) {
+				$registry = FormIntegrationRegistry::getInstance();
 
-			if ( $container->has( LoggerInterface::class ) ) {
-				$registry->setLogger( $container->get( LoggerInterface::class ) );
+				if ( $container->has( LoggerInterface::class ) ) {
+					$registry->setLogger( $container->get( LoggerInterface::class ) );
+				}
+
+				return $registry;
 			}
-
-			return $registry;
-		} );
+		);
 
 		// Register CF7 Integration
-		$container->singleton( CF7Integration::class, function ( Container $c ) {
-			return new CF7Integration(
-				$c->get( LoggerInterface::class )
-			);
-		} );
+		$container->singleton(
+			CF7Integration::class,
+			function ( Container $c ) {
+				return new CF7Integration(
+					$c->get( LoggerInterface::class )
+				);
+			}
+		);
 
-		// Register Avada Integration
-		$container->singleton( AvadaIntegration::class, function ( Container $c ) {
-			return new AvadaIntegration(
-				$c->get( LoggerInterface::class )
-			);
-		} );
+		// Avada integration is no longer a Core-bundled feature in the
+		// monorepo era. It lives in the paid `addon-avada` plugin which
+		// registers itself via the AddonRegistry. See Phase 2 execution
+		// plan §7.11 and plan/phase-2-scaffold/packages/core/docs/avada-migration-notice.md
+		// for the customer migration flow.
 	}
 
 	/**
@@ -87,7 +91,10 @@ class IntegrationServiceProvider implements BootableProviderInterface {
 			if ( $container->has( LoggerInterface::class ) ) {
 				$container->get( LoggerInterface::class )->debug(
 					'New integration system is disabled, legacy classes remain active',
-					[ 'plugin' => 'double-opt-in', 'component' => 'integration-provider' ]
+					array(
+						'plugin'    => 'double-opt-in',
+						'component' => 'integration-provider',
+					)
 				);
 			}
 			return;
@@ -106,14 +113,21 @@ class IntegrationServiceProvider implements BootableProviderInterface {
 		do_action( 'f12_cf7_doubleoptin_register_integrations', $registry, $container );
 
 		// Initialize available integrations
-		add_action( 'init', function () use ( $registry ) {
-			$registry->initialize();
-		}, 5 );
+		add_action(
+			'init',
+			function () use ( $registry ) {
+				$registry->initialize();
+			},
+			5
+		);
 
 		if ( $container->has( LoggerInterface::class ) ) {
 			$container->get( LoggerInterface::class )->info(
 				'New integration system is active',
-				[ 'plugin' => 'double-opt-in', 'component' => 'integration-provider' ]
+				array(
+					'plugin'    => 'double-opt-in',
+					'component' => 'integration-provider',
+				)
 			);
 		}
 	}
@@ -127,7 +141,9 @@ class IntegrationServiceProvider implements BootableProviderInterface {
 	 * @return void
 	 */
 	private function registerCoreIntegrations( Container $container, FormIntegrationRegistry $registry ): void {
-		// CF7 Integration
+		// CF7 Integration — the only form integration bundled with Core.
+		// Every other form system (Avada, Elementor, Gravity Forms, WPForms)
+		// ships as a paid addon that registers via the AddonRegistry.
 		try {
 			$cf7Integration = $container->get( CF7Integration::class );
 			$registry->register( $cf7Integration );
@@ -136,21 +152,10 @@ class IntegrationServiceProvider implements BootableProviderInterface {
 			if ( $container->has( LoggerInterface::class ) ) {
 				$container->get( LoggerInterface::class )->warning(
 					'Failed to register CF7 integration',
-					[ 'plugin' => 'double-opt-in', 'error' => $e->getMessage() ]
-				);
-			}
-		}
-
-		// Avada Integration
-		try {
-			$avadaIntegration = $container->get( AvadaIntegration::class );
-			$registry->register( $avadaIntegration );
-		} catch ( \Exception $e ) {
-			// Log but don't fail if Avada integration can't be loaded
-			if ( $container->has( LoggerInterface::class ) ) {
-				$container->get( LoggerInterface::class )->warning(
-					'Failed to register Avada integration',
-					[ 'plugin' => 'double-opt-in', 'error' => $e->getMessage() ]
+					array(
+						'plugin' => 'double-opt-in',
+						'error'  => $e->getMessage(),
+					)
 				);
 			}
 		}

@@ -30,19 +30,25 @@ class GdprServiceProvider implements BootableProviderInterface {
 	 * {@inheritdoc}
 	 */
 	public function register( Container $container ): void {
-		$container->singleton( PrivacyIntegration::class, function ( Container $c ) {
-			return new PrivacyIntegration(
-				$c->get( LoggerInterface::class ),
-				$c->get( OptInRepositoryInterface::class )
-			);
-		} );
+		$container->singleton(
+			PrivacyIntegration::class,
+			function ( Container $c ) {
+				return new PrivacyIntegration(
+					$c->get( LoggerInterface::class ),
+					$c->get( OptInRepositoryInterface::class )
+				);
+			}
+		);
 
-		$container->singleton( SingleConsentExportController::class, function ( Container $c ) {
-			return new SingleConsentExportController(
-				$c->get( LoggerInterface::class ),
-				$c->get( OptInRepositoryInterface::class )
-			);
-		} );
+		$container->singleton(
+			SingleConsentExportController::class,
+			function ( Container $c ) {
+				return new SingleConsentExportController(
+					$c->get( LoggerInterface::class ),
+					$c->get( OptInRepositoryInterface::class )
+				);
+			}
+		);
 	}
 
 	/**

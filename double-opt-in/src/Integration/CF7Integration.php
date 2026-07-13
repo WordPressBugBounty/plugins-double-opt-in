@@ -76,32 +76,45 @@ class CF7Integration extends AbstractFormIntegration implements AdminPanelInterf
 	 */
 	public function registerHooks(): void {
 		// Frontend hooks
-		add_action( 'wpcf7_before_send_mail', [ $this, 'onSubmit' ], $this->getHookPriority(), 3 );
-		add_action( 'init', [ $this, 'handleOptInConfirmation' ] );
-		add_action( 'shutdown', [ $this, 'cleanupFiles' ] );
+		add_action( 'wpcf7_before_send_mail', array( $this, 'onSubmit' ), $this->getHookPriority(), 3 );
+		add_action( 'init', array( $this, 'handleOptInConfirmation' ) );
 
 		// Register recipient filter
-		add_filter( 'f12_cf7_doubleoptin_get_recipient_cf7', [ $this, 'getRecipientFilter' ], 10, 3 );
+		add_filter( 'f12_cf7_doubleoptin_get_recipient_cf7', array( $this, 'getRecipientFilter' ), 10, 3 );
 
 		// Confirmation mail hooks
-		add_action( 'f12_cf7_doubleoptin_before_send_default_mail', [ $this, 'beforeSendDefaultMail' ] );
-		add_action( 'f12_cf7_doubleoptin_after_send_default_mail', [ $this, 'afterSendDefaultMail' ] );
-		add_action( 'f12_cf7_doubleoptin_trigger_default_mail', [ $this, 'sendConfirmationMail' ] );
+		add_action( 'f12_cf7_doubleoptin_before_send_default_mail', array( $this, 'beforeSendDefaultMail' ) );
+		add_action( 'f12_cf7_doubleoptin_after_send_default_mail', array( $this, 'afterSendDefaultMail' ) );
+		add_action( 'f12_cf7_doubleoptin_trigger_default_mail', array( $this, 'sendConfirmationMail' ) );
+
+		// File hand-off + pending-cleanup. CF7 attaches files to the
+		// confirmation mail in attachExtraAttachments (hooked on
+		// wpcf7_before_send_mail during sendConfirmationMail). Cleanup
+		// MUST run AFTER the mail is sent — otherwise we'd be deleting
+		// files before they're attached. Hence `after_send_default_mail`,
+		// not `after_confirm` like the other integrations. Priority 20
+		// (default 10) so any third-party listener that introspects the
+		// attachments still sees them.
+		// File-lifecycle plan, Schritt 2c (2026-05-08).
+		add_action( 'f12_cf7_doubleoptin_after_send_default_mail', array( $this, 'cleanupPendingAfterMail' ), 20, 1 );
 
 		// Admin hooks
 		$this->registerAdminHooks();
 
-		$this->getLogger()->debug( 'CF7 integration hooks registered', [
-			'plugin' => 'double-opt-in',
-		] );
+		$this->getLogger()->debug(
+			'CF7 integration hooks registered',
+			array(
+				'plugin' => 'double-opt-in',
+			)
+		);
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
 	public function registerAdminHooks(): void {
-		add_action( 'admin_init', [ $this, 'setupAdminPanel' ] );
-		add_action( 'admin_enqueue_scripts', [ $this, 'enqueueAdminAssets' ] );
+		add_action( 'admin_init', array( $this, 'setupAdminPanel' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueueAdminAssets' ) );
 	}
 
 	/**
@@ -110,8 +123,8 @@ class CF7Integration extends AbstractFormIntegration implements AdminPanelInterf
 	 * @return void
 	 */
 	public function setupAdminPanel(): void {
-		add_filter( 'wpcf7_editor_panels', [ $this, 'addEditorPanel' ], 10, 1 );
-		add_action( 'wpcf7_save_contact_form', [ $this, 'saveFormSettings' ], 10, 3 );
+		add_filter( 'wpcf7_editor_panels', array( $this, 'addEditorPanel' ), 10, 1 );
+		add_action( 'wpcf7_save_contact_form', array( $this, 'saveFormSettings' ), 10, 3 );
 	}
 
 	/**
@@ -121,25 +134,33 @@ class CF7Integration extends AbstractFormIntegration implements AdminPanelInterf
 		wp_enqueue_script(
 			'f12-cf7-doubleoptin-admin',
 			plugins_url( 'compatibility/cf7/assets/f12-cf7-popup.js', F12_DOUBLEOPTIN_PLUGIN_FILE ),
-			[ 'jquery' ]
+			array( 'jquery' )
 		);
 
-		wp_localize_script( 'f12-cf7-doubleoptin-admin', 'doi', [
-			'ajax_url' => admin_url( 'admin-ajax.php' ),
-			'nonce'    => wp_create_nonce( 'f12_doi_details' ),
-		] );
+		wp_localize_script(
+			'f12-cf7-doubleoptin-admin',
+			'doi',
+			array(
+				'ajax_url' => admin_url( 'admin-ajax.php' ),
+				'nonce'    => wp_create_nonce( 'f12_doi_details' ),
+			)
+		);
 
 		wp_enqueue_script(
 			'f12-cf7-doubleoptin-templateloader',
 			plugins_url( 'compatibility/cf7/assets/f12-cf7-templateloader.js', F12_DOUBLEOPTIN_PLUGIN_FILE ),
-			[ 'jquery' ]
+			array( 'jquery' )
 		);
 
-		wp_localize_script( 'f12-cf7-doubleoptin-templateloader', 'templateloader', [
-			'ajax_url'          => admin_url( 'admin-ajax.php' ),
-			'nonce'             => wp_create_nonce( 'f12_doi_templateloader' ),
-			'label_placeholder' => __( 'Please wait while we load the template...', 'double-opt-in' ),
-		] );
+		wp_localize_script(
+			'f12-cf7-doubleoptin-templateloader',
+			'templateloader',
+			array(
+				'ajax_url'          => admin_url( 'admin-ajax.php' ),
+				'nonce'             => wp_create_nonce( 'f12_doi_templateloader' ),
+				'label_placeholder' => __( 'Please wait while we load the template...', 'double-opt-in' ),
+			)
+		);
 	}
 
 	/**
@@ -171,7 +192,7 @@ class CF7Integration extends AbstractFormIntegration implements AdminPanelInterf
 			return '';
 		}
 
-		$recipientField = str_replace( [ '[', ']' ], '', $formParameter['recipient'] );
+		$recipientField = str_replace( array( '[', ']' ), '', $formParameter['recipient'] );
 		$fields         = $formData->getFields();
 
 		if ( isset( $fields[ $recipientField ] ) ) {
@@ -195,7 +216,7 @@ class CF7Integration extends AbstractFormIntegration implements AdminPanelInterf
 			return $recipient;
 		}
 
-		$recipientField = str_replace( [ '[', ']' ], '', $formParameter['recipient'] );
+		$recipientField = str_replace( array( '[', ']' ), '', $formParameter['recipient'] );
 
 		if ( isset( $postParameter[ $recipientField ] ) ) {
 			return sanitize_email( $postParameter[ $recipientField ] );
@@ -216,10 +237,13 @@ class CF7Integration extends AbstractFormIntegration implements AdminPanelInterf
 	public function onSubmit( $form, &$abort, $submission ): void {
 		$formId = $form->id();
 
-		$this->getLogger()->debug( 'CF7 form submission received', [
-			'plugin'  => 'double-opt-in',
-			'form_id' => $formId,
-		] );
+		$this->getLogger()->debug(
+			'CF7 form submission received',
+			array(
+				'plugin'  => 'double-opt-in',
+				'form_id' => $formId,
+			)
+		);
 
 		if ( ! $this->isOptInEnabled( $formId ) ) {
 			// Handle file attachments for confirmation
@@ -233,15 +257,18 @@ class CF7Integration extends AbstractFormIntegration implements AdminPanelInterf
 		remove_action( 'wpcf7_before_send_mail', 'cfdb7_before_send_mail' );
 
 		// Create form data
-		$formData = FormData::fromCF7( $form, $submission );
+		$formData      = FormData::fromCF7( $form, $submission );
 		$formParameter = $this->getFormParameter( $formId );
 
 		// Check skip filter
 		if ( apply_filters( 'f12_cf7_doubleoptin_skip_option', false, $formId, $formData->getFields(), 'cf7' ) ) {
-			$this->getLogger()->info( 'OptIn skipped by filter', [
-				'plugin'  => 'double-opt-in',
-				'form_id' => $formId,
-			] );
+			$this->getLogger()->info(
+				'OptIn skipped by filter',
+				array(
+					'plugin'  => 'double-opt-in',
+					'form_id' => $formId,
+				)
+			);
 			return;
 		}
 
@@ -299,15 +326,18 @@ class CF7Integration extends AbstractFormIntegration implements AdminPanelInterf
 		$optIn->save();
 
 		// Prepare mail arguments
-		$args = apply_filters( 'f12-cf7-doubleoptin-cf7-args', [
-			'subject'            => $formParameter['subject'] ?? '',
-			'body'               => $body,
-			'sender'             => $formParameter['sender'] ?? '',
-			'sender_name'        => $formParameter['sender_name'] ?? '',
-			'recipient'          => $optIn->get_email(),
-			'use_html'           => true,
-			'additional_headers' => '',
-		] );
+		$args = apply_filters(
+			'f12-cf7-doubleoptin-cf7-args',
+			array(
+				'subject'            => $formParameter['subject'] ?? '',
+				'body'               => $body,
+				'sender'             => $formParameter['sender'] ?? '',
+				'sender_name'        => $formParameter['sender_name'] ?? '',
+				'recipient'          => $optIn->get_email(),
+				'use_html'           => true,
+				'additional_headers' => '',
+			)
+		);
 
 		if ( ! empty( $args['sender_name'] ) ) {
 			$args['additional_headers'] .= 'From: ' . $args['sender_name'] . ' <' . $args['sender'] . '>';
@@ -316,11 +346,14 @@ class CF7Integration extends AbstractFormIntegration implements AdminPanelInterf
 		// Send via CF7 mail system
 		\WPCF7_Mail::send( $args, 'mail' );
 
-		$this->getLogger()->info( 'OptIn mail sent via CF7', [
-			'plugin'    => 'double-opt-in',
-			'form_id'   => $formData->getFormId(),
-			'recipient' => $args['recipient'],
-		] );
+		$this->getLogger()->info(
+			'OptIn mail sent via CF7',
+			array(
+				'plugin'    => 'double-opt-in',
+				'form_id'   => $formData->getFormId(),
+				'recipient' => $args['recipient'],
+			)
+		);
 
 		return true;
 	}
@@ -330,9 +363,12 @@ class CF7Integration extends AbstractFormIntegration implements AdminPanelInterf
 	 */
 	public function sendConfirmationMail( OptIn $optIn ): void {
 		if ( ! $this->isAvailable() ) {
-			$this->getLogger()->warning( 'CF7 not available for confirmation mail', [
-				'plugin' => 'double-opt-in',
-			] );
+			$this->getLogger()->warning(
+				'CF7 not available for confirmation mail',
+				array(
+					'plugin' => 'double-opt-in',
+				)
+			);
 			return;
 		}
 
@@ -345,15 +381,18 @@ class CF7Integration extends AbstractFormIntegration implements AdminPanelInterf
 		// Get CF7 form
 		$contactForm = \WPCF7_ContactForm::get_instance( $optIn->get_cf_form_id() );
 		if ( ! $contactForm ) {
-			$this->getLogger()->warning( 'CF7 form not found for confirmation mail', [
-				'plugin'  => 'double-opt-in',
-				'form_id' => $optIn->get_cf_form_id(),
-			] );
+			$this->getLogger()->warning(
+				'CF7 form not found for confirmation mail',
+				array(
+					'plugin'  => 'double-opt-in',
+					'form_id' => $optIn->get_cf_form_id(),
+				)
+			);
 			return;
 		}
 
 		// Add attachment hook
-		add_action( 'wpcf7_before_send_mail', [ $this, 'attachExtraAttachments' ], 10, 3 );
+		add_action( 'wpcf7_before_send_mail', array( $this, 'attachExtraAttachments' ), 10, 3 );
 
 		// Disable validation and spam checks before creating submission
 		$this->beforeSendConfirmationMail();
@@ -364,11 +403,14 @@ class CF7Integration extends AbstractFormIntegration implements AdminPanelInterf
 		// Re-enable validation and spam checks
 		$this->afterSendConfirmationMail();
 
-		$this->getLogger()->info( 'Confirmation mail triggered via CF7', [
-			'plugin'   => 'double-opt-in',
-			'form_id'  => $optIn->get_cf_form_id(),
-			'optin_id' => $optIn->get_id(),
-		] );
+		$this->getLogger()->info(
+			'Confirmation mail triggered via CF7',
+			array(
+				'plugin'   => 'double-opt-in',
+				'form_id'  => $optIn->get_cf_form_id(),
+				'optin_id' => $optIn->get_id(),
+			)
+		);
 	}
 
 	/**
@@ -459,21 +501,46 @@ class CF7Integration extends AbstractFormIntegration implements AdminPanelInterf
 	}
 
 	/**
-	 * Cleanup stored files after request.
+	 * File hand-off — for CF7, the "form system" is the confirmation
+	 * mail itself. The hand-off completes when `attachExtraAttachments`
+	 * has added the pending files as mail attachments and CF7 has sent
+	 * the mail. By the time `cleanupPendingAfterMail` invokes the
+	 * template-method (registered on `after_send_default_mail`), this
+	 * has already happened and returning true triggers the pending/
+	 * cleanup — single source of truth = the recipient's mailbox.
 	 *
-	 * @return void
+	 * Differs from WPForms/GF (where the integration's own DB owns the
+	 * file URL) in WHEN the hand-off happens, not WHAT it returns. The
+	 * hook timing in registerHooks() is the actual difference.
+	 *
+	 * {@inheritdoc}
 	 */
-	public function cleanupFiles(): void {
-		if ( ! isset( $_GET['optin'] ) ) {
-			return;
-		}
+	public function handOffFilesToFormSystem( OptIn $optIn ): bool {
+		return true;
+	}
 
-		$hash  = sanitize_text_field( $_GET['optin'] );
-		$optIn = OptIn::get_by_hash( $hash );
-
-		if ( $optIn && $optIn->isType( $this->getIdentifier() ) ) {
-			$this->removeStoredFiles( $optIn );
-		}
+	/**
+	 * CF7-specific cleanup wrapper. Hooks the file-lifecycle template-
+	 * method onto `f12_cf7_doubleoptin_after_send_default_mail` rather
+	 * than `f12_cf7_doubleoptin_after_confirm` (the timing the other
+	 * integrations use), so pending files survive long enough for
+	 * `attachExtraAttachments` to attach them to the confirmation mail.
+	 *
+	 * Edge case: if `f12_cf7_doubleoptin_send_default_mail` filter is
+	 * false (admin opted out of the CF7 confirmation mail), this hook
+	 * never fires and pending/ stays populated until the OptIn-deletion
+	 * cron sweeps it via cascade-delete. Acceptable per the plan's
+	 * fault-tolerance pattern — no silent data loss, just delayed
+	 * cleanup.
+	 *
+	 * @param OptIn $optIn The just-confirmed opt-in (action arg).
+	 *
+	 * @since 4.3.0
+	 */
+	public function cleanupPendingAfterMail( OptIn $optIn ): void {
+		// Template-method's $hash arg is unused inside processFilesOnConfirm;
+		// passing an empty string keeps the contract tight.
+		$this->processFilesOnConfirm( '', $optIn );
 	}
 
 	/**
@@ -483,15 +550,15 @@ class CF7Integration extends AbstractFormIntegration implements AdminPanelInterf
 		$formId = (int) $formId;
 		$post   = get_post( $formId );
 		if ( ! $post || $post->post_type !== 'wpcf7_contact_form' ) {
-			return [];
+			return array();
 		}
 
 		$contactForm = \WPCF7_ContactForm::get_instance( $formId );
 		if ( ! $contactForm ) {
-			return [];
+			return array();
 		}
 
-		$fields = [];
+		$fields = array();
 		$tags   = $contactForm->scan_form_tags();
 
 		foreach ( $tags as $tag ) {
@@ -511,10 +578,10 @@ class CF7Integration extends AbstractFormIntegration implements AdminPanelInterf
 	 * @return array Modified panels.
 	 */
 	public function addEditorPanel( array $panels ): array {
-		$panels['optin'] = [
+		$panels['optin'] = array(
 			'title'    => $this->getPanelTitle(),
-			'callback' => [ $this, 'renderPanel' ],
-		];
+			'callback' => array( $this, 'renderPanel' ),
+		);
 		return $panels;
 	}
 
@@ -551,14 +618,17 @@ class CF7Integration extends AbstractFormIntegration implements AdminPanelInterf
 		}
 
 		$metadata   = $this->getFormParameter( $post->id() );
-		$centralUrl = admin_url( 'admin.php?page=f12-cf7-doubleoptin_forms' );
+		$centralUrl = admin_url( 'admin.php?page=f12-doi-admin#/forms' );
 		$isEnabled  = $this->isOptInEnabled( $post->id() );
 
-		$this->getLogger()->debug( 'Rendering CF7 panel notice', [
-			'plugin'  => 'double-opt-in',
-			'form_id' => $post->id(),
-			'enabled' => $isEnabled,
-		] );
+		$this->getLogger()->debug(
+			'Rendering CF7 panel notice',
+			array(
+				'plugin'  => 'double-opt-in',
+				'form_id' => $post->id(),
+				'enabled' => $isEnabled,
+			)
+		);
 		?>
 		<div class="doi-cf7-notice" style="padding: 20px;">
 			<div style="background: #fff; border: 1px solid #c3c4c7; border-radius: 4px; padding: 20px;">
@@ -594,7 +664,7 @@ class CF7Integration extends AbstractFormIntegration implements AdminPanelInterf
 	 */
 	public function save( int $formId, array $data ): bool {
 		if ( ! isset( $data['doubleoptin'] ) ) {
-			update_post_meta( $formId, 'f12-cf7-doubleoptin', [] );
+			update_post_meta( $formId, 'f12-cf7-doubleoptin', array() );
 			return true;
 		}
 
@@ -655,12 +725,12 @@ class CF7Integration extends AbstractFormIntegration implements AdminPanelInterf
 	 * {@inheritdoc}
 	 */
 	public function getAvailableTemplates(): array {
-		$templates = [
+		$templates = array(
 			'blank'           => 'blank',
 			'newsletter_en'   => 'newsletter_en',
 			'newsletter_en_2' => 'newsletter_en_2',
 			'newsletter_en_3' => 'newsletter_en_3',
-		];
+		);
 
 		// Add custom templates
 		try {
@@ -682,13 +752,16 @@ class CF7Integration extends AbstractFormIntegration implements AdminPanelInterf
 	 * {@inheritdoc}
 	 */
 	public function getAvailableCategories(): array {
-		$categories = [ 0 => __( 'Please select', 'double-opt-in' ) ];
+		$categories = array( 0 => __( 'Please select', 'double-opt-in' ) );
 
-		$list = Category::get_list( [
-			'perPage' => -1,
-			'orderBy' => 'name',
-			'order'   => 'ASC',
-		], $numberOfPages );
+		$list = Category::get_list(
+			array(
+				'perPage' => -1,
+				'orderBy' => 'name',
+				'order'   => 'ASC',
+			),
+			$numberOfPages
+		);
 
 		foreach ( $list as $category ) {
 			$categories[ $category->get_id() ] = $category->get_name();

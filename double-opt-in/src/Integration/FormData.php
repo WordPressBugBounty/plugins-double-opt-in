@@ -115,18 +115,21 @@ final class FormData implements FormDataInterface {
 		int $formId,
 		string $formType,
 		array $fields,
-		array $files = [],
-		array $meta = [],
+		array $files = array(),
+		array $meta = array(),
 		string $recipientEmail = '',
 		string $formHtml = ''
 	): self {
 		// Set default metadata
-		$meta = array_merge( [
-			'source_url' => '',
-			'timestamp'  => time(),
-			'ip_address' => '',
-			'user_agent' => '',
-		], $meta );
+		$meta = array_merge(
+			array(
+				'source_url' => '',
+				'timestamp'  => time(),
+				'ip_address' => '',
+				'user_agent' => '',
+			),
+			$meta
+		);
 
 		return new self( $formId, $formType, $fields, $files, $meta, $recipientEmail, $formHtml );
 	}
@@ -142,9 +145,9 @@ final class FormData implements FormDataInterface {
 		return new self(
 			(int) ( $data['formId'] ?? $data['form_id'] ?? 0 ),
 			(string) ( $data['formType'] ?? $data['form_type'] ?? '' ),
-			(array) ( $data['fields'] ?? [] ),
-			(array) ( $data['files'] ?? [] ),
-			(array) ( $data['meta'] ?? [] ),
+			(array) ( $data['fields'] ?? array() ),
+			(array) ( $data['files'] ?? array() ),
+			(array) ( $data['meta'] ?? array() ),
 			(string) ( $data['recipientEmail'] ?? $data['recipient_email'] ?? '' ),
 			(string) ( $data['formHtml'] ?? $data['form_html'] ?? '' )
 		);
@@ -159,21 +162,21 @@ final class FormData implements FormDataInterface {
 	 * @return self
 	 */
 	public static function fromCF7( $form, $submission ): self {
-		$postedData   = $submission->get_posted_data();
+		$postedData    = $submission->get_posted_data();
 		$uploadedFiles = $submission->uploaded_files();
 
 		// Normalize files to array format
-		$files = [];
+		$files = array();
 		foreach ( $uploadedFiles as $key => $fileList ) {
-			$files[ $key ] = is_array( $fileList ) ? $fileList : [ $fileList ];
+			$files[ $key ] = is_array( $fileList ) ? $fileList : array( $fileList );
 		}
 
-		$meta = [
+		$meta = array(
 			'source_url' => $submission->get_meta( 'url' ),
 			'timestamp'  => $submission->get_meta( 'timestamp' ),
 			'ip_address' => $submission->get_meta( 'remote_ip' ),
 			'user_agent' => $submission->get_meta( 'user_agent' ),
-		];
+		);
 
 		return self::create(
 			$form->id(),
@@ -195,21 +198,21 @@ final class FormData implements FormDataInterface {
 	 * @return self
 	 */
 	public static function fromAvada( int $formId, array $formData ): self {
-		$fields = $formData['data'] ?? [];
-		$files  = [];
+		$fields = $formData['data'] ?? array();
+		$files  = array();
 
 		// Handle attachments
 		if ( isset( $formData['form_parameter']['attachments'] ) ) {
 			$files['attachments'] = $formData['form_parameter']['attachments'];
 		}
 
-		$meta = [
+		$meta = array(
 			'source_url'         => $formData['submission']['source_url'] ?? '',
 			'timestamp'          => time(),
-			'field_labels'       => $formData['field_labels'] ?? [],
-			'field_types'        => $formData['field_types'] ?? [],
-			'hidden_field_names' => $formData['hidden_field_names'] ?? [],
-		];
+			'field_labels'       => $formData['field_labels'] ?? array(),
+			'field_types'        => $formData['field_types'] ?? array(),
+			'hidden_field_names' => $formData['hidden_field_names'] ?? array(),
+		);
 
 		$formPost = get_post( $formId );
 		$formHtml = $formPost ? do_shortcode( $formPost->post_content ) : '';
@@ -236,20 +239,38 @@ final class FormData implements FormDataInterface {
 	 * @return self
 	 */
 	public static function fromWPForms( int $formId, array $fields, array $entry, array $formData ): self {
-		// Normalize fields to simple key => value format
-		$normalizedFields = [];
-		foreach ( $fields as $fieldId => $field ) {
+		// Normalize fields to simple key => value format.
+		//
+		// WPForms's `wpforms_process_complete` action passes `$fields` in
+		// a shape that varies between WPForms-Lite, WPForms-Pro, and
+		// some Pro versions in particular: the OUTER array key is
+		// sometimes the actual WPForms field id (1, 2, 3, 4 …), but on
+		// at least Pro 1.9.x it's a zero-based array index (0, 1, 2, 3)
+		// while each entry carries the real field id in `$field['id']`.
+		// User-reported 2026-05-13: the bare-key lookup
+		// `$normalizedFields[2]` returned the SUBJECT field (array index
+		// 2) instead of the EMAIL field (id 2), so resolveRecipient
+		// sanitized non-email text to '' and the DOI mail never sent.
+		//
+		// Use `$field['id']` when present so downstream lookups
+		// (resolveRecipient, validateConsentAcceptance, field_mapping)
+		// always see field-ID-keyed entries, regardless of which
+		// WPForms version generated the payload.
+		$normalizedFields = array();
+		foreach ( $fields as $arrayIndex => $field ) {
 			if ( is_array( $field ) ) {
-				$normalizedFields[ $fieldId ] = $field['value'] ?? '';
-				// Also store the full field data with name
+				$fieldId = isset( $field['id'] ) && $field['id'] !== ''
+					? $field['id']
+					: $arrayIndex;
+				$normalizedFields[ $fieldId ]            = $field['value'] ?? '';
 				$normalizedFields[ 'field_' . $fieldId ] = $field;
 			} else {
-				$normalizedFields[ $fieldId ] = $field;
+				$normalizedFields[ $arrayIndex ] = $field;
 			}
 		}
 
 		// Extract files from fields
-		$files = [];
+		$files = array();
 		foreach ( $fields as $fieldId => $field ) {
 			if ( is_array( $field ) && isset( $field['type'] ) && $field['type'] === 'file-upload' ) {
 				if ( ! empty( $field['value_raw'] ) ) {
@@ -258,12 +279,12 @@ final class FormData implements FormDataInterface {
 			}
 		}
 
-		$meta = [
-			'source_url'  => wp_get_referer() ?: '',
-			'timestamp'   => time(),
-			'entry'       => $entry,
-			'form_title'  => $formData['settings']['form_title'] ?? '',
-		];
+		$meta = array(
+			'source_url' => wp_get_referer() ?: '',
+			'timestamp'  => time(),
+			'entry'      => $entry,
+			'form_title' => $formData['settings']['form_title'] ?? '',
+		);
 
 		return self::create(
 			$formId,
@@ -287,8 +308,8 @@ final class FormData implements FormDataInterface {
 	 */
 	public static function fromGravityForms( int $formId, array $entry, array $form ): self {
 		// Extract field values from entry
-		$fields = [];
-		$files  = [];
+		$fields = array();
+		$files  = array();
 
 		if ( ! empty( $form['fields'] ) ) {
 			foreach ( $form['fields'] as $field ) {
@@ -298,7 +319,7 @@ final class FormData implements FormDataInterface {
 				if ( $field->type === 'fileupload' ) {
 					$value = $entry[ $fieldId ] ?? '';
 					if ( ! empty( $value ) ) {
-						$files[ $fieldId ] = is_array( $value ) ? $value : [ $value ];
+						$files[ $fieldId ] = is_array( $value ) ? $value : array( $value );
 					}
 					continue;
 				}
@@ -311,22 +332,20 @@ final class FormData implements FormDataInterface {
 							$fields[ $inputId ] = $entry[ $inputId ];
 						}
 					}
-				} else {
-					if ( isset( $entry[ $fieldId ] ) ) {
+				} elseif ( isset( $entry[ $fieldId ] ) ) {
 						$fields[ $fieldId ] = $entry[ $fieldId ];
-					}
 				}
 			}
 		}
 
-		$meta = [
+		$meta = array(
 			'source_url' => $entry['source_url'] ?? '',
 			'timestamp'  => strtotime( $entry['date_created'] ?? 'now' ),
 			'ip_address' => $entry['ip'] ?? '',
 			'user_agent' => $entry['user_agent'] ?? '',
 			'entry_id'   => $entry['id'] ?? 0,
 			'form_title' => $form['title'] ?? '',
-		];
+		);
 
 		return self::create(
 			$formId,
@@ -413,7 +432,7 @@ final class FormData implements FormDataInterface {
 	 * {@inheritdoc}
 	 */
 	public function toArray(): array {
-		return [
+		return array(
 			'formId'         => $this->formId,
 			'formType'       => $this->formType,
 			'fields'         => $this->fields,
@@ -421,7 +440,7 @@ final class FormData implements FormDataInterface {
 			'meta'           => $this->meta,
 			'recipientEmail' => $this->recipientEmail,
 			'formHtml'       => $this->formHtml,
-		];
+		);
 	}
 
 	/**

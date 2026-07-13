@@ -39,7 +39,7 @@ class SingleConsentExportController {
 	public function registerActions(): void {
 		// Register at default priority (10). The Pro plugin registers at priority 5
 		// and removes this handler, providing extended export features.
-		add_action( 'wp_ajax_doi_export_consent', [ $this, 'handleExport' ] );
+		add_action( 'wp_ajax_doi_export_consent', array( $this, 'handleExport' ) );
 	}
 
 	/**
@@ -75,12 +75,12 @@ class SingleConsentExportController {
 
 		$record = $this->formatRecord( $optIn );
 		$format = isset( $_REQUEST['format'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['format'] ) ) : 'csv';
-		$format = in_array( $format, [ 'csv', 'json' ], true ) ? $format : 'csv';
+		$format = in_array( $format, array( 'csv', 'json' ), true ) ? $format : 'csv';
 
 		$filename = sanitize_file_name( 'consent-export-' . gmdate( 'Y-m-d-His' ) );
 
 		if ( $format === 'json' ) {
-			$content = wp_json_encode( [ $record ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE );
+			$content = wp_json_encode( array( $record ), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE );
 			header( 'Content-Type: application/json; charset=utf-8' );
 			header( 'Content-Disposition: attachment; filename="' . esc_attr( $filename ) . '.json"' );
 		} else {
@@ -101,7 +101,7 @@ class SingleConsentExportController {
 	private function formatRecord( OptIn $optIn ): array {
 		$dateFormat = get_option( 'date_format' ) . ' ' . get_option( 'time_format' );
 
-		return [
+		return array(
 			'id'                => $optIn->getId(),
 			'email'             => $optIn->getEmail(),
 			'form_id'           => $optIn->getFormId(),
@@ -121,7 +121,7 @@ class SingleConsentExportController {
 			'confirmation_ip'   => $optIn->getIpConfirmation(),
 			'optout_ip'         => $optIn->getIpOptOut(),
 			'hash'              => $optIn->getHash(),
-		];
+		);
 	}
 
 	private function toCsv( array $record ): string {

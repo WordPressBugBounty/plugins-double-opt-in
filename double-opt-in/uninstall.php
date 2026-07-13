@@ -10,6 +10,26 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 
 require_once plugin_dir_path( __FILE__ ) . 'logger/logger.php';
 
+/**
+ * Whether the admin asked to KEEP opt-in data when deleting the plugin.
+ *
+ * Defaults to KEEP: data is dropped ONLY when the
+ * `keep_data_on_uninstall` setting is explicitly 0. A site that never
+ * touched the setting (key absent) keeps its data — deleting the plugin
+ * must never silently destroy GDPR consent records.
+ *
+ * @return bool True if the opt-in tables should be preserved.
+ */
+function should_keep_data_on_uninstall(): bool {
+	$settings = get_option( 'f12-doi-settings', array() );
+
+	if ( ! is_array( $settings ) || ! array_key_exists( 'keep_data_on_uninstall', $settings ) ) {
+		return true; // key absent → safe default: keep.
+	}
+
+	return (int) $settings['keep_data_on_uninstall'] !== 0;
+}
+
 function drop_table_optin() {
 	global $wpdb;
 
@@ -56,5 +76,14 @@ function drop_table_categories() {
 	] );
 }
 
-drop_table_categories();
-drop_table_optin();
+if ( should_keep_data_on_uninstall() ) {
+	Logger::getInstance()->info( 'Uninstall: keeping opt-in data (keep_data_on_uninstall enabled).', [
+		'plugin' => 'double-opt-in',
+	] );
+} else {
+	Logger::getInstance()->info( 'Uninstall: deleting opt-in data (keep_data_on_uninstall disabled by admin).', [
+		'plugin' => 'double-opt-in',
+	] );
+	drop_table_categories();
+	drop_table_optin();
+}

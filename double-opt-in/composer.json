@@ -1,0 +1,36 @@
+{
+    "name": "forge12/double-opt-in",
+    "description": "Double Opt-In for WordPress — GDPR compliant email verification. Core plugin of the Double Opt-In addon family.",
+    "type": "wordpress-plugin",
+    "license": "GPL-2.0-or-later",
+    "authors": [
+        {
+            "name": "Forge12 Interactive GmbH",
+            "email": "info@forge12.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Forge12\\DoubleOptIn\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Forge12\\DoubleOptIn\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "phpunit",
+        "test:unit": "phpunit --testsuite unit",
+        "test:integration": "phpunit --testsuite integration"
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        },
+        "sort-packages": true
+    }
+}

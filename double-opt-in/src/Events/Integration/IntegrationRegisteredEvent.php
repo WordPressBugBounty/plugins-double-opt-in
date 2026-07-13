@@ -17,8 +17,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Class IntegrationRegisteredEvent
  *
+ * @api
+ *
  * Dispatched after a form integration is registered in the registry.
  * Useful for extending or modifying integration behavior.
+ * Covered by the Addon API semver policy as of Core API 4.3.0.
  */
 class IntegrationRegisteredEvent extends Event {
 

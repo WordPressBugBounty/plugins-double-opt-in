@@ -48,10 +48,13 @@ class OptInRepository implements OptInRepositoryInterface {
 		);
 
 		if ( ! $row ) {
-			$this->logger->debug( 'OptIn not found by ID', [
-				'plugin' => 'double-opt-in',
-				'id'     => $id,
-			] );
+			$this->logger->debug(
+				'OptIn not found by ID',
+				array(
+					'plugin' => 'double-opt-in',
+					'id'     => $id,
+				)
+			);
 			return null;
 		}
 
@@ -70,10 +73,13 @@ class OptInRepository implements OptInRepositoryInterface {
 		);
 
 		if ( ! $row ) {
-			$this->logger->debug( 'OptIn not found by hash', [
-				'plugin' => 'double-opt-in',
-				'hash'   => $hash,
-			] );
+			$this->logger->debug(
+				'OptIn not found by hash',
+				array(
+					'plugin' => 'double-opt-in',
+					'hash'   => $hash,
+				)
+			);
 			return null;
 		}
 
@@ -91,7 +97,7 @@ class OptInRepository implements OptInRepositoryInterface {
 			ARRAY_A
 		);
 
-		return array_map( [ OptIn::class, 'fromArray' ], $rows ?: [] );
+		return array_map( array( OptIn::class, 'fromArray' ), $rows ?: array() );
 	}
 
 	/**
@@ -108,7 +114,7 @@ class OptInRepository implements OptInRepositoryInterface {
 			ARRAY_A
 		);
 
-		return array_map( [ OptIn::class, 'fromArray' ], $rows ?: [] );
+		return array_map( array( OptIn::class, 'fromArray' ), $rows ?: array() );
 	}
 
 	/**
@@ -125,16 +131,16 @@ class OptInRepository implements OptInRepositoryInterface {
 			ARRAY_A
 		);
 
-		return array_map( [ OptIn::class, 'fromArray' ], $rows ?: [] );
+		return array_map( array( OptIn::class, 'fromArray' ), $rows ?: array() );
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
-	public function findByCategory( int $categoryId, array $options = [] ): array {
+	public function findByCategory( int $categoryId, array $options = array() ): array {
 		$perPage = max( 1, (int) ( $options['perPage'] ?? 10 ) );
 		$page    = max( 1, (int) ( $options['page'] ?? 1 ) );
-		$orderBy = in_array( $options['orderBy'] ?? 'id', [ 'id', 'createtime', 'updatetime', 'email' ], true )
+		$orderBy = in_array( $options['orderBy'] ?? 'id', array( 'id', 'createtime', 'updatetime', 'email' ), true )
 			? $options['orderBy']
 			: 'id';
 		$order   = strtoupper( $options['order'] ?? 'DESC' ) === 'ASC' ? 'ASC' : 'DESC';
@@ -142,7 +148,7 @@ class OptInRepository implements OptInRepositoryInterface {
 		$offset  = ( $page - 1 ) * $perPage;
 
 		$where  = 'WHERE category = %d';
-		$params = [ $categoryId ];
+		$params = array( $categoryId );
 
 		if ( ! empty( $keyword ) ) {
 			$where   .= ' AND content LIKE %s';
@@ -151,18 +157,21 @@ class OptInRepository implements OptInRepositoryInterface {
 
 		$query = $this->wpdb->prepare(
 			"SELECT * FROM {$this->table} {$where} ORDER BY {$orderBy} {$order} LIMIT %d OFFSET %d",
-			array_merge( $params, [ $perPage, $offset ] )
+			array_merge( $params, array( $perPage, $offset ) )
 		);
 
 		$rows = $this->wpdb->get_results( $query, ARRAY_A );
 
-		$this->logger->debug( 'OptIns fetched by category', [
-			'plugin'   => 'double-opt-in',
-			'category' => $categoryId,
-			'count'    => count( $rows ?: [] ),
-		] );
+		$this->logger->debug(
+			'OptIns fetched by category',
+			array(
+				'plugin'   => 'double-opt-in',
+				'category' => $categoryId,
+				'count'    => count( $rows ?: array() ),
+			)
+		);
 
-		return array_map( [ OptIn::class, 'fromArray' ], $rows ?: [] );
+		return array_map( array( OptIn::class, 'fromArray' ), $rows ?: array() );
 	}
 
 	/**
@@ -170,7 +179,7 @@ class OptInRepository implements OptInRepositoryInterface {
 	 */
 	public function countByCategory( int $categoryId, string $keyword = '' ): int {
 		$where  = 'WHERE category = %d';
-		$params = [ $categoryId ];
+		$params = array( $categoryId );
 
 		if ( ! empty( $keyword ) ) {
 			$where   .= ' AND content LIKE %s';
@@ -221,10 +230,13 @@ class OptInRepository implements OptInRepositoryInterface {
 		$result = $this->wpdb->insert( $this->table, $data );
 
 		if ( $result === false ) {
-			$this->logger->error( 'Failed to insert OptIn', [
-				'plugin' => 'double-opt-in',
-				'error'  => $this->wpdb->last_error,
-			] );
+			$this->logger->error(
+				'Failed to insert OptIn',
+				array(
+					'plugin' => 'double-opt-in',
+					'error'  => $this->wpdb->last_error,
+				)
+			);
 			throw new \RuntimeException( 'Failed to save OptIn: ' . $this->wpdb->last_error );
 		}
 
@@ -233,14 +245,17 @@ class OptInRepository implements OptInRepositoryInterface {
 
 		// Generate cryptographically secure hash
 		$hash = bin2hex( random_bytes( 32 ) );
-		$this->wpdb->update( $this->table, [ 'hash' => $hash ], [ 'id' => $id ] );
+		$this->wpdb->update( $this->table, array( 'hash' => $hash ), array( 'id' => $id ) );
 		$optIn->setHash( $hash );
 
-		$this->logger->info( 'OptIn created', [
-			'plugin' => 'double-opt-in',
-			'id'     => $id,
-			'hash'   => $hash,
-		] );
+		$this->logger->info(
+			'OptIn created',
+			array(
+				'plugin' => 'double-opt-in',
+				'id'     => $id,
+				'hash'   => $hash,
+			)
+		);
 
 		return $optIn;
 	}
@@ -257,21 +272,27 @@ class OptInRepository implements OptInRepositoryInterface {
 		$id   = $data['id'];
 		unset( $data['id'] );
 
-		$result = $this->wpdb->update( $this->table, $data, [ 'id' => $id ] );
+		$result = $this->wpdb->update( $this->table, $data, array( 'id' => $id ) );
 
 		if ( $result === false ) {
-			$this->logger->error( 'Failed to update OptIn', [
-				'plugin' => 'double-opt-in',
-				'id'     => $id,
-				'error'  => $this->wpdb->last_error,
-			] );
+			$this->logger->error(
+				'Failed to update OptIn',
+				array(
+					'plugin' => 'double-opt-in',
+					'id'     => $id,
+					'error'  => $this->wpdb->last_error,
+				)
+			);
 			throw new \RuntimeException( 'Failed to update OptIn: ' . $this->wpdb->last_error );
 		}
 
-		$this->logger->info( 'OptIn updated', [
-			'plugin' => 'double-opt-in',
-			'id'     => $id,
-		] );
+		$this->logger->info(
+			'OptIn updated',
+			array(
+				'plugin' => 'double-opt-in',
+				'id'     => $id,
+			)
+		);
 
 		return $optIn;
 	}
@@ -280,21 +301,27 @@ class OptInRepository implements OptInRepositoryInterface {
 	 * {@inheritdoc}
 	 */
 	public function delete( OptIn $optIn ): bool {
-		$result = $this->wpdb->delete( $this->table, [ 'id' => $optIn->getId() ] );
+		$result = $this->wpdb->delete( $this->table, array( 'id' => $optIn->getId() ) );
 
 		if ( $result === false ) {
-			$this->logger->error( 'Failed to delete OptIn', [
-				'plugin' => 'double-opt-in',
-				'id'     => $optIn->getId(),
-				'error'  => $this->wpdb->last_error,
-			] );
+			$this->logger->error(
+				'Failed to delete OptIn',
+				array(
+					'plugin' => 'double-opt-in',
+					'id'     => $optIn->getId(),
+					'error'  => $this->wpdb->last_error,
+				)
+			);
 			return false;
 		}
 
-		$this->logger->info( 'OptIn deleted', [
-			'plugin' => 'double-opt-in',
-			'id'     => $optIn->getId(),
-		] );
+		$this->logger->info(
+			'OptIn deleted',
+			array(
+				'plugin' => 'double-opt-in',
+				'id'     => $optIn->getId(),
+			)
+		);
 
 		return true;
 	}
@@ -305,22 +332,28 @@ class OptInRepository implements OptInRepositoryInterface {
 	public function deleteByHash( string $hash ): int {
 		$hash = sanitize_text_field( $hash );
 
-		$result = $this->wpdb->delete( $this->table, [ 'hash' => $hash ] );
+		$result = $this->wpdb->delete( $this->table, array( 'hash' => $hash ) );
 
 		if ( $result === false ) {
-			$this->logger->error( 'Failed to delete OptIn by hash', [
-				'plugin' => 'double-opt-in',
-				'hash'   => $hash,
-				'error'  => $this->wpdb->last_error,
-			] );
+			$this->logger->error(
+				'Failed to delete OptIn by hash',
+				array(
+					'plugin' => 'double-opt-in',
+					'hash'   => $hash,
+					'error'  => $this->wpdb->last_error,
+				)
+			);
 			return 0;
 		}
 
-		$this->logger->info( 'OptIn deleted by hash', [
-			'plugin'  => 'double-opt-in',
-			'hash'    => $hash,
-			'deleted' => $result,
-		] );
+		$this->logger->info(
+			'OptIn deleted by hash',
+			array(
+				'plugin'  => 'double-opt-in',
+				'hash'    => $hash,
+				'deleted' => $result,
+			)
+		);
 
 		return (int) $result;
 	}
@@ -331,16 +364,19 @@ class OptInRepository implements OptInRepositoryInterface {
 	public function bulkUpdateCategory( int $fromCategoryId, int $toCategoryId ): int {
 		$result = $this->wpdb->update(
 			$this->table,
-			[ 'category' => $toCategoryId ],
-			[ 'category' => $fromCategoryId ]
+			array( 'category' => $toCategoryId ),
+			array( 'category' => $fromCategoryId )
 		);
 
-		$this->logger->info( 'Bulk category update', [
-			'plugin'  => 'double-opt-in',
-			'from'    => $fromCategoryId,
-			'to'      => $toCategoryId,
-			'updated' => $result,
-		] );
+		$this->logger->info(
+			'Bulk category update',
+			array(
+				'plugin'  => 'double-opt-in',
+				'from'    => $fromCategoryId,
+				'to'      => $toCategoryId,
+				'updated' => $result,
+			)
+		);
 
 		return $result === false ? 0 : (int) $result;
 	}
@@ -360,12 +396,15 @@ class OptInRepository implements OptInRepositoryInterface {
 			)
 		);
 
-		$this->logger->notice( 'OptIns older than threshold deleted', [
-			'plugin'    => 'double-opt-in',
-			'threshold' => $dateTime,
-			'confirmed' => $confirmed,
-			'deleted'   => $result,
-		] );
+		$this->logger->notice(
+			'OptIns older than threshold deleted',
+			array(
+				'plugin'    => 'double-opt-in',
+				'threshold' => $dateTime,
+				'confirmed' => $confirmed,
+				'deleted'   => $result,
+			)
+		);
 
 		return $result === false ? 0 : (int) $result;
 	}
@@ -396,14 +435,17 @@ class OptInRepository implements OptInRepositoryInterface {
 
 		$rows = $this->wpdb->get_results( $sql, ARRAY_A );
 
-		$this->logger->debug( 'OptIns eligible for reminder fetched', [
-			'plugin' => 'double-opt-in',
-			'count'  => count( $rows ?: [] ),
-			'cutoff' => $cutoff,
-			'floor'  => $floor,
-		] );
+		$this->logger->debug(
+			'OptIns eligible for reminder fetched',
+			array(
+				'plugin' => 'double-opt-in',
+				'count'  => count( $rows ?: array() ),
+				'cutoff' => $cutoff,
+				'floor'  => $floor,
+			)
+		);
 
-		return array_map( [ OptIn::class, 'fromArray' ], $rows ?: [] );
+		return array_map( array( OptIn::class, 'fromArray' ), $rows ?: array() );
 	}
 
 	/**
@@ -414,16 +456,16 @@ class OptInRepository implements OptInRepositoryInterface {
 	 *
 	 * @return array<OptIn>
 	 */
-	public function findAll( array $options = [], ?int &$numberOfPages = null ): array {
-		$perPage  = max( 1, (int) ( $options['perPage'] ?? 10 ) );
-		$page     = max( 1, (int) ( $options['page'] ?? 1 ) );
-		$order    = strtoupper( $options['order'] ?? 'DESC' ) === 'ASC' ? 'ASC' : 'DESC';
-		$keyword  = $options['keyword'] ?? '';
-		$formId   = $options['cf_form_id'] ?? '';
-		$offset   = ( $page - 1 ) * $perPage;
+	public function findAll( array $options = array(), ?int &$numberOfPages = null ): array {
+		$perPage = max( 1, (int) ( $options['perPage'] ?? 10 ) );
+		$page    = max( 1, (int) ( $options['page'] ?? 1 ) );
+		$order   = strtoupper( $options['order'] ?? 'DESC' ) === 'ASC' ? 'ASC' : 'DESC';
+		$keyword = $options['keyword'] ?? '';
+		$formId  = $options['cf_form_id'] ?? '';
+		$offset  = ( $page - 1 ) * $perPage;
 
-		$where  = [];
-		$params = [];
+		$where  = array();
+		$params = array();
 
 		if ( ! empty( $keyword ) ) {
 			$where[]  = 'content LIKE %s';
@@ -447,12 +489,12 @@ class OptInRepository implements OptInRepositoryInterface {
 			$numberOfPages = $totalItems > 0 ? (int) ceil( $totalItems / $perPage ) : 0;
 
 			if ( $numberOfPages === 0 ) {
-				return [];
+				return array();
 			}
 		}
 
 		// Main query
-		$query = "SELECT * FROM {$this->table} {$whereClause} ORDER BY id {$order} LIMIT %d OFFSET %d";
+		$query    = "SELECT * FROM {$this->table} {$whereClause} ORDER BY id {$order} LIMIT %d OFFSET %d";
 		$params[] = $perPage;
 		$params[] = $offset;
 
@@ -461,13 +503,16 @@ class OptInRepository implements OptInRepositoryInterface {
 			ARRAY_A
 		);
 
-		$this->logger->debug( 'OptIns fetched', [
-			'plugin' => 'double-opt-in',
-			'count'  => count( $rows ?: [] ),
-			'page'   => $page,
-		] );
+		$this->logger->debug(
+			'OptIns fetched',
+			array(
+				'plugin' => 'double-opt-in',
+				'count'  => count( $rows ?: array() ),
+				'page'   => $page,
+			)
+		);
 
-		return array_map( [ OptIn::class, 'fromArray' ], $rows ?: [] );
+		return array_map( array( OptIn::class, 'fromArray' ), $rows ?: array() );
 	}
 
 	/**
@@ -481,16 +526,19 @@ class OptInRepository implements OptInRepositoryInterface {
 	public function updateCategoryById( int $optInId, int $categoryId ): bool {
 		$result = $this->wpdb->update(
 			$this->table,
-			[ 'category' => $categoryId ],
-			[ 'id' => $optInId ]
+			array( 'category' => $categoryId ),
+			array( 'id' => $optInId )
 		);
 
-		$this->logger->info( 'OptIn category updated', [
-			'plugin'   => 'double-opt-in',
-			'optInId'  => $optInId,
-			'category' => $categoryId,
-			'result'   => $result,
-		] );
+		$this->logger->info(
+			'OptIn category updated',
+			array(
+				'plugin'   => 'double-opt-in',
+				'optInId'  => $optInId,
+				'category' => $categoryId,
+				'result'   => $result,
+			)
+		);
 
 		return $result !== false;
 	}
@@ -502,7 +550,7 @@ class OptInRepository implements OptInRepositoryInterface {
 		$sql = "SELECT COUNT(*) FROM {$this->table} WHERE email = %s AND cf_form_id = %d";
 
 		if ( $confirmedOnly ) {
-			$sql .= " AND doubleoptin = 1";
+			$sql .= ' AND doubleoptin = 1';
 		}
 
 		// Opt-Outs release the email (non-opted-out entries only)

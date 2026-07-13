@@ -20,8 +20,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Class FormIntegrationRegistry
  *
+ * @api
+ *
  * Central registry for all form integrations.
  * Manages registration, discovery, and lifecycle of form system integrations.
+ *
+ * Covered by the Addon API semver policy as of Core API 4.3.0. Addons
+ * that provide a form integration register their FormIntegrationInterface
+ * implementation with this registry inside their boot() method.
  */
 final class FormIntegrationRegistry {
 
@@ -37,7 +43,7 @@ final class FormIntegrationRegistry {
 	 *
 	 * @var array<string, FormIntegrationInterface>
 	 */
-	private array $integrations = [];
+	private array $integrations = array();
 
 	/**
 	 * Whether integrations have been initialized.
@@ -117,32 +123,48 @@ final class FormIntegrationRegistry {
 		$identifier = $integration->getIdentifier();
 
 		if ( isset( $this->integrations[ $identifier ] ) ) {
-			$this->log( 'warning', 'Integration already registered', [
-				'identifier' => $identifier,
-			] );
+			$this->log(
+				'warning',
+				'Integration already registered',
+				array(
+					'identifier' => $identifier,
+				)
+			);
 			return false;
 		}
 
 		$this->integrations[ $identifier ] = $integration;
 
-		$this->log( 'info', 'Integration registered', [
-			'identifier' => $identifier,
-			'available'  => $integration->isAvailable(),
-		] );
+		$this->log(
+			'info',
+			'Integration registered',
+			array(
+				'identifier' => $identifier,
+				'available'  => $integration->isAvailable(),
+			)
+		);
 
 		// If registry is already initialized and the integration is available,
 		// register its hooks immediately (late registration support)
 		if ( $this->initialized && $integration->isAvailable() ) {
 			try {
 				$integration->registerHooks();
-				$this->log( 'info', 'Late registration: Integration hooks registered', [
-					'identifier' => $identifier,
-				] );
+				$this->log(
+					'info',
+					'Late registration: Integration hooks registered',
+					array(
+						'identifier' => $identifier,
+					)
+				);
 			} catch ( \Exception $e ) {
-				$this->log( 'error', 'Late registration: Failed to register integration hooks', [
-					'identifier' => $identifier,
-					'error'      => $e->getMessage(),
-				] );
+				$this->log(
+					'error',
+					'Late registration: Failed to register integration hooks',
+					array(
+						'identifier' => $identifier,
+						'error'      => $e->getMessage(),
+					)
+				);
 			}
 		}
 
@@ -169,9 +191,13 @@ final class FormIntegrationRegistry {
 
 		unset( $this->integrations[ $identifier ] );
 
-		$this->log( 'info', 'Integration unregistered', [
-			'identifier' => $identifier,
-		] );
+		$this->log(
+			'info',
+			'Integration unregistered',
+			array(
+				'identifier' => $identifier,
+			)
+		);
 
 		return true;
 	}
@@ -213,9 +239,12 @@ final class FormIntegrationRegistry {
 	 * @return array<string, FormIntegrationInterface>
 	 */
 	public function getAvailable(): array {
-		return array_filter( $this->integrations, function ( FormIntegrationInterface $integration ) {
-			return $integration->isAvailable();
-		} );
+		return array_filter(
+			$this->integrations,
+			function ( FormIntegrationInterface $integration ) {
+				return $integration->isAvailable();
+			}
+		);
 	}
 
 	/**
@@ -245,14 +274,22 @@ final class FormIntegrationRegistry {
 			try {
 				$integration->registerHooks();
 
-				$this->log( 'info', 'Integration hooks registered', [
-					'identifier' => $identifier,
-				] );
+				$this->log(
+					'info',
+					'Integration hooks registered',
+					array(
+						'identifier' => $identifier,
+					)
+				);
 			} catch ( \Exception $e ) {
-				$this->log( 'error', 'Failed to register integration hooks', [
-					'identifier' => $identifier,
-					'error'      => $e->getMessage(),
-				] );
+				$this->log(
+					'error',
+					'Failed to register integration hooks',
+					array(
+						'identifier' => $identifier,
+						'error'      => $e->getMessage(),
+					)
+				);
 			}
 		}
 
@@ -279,7 +316,7 @@ final class FormIntegrationRegistry {
 	 */
 	public function getAsOptions( bool $onlyAvailable = true ): array {
 		$integrations = $onlyAvailable ? $this->getAvailable() : $this->getAll();
-		$options      = [];
+		$options      = array();
 
 		foreach ( $integrations as $identifier => $integration ) {
 			$options[ $identifier ] = $integration->getName();
@@ -329,22 +366,26 @@ final class FormIntegrationRegistry {
 	 * @return array<string, array{name: string, forms: array}>
 	 */
 	public function getAllForms(): array {
-		$result = [];
+		$result = array();
 
 		foreach ( $this->getAvailable() as $identifier => $integration ) {
 			$forms = $integration->getForms();
 
 			if ( ! empty( $forms ) ) {
-				$result[ $identifier ] = [
+				$result[ $identifier ] = array(
 					'name'  => $integration->getName(),
 					'forms' => $forms,
-				];
+				);
 			}
 		}
 
-		$this->log( 'debug', 'Retrieved all forms from integrations', [
-			'integration_count' => count( $result ),
-		] );
+		$this->log(
+			'debug',
+			'Retrieved all forms from integrations',
+			array(
+				'integration_count' => count( $result ),
+			)
+		);
 
 		return $result;
 	}
@@ -357,14 +398,14 @@ final class FormIntegrationRegistry {
 	 * @return array<array{id: int, title: string, integration: string, integration_name: string, enabled: bool, edit_url: string}>
 	 */
 	public function getAllFormsFlat(): array {
-		$forms = [];
+		$forms = array();
 
 		foreach ( $this->getAvailable() as $identifier => $integration ) {
 			$integrationForms = $integration->getForms();
 
 			foreach ( $integrationForms as $form ) {
 				$form['integration_name'] = $integration->getName();
-				$forms[] = $form;
+				$forms[]                  = $form;
 			}
 		}
 
@@ -383,7 +424,7 @@ final class FormIntegrationRegistry {
 			$container = Container::getInstance();
 			if ( $container->has( EventDispatcherInterface::class ) ) {
 				$dispatcher = $container->get( EventDispatcherInterface::class );
-				$event = new IntegrationRegisteredEvent(
+				$event      = new IntegrationRegisteredEvent(
 					$integration->getIdentifier(),
 					$integration->getIdentifier(),
 					$integration->isAvailable()
@@ -391,9 +432,13 @@ final class FormIntegrationRegistry {
 				$dispatcher->dispatch( $event );
 			}
 		} catch ( \Exception $e ) {
-			$this->log( 'warning', 'Failed to dispatch IntegrationRegisteredEvent', [
-				'error' => $e->getMessage(),
-			] );
+			$this->log(
+				'warning',
+				'Failed to dispatch IntegrationRegisteredEvent',
+				array(
+					'error' => $e->getMessage(),
+				)
+			);
 		}
 	}
 
@@ -406,15 +451,18 @@ final class FormIntegrationRegistry {
 	 *
 	 * @return void
 	 */
-	private function log( string $level, string $message, array $context = [] ): void {
+	private function log( string $level, string $message, array $context = array() ): void {
 		if ( ! $this->logger ) {
 			return;
 		}
 
-		$context = array_merge( [
-			'plugin'    => 'double-opt-in',
-			'component' => 'integration-registry',
-		], $context );
+		$context = array_merge(
+			array(
+				'plugin'    => 'double-opt-in',
+				'component' => 'integration-registry',
+			),
+			$context
+		);
 
 		switch ( $level ) {
 			case 'error':

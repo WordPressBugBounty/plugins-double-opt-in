@@ -39,7 +39,7 @@ class EmailTemplateIntegration {
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->repository = new EmailTemplateRepository();
+		$this->repository    = new EmailTemplateRepository();
 		$this->htmlGenerator = new EmailHtmlGenerator();
 	}
 
@@ -50,13 +50,13 @@ class EmailTemplateIntegration {
 	 */
 	public function init(): void {
 		// Hook into template loading Ajax
-		add_action( 'wp_ajax_f12_doi_templateloader', [ $this, 'handleTemplateLoaderAjax' ], 5 );
+		add_action( 'wp_ajax_f12_doi_templateloader', array( $this, 'handleTemplateLoaderAjax' ), 5 );
 
 		// Hook into template rendering for email sending
-		add_filter( 'f12_cf7_doubleoptin_template_body', [ $this, 'renderCustomTemplateBody' ], 10, 4 );
+		add_filter( 'f12_cf7_doubleoptin_template_body', array( $this, 'renderCustomTemplateBody' ), 10, 4 );
 
 		// Add custom templates to CF7 panel
-		add_action( 'f12_cf7_doubleoptin_admin_panel_templates', [ $this, 'renderCustomTemplateOptions' ], 10, 2 );
+		add_action( 'f12_cf7_doubleoptin_admin_panel_templates', array( $this, 'renderCustomTemplateOptions' ), 10, 2 );
 	}
 
 	/**
@@ -65,17 +65,19 @@ class EmailTemplateIntegration {
 	 * @return array Array of template options with 'value' => 'label' format.
 	 */
 	public function getAvailableTemplates(): array {
-		$templates = [
+		$templates = array(
 			'blank'           => __( 'Blank', 'double-opt-in' ),
 			'newsletter_en'   => __( 'Newsletter EN', 'double-opt-in' ),
 			'newsletter_en_2' => __( 'Newsletter EN 2', 'double-opt-in' ),
 			'newsletter_en_3' => __( 'Newsletter EN 3', 'double-opt-in' ),
-		];
+		);
 
 		// Add custom templates
-		$customTemplates = $this->repository->findAll( [
-			'post_status' => 'publish',
-		] );
+		$customTemplates = $this->repository->findAll(
+			array(
+				'post_status' => 'publish',
+			)
+		);
 
 		foreach ( $customTemplates as $template ) {
 			$templates[ 'custom_' . $template['id'] ] = sprintf(
@@ -93,9 +95,11 @@ class EmailTemplateIntegration {
 	 * @return array Array of custom template data.
 	 */
 	public function getCustomTemplates(): array {
-		return $this->repository->findAll( [
-			'post_status' => 'publish',
-		] );
+		return $this->repository->findAll(
+			array(
+				'post_status' => 'publish',
+			)
+		);
 	}
 
 	/**
@@ -143,38 +147,44 @@ class EmailTemplateIntegration {
 		if ( ! $templateId ) {
 			// Match the expected response format for the template loader JS
 			// Don't set Content-Type header - jQuery would auto-parse and the JS does JSON.parse manually
-			echo wp_json_encode( [
-				'status'  => 400,
-				'content' => '',
-				'message' => __( 'Invalid template.', 'double-opt-in' ),
-			] );
-			wp_die( '', '', [ 'response' => null ] );
+			echo wp_json_encode(
+				array(
+					'status'  => 400,
+					'content' => '',
+					'message' => __( 'Invalid template.', 'double-opt-in' ),
+				)
+			);
+			wp_die( '', '', array( 'response' => null ) );
 		}
 
 		$template = $this->repository->findById( $templateId );
 		if ( ! $template ) {
 			// Match the expected response format for the template loader JS
-			echo wp_json_encode( [
-				'status'  => 404,
-				'content' => '',
-				'message' => __( 'Template not found.', 'double-opt-in' ),
-			] );
-			wp_die( '', '', [ 'response' => null ] );
+			echo wp_json_encode(
+				array(
+					'status'  => 404,
+					'content' => '',
+					'message' => __( 'Template not found.', 'double-opt-in' ),
+				)
+			);
+			wp_die( '', '', array( 'response' => null ) );
 		}
 
 		// Generate HTML from blocks
-		$blocks = json_decode( $template['blocks_json'], true ) ?: [];
-		$globalStyles = json_decode( $template['global_styles'], true ) ?: [];
+		$blocks       = json_decode( $template['blocks_json'], true ) ?: array();
+		$globalStyles = json_decode( $template['global_styles'], true ) ?: array();
 
 		$html = $this->htmlGenerator->generate( $blocks, $globalStyles );
 
 		// Return in the expected format for the template loader JS
 		// The JS expects: { status: 200, content: "..." } as a string (not auto-parsed JSON)
-		echo wp_json_encode( [
-			'status'  => 200,
-			'content' => $html,
-		] );
-		wp_die( '', '', [ 'response' => null ] );
+		echo wp_json_encode(
+			array(
+				'status'  => 200,
+				'content' => $html,
+			)
+		);
+		wp_die( '', '', array( 'response' => null ) );
 	}
 
 	/**
@@ -202,8 +212,8 @@ class EmailTemplateIntegration {
 		}
 
 		// Generate HTML from blocks
-		$blocks = json_decode( $template['blocks_json'], true ) ?: [];
-		$globalStyles = json_decode( $template['global_styles'], true ) ?: [];
+		$blocks       = json_decode( $template['blocks_json'], true ) ?: array();
+		$globalStyles = json_decode( $template['global_styles'], true ) ?: array();
 
 		return $this->htmlGenerator->generate( $blocks, $globalStyles );
 	}
@@ -225,8 +235,10 @@ class EmailTemplateIntegration {
 		$selectedTemplate = $metadata['template'] ?? '';
 
 		// Add inline script via WordPress hook to avoid sanitization issues
-		add_action( 'admin_footer', function() {
-			?>
+		add_action(
+			'admin_footer',
+			function () {
+				?>
 			<script type="text/javascript">
 				jQuery(document).ready(function($) {
 					$('.custom-template-preview').on('click', function() {
@@ -287,27 +299,29 @@ class EmailTemplateIntegration {
 					box-shadow: 0 0 0 3px #0073aa;
 				}
 			</style>
-			<?php
-		} );
+				<?php
+			}
+		);
 		?>
 		<div class="custom-templates-section">
 			<h4><?php _e( 'Custom Templates', 'double-opt-in' ); ?></h4>
 			<p style="margin-bottom: 15px; color: #666; font-size: 12px;">
 				<?php _e( 'Or select a custom template from the Email Editor:', 'double-opt-in' ); ?>
-				<a href="<?php echo esc_url( admin_url( 'admin.php?page=f12-cf7-doubleoptin_f12-doi-email-templates' ) ); ?>" target="_blank">
+				<a href="<?php echo esc_url( admin_url( 'admin.php?page=f12-doi-admin#/email-templates' ) ); ?>" target="_blank">
 					<?php _e( 'Manage Templates', 'double-opt-in' ); ?> →
 				</a>
 			</p>
 			<div class="preview">
-				<?php foreach ( $customTemplates as $template ) :
+				<?php
+				foreach ( $customTemplates as $template ) :
 					$templateKey = 'custom_' . $template['id'];
-					$isActive = $selectedTemplate === $templateKey;
+					$isActive    = $selectedTemplate === $templateKey;
 					?>
 					<div class="preview-item">
 						<div class="preview-item-inner <?php echo $isActive ? 'active' : ''; ?>">
 							<div class="f12-cf7-templateloader-preview custom-template-preview custom-template-box"
-								 data-template="<?php echo esc_attr( $templateKey ); ?>"
-								 title="<?php echo esc_attr( $template['title'] ); ?>">
+								data-template="<?php echo esc_attr( $templateKey ); ?>"
+								title="<?php echo esc_attr( $template['title'] ); ?>">
 								<span class="template-icon">✉</span>
 								<span class="template-name"><?php echo esc_html( $template['title'] ); ?></span>
 							</div>

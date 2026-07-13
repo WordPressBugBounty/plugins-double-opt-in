@@ -39,12 +39,15 @@ class PrivacyIntegration {
 	 * @return void
 	 */
 	public function register(): void {
-		add_filter( 'wp_privacy_personal_data_exporters', [ $this, 'registerExporter' ] );
-		add_filter( 'wp_privacy_personal_data_erasers', [ $this, 'registerEraser' ] );
+		add_filter( 'wp_privacy_personal_data_exporters', array( $this, 'registerExporter' ) );
+		add_filter( 'wp_privacy_personal_data_erasers', array( $this, 'registerEraser' ) );
 
-		$this->logger->debug( 'Privacy integration hooks registered', [
-			'plugin' => 'double-opt-in',
-		] );
+		$this->logger->debug(
+			'Privacy integration hooks registered',
+			array(
+				'plugin' => 'double-opt-in',
+			)
+		);
 	}
 
 	/**
@@ -55,10 +58,10 @@ class PrivacyIntegration {
 	 * @return array
 	 */
 	public function registerExporter( array $exporters ): array {
-		$exporters['double-opt-in'] = [
+		$exporters['double-opt-in'] = array(
 			'exporter_friendly_name' => __( 'Double Opt-In Records', 'double-opt-in' ),
-			'callback'               => [ $this, 'exportPersonalData' ],
-		];
+			'callback'               => array( $this, 'exportPersonalData' ),
+		);
 
 		return $exporters;
 	}
@@ -71,10 +74,10 @@ class PrivacyIntegration {
 	 * @return array
 	 */
 	public function registerEraser( array $erasers ): array {
-		$erasers['double-opt-in'] = [
+		$erasers['double-opt-in'] = array(
 			'eraser_friendly_name' => __( 'Double Opt-In Records', 'double-opt-in' ),
-			'callback'             => [ $this, 'erasePersonalData' ],
-		];
+			'callback'             => array( $this, 'erasePersonalData' ),
+		);
 
 		return $erasers;
 	}
@@ -89,80 +92,83 @@ class PrivacyIntegration {
 	 */
 	public function exportPersonalData( string $email, int $page = 1 ): array {
 		$optIns = $this->repository->findByEmail( $email );
-		$items  = [];
+		$items  = array();
 
 		$dateFormat = get_option( 'date_format' ) . ' ' . get_option( 'time_format' );
 
 		foreach ( $optIns as $optIn ) {
-			$data = [
-				[
+			$data = array(
+				array(
 					'name'  => __( 'Email', 'double-opt-in' ),
 					'value' => $optIn->getEmail(),
-				],
-				[
+				),
+				array(
 					'name'  => __( 'Confirmed', 'double-opt-in' ),
 					'value' => $optIn->isConfirmed()
 						? __( 'Yes', 'double-opt-in' )
 						: __( 'No', 'double-opt-in' ),
-				],
-				[
+				),
+				array(
 					'name'  => __( 'Consent Text', 'double-opt-in' ),
 					'value' => $optIn->getConsentText() ?: __( '(not recorded)', 'double-opt-in' ),
-				],
-				[
+				),
+				array(
 					'name'  => __( 'Registration Date', 'double-opt-in' ),
 					'value' => $optIn->getCreateTime() > 0
 						? wp_date( $dateFormat, $optIn->getCreateTime() )
 						: '',
-				],
-				[
+				),
+				array(
 					'name'  => __( 'Confirmation Date', 'double-opt-in' ),
 					'value' => $optIn->getUpdateTime() > 0 && $optIn->isConfirmed()
 						? wp_date( $dateFormat, $optIn->getUpdateTime() )
 						: '',
-				],
-				[
+				),
+				array(
 					'name'  => __( 'Opt-Out Date', 'double-opt-in' ),
 					'value' => $optIn->getOptOutTime() > 0
 						? wp_date( $dateFormat, $optIn->getOptOutTime() )
 						: '',
-				],
-				[
+				),
+				array(
 					'name'  => __( 'Registration IP', 'double-opt-in' ),
 					'value' => $optIn->getIpRegister(),
-				],
-				[
+				),
+				array(
 					'name'  => __( 'Confirmation IP', 'double-opt-in' ),
 					'value' => $optIn->getIpConfirmation(),
-				],
-				[
+				),
+				array(
 					'name'  => __( 'Opt-Out IP', 'double-opt-in' ),
 					'value' => $optIn->getIpOptOut(),
-				],
-				[
+				),
+				array(
 					'name'  => __( 'Form ID', 'double-opt-in' ),
 					'value' => (string) $optIn->getFormId(),
-				],
-			];
+				),
+			);
 
-			$items[] = [
+			$items[] = array(
 				'group_id'    => 'double-opt-in',
 				'group_label' => __( 'Double Opt-In Records', 'double-opt-in' ),
 				'item_id'     => 'doi-' . $optIn->getId(),
 				'data'        => $data,
-			];
+			);
 		}
 
-		$this->logger->info( 'Personal data exported', [
-			'plugin' => 'double-opt-in',
-			'email'  => $email,
-			'count'  => count( $items ),
-		] );
+		$this->logger->info(
+			'Personal data exported',
+			array(
+				'plugin' => 'double-opt-in',
+				'email'  => $email,
+				'count'  => count( $items ),
+			)
+		);
 
-		return [
+		return array(
 			'data' => $items,
 			'done' => true,
-		];
+		);
 	}
 
 	/**
@@ -180,20 +186,23 @@ class PrivacyIntegration {
 	public function erasePersonalData( string $email, int $page = 1 ): array {
 		$optIns   = $this->repository->findByEmail( $email );
 		$retained = 0;
-		$messages = [];
+		$messages = array();
 
 		foreach ( $optIns as $optIn ) {
 			$anonymized = $this->anonymizeOptIn( $optIn );
 
 			try {
 				$this->repository->save( $anonymized );
-				$retained++;
+				++$retained;
 			} catch ( \RuntimeException $e ) {
-				$this->logger->error( 'Failed to anonymize OptIn', [
-					'plugin' => 'double-opt-in',
-					'id'     => $optIn->getId(),
-					'error'  => $e->getMessage(),
-				] );
+				$this->logger->error(
+					'Failed to anonymize OptIn',
+					array(
+						'plugin' => 'double-opt-in',
+						'id'     => $optIn->getId(),
+						'error'  => $e->getMessage(),
+					)
+				);
 			}
 		}
 
@@ -205,18 +214,21 @@ class PrivacyIntegration {
 			);
 		}
 
-		$this->logger->info( 'Personal data anonymized', [
-			'plugin'   => 'double-opt-in',
-			'email'    => $email,
-			'retained' => $retained,
-		] );
+		$this->logger->info(
+			'Personal data anonymized',
+			array(
+				'plugin'   => 'double-opt-in',
+				'email'    => $email,
+				'retained' => $retained,
+			)
+		);
 
-		return [
+		return array(
 			'items_removed'  => 0,
 			'items_retained' => $retained,
 			'messages'       => $messages,
 			'done'           => true,
-		];
+		);
 	}
 
 	/**

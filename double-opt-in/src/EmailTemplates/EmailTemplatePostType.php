@@ -45,8 +45,8 @@ class EmailTemplatePostType {
 	 * @return void
 	 */
 	public function init(): void {
-		add_action( 'init', [ $this, 'register' ] );
-		add_action( 'init', [ $this, 'registerMeta' ] );
+		add_action( 'init', array( $this, 'register' ) );
+		add_action( 'init', array( $this, 'registerMeta' ) );
 	}
 
 	/**
@@ -55,7 +55,7 @@ class EmailTemplatePostType {
 	 * @return void
 	 */
 	public function register(): void {
-		$labels = [
+		$labels = array(
 			'name'                  => _x( 'Email Templates', 'Post type general name', 'double-opt-in' ),
 			'singular_name'         => _x( 'Email Template', 'Post type singular name', 'double-opt-in' ),
 			'menu_name'             => _x( 'Email Templates', 'Admin Menu text', 'double-opt-in' ),
@@ -80,25 +80,25 @@ class EmailTemplatePostType {
 			'filter_items_list'     => _x( 'Filter email templates list', 'Screen reader text', 'double-opt-in' ),
 			'items_list_navigation' => _x( 'Email templates list navigation', 'Screen reader text', 'double-opt-in' ),
 			'items_list'            => _x( 'Email templates list', 'Screen reader text', 'double-opt-in' ),
-		];
+		);
 
-		$args = [
-			'labels'             => $labels,
-			'public'             => false,
-			'publicly_queryable' => false,
-			'show_ui'            => false, // We use custom UI
-			'show_in_menu'       => false,
-			'query_var'          => false,
-			'rewrite'            => false,
-			'capability_type'    => 'post',
-			'has_archive'        => false,
-			'hierarchical'       => false,
-			'menu_position'      => null,
-			'supports'           => [ 'title' ],
-			'show_in_rest'       => true,
-			'rest_base'          => 'doi-email-templates',
+		$args = array(
+			'labels'                => $labels,
+			'public'                => false,
+			'publicly_queryable'    => false,
+			'show_ui'               => false, // We use custom UI
+			'show_in_menu'          => false,
+			'query_var'             => false,
+			'rewrite'               => false,
+			'capability_type'       => 'post',
+			'has_archive'           => false,
+			'hierarchical'          => false,
+			'menu_position'         => null,
+			'supports'              => array( 'title' ),
+			'show_in_rest'          => true,
+			'rest_base'             => 'doi-email-templates',
 			'rest_controller_class' => 'WP_REST_Posts_Controller',
-		];
+		);
 
 		register_post_type( self::POST_TYPE, $args );
 	}
@@ -109,38 +109,50 @@ class EmailTemplatePostType {
 	 * @return void
 	 */
 	public function registerMeta(): void {
-		register_post_meta( self::POST_TYPE, self::META_BLOCKS_JSON, [
-			'type'              => 'string',
-			'description'       => 'Block structure as JSON',
-			'single'            => true,
-			'show_in_rest'      => true,
-			'sanitize_callback' => [ self::class, 'sanitizeJson' ],
-			'auth_callback'     => function() {
-				return current_user_can( 'manage_options' );
-			},
-		] );
+		register_post_meta(
+			self::POST_TYPE,
+			self::META_BLOCKS_JSON,
+			array(
+				'type'              => 'string',
+				'description'       => 'Block structure as JSON',
+				'single'            => true,
+				'show_in_rest'      => true,
+				'sanitize_callback' => array( self::class, 'sanitizeJson' ),
+				'auth_callback'     => function () {
+					return current_user_can( 'manage_options' );
+				},
+			)
+		);
 
-		register_post_meta( self::POST_TYPE, self::META_GLOBAL_STYLES, [
-			'type'              => 'string',
-			'description'       => 'Global styles (fonts, colors)',
-			'single'            => true,
-			'show_in_rest'      => true,
-			'sanitize_callback' => [ self::class, 'sanitizeJson' ],
-			'auth_callback'     => function() {
-				return current_user_can( 'manage_options' );
-			},
-		] );
+		register_post_meta(
+			self::POST_TYPE,
+			self::META_GLOBAL_STYLES,
+			array(
+				'type'              => 'string',
+				'description'       => 'Global styles (fonts, colors)',
+				'single'            => true,
+				'show_in_rest'      => true,
+				'sanitize_callback' => array( self::class, 'sanitizeJson' ),
+				'auth_callback'     => function () {
+					return current_user_can( 'manage_options' );
+				},
+			)
+		);
 
-		register_post_meta( self::POST_TYPE, self::META_THUMBNAIL, [
-			'type'              => 'string',
-			'description'       => 'Preview thumbnail (Base64 or URL)',
-			'single'            => true,
-			'show_in_rest'      => true,
-			'sanitize_callback' => 'sanitize_text_field',
-			'auth_callback'     => function() {
-				return current_user_can( 'manage_options' );
-			},
-		] );
+		register_post_meta(
+			self::POST_TYPE,
+			self::META_THUMBNAIL,
+			array(
+				'type'              => 'string',
+				'description'       => 'Preview thumbnail (Base64 or URL)',
+				'single'            => true,
+				'show_in_rest'      => true,
+				'sanitize_callback' => 'sanitize_text_field',
+				'auth_callback'     => function () {
+					return current_user_can( 'manage_options' );
+				},
+			)
+		);
 	}
 
 	/**

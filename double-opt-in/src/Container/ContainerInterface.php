@@ -15,7 +15,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Interface ContainerInterface
  *
+ * @api
+ *
  * Describes the interface of a container that exposes methods to read its entries.
+ * PSR-11 compatible. Passed to every addon's boot() method as the sole
+ * argument. Addons resolve Core services through it.
+ *
+ * Covered by the Addon API semver policy as of Core API 4.3.0.
  */
 interface ContainerInterface {
 

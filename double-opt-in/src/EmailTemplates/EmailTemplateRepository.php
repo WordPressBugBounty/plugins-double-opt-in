@@ -25,19 +25,19 @@ class EmailTemplateRepository {
 	 * @param array $args Optional. Query arguments.
 	 * @return array Array of template data.
 	 */
-	public function findAll( array $args = [] ): array {
-		$defaults = [
+	public function findAll( array $args = array() ): array {
+		$defaults = array(
 			'post_type'      => EmailTemplatePostType::POST_TYPE,
-			'post_status'    => [ 'publish', 'draft' ],
+			'post_status'    => array( 'publish', 'draft' ),
 			'posts_per_page' => -1,
 			'orderby'        => 'title',
 			'order'          => 'ASC',
-		];
+		);
 
 		$query_args = wp_parse_args( $args, $defaults );
-		$posts = get_posts( $query_args );
+		$posts      = get_posts( $query_args );
 
-		return array_map( [ $this, 'formatTemplate' ], $posts );
+		return array_map( array( $this, 'formatTemplate' ), $posts );
 	}
 
 	/**
@@ -61,7 +61,7 @@ class EmailTemplateRepository {
 	 *
 	 * @var array
 	 */
-	public array $lastCreateDebug = [];
+	public array $lastCreateDebug = array();
 
 	/**
 	 * Create a new template.
@@ -70,17 +70,17 @@ class EmailTemplateRepository {
 	 * @return int|false Template ID on success, false on failure.
 	 */
 	public function create( array $data ) {
-		$this->lastCreateDebug = [
-			'input_blocks_json_length' => strlen( $data['blocks_json'] ?? '' ),
+		$this->lastCreateDebug = array(
+			'input_blocks_json_length'  => strlen( $data['blocks_json'] ?? '' ),
 			'input_blocks_json_preview' => substr( $data['blocks_json'] ?? '', 0, 200 ),
-		];
+		);
 
-		$post_data = [
+		$post_data = array(
 			'post_type'    => EmailTemplatePostType::POST_TYPE,
 			'post_title'   => sanitize_text_field( $data['title'] ?? __( 'Untitled Template', 'double-opt-in' ) ),
 			'post_content' => wp_kses_post( $data['html'] ?? '' ),
 			'post_status'  => sanitize_text_field( $data['status'] ?? 'draft' ),
-		];
+		);
 
 		$post_id = wp_insert_post( $post_data, true );
 
@@ -95,8 +95,8 @@ class EmailTemplateRepository {
 		$this->saveMeta( $post_id, $data );
 
 		// Verify what was saved
-		$savedBlocks = get_post_meta( $post_id, EmailTemplatePostType::META_BLOCKS_JSON, true );
-		$this->lastCreateDebug['saved_blocks_json_length'] = strlen( $savedBlocks );
+		$savedBlocks                                        = get_post_meta( $post_id, EmailTemplatePostType::META_BLOCKS_JSON, true );
+		$this->lastCreateDebug['saved_blocks_json_length']  = strlen( $savedBlocks );
 		$this->lastCreateDebug['saved_blocks_json_preview'] = substr( $savedBlocks, 0, 200 );
 
 		return $post_id;
@@ -116,9 +116,9 @@ class EmailTemplateRepository {
 			return false;
 		}
 
-		$post_data = [
+		$post_data = array(
 			'ID' => $id,
-		];
+		);
 
 		if ( isset( $data['title'] ) ) {
 			$post_data['post_title'] = sanitize_text_field( $data['title'] );
@@ -176,13 +176,13 @@ class EmailTemplateRepository {
 			return false;
 		}
 
-		$data = [
-			'title'        => sprintf( __( '%s (Copy)', 'double-opt-in' ), $template['title'] ),
-			'html'         => $template['html'],
-			'status'       => 'draft',
-			'blocks_json'  => $template['blocks_json'],
-			'global_styles'=> $template['global_styles'],
-		];
+		$data = array(
+			'title'         => sprintf( __( '%s (Copy)', 'double-opt-in' ), $template['title'] ),
+			'html'          => $template['html'],
+			'status'        => 'draft',
+			'blocks_json'   => $template['blocks_json'],
+			'global_styles' => $template['global_styles'],
+		);
 
 		return $this->create( $data );
 	}
@@ -193,12 +193,14 @@ class EmailTemplateRepository {
 	 * @return int Number of published templates.
 	 */
 	public function countPublished(): int {
-		$query = new \WP_Query( [
-			'post_type'      => EmailTemplatePostType::POST_TYPE,
-			'post_status'    => 'publish',
-			'posts_per_page' => -1,
-			'fields'         => 'ids',
-		] );
+		$query = new \WP_Query(
+			array(
+				'post_type'      => EmailTemplatePostType::POST_TYPE,
+				'post_status'    => 'publish',
+				'posts_per_page' => -1,
+				'fields'         => 'ids',
+			)
+		);
 
 		return $query->found_posts;
 	}
@@ -209,11 +211,13 @@ class EmailTemplateRepository {
 	 * @return array Key-value pairs of template ID => title.
 	 */
 	public function getForSelect(): array {
-		$templates = $this->findAll( [
-			'post_status' => 'publish',
-		] );
+		$templates = $this->findAll(
+			array(
+				'post_status' => 'publish',
+			)
+		);
 
-		$options = [];
+		$options = array();
 		foreach ( $templates as $template ) {
 			$options[ 'custom_' . $template['id'] ] = $template['title'];
 		}
@@ -268,11 +272,11 @@ class EmailTemplateRepository {
 	 * @return array Formatted template data.
 	 */
 	private function formatTemplate( \WP_Post $post ): array {
-		$blocks_json = get_post_meta( $post->ID, EmailTemplatePostType::META_BLOCKS_JSON, true );
+		$blocks_json   = get_post_meta( $post->ID, EmailTemplatePostType::META_BLOCKS_JSON, true );
 		$global_styles = get_post_meta( $post->ID, EmailTemplatePostType::META_GLOBAL_STYLES, true );
-		$thumbnail = get_post_meta( $post->ID, EmailTemplatePostType::META_THUMBNAIL, true );
+		$thumbnail     = get_post_meta( $post->ID, EmailTemplatePostType::META_THUMBNAIL, true );
 
-		return [
+		return array(
 			'id'            => $post->ID,
 			'title'         => $post->post_title,
 			'html'          => $post->post_content,
@@ -282,6 +286,6 @@ class EmailTemplateRepository {
 			'thumbnail'     => $thumbnail ?: '',
 			'created_at'    => $post->post_date,
 			'updated_at'    => $post->post_modified,
-		];
+		);
 	}
 }

@@ -100,11 +100,28 @@ class FormSettingsDTO {
 	public int $category = 0;
 
 	/**
-	 * The consent text (GDPR).
+	 * The consent text (GDPR). Wording the user is asked to agree to.
 	 *
 	 * @var string
 	 */
 	public string $consentText = '';
+
+	/**
+	 * Form-field name that captures the user's explicit consent
+	 * acknowledgment (typically a CF7 [acceptance] checkbox). Together
+	 * with `consentText` this forms a GDPR Art. 7 evidence chain:
+	 *
+	 *  - `consentText`  — the wording the user was shown
+	 *  - `consentField` — which form field they had to actively confirm
+	 *  - `content[consentField]` — the truthy/falsy value at submit time
+	 *
+	 * Empty string means "no acknowledgment gate" — the consent_text is
+	 * stored without a corresponding acknowledgment field. Backward-compat
+	 * default; not GDPR-compliant on its own.
+	 *
+	 * @var string
+	 */
+	public string $consentField = '';
 
 	/**
 	 * Field mapping for standard placeholders.
@@ -113,14 +130,14 @@ class FormSettingsDTO {
 	 *
 	 * @var array
 	 */
-	public array $fieldMapping = [];
+	public array $fieldMapping = array();
 
 	/**
 	 * Additional settings from extensions (e.g., Pro version).
 	 *
 	 * @var array
 	 */
-	public array $extensionData = [];
+	public array $extensionData = array();
 
 	/**
 	 * Create a DTO from an array.
@@ -132,29 +149,35 @@ class FormSettingsDTO {
 	public static function fromArray( array $data ): self {
 		$dto = new self();
 
-		$dto->enabled          = (bool) ( $data['enable'] ?? $data['enabled'] ?? false );
-		$dto->sender           = (string) ( $data['sender'] ?? '' );
-		$dto->senderName       = (string) ( $data['sender_name'] ?? $data['senderName'] ?? '' );
-		$dto->subject          = (string) ( $data['subject'] ?? '' );
-		$dto->body             = (string) ( $data['body'] ?? '' );
-		$dto->recipient        = (string) ( $data['recipient'] ?? '' );
-		$dto->confirmationPage = (int) ( $data['page'] ?? $data['confirmationPage'] ?? -1 );
+		$dto->enabled           = (bool) ( $data['enable'] ?? $data['enabled'] ?? false );
+		$dto->sender            = (string) ( $data['sender'] ?? '' );
+		$dto->senderName        = (string) ( $data['sender_name'] ?? $data['senderName'] ?? '' );
+		$dto->subject           = (string) ( $data['subject'] ?? '' );
+		$dto->body              = (string) ( $data['body'] ?? '' );
+		$dto->recipient         = (string) ( $data['recipient'] ?? '' );
+		$dto->confirmationPage  = (int) ( $data['page'] ?? $data['confirmationPage'] ?? -1 );
 		$dto->errorRedirectPage = (int) ( $data['error_page'] ?? $data['errorRedirectPage'] ?? -1 );
-		$dto->conditions       = (string) ( $data['conditions'] ?? 'disabled' );
-		$dto->template         = (string) ( $data['template'] ?? '' );
-		$dto->category         = (int) ( $data['category'] ?? 0 );
-		$dto->consentText      = (string) ( $data['consent_text'] ?? $data['consentText'] ?? '' );
-		$dto->fieldMapping     = (array) ( $data['field_mapping'] ?? $data['fieldMapping'] ?? [] );
+		$dto->conditions        = (string) ( $data['conditions'] ?? 'disabled' );
+		$dto->template          = (string) ( $data['template'] ?? '' );
+		$dto->category          = (int) ( $data['category'] ?? 0 );
+		$dto->consentText       = (string) ( $data['consent_text'] ?? $data['consentText'] ?? '' );
+		$dto->fieldMapping      = (array) ( $data['field_mapping'] ?? $data['fieldMapping'] ?? array() );
+		$dto->consentField      = (string) ( $data['consent_field'] ?? $data['consentField'] ?? '' );
 
-		// Unique Email settings (Pro)
-		$dto->extensionData['unique_email_enabled']       = (int) ( $data['unique_email_enabled'] ?? 0 );
-		$dto->extensionData['unique_email_behavior']      = (string) ( $data['unique_email_behavior'] ?? 'block' );
-		$dto->extensionData['unique_email_scope']         = (string) ( $data['unique_email_scope'] ?? 'confirmed' );
-		$dto->extensionData['unique_email_message']       = (string) ( $data['unique_email_message'] ?? '' );
-		$dto->extensionData['unique_email_redirect_page'] = (int) ( $data['unique_email_redirect_page'] ?? -1 );
+		// Addon-contributed extension fields land here via the filter
+		// below. Each Pro addon hooks `f12_doi_settings_dto_from_array`
+		// and writes its own keys into `$dto->extensionData[...]`. Core
+		// itself ships zero hardcoded extension fields — addons that
+		// aren't loaded leave their keys absent, and the React form
+		// renderers fall back to defaults via `?? value` patterns.
+		//
+		// Example consumer: addon-unique-email contributes
+		// `unique_email_enabled`, `unique_email_behavior`,
+		// `unique_email_scope`, `unique_email_message`,
+		// `unique_email_redirect_page` from its UniqueEmailAddon::boot().
 
 		/**
-		 * Filter to allow extensions (e.g., Pro version) to add additional fields to the DTO.
+		 * Filter to allow addons to add additional fields to the DTO.
 		 *
 		 * @param FormSettingsDTO $dto  The DTO instance.
 		 * @param array           $data The raw data array.
@@ -174,7 +197,7 @@ class FormSettingsDTO {
 	 * @return array
 	 */
 	public function toArray(): array {
-		$array = [
+		$array = array(
 			'enable'        => $this->enabled ? 1 : 0,
 			'sender'        => $this->sender,
 			'sender_name'   => $this->senderName,
@@ -187,8 +210,9 @@ class FormSettingsDTO {
 			'template'      => $this->template,
 			'category'      => $this->category,
 			'consent_text'  => $this->consentText,
+			'consent_field' => $this->consentField,
 			'field_mapping' => $this->fieldMapping,
-		];
+		);
 
 		// Merge extension data
 		$array = array_merge( $array, $this->extensionData );
@@ -212,21 +236,22 @@ class FormSettingsDTO {
 	 * @return array
 	 */
 	public function toCamelCaseArray(): array {
-		$array = [
-			'enabled'          => $this->enabled,
-			'sender'           => $this->sender,
-			'senderName'       => $this->senderName,
-			'subject'          => $this->subject,
-			'body'             => $this->body,
-			'recipient'        => $this->recipient,
-			'confirmationPage' => $this->confirmationPage,
+		$array = array(
+			'enabled'           => $this->enabled,
+			'sender'            => $this->sender,
+			'senderName'        => $this->senderName,
+			'subject'           => $this->subject,
+			'body'              => $this->body,
+			'recipient'         => $this->recipient,
+			'confirmationPage'  => $this->confirmationPage,
 			'errorRedirectPage' => $this->errorRedirectPage,
-			'conditions'       => $this->conditions,
-			'template'         => $this->template,
-			'category'         => $this->category,
-			'consentText'      => $this->consentText,
-			'fieldMapping'     => $this->fieldMapping,
-		];
+			'conditions'        => $this->conditions,
+			'template'          => $this->template,
+			'category'          => $this->category,
+			'consentText'       => $this->consentText,
+			'consentField'      => $this->consentField,
+			'fieldMapping'      => $this->fieldMapping,
+		);
 
 		// Merge extension data
 		$array = array_merge( $array, $this->extensionData );
@@ -248,21 +273,88 @@ class FormSettingsDTO {
 	 * @return self
 	 */
 	public static function createDefault(): self {
-		$dto = new self();
+		$dto         = new self();
 		$dto->sender = get_bloginfo( 'admin_email' );
 		return $dto;
 	}
 
 	/**
-	 * Check if the DTO has valid settings for sending opt-in emails.
+	 * Return the list of required-field IDs that are missing or invalid
+	 * for DOI to function end-to-end.
 	 *
-	 * @return bool
+	 * Distinct from {@see FormSettingsValidator::validate()} — the Validator
+	 * runs at REST-save time on raw input. This method answers a different
+	 * question: "if this form is enabled right now, will DOI actually
+	 * work?" — the answer drives the UI completeness-gate that auto-disables
+	 * misconfigured forms and surfaces a "configuration incomplete" badge.
+	 *
+	 * Hart-required set (decisions locked 2026-05-12, see
+	 * plan/doi-completeness-gate.md §5):
+	 *  - `recipient` — without it the integration aborts with NO_RECIPIENT
+	 *    (Avada/GF/WPForms) or silently falls back to the literal string
+	 *    'email' (Elementor's hardcoded default).
+	 *  - `subject` — empty subjects are accepted by wp_mail but mark the
+	 *    mail as spam in most clients.
+	 *  - `body_or_template` — either the body contains the
+	 *    `[doubleoptinlink]` placeholder OR a non-empty `template` is set.
+	 *    If both are missing the user has no clickable confirmation link
+	 *    and DOI is unusable.
+	 *
+	 * NOT in this set:
+	 *  - `enabled` — incomplete-AND-enabled is the exact bug we want to
+	 *    detect, not part of the "incomplete" definition.
+	 *  - `sender` — soft-required (per §5.3): leaving it empty falls back
+	 *    to the WP admin email, which is functional, just not ideal.
+	 *
+	 * Pro addons can append integration-specific entries via the
+	 * `f12_doi_form_missing_required_fields` filter (per §5.5).
+	 *
+	 * @return array<int,string>  Stable string IDs ('recipient', 'subject',
+	 *                            'body_or_template', or addon-contributed).
+	 *                            Empty array = configuration is complete.
+	 *
+	 * @since 4.5.0
 	 */
-	public function isValid(): bool {
-		return $this->enabled
-			&& ! empty( $this->sender )
-			&& ! empty( $this->recipient )
-			&& ! empty( $this->subject )
-			&& ! empty( $this->body );
+	public function getMissingRequiredFields(): array {
+		$missing = array();
+
+		if ( empty( $this->recipient ) ) {
+			$missing[] = 'recipient';
+		}
+
+		if ( empty( $this->subject ) ) {
+			$missing[] = 'subject';
+		}
+
+		$hasBodyWithLink = ! empty( $this->body )
+			&& strpos( $this->body, '[doubleoptinlink]' ) !== false;
+		$hasTemplate     = ! empty( $this->template );
+		if ( ! $hasBodyWithLink && ! $hasTemplate ) {
+			$missing[] = 'body_or_template';
+		}
+
+		/**
+		 * Filter to let addons append integration-specific
+		 * required-field IDs.
+		 *
+		 * @since 4.5.0
+		 *
+		 * @param array<int,string> $missing Already-collected required-field IDs.
+		 * @param FormSettingsDTO   $dto     The DTO being inspected.
+		 */
+		return apply_filters( 'f12_doi_form_missing_required_fields', $missing, $this );
+	}
+
+	/**
+	 * Convenience wrapper. True iff {@see getMissingRequiredFields()} is empty.
+	 *
+	 * Does NOT check `$this->enabled` — "complete but disabled" is a
+	 * legitimate state for a just-created form. The completeness-gate
+	 * uses this to decide whether `enabled` may flip to true.
+	 *
+	 * @since 4.5.0
+	 */
+	public function isFunctionallyComplete(): bool {
+		return empty( $this->getMissingRequiredFields() );
 	}
 }

@@ -15,7 +15,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Interface ServiceProviderInterface
  *
+ * @internal
+ *
  * Service providers are responsible for registering bindings in the container.
+ * Used by Core to wire its own services. Addons do NOT implement this —
+ * they register their services inline inside {@see \Forge12\DoubleOptIn\Addon\AddonInterface::boot()}.
  */
 interface ServiceProviderInterface {
 

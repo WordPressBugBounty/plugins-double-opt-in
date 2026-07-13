@@ -72,3 +72,14 @@
 .doi-error-notification__close:hover {
 	color: #1e1e1e;
 }
+
+/* Success variant — green accent + check icon. Used for the confirmation
+   toast on integrations that die() early (Avada) and so can't show the
+   form plugin's own "email sent" message. */
+.doi-error-notification--success .doi-error-notification__content {
+	border-left-color: #00a32a;
+}
+
+.doi-error-notification--success .doi-error-notification__icon {
+	color: #00a32a;
+}

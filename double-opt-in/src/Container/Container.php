@@ -17,7 +17,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Class Container
  *
- * A simple PSR-11 compatible dependency injection container with auto-wiring support.
+ * @internal
+ *
+ * Concrete PSR-11 compatible DI container with auto-wiring. Addons MUST
+ * depend on {@see ContainerInterface}, not on this class. Use of the
+ * concrete class (e.g. casting to Container to access non-interface
+ * methods like {@see Container::singleton()}) is supported only for
+ * license providers inside the Pro bundle during the migration window
+ * and will become unsupported after that window closes.
  */
 class Container implements ContainerInterface {
 
@@ -26,28 +33,28 @@ class Container implements ContainerInterface {
 	 *
 	 * @var array<string, array{concrete: string|callable, shared: bool}>
 	 */
-	private array $bindings = [];
+	private array $bindings = array();
 
 	/**
 	 * Resolved singleton instances.
 	 *
 	 * @var array<string, mixed>
 	 */
-	private array $instances = [];
+	private array $instances = array();
 
 	/**
 	 * Factory callables for lazy loading.
 	 *
 	 * @var array<string, callable>
 	 */
-	private array $factories = [];
+	private array $factories = array();
 
 	/**
 	 * Registered service providers.
 	 *
 	 * @var ServiceProviderInterface[]
 	 */
-	private array $providers = [];
+	private array $providers = array();
 
 	/**
 	 * Logger instance for debugging.
@@ -111,12 +118,18 @@ class Container implements ContainerInterface {
 	public function bind( string $abstract, $concrete = null, bool $shared = false ): void {
 		$concrete = $concrete ?? $abstract;
 
-		$this->bindings[ $abstract ] = [
+		$this->bindings[ $abstract ] = array(
 			'concrete' => $concrete,
 			'shared'   => $shared,
-		];
+		);
 
-		$this->log( 'Binding registered', [ 'abstract' => $abstract, 'shared' => $shared ] );
+		$this->log(
+			'Binding registered',
+			array(
+				'abstract' => $abstract,
+				'shared'   => $shared,
+			)
+		);
 	}
 
 	/**
@@ -141,7 +154,7 @@ class Container implements ContainerInterface {
 	 */
 	public function factory( string $abstract, callable $factory ): void {
 		$this->factories[ $abstract ] = $factory;
-		$this->log( 'Factory registered', [ 'abstract' => $abstract ] );
+		$this->log( 'Factory registered', array( 'abstract' => $abstract ) );
 	}
 
 	/**
@@ -154,7 +167,7 @@ class Container implements ContainerInterface {
 	 */
 	public function instance( string $abstract, $instance ): void {
 		$this->instances[ $abstract ] = $instance;
-		$this->log( 'Instance registered', [ 'abstract' => $abstract ] );
+		$this->log( 'Instance registered', array( 'abstract' => $abstract ) );
 	}
 
 	/**
@@ -167,7 +180,7 @@ class Container implements ContainerInterface {
 	public function addProvider( ServiceProviderInterface $provider ): void {
 		$this->providers[] = $provider;
 		$provider->register( $this );
-		$this->log( 'Provider registered', [ 'provider' => get_class( $provider ) ] );
+		$this->log( 'Provider registered', array( 'provider' => get_class( $provider ) ) );
 	}
 
 	/**
@@ -179,7 +192,7 @@ class Container implements ContainerInterface {
 		foreach ( $this->providers as $provider ) {
 			if ( $provider instanceof BootableProviderInterface ) {
 				$provider->boot( $this );
-				$this->log( 'Provider booted', [ 'provider' => get_class( $provider ) ] );
+				$this->log( 'Provider booted', array( 'provider' => get_class( $provider ) ) );
 			}
 		}
 	}
@@ -195,7 +208,7 @@ class Container implements ContainerInterface {
 
 		// Use factory if available
 		if ( isset( $this->factories[ $id ] ) ) {
-			$instance                 = ( $this->factories[ $id ] )( $this );
+			$instance               = ( $this->factories[ $id ] )( $this );
 			$this->instances[ $id ] = $instance;
 			return $instance;
 		}
@@ -259,7 +272,7 @@ class Container implements ContainerInterface {
 			return new $class();
 		}
 
-		$dependencies = [];
+		$dependencies = array();
 		foreach ( $constructor->getParameters() as $param ) {
 			$type = $param->getType();
 
@@ -272,7 +285,7 @@ class Container implements ContainerInterface {
 					);
 				}
 			} else {
-				$typeName = $type instanceof \ReflectionNamedType ? $type->getName() : (string) $type;
+				$typeName       = $type instanceof \ReflectionNamedType ? $type->getName() : (string) $type;
 				$dependencies[] = $this->get( $typeName );
 			}
 		}
@@ -288,9 +301,18 @@ class Container implements ContainerInterface {
 	 *
 	 * @return void
 	 */
-	private function log( string $message, array $context = [] ): void {
+	private function log( string $message, array $context = array() ): void {
 		if ( $this->logger ) {
-			$this->logger->debug( $message, array_merge( [ 'plugin' => 'double-opt-in', 'component' => 'container' ], $context ) );
+			$this->logger->debug(
+				$message,
+				array_merge(
+					array(
+						'plugin'    => 'double-opt-in',
+						'component' => 'container',
+					),
+					$context
+				)
+			);
 		}
 	}
 }

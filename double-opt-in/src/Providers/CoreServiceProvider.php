@@ -29,9 +29,12 @@ class CoreServiceProvider implements BootableProviderInterface {
 	 */
 	public function register( Container $container ): void {
 		// Logger
-		$container->singleton( LoggerInterface::class, function () {
-			return Logger::getInstance();
-		} );
+		$container->singleton(
+			LoggerInterface::class,
+			function () {
+				return Logger::getInstance();
+			}
+		);
 
 		// TemplateHandler
 		$container->singleton(

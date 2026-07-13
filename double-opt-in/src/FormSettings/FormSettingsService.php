@@ -24,11 +24,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 class FormSettingsService {
 
 	/**
-	 * The post meta key for storing settings.
+	 * Post-meta key under which DOI form settings are stored.
+	 *
+	 * Public so cross-cutting consumers (data-cleanup migrations such
+	 * as {@see \Forge12\DoubleOptIn\Migration\MigrationFormCompletenessSweep},
+	 * audit tools) can reference the same storage key without
+	 * hardcoding the string. The value itself is load-bearing across
+	 * the addon ecosystem — changing it would be a separate
+	 * data-migration project.
 	 *
 	 * @var string
 	 */
-	private const META_KEY = 'f12-cf7-doubleoptin';
+	public const META_KEY = 'f12-cf7-doubleoptin';
 
 	/**
 	 * Logger instance.
@@ -79,10 +86,13 @@ class FormSettingsService {
 		$data = get_post_meta( $formId, self::META_KEY, true );
 
 		if ( empty( $data ) || ! is_array( $data ) ) {
-			$this->logger->debug( 'No settings found for form, returning defaults', [
-				'plugin'  => 'double-opt-in',
-				'form_id' => $formId,
-			] );
+			$this->logger->debug(
+				'No settings found for form, returning defaults',
+				array(
+					'plugin'  => 'double-opt-in',
+					'form_id' => $formId,
+				)
+			);
 			return FormSettingsDTO::createDefault();
 		}
 
@@ -114,19 +124,25 @@ class FormSettingsService {
 		if ( $result === false ) {
 			$saved = get_post_meta( $formId, self::META_KEY, true );
 			if ( $saved != $data ) {
-				$this->logger->error( 'Failed to save form settings to database', [
-					'plugin'  => 'double-opt-in',
-					'form_id' => $formId,
-				] );
+				$this->logger->error(
+					'Failed to save form settings to database',
+					array(
+						'plugin'  => 'double-opt-in',
+						'form_id' => $formId,
+					)
+				);
 				return false;
 			}
 		}
 
-		$this->logger->info( 'Form settings saved', [
-			'plugin'  => 'double-opt-in',
-			'form_id' => $formId,
-			'enabled' => $settings->enabled,
-		] );
+		$this->logger->info(
+			'Form settings saved',
+			array(
+				'plugin'  => 'double-opt-in',
+				'form_id' => $formId,
+				'enabled' => $settings->enabled,
+			)
+		);
 
 		return true;
 	}
@@ -143,21 +159,24 @@ class FormSettingsService {
 	 * @return bool The new enabled state.
 	 */
 	public function toggleEnabled( int $formId ): bool {
-		$settings = $this->getSettings( $formId );
+		$settings          = $this->getSettings( $formId );
 		$settings->enabled = ! $settings->enabled;
 
 		// Save directly without full validation - toggle only changes the enabled state.
 		// Full form validation (subject, body, recipient, etc.) is enforced when
 		// saving via the configuration panel.
-		$data   = $settings->toArray();
-		$data   = apply_filters( 'f12_cf7_doubleoptin_save_form', $data );
+		$data = $settings->toArray();
+		$data = apply_filters( 'f12_cf7_doubleoptin_save_form', $data );
 		update_post_meta( $formId, self::META_KEY, $data );
 
-		$this->logger->info( 'Form toggle state changed', [
-			'plugin'  => 'double-opt-in',
-			'form_id' => $formId,
-			'enabled' => $settings->enabled,
-		] );
+		$this->logger->info(
+			'Form toggle state changed',
+			array(
+				'plugin'  => 'double-opt-in',
+				'form_id' => $formId,
+				'enabled' => $settings->enabled,
+			)
+		);
 
 		return $settings->enabled;
 	}
@@ -168,23 +187,26 @@ class FormSettingsService {
 	 * @return array Array of form data grouped by integration.
 	 */
 	public function getAllForms(): array {
-		$result = [];
+		$result = array();
 
 		foreach ( $this->registry->getAvailable() as $identifier => $integration ) {
 			$forms = $integration->getForms();
 
 			if ( ! empty( $forms ) ) {
-				$result[ $identifier ] = [
-					'name'   => $integration->getName(),
-					'forms'  => $forms,
-				];
+				$result[ $identifier ] = array(
+					'name'  => $integration->getName(),
+					'forms' => $forms,
+				);
 			}
 		}
 
-		$this->logger->debug( 'Retrieved all forms from integrations', [
-			'plugin'            => 'double-opt-in',
-			'integration_count' => count( $result ),
-		] );
+		$this->logger->debug(
+			'Retrieved all forms from integrations',
+			array(
+				'plugin'            => 'double-opt-in',
+				'integration_count' => count( $result ),
+			)
+		);
 
 		return $result;
 	}
@@ -195,14 +217,14 @@ class FormSettingsService {
 	 * @return array Array of form data.
 	 */
 	public function getAllFormsFlat(): array {
-		$forms = [];
+		$forms = array();
 
 		foreach ( $this->registry->getAvailable() as $identifier => $integration ) {
 			$integrationForms = $integration->getForms();
 
 			foreach ( $integrationForms as $form ) {
 				$form['integration_name'] = $integration->getName();
-				$forms[] = $form;
+				$forms[]                  = $form;
 			}
 		}
 
@@ -235,12 +257,15 @@ class FormSettingsService {
 		}
 
 		if ( ! $integrationInstance ) {
-			$this->logger->warning( 'Integration not found for form', [
-				'plugin'      => 'double-opt-in',
-				'form_id'     => $formId,
-				'post_id'     => $postId,
-				'integration' => $integration,
-			] );
+			$this->logger->warning(
+				'Integration not found for form',
+				array(
+					'plugin'      => 'double-opt-in',
+					'form_id'     => $formId,
+					'post_id'     => $postId,
+					'integration' => $integration,
+				)
+			);
 			return null;
 		}
 
@@ -266,25 +291,57 @@ class FormSettingsService {
 		// For Elementor forms, override the enabled status based on actual DOI action presence
 		// (not from post_meta, but from Elementor's submit_actions)
 		$settingsArray = $settings->toCamelCaseArray();
-		$debugInfo     = [
-			'isCompositeId'          => $isCompositeId,
-			'integrationIdentifier'  => $integrationInstance->getIdentifier(),
-			'originalEnabled'        => $settingsArray['enabled'] ?? false,
-		];
+		$debugInfo     = array(
+			'isCompositeId'         => $isCompositeId,
+			'integrationIdentifier' => $integrationInstance->getIdentifier(),
+			'originalEnabled'       => $settingsArray['enabled'] ?? false,
+		);
 
-		if ( $isCompositeId && $integrationInstance->getIdentifier() === 'elementor' ) {
-			$settingsArray['enabled'] = $integrationInstance->isOptInEnabled( $formId );
+		// Historical behaviour: for Elementor composite IDs we used to
+		// override $settingsArray['enabled'] with the widget-based
+		// isOptInEnabled() value (which reads the submit_actions list
+		// from Elementor's _elementor_data). That override silently
+		// re-enabled the master toggle after the user had disabled it
+		// in our React UI — the FormSettingsPage Switch would flip back
+		// to green on the next refetch because the widget action stayed
+		// in place. With the completeness-gate (plan
+		// doi-completeness-gate.md §2.2 + §2.5) post_meta is now the
+		// authoritative source for what the React UI controls, so the
+		// override has been removed.
+		//
+		// Known semantic gap (tracked in plan/feature-ideas.md): at
+		// runtime, ElementorIntegration::isOptInEnabled() still consults
+		// the widget action list, not the post_meta enable flag. That
+		// means the React toggle and Elementor's submit-time DOI
+		// activation can diverge until we either sync the widget on
+		// save or make the runtime check post_meta-aware. Out of scope
+		// for the completeness-gate ship; tracked as a follow-up.
+
+		// Convert associative fields array to [{name, label}] format for the frontend.
+		// `name` is force-cast to string because WPForms uses integer field IDs
+		// (`$formData['fields'][4]`) and `json_encode` would otherwise emit `"name": 4`
+		// (number). On the React side, `Set.has(consentField)` then misses because the
+		// stored `consentField` is always a string after sanitize_key, but the field
+		// list contains numbers — the validator fires its "field does not exist" banner
+		// even immediately after the user picked the field from the dropdown
+		// (user-reported 2026-05-13).
+		$fieldsList = array();
+		foreach ( $fields as $name => $label ) {
+			$fieldsList[] = array(
+				'name'  => (string) $name,
+				'label' => $label,
+			);
 		}
 
-		return [
+		return array(
 			'id'              => $formId,
 			'title'           => $title,
 			'integration'     => $integrationInstance->getIdentifier(),
 			'integrationName' => $integrationInstance->getName(),
 			'editUrl'         => $integrationInstance->getFormEditUrl( $formId ),
 			'settings'        => $settingsArray,
-			'fields'          => $fields,
-		];
+			'fields'          => $fieldsList,
+		);
 	}
 
 	/**
@@ -312,12 +369,12 @@ class FormSettingsService {
 		}
 
 		// Default templates
-		return [
+		return array(
 			'blank'           => 'blank',
 			'newsletter_en'   => 'newsletter_en',
 			'newsletter_en_2' => 'newsletter_en_2',
 			'newsletter_en_3' => 'newsletter_en_3',
-		];
+		);
 	}
 
 	/**
@@ -326,13 +383,16 @@ class FormSettingsService {
 	 * @return array Array of category ID => name.
 	 */
 	public function getAvailableCategories(): array {
-		$categories = [ 0 => __( 'Please select', 'double-opt-in' ) ];
+		$categories = array( 0 => __( 'Please select', 'double-opt-in' ) );
 
-		$list = \forge12\contactform7\CF7DoubleOptIn\Category::get_list( [
-			'perPage' => -1,
-			'orderBy' => 'name',
-			'order'   => 'ASC',
-		], $numberOfPages );
+		$list = \forge12\contactform7\CF7DoubleOptIn\Category::get_list(
+			array(
+				'perPage' => -1,
+				'orderBy' => 'name',
+				'order'   => 'ASC',
+			),
+			$numberOfPages
+		);
 
 		foreach ( $list as $category ) {
 			$categories[ $category->get_id() ] = $category->get_name();
@@ -350,19 +410,21 @@ class FormSettingsService {
 	 */
 	public function getTemplateDetails(): array {
 		$repository = new EmailTemplateRepository();
-		$templates  = $repository->findAll( [
-			'post_status' => 'publish',
-		] );
+		$templates  = $repository->findAll(
+			array(
+				'post_status' => array( 'publish', 'draft' ),
+			)
+		);
 
-		$details = [];
+		$details = array();
 		foreach ( $templates as $template ) {
-			$key = 'custom_' . $template['id'];
-			$details[ $key ] = [
+			$key             = 'custom_' . $template['id'];
+			$details[ $key ] = array(
 				'id'        => $template['id'],
 				'title'     => $template['title'],
 				'thumbnail' => $template['thumbnail'],
-				'editUrl'   => admin_url( 'admin.php?page=f12-cf7-doubleoptin_f12-doi-email-editor&template_id=' . $template['id'] ),
-			];
+				'editUrl'   => admin_url( 'admin.php?page=f12-doi-admin#/email-templates/' . $template['id'] . '/edit' ),
+			);
 		}
 
 		return $details;
@@ -374,7 +436,7 @@ class FormSettingsService {
 	 * @return array Array of page ID => title.
 	 */
 	public function getAvailablePages(): array {
-		$pages = [ -1 => __( 'Default', 'double-opt-in' ) ];
+		$pages = array( -1 => __( 'Default', 'double-opt-in' ) );
 
 		$allPages = get_pages();
 		foreach ( $allPages as $page ) {

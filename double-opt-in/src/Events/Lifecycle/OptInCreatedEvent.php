@@ -17,7 +17,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Class OptInCreatedEvent
  *
+ * @api
+ *
  * Dispatched when a new opt-in record is created after form submission.
+ * Covered by the Addon API semver policy as of Core API 4.3.0.
  */
 class OptInCreatedEvent extends Event {
 
@@ -44,7 +47,7 @@ class OptInCreatedEvent extends Event {
 		string $formType,
 		string $email,
 		string $hash,
-		array $formData = []
+		array $formData = array()
 	) {
 		parent::__construct();
 		$this->optInId  = $optInId;

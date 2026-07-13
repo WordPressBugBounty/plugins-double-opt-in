@@ -17,7 +17,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Class OptInExpiredEvent
  *
+ * @api
+ *
  * Dispatched when opt-in records are cleaned up by the cron job.
+ * Covered by the Addon API semver policy as of Core API 4.3.0.
  */
 class OptInExpiredEvent extends Event {
 

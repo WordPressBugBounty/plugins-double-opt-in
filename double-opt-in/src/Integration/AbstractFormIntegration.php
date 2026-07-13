@@ -14,6 +14,7 @@ use Forge12\DoubleOptIn\EventSystem\EventDispatcherInterface;
 use Forge12\DoubleOptIn\Events\Integration\FormSubmissionEvent;
 use Forge12\DoubleOptIn\Events\Lifecycle\OptInConfirmedEvent;
 use Forge12\DoubleOptIn\Events\Lifecycle\OptInCreatedEvent;
+use Forge12\DoubleOptIn\Files\FileStorage;
 use Forge12\DoubleOptIn\Frontend\ErrorNotification;
 use Forge12\DoubleOptIn\Service\RateLimiter;
 use forge12\contactform7\CF7DoubleOptIn\CF7DoubleOptIn;
@@ -30,8 +31,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Class AbstractFormIntegration
  *
+ * @api
+ *
  * Base class providing common functionality for all form integrations.
  * Extracted from the legacy OptInFrontend class to provide reusable logic.
+ * Addons that integrate a form system extend this class to reduce
+ * boilerplate — see docs/addon-api.md §4.3. Covered by the Addon API
+ * semver policy as of Core API 4.3.0.
  */
 abstract class AbstractFormIntegration implements FormIntegrationInterface {
 
@@ -167,20 +173,26 @@ abstract class AbstractFormIntegration implements FormIntegrationInterface {
 	public function isOptInEnabled( int $formId ): bool {
 		// Disable if opt-in confirmation is in progress
 		if ( isset( $_GET['optin'] ) ) {
-			$this->getLogger()->debug( 'Opt-in disabled due to optin flag in GET request', [
-				'plugin' => 'double-opt-in',
-				'class'  => static::class,
-			] );
+			$this->getLogger()->debug(
+				'Opt-in disabled due to optin flag in GET request',
+				array(
+					'plugin' => 'double-opt-in',
+					'class'  => static::class,
+				)
+			);
 			return false;
 		}
 
 		$parameter = $this->getFormParameter( $formId );
 
 		if ( (int) ( $parameter['enable'] ?? 0 ) !== 1 ) {
-			$this->getLogger()->debug( 'Opt-in not enabled in form parameter', [
-				'plugin'  => 'double-opt-in',
-				'form_id' => $formId,
-			] );
+			$this->getLogger()->debug(
+				'Opt-in not enabled in form parameter',
+				array(
+					'plugin'  => 'double-opt-in',
+					'form_id' => $formId,
+				)
+			);
 			return false;
 		}
 
@@ -190,10 +202,13 @@ abstract class AbstractFormIntegration implements FormIntegrationInterface {
 
 			if ( ( $condition !== 'disable' && $condition !== 'disabled' )
 				&& ( ! isset( $_POST[ $condition ] ) || empty( $_POST[ $condition ] ) ) ) {
-				$this->getLogger()->debug( 'Opt-in disabled due to unmet custom condition', [
-					'plugin'    => 'double-opt-in',
-					'condition' => $condition,
-				] );
+				$this->getLogger()->debug(
+					'Opt-in disabled due to unmet custom condition',
+					array(
+						'plugin'    => 'double-opt-in',
+						'condition' => $condition,
+					)
+				);
 				return false;
 			}
 		}
@@ -210,12 +225,15 @@ abstract class AbstractFormIntegration implements FormIntegrationInterface {
 	 * @return OptIn|null The created OptIn or null on failure.
 	 */
 	protected function createOptIn( FormDataInterface $formData, array $formParameter ): ?OptIn {
-		$this->getLogger()->debug( 'Creating OptIn record', [
-			'plugin'    => 'double-opt-in',
-			'class'     => static::class,
-			'form_id'   => $formData->getFormId(),
-			'form_type' => $formData->getFormType(),
-		] );
+		$this->getLogger()->debug(
+			'Creating OptIn record',
+			array(
+				'plugin'    => 'double-opt-in',
+				'class'     => static::class,
+				'form_id'   => $formData->getFormId(),
+				'form_type' => $formData->getFormType(),
+			)
+		);
 
 		// Clear previous error
 		self::clearLastError();
@@ -224,12 +242,15 @@ abstract class AbstractFormIntegration implements FormIntegrationInterface {
 
 		$event = $this->dispatchFormSubmissionEvent( $formData );
 		if ( $event && $event->shouldSkipOptIn() ) {
-			$this->getLogger()->info( 'OptIn skipped by FormSubmissionEvent', [
-				'plugin'  => 'double-opt-in',
-				'form_id' => $formData->getFormId(),
-			] );
+			$this->getLogger()->info(
+				'OptIn skipped by FormSubmissionEvent',
+				array(
+					'plugin'  => 'double-opt-in',
+					'form_id' => $formData->getFormId(),
+				)
+			);
 			self::setLastError(
-				OptInError::fromCode( OptInError::SUBMISSION_CANCELLED, [ 'form_id' => $formData->getFormId() ] ),
+				OptInError::fromCode( OptInError::SUBMISSION_CANCELLED, array( 'form_id' => $formData->getFormId() ) ),
 				$formData->getFormId()
 			);
 			return null;
@@ -245,14 +266,36 @@ abstract class AbstractFormIntegration implements FormIntegrationInterface {
 		$recipient = $this->resolveRecipient( $formData, $formParameter );
 
 		if ( empty( $recipient ) ) {
-			$this->getLogger()->warning( 'No recipient found, skipping OptIn creation', [
-				'plugin'  => 'double-opt-in',
-				'form_id' => $formData->getFormId(),
-			] );
+			$this->getLogger()->warning(
+				'No recipient found, skipping OptIn creation',
+				array(
+					'plugin'  => 'double-opt-in',
+					'form_id' => $formData->getFormId(),
+				)
+			);
 			self::setLastError(
-				OptInError::fromCode( OptInError::NO_RECIPIENT, [ 'form_id' => $formData->getFormId() ] ),
+				OptInError::fromCode( OptInError::NO_RECIPIENT, array( 'form_id' => $formData->getFormId() ) ),
 				$formData->getFormId()
 			);
+			return null;
+		}
+
+		$consentError = $this->validateConsentAcceptance( $formData, $formParameter );
+		if ( $consentError !== null ) {
+			$this->getLogger()->info(
+				'Consent acceptance not given, rejecting OptIn',
+				array(
+					'plugin'        => 'double-opt-in',
+					'form_id'       => $formData->getFormId(),
+					'consent_field' => $consentError->getContext()['consent_field'] ?? '',
+				)
+			);
+			do_action(
+				'f12_cf7_doubleoptin_consent_not_given',
+				$formData->getFormId(),
+				$consentError->getContext()['consent_field'] ?? ''
+			);
+			self::setLastError( $consentError, $formData->getFormId() );
 			return null;
 		}
 
@@ -265,28 +308,46 @@ abstract class AbstractFormIntegration implements FormIntegrationInterface {
 
 		$ip = IPHelper::getIPAdress();
 		if ( ! $rateLimiter->isAllowed( 'ip', $ip, $rateLimitIp, $rateLimitWindow ) ) {
-			$this->getLogger()->warning( 'Rate limit exceeded for IP', [
-				'plugin'  => 'double-opt-in',
-				'ip'      => $ip,
-				'form_id' => $formData->getFormId(),
-			] );
+			$this->getLogger()->warning(
+				'Rate limit exceeded for IP',
+				array(
+					'plugin'  => 'double-opt-in',
+					'ip'      => $ip,
+					'form_id' => $formData->getFormId(),
+				)
+			);
 			do_action( 'f12_cf7_doubleoptin_rate_limited', 'ip', $ip, $formData->getFormId() );
 			self::setLastError(
-				OptInError::fromCode( OptInError::RATE_LIMIT_IP, [ 'ip' => $ip, 'form_id' => $formData->getFormId() ] ),
+				OptInError::fromCode(
+					OptInError::RATE_LIMIT_IP,
+					array(
+						'ip'      => $ip,
+						'form_id' => $formData->getFormId(),
+					)
+				),
 				$formData->getFormId()
 			);
 			return null;
 		}
 
 		if ( ! $rateLimiter->isAllowed( 'email', $recipient, $rateLimitEmail, $rateLimitWindow ) ) {
-			$this->getLogger()->warning( 'Rate limit exceeded for email', [
-				'plugin'  => 'double-opt-in',
-				'email'   => $recipient,
-				'form_id' => $formData->getFormId(),
-			] );
+			$this->getLogger()->warning(
+				'Rate limit exceeded for email',
+				array(
+					'plugin'  => 'double-opt-in',
+					'email'   => $recipient,
+					'form_id' => $formData->getFormId(),
+				)
+			);
 			do_action( 'f12_cf7_doubleoptin_rate_limited', 'email', $recipient, $formData->getFormId() );
 			self::setLastError(
-				OptInError::fromCode( OptInError::RATE_LIMIT_EMAIL, [ 'email' => $recipient, 'form_id' => $formData->getFormId() ] ),
+				OptInError::fromCode(
+					OptInError::RATE_LIMIT_EMAIL,
+					array(
+						'email'   => $recipient,
+						'form_id' => $formData->getFormId(),
+					)
+				),
 				$formData->getFormId()
 			);
 			return null;
@@ -310,45 +371,43 @@ abstract class AbstractFormIntegration implements FormIntegrationInterface {
 				$errorMsg  = OptInError::fromCode( OptInError::UNIQUE_EMAIL_DUPLICATE )->getMessage();
 			}
 
-			$this->getLogger()->warning( 'Recipient validation failed', [
-				'plugin'  => 'double-opt-in',
-				'email'   => $recipient,
-				'form_id' => $formData->getFormId(),
-				'reason'  => $errorMsg,
-			] );
+			$this->getLogger()->warning(
+				'Recipient validation failed',
+				array(
+					'plugin'  => 'double-opt-in',
+					'email'   => $recipient,
+					'form_id' => $formData->getFormId(),
+					'reason'  => $errorMsg,
+				)
+			);
 			do_action( 'f12_cf7_doubleoptin_recipient_invalid', $recipient, $formData->getFormId(), $errorMsg );
 			self::setLastError(
 				new OptInError(
 					$errorCode,
 					! empty( $errorMsg ) ? $errorMsg : OptInError::fromCode( OptInError::RECIPIENT_INVALID )->getMessage(),
-					[ 'email' => $recipient, 'form_id' => $formData->getFormId() ]
+					array(
+						'email'   => $recipient,
+						'form_id' => $formData->getFormId(),
+					)
 				),
 				$formData->getFormId()
 			);
 			return null;
 		}
 
-		// Create OptIn properties
-		$properties = [
-			'cf_form_id'      => $formData->getFormId(),
-			'doubleoptin'     => 0,
-			'createtime'      => time(),
-			'content'         => maybe_serialize( $fields ),
-			'files'           => maybe_serialize( $files ),
-			'ipaddr_register' => IPHelper::getIPAdress(),
-			'category'        => (int) ( $formParameter['category'] ?? 0 ),
-			'form'            => $formData->getFormHtml(),
-			'email'           => $recipient,
-		];
+		$properties = $this->buildOptInProperties( $formData, $formParameter, $recipient, $fields, $files );
 
 		$optIn = new OptIn( $this->getLogger(), $properties );
 
 		if ( $optIn->save() ) {
-			$this->getLogger()->info( 'OptIn record created successfully', [
-				'plugin'   => 'double-opt-in',
-				'optin_id' => $optIn->get_id(),
-				'form_id'  => $formData->getFormId(),
-			] );
+			$this->getLogger()->info(
+				'OptIn record created successfully',
+				array(
+					'plugin'   => 'double-opt-in',
+					'optin_id' => $optIn->get_id(),
+					'form_id'  => $formData->getFormId(),
+				)
+			);
 
 			// Dispatch typed event
 			$this->dispatchOptInCreatedEvent( $optIn, $formData );
@@ -361,19 +420,184 @@ abstract class AbstractFormIntegration implements FormIntegrationInterface {
 			return $optIn;
 		}
 
-		$this->getLogger()->error( 'Failed to save OptIn record', [
-			'plugin'  => 'double-opt-in',
-			'form_id' => $formData->getFormId(),
-		] );
+		$this->getLogger()->error(
+			'Failed to save OptIn record',
+			array(
+				'plugin'  => 'double-opt-in',
+				'form_id' => $formData->getFormId(),
+			)
+		);
 
 		do_action( 'f12_cf7_doubleoptin_creation_failed', $formData->getFormId(), $recipient );
 
 		self::setLastError(
-			OptInError::fromCode( OptInError::SAVE_FAILED, [ 'form_id' => $formData->getFormId() ] ),
+			OptInError::fromCode( OptInError::SAVE_FAILED, array( 'form_id' => $formData->getFormId() ) ),
 			$formData->getFormId()
 		);
 
 		return null;
+	}
+
+	/**
+	 * Validate the consent-acceptance gate (GDPR Art. 7).
+	 *
+	 * When the form has a configured `consent_field`, the user must
+	 * have actively confirmed it. Otherwise we'd be storing a
+	 * `consent_text` snapshot the user never saw — fabricated audit
+	 * evidence. Empty `consent_field` means "no gate"
+	 * (backward-compat; admins who haven't migrated yet keep working).
+	 *
+	 * Extracted into its own method so the gate behavior is testable
+	 * in isolation — the full createOptIn() flow has too many
+	 * side-effects (rate-limiting, file storage, container access)
+	 * for clean unit testing of just this branch.
+	 *
+	 * @param FormDataInterface    $formData      The submitted form data.
+	 * @param array<string, mixed> $formParameter The form-settings snapshot.
+	 *
+	 * @return OptInError|null Error when the gate fails; null when it
+	 *                         passes (gate disabled or value truthy).
+	 */
+	protected function validateConsentAcceptance( FormDataInterface $formData, array $formParameter ): ?OptInError {
+		$consentField = (string) ( $formParameter['consent_field'] ?? '' );
+		if ( $consentField === '' ) {
+			return null;
+		}
+
+		$consentValue = $formData->getField( $consentField );
+
+		// Diagnostic — 2026-05-13 user report: WPForms Checkbox field
+		// ticked, gate still rejects. Need to see the actual shape of
+		// `$consentValue` to know whether `! empty()` is the wrong
+		// predicate for WPForms checkbox payloads (e.g. array with
+		// empty string, scalar 0, etc.).
+		$this->getLogger()->info(
+			'Consent gate evaluation',
+			array(
+				'plugin'         => 'double-opt-in',
+				'form_id'        => $formData->getFormId(),
+				'consent_field'  => $consentField,
+				'value_type'     => gettype( $consentValue ),
+				'value_preview'  => is_scalar( $consentValue )
+					? (string) $consentValue
+					: wp_json_encode( $consentValue ),
+				'is_empty'       => empty( $consentValue ),
+			)
+		);
+
+		if ( ! empty( $consentValue ) ) {
+			return null;
+		}
+
+		// Fallback for WPForms checkbox shape: when the user ticked
+		// the box, the bare-id key may carry the joined-string `value`
+		// while the truthful "did the user actually tick anything"
+		// signal lives in the `field_{id}` mirror's `value_raw`
+		// (array of internal slugs). If `value_raw` is a non-empty
+		// array with at least one non-empty entry, treat as consent
+		// given — `empty()` over the joined string is a false
+		// negative when the checkbox's display labels are empty.
+		$mirror = $formData->getField( 'field_' . $consentField );
+		if ( is_array( $mirror ) ) {
+			$valueRaw = $mirror['value_raw'] ?? null;
+			$value    = $mirror['value']     ?? null;
+			$hasTicked = false;
+			foreach ( array( $valueRaw, $value ) as $candidate ) {
+				if ( is_array( $candidate ) ) {
+					foreach ( $candidate as $entry ) {
+						if ( is_scalar( $entry ) && (string) $entry !== '' ) {
+							$hasTicked = true;
+							break 2;
+						}
+					}
+				} elseif ( is_scalar( $candidate ) && (string) $candidate !== '' ) {
+					$hasTicked = true;
+					break;
+				}
+			}
+			if ( $hasTicked ) {
+				$this->getLogger()->info(
+					'Consent gate passed via field_{id} mirror fallback',
+					array(
+						'plugin'        => 'double-opt-in',
+						'form_id'      => $formData->getFormId(),
+						'consent_field' => $consentField,
+					)
+				);
+				return null;
+			}
+		}
+
+		return OptInError::fromCode(
+			OptInError::CONSENT_NOT_GIVEN,
+			array(
+				'form_id'       => $formData->getFormId(),
+				'consent_field' => $consentField,
+			)
+		);
+	}
+
+	/**
+	 * Build the OptIn properties array that will be persisted on
+	 * record creation. Extracted from {@see createOptIn()} so the
+	 * field-coverage contract is testable in isolation — the full
+	 * createOptIn() flow has too many side-effects (rate-limiting,
+	 * file storage, container access) for clean unit testing.
+	 *
+	 * Snapshot semantics:
+	 *  - `consent_text` is captured per GDPR Art. 7 — the consent
+	 *    record reflects the wording the user actually agreed to,
+	 *    even if the form's settings change later.
+	 *  - Custom addon fields land via the `f12_doi_optin_properties`
+	 *    filter; addons that contribute a per-form setting hook here
+	 *    to persist a snapshot with each opt-in.
+	 *
+	 * @param FormDataInterface    $formData      The submitted form data.
+	 * @param array<string, mixed> $formParameter The form-settings snapshot.
+	 * @param string               $recipient     The resolved recipient email.
+	 * @param array<string, mixed> $fields        Filtered form fields.
+	 * @param array<string, mixed> $files         Stored file references.
+	 *
+	 * @return array<string, mixed>
+	 */
+	protected function buildOptInProperties(
+		FormDataInterface $formData,
+		array $formParameter,
+		string $recipient,
+		array $fields,
+		array $files
+	): array {
+		$properties = array(
+			'cf_form_id'      => $formData->getFormId(),
+			'doubleoptin'     => 0,
+			'createtime'      => time(),
+			'content'         => maybe_serialize( $fields ),
+			'files'           => maybe_serialize( $files ),
+			'ipaddr_register' => IPHelper::getIPAdress(),
+			'category'        => (int) ( $formParameter['category'] ?? 0 ),
+			'form'            => $formData->getFormHtml(),
+			'email'           => $recipient,
+			'consent_text'    => (string) ( $formParameter['consent_text'] ?? '' ),
+			'consent_field'   => (string) ( $formParameter['consent_field'] ?? '' ),
+		);
+
+		/**
+		 * Filter the OptIn properties array before the record is
+		 * created. Addons hook this to snapshot their own per-form
+		 * settings into the opt-in record at submit time. Mirrors the
+		 * symmetric DTO filter pattern (`f12_doi_settings_dto_from_array`
+		 * / `f12_doi_settings_dto_sanitize`) — an addon that contributes
+		 * a per-form setting AND wants it persisted with each opt-in
+		 * snapshots it through this filter.
+		 *
+		 * @since 4.4.0
+		 *
+		 * @param array<string, mixed> $properties    The properties array
+		 *                                            for the new OptIn.
+		 * @param FormDataInterface    $formData      The submitted form data.
+		 * @param array<string, mixed> $formParameter The form-settings snapshot.
+		 */
+		return apply_filters( 'f12_doi_optin_properties', $properties, $formData, $formParameter );
 	}
 
 	/**
@@ -400,7 +624,7 @@ abstract class AbstractFormIntegration implements FormIntegrationInterface {
 				$body,
 				$fieldData,
 				$optIn->get_cf_form_id(),
-				[],
+				array(),
 				$this->getIdentifier()
 			);
 		}
@@ -424,7 +648,7 @@ abstract class AbstractFormIntegration implements FormIntegrationInterface {
 		}
 		date_default_timezone_set( $timezone );
 
-		$placeholders = [
+		$placeholders = array(
 			'doubleoptin_form_url'     => $formParameter['formUrl'] ?? '',
 			'doubleoptin_form_subject' => $formParameter['subject'] ?? '',
 			'doubleoptin_form_date'    => date( get_option( 'date_format' ) ),
@@ -433,7 +657,7 @@ abstract class AbstractFormIntegration implements FormIntegrationInterface {
 			'doubleoptinlink'          => $optIn->get_link_optin( $formParameter ),
 			'doubleoptoutlink'         => $optIn->get_link_optout(),
 			'doubleoptin_privacy_url'  => $this->getPrivacyPolicyUrl(),
-		];
+		);
 
 		foreach ( $placeholders as $key => $value ) {
 			if ( is_array( $value ) || is_object( $value ) ) {
@@ -481,7 +705,28 @@ abstract class AbstractFormIntegration implements FormIntegrationInterface {
 	 * @return array The stored file paths.
 	 */
 	protected function storeFiles( array $files ): array {
-		$storedFiles = [];
+		// File-lifecycle plan, Step 1 (2026-05-07): delegate to the
+		// centralised FileStorage service. This moves files into
+		// `wp-content/uploads/f12-doi/pending/` (deny-from-all) with
+		// random hex names, instead of the pre-4.3 in-tmp-dir copy.
+		// The legacy copyAndRenameFile path below stays for now as a
+		// fallback if FileStorage construction fails — removed in
+		// Schritt 2 once each integration's hand-off is wired up.
+		try {
+			$storage = new FileStorage( $this->logger );
+			return $storage->store( $files );
+		} catch ( \Throwable $e ) {
+			$this->logger->error(
+				'FileStorage unavailable, falling back to legacy in-tmp store',
+				array(
+					'plugin' => 'double-opt-in',
+					'error'  => $e->getMessage(),
+				)
+			);
+		}
+
+		// ── Legacy fallback (pre-4.3) ─────────────────────────────────
+		$storedFiles = array();
 
 		if ( empty( $files ) ) {
 			return $storedFiles;
@@ -489,7 +734,7 @@ abstract class AbstractFormIntegration implements FormIntegrationInterface {
 
 		foreach ( $files as $key => $fileList ) {
 			if ( ! is_array( $fileList ) ) {
-				$fileList = [ $fileList ];
+				$fileList = array( $fileList );
 			}
 
 			foreach ( $fileList as $file ) {
@@ -508,9 +753,132 @@ abstract class AbstractFormIntegration implements FormIntegrationInterface {
 	}
 
 	/**
+	 * Hand off the opt-in's stored files to the integration's own
+	 * form-system entry (Avada form_entries / GF entry / WPForms
+	 * entry / CF7 mail attachment). Per-integration override.
+	 *
+	 * Default behaviour: return false (no hand-off). The files stay
+	 * in `pending/` until the OptIn is deleted (cron / manual /
+	 * REST), at which point cascade-delete removes them.
+	 *
+	 * Contract (file-lifecycle plan, 2026-05-07):
+	 *
+	 *   - true: hand-off succeeded. Caller (template-method below)
+	 *           will delete the pending/ copies — single source of
+	 *           truth = the integration's own DB. GDPR-compliant by
+	 *           construction (consent-bound retention).
+	 *
+	 *   - false: hand-off failed or not implemented. Files stay in
+	 *           pending/ and are removed eventually via OptIn-deletion
+	 *           cascade (cron expiry or manual delete). No silent
+	 *           data loss.
+	 *
+	 * @param OptIn $optIn The just-confirmed opt-in record.
+	 *
+	 * @return bool true on successful hand-off, false otherwise.
+	 *
+	 * @since 4.3.0
+	 */
+	public function handOffFilesToFormSystem( OptIn $optIn ): bool {
+		// Default: not implemented for this integration. Per-
+		// integration overrides in addon-avada / addon-cf7 / etc.
+		return false;
+	}
+
+	/**
+	 * Template-method: process file hand-off when an opt-in confirms.
+	 *
+	 * Hooked on `f12_cf7_doubleoptin_after_confirm` at priority 5
+	 * (BEFORE addon-specific listeners that fire at default 10), so
+	 * file hand-off completes before any side-effects that might
+	 * rely on the integration's entry being fully populated.
+	 *
+	 * Each subclass registers this in its own `registerHooks()` —
+	 * see Schritt 2 per-integration commits.
+	 *
+	 * @param string $hash  The confirmation hash (action arg).
+	 * @param OptIn  $optIn The confirmed opt-in (action arg).
+	 *
+	 * @since 4.3.0
+	 */
+	final public function processFilesOnConfirm( string $hash, OptIn $optIn ): void {
+		// Bail for opt-ins that aren't this integration's responsibility.
+		// The after_confirm action fires for ALL types — every integration
+		// hooks it but only acts on its own.
+		if ( ! $optIn->isType( $this->getIdentifier() ) ) {
+			return;
+		}
+
+		$rawFiles    = (string) $optIn->get_files();
+		$decoded     = $rawFiles === '' ? array() : maybe_unserialize( $rawFiles );
+		$decoded     = is_array( $decoded ) ? $decoded : array();
+		$files       = array_values(
+			array_filter(
+				$decoded,
+				static function ( $p ) { return is_string( $p ) && $p !== ''; }
+			)
+		);
+
+		if ( empty( $files ) ) {
+			return;
+		}
+
+		$handedOff = $this->handOffFilesToFormSystem( $optIn );
+
+		if ( ! $handedOff ) {
+			$this->logger->info(
+				'File hand-off not performed (or failed) — pending files will be cleaned up on OptIn deletion',
+				array(
+					'plugin'      => 'double-opt-in',
+					'integration' => $this->getIdentifier(),
+					'optin_id'    => $optIn->get_id(),
+					'file_count'  => count( $files ),
+				)
+			);
+			return;
+		}
+
+		// Hand-off succeeded → integration now owns the files in its
+		// own DB. Delete our pending copies to avoid duplicate storage.
+		try {
+			$storage = new FileStorage( $this->logger );
+			$storage->deletePaths( $files );
+
+			// Clear the OptIn::files column so the cascade-delete on
+			// later OptIn removal doesn't try to re-unlink missing
+			// paths. Idempotent if save fails — pending dir is empty
+			// either way.
+			if ( method_exists( $optIn, 'set_files' ) ) {
+				$optIn->set_files( serialize( array() ) );
+				if ( method_exists( $optIn, 'save' ) ) {
+					$optIn->save();
+				}
+			}
+
+			$this->logger->info(
+				'Files handed off to form system + pending copies deleted',
+				array(
+					'plugin'      => 'double-opt-in',
+					'integration' => $this->getIdentifier(),
+					'optin_id'    => $optIn->get_id(),
+					'file_count'  => count( $files ),
+				)
+			);
+		} catch ( \Throwable $e ) {
+			$this->logger->error(
+				'Hand-off succeeded but pending-cleanup failed',
+				array(
+					'plugin' => 'double-opt-in',
+					'error'  => $e->getMessage(),
+				)
+			);
+		}
+	}
+
+	/**
 	 * Allowed MIME types for file uploads stored with opt-in records.
 	 */
-	private const ALLOWED_MIME_TYPES = [
+	private const ALLOWED_MIME_TYPES = array(
 		'jpg'  => 'image/jpeg',
 		'jpeg' => 'image/jpeg',
 		'png'  => 'image/png',
@@ -521,7 +889,7 @@ abstract class AbstractFormIntegration implements FormIntegrationInterface {
 		'docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
 		'txt'  => 'text/plain',
 		'csv'  => 'text/csv',
-	];
+	);
 
 	/**
 	 * Copy and rename a file with a unique, non-guessable name.
@@ -538,10 +906,13 @@ abstract class AbstractFormIntegration implements FormIntegrationInterface {
 		$fileType = wp_check_filetype_and_ext( $file, wp_basename( $file ), $allowedMimes );
 
 		if ( empty( $fileType['type'] ) || empty( $fileType['ext'] ) ) {
-			$this->getLogger()->warning( 'File rejected: MIME type not allowed', [
-				'plugin'   => 'double-opt-in',
-				'original' => $file,
-			] );
+			$this->getLogger()->warning(
+				'File rejected: MIME type not allowed',
+				array(
+					'plugin'   => 'double-opt-in',
+					'original' => $file,
+				)
+			);
 			return null;
 		}
 
@@ -552,18 +923,24 @@ abstract class AbstractFormIntegration implements FormIntegrationInterface {
 		$newFile     = implode( '/', $pathParts );
 
 		if ( copy( $file, $newFile ) ) {
-			$this->getLogger()->debug( 'File copied successfully', [
-				'plugin'   => 'double-opt-in',
-				'original' => $file,
-				'new_file' => $newFile,
-			] );
+			$this->getLogger()->debug(
+				'File copied successfully',
+				array(
+					'plugin'   => 'double-opt-in',
+					'original' => $file,
+					'new_file' => $newFile,
+				)
+			);
 			return $newFile;
 		}
 
-		$this->getLogger()->error( 'Failed to copy file', [
-			'plugin'   => 'double-opt-in',
-			'original' => $file,
-		] );
+		$this->getLogger()->error(
+			'Failed to copy file',
+			array(
+				'plugin'   => 'double-opt-in',
+				'original' => $file,
+			)
+		);
 
 		return null;
 	}
@@ -579,10 +956,13 @@ abstract class AbstractFormIntegration implements FormIntegrationInterface {
 		$optIn = OptIn::get_by_hash( $hash );
 
 		if ( ! $optIn ) {
-			$this->getLogger()->warning( 'OptIn not found for hash', [
-				'plugin' => 'double-opt-in',
-				'hash'   => $hash,
-			] );
+			$this->getLogger()->warning(
+				'OptIn not found for hash',
+				array(
+					'plugin' => 'double-opt-in',
+					'hash'   => $hash,
+				)
+			);
 			self::setValidationStatus( 'not_found' );
 			return false;
 		}
@@ -596,11 +976,14 @@ abstract class AbstractFormIntegration implements FormIntegrationInterface {
 		$settings    = CF7DoubleOptIn::getInstance()->getSettings();
 		$expiryHours = (int) ( $settings['token_expiry_hours'] ?? 48 );
 		if ( $expiryHours > 0 && ( time() - (int) $optIn->get_createtime() ) > ( $expiryHours * 3600 ) ) {
-			$this->getLogger()->info( 'OptIn token expired', [
-				'plugin'       => 'double-opt-in',
-				'optin_id'     => $optIn->get_id(),
-				'expiry_hours' => $expiryHours,
-			] );
+			$this->getLogger()->info(
+				'OptIn token expired',
+				array(
+					'plugin'       => 'double-opt-in',
+					'optin_id'     => $optIn->get_id(),
+					'expiry_hours' => $expiryHours,
+				)
+			);
 			do_action( 'f12_cf7_doubleoptin_token_expired', $hash, $optIn );
 			self::setValidationStatus( 'expired' );
 			return false;
@@ -608,10 +991,13 @@ abstract class AbstractFormIntegration implements FormIntegrationInterface {
 
 		// Skip if already confirmed
 		if ( $optIn->is_confirmed() ) {
-			$this->getLogger()->info( 'OptIn already confirmed', [
-				'plugin'   => 'double-opt-in',
-				'optin_id' => $optIn->get_id(),
-			] );
+			$this->getLogger()->info(
+				'OptIn already confirmed',
+				array(
+					'plugin'   => 'double-opt-in',
+					'optin_id' => $optIn->get_id(),
+				)
+			);
 			do_action( 'f12_cf7_doubleoptin_already_confirmed', $hash, $optIn );
 			self::setValidationStatus( 'already_confirmed' );
 			return false;
@@ -625,10 +1011,13 @@ abstract class AbstractFormIntegration implements FormIntegrationInterface {
 		$optIn->set_ipaddr_confirmation( IPHelper::getIPAdress() );
 
 		if ( ! $optIn->save() ) {
-			$this->getLogger()->error( 'Failed to confirm OptIn', [
-				'plugin'   => 'double-opt-in',
-				'optin_id' => $optIn->get_id(),
-			] );
+			$this->getLogger()->error(
+				'Failed to confirm OptIn',
+				array(
+					'plugin'   => 'double-opt-in',
+					'optin_id' => $optIn->get_id(),
+				)
+			);
 			return false;
 		}
 
@@ -650,10 +1039,13 @@ abstract class AbstractFormIntegration implements FormIntegrationInterface {
 			do_action( 'f12_cf7_doubleoptin_after_send_default_mail', $optIn );
 		}
 
-		$this->getLogger()->info( 'OptIn confirmed successfully', [
-			'plugin'   => 'double-opt-in',
-			'optin_id' => $optIn->get_id(),
-		] );
+		$this->getLogger()->info(
+			'OptIn confirmed successfully',
+			array(
+				'plugin'   => 'double-opt-in',
+				'optin_id' => $optIn->get_id(),
+			)
+		);
 
 		return true;
 	}
@@ -678,15 +1070,21 @@ abstract class AbstractFormIntegration implements FormIntegrationInterface {
 			}
 
 			if ( unlink( $file ) ) {
-				$this->getLogger()->debug( 'File removed successfully', [
-					'plugin' => 'double-opt-in',
-					'file'   => $file,
-				] );
+				$this->getLogger()->debug(
+					'File removed successfully',
+					array(
+						'plugin' => 'double-opt-in',
+						'file'   => $file,
+					)
+				);
 			} else {
-				$this->getLogger()->warning( 'Failed to remove file', [
-					'plugin' => 'double-opt-in',
-					'file'   => $file,
-				] );
+				$this->getLogger()->warning(
+					'Failed to remove file',
+					array(
+						'plugin' => 'double-opt-in',
+						'file'   => $file,
+					)
+				);
 			}
 		}
 	}
@@ -701,7 +1099,7 @@ abstract class AbstractFormIntegration implements FormIntegrationInterface {
 		// CF7 re-runs all form validations (required fields, quiz, acceptance checkboxes)
 		// when creating a WPCF7_Submission instance. Since this is a confirmed opt-in
 		// (not a real form submit), these validations must be bypassed.
-		add_filter( 'wpcf7_validate', [ $this, 'clearValidationResult' ], 999 );
+		add_filter( 'wpcf7_validate', array( $this, 'clearValidationResult' ), 999 );
 		add_filter( 'wpcf7_spam', '__return_false', 0 );
 		add_filter( 'wpcf7_skip_spam_check', '__return_true', 0 );
 
@@ -714,9 +1112,12 @@ abstract class AbstractFormIntegration implements FormIntegrationInterface {
 		// Remove hCaptcha validation filter
 		$this->removeHCaptchaFilter();
 
-		$this->getLogger()->debug( 'Validation and spam protection disabled for confirmation mail', [
-			'plugin' => 'double-opt-in',
-		] );
+		$this->getLogger()->debug(
+			'Validation and spam protection disabled for confirmation mail',
+			array(
+				'plugin' => 'double-opt-in',
+			)
+		);
 	}
 
 	/**
@@ -737,7 +1138,7 @@ abstract class AbstractFormIntegration implements FormIntegrationInterface {
 	 */
 	protected function afterSendConfirmationMail(): void {
 		// Re-enable CF7 validation
-		remove_filter( 'wpcf7_validate', [ $this, 'clearValidationResult' ], 999 );
+		remove_filter( 'wpcf7_validate', array( $this, 'clearValidationResult' ), 999 );
 		remove_filter( 'wpcf7_spam', '__return_false', 0 );
 		remove_filter( 'wpcf7_skip_spam_check', '__return_true', 0 );
 
@@ -756,9 +1157,12 @@ abstract class AbstractFormIntegration implements FormIntegrationInterface {
 		// Re-add hCaptcha validation filter
 		$this->restoreHCaptchaFilter();
 
-		$this->getLogger()->debug( 'Validation and spam protection re-enabled', [
-			'plugin' => 'double-opt-in',
-		] );
+		$this->getLogger()->debug(
+			'Validation and spam protection re-enabled',
+			array(
+				'plugin' => 'double-opt-in',
+			)
+		);
 	}
 
 	/**
@@ -783,9 +1187,12 @@ abstract class AbstractFormIntegration implements FormIntegrationInterface {
 					$this->hcaptchaCf7Instance = $hook['function'][0];
 					$this->hcaptchaCf7Priority = $priority;
 					remove_filter( 'wpcf7_validate', $hook['function'], $priority );
-					$this->getLogger()->debug( 'hCaptcha CF7 validation filter removed', [
-						'plugin' => 'double-opt-in',
-					] );
+					$this->getLogger()->debug(
+						'hCaptcha CF7 validation filter removed',
+						array(
+							'plugin' => 'double-opt-in',
+						)
+					);
 
 					return;
 				}
@@ -800,10 +1207,13 @@ abstract class AbstractFormIntegration implements FormIntegrationInterface {
 	 */
 	private function restoreHCaptchaFilter(): void {
 		if ( isset( $this->hcaptchaCf7Instance ) ) {
-			add_filter( 'wpcf7_validate', [ $this->hcaptchaCf7Instance, 'verify_hcaptcha' ], $this->hcaptchaCf7Priority, 2 );
-			$this->getLogger()->debug( 'hCaptcha CF7 validation filter re-added', [
-				'plugin' => 'double-opt-in',
-			] );
+			add_filter( 'wpcf7_validate', array( $this->hcaptchaCf7Instance, 'verify_hcaptcha' ), $this->hcaptchaCf7Priority, 2 );
+			$this->getLogger()->debug(
+				'hCaptcha CF7 validation filter re-added',
+				array(
+					'plugin' => 'double-opt-in',
+				)
+			);
 			unset( $this->hcaptchaCf7Instance, $this->hcaptchaCf7Priority );
 		}
 	}
@@ -820,7 +1230,7 @@ abstract class AbstractFormIntegration implements FormIntegrationInterface {
 			$container = Container::getInstance();
 			if ( $container->has( EventDispatcherInterface::class ) ) {
 				$dispatcher = $container->get( EventDispatcherInterface::class );
-				$event = new FormSubmissionEvent(
+				$event      = new FormSubmissionEvent(
 					$formData,
 					$this->getIdentifier()
 				);
@@ -828,10 +1238,13 @@ abstract class AbstractFormIntegration implements FormIntegrationInterface {
 				return $event;
 			}
 		} catch ( \Exception $e ) {
-			$this->getLogger()->warning( 'Failed to dispatch FormSubmissionEvent', [
-				'plugin' => 'double-opt-in',
-				'error'  => $e->getMessage(),
-			] );
+			$this->getLogger()->warning(
+				'Failed to dispatch FormSubmissionEvent',
+				array(
+					'plugin' => 'double-opt-in',
+					'error'  => $e->getMessage(),
+				)
+			);
 		}
 		return null;
 	}
@@ -849,7 +1262,7 @@ abstract class AbstractFormIntegration implements FormIntegrationInterface {
 			$container = Container::getInstance();
 			if ( $container->has( EventDispatcherInterface::class ) ) {
 				$dispatcher = $container->get( EventDispatcherInterface::class );
-				$event = new OptInCreatedEvent(
+				$event      = new OptInCreatedEvent(
 					$optIn->get_id(),
 					$formData->getFormId(),
 					$this->getIdentifier(),
@@ -860,10 +1273,13 @@ abstract class AbstractFormIntegration implements FormIntegrationInterface {
 				$dispatcher->dispatch( $event );
 			}
 		} catch ( \Exception $e ) {
-			$this->getLogger()->warning( 'Failed to dispatch OptInCreatedEvent', [
-				'plugin' => 'double-opt-in',
-				'error'  => $e->getMessage(),
-			] );
+			$this->getLogger()->warning(
+				'Failed to dispatch OptInCreatedEvent',
+				array(
+					'plugin' => 'double-opt-in',
+					'error'  => $e->getMessage(),
+				)
+			);
 		}
 	}
 
@@ -889,15 +1305,18 @@ abstract class AbstractFormIntegration implements FormIntegrationInterface {
 					$optIn->get_email(),
 					$optIn->get_ipaddr_confirmation(),
 					(int) $optIn->get_cf_form_id(),
-					is_array( $formData ) ? $formData : []
+					is_array( $formData ) ? $formData : array()
 				);
 				$dispatcher->dispatch( $event );
 			}
 		} catch ( \Exception $e ) {
-			$this->getLogger()->warning( 'Failed to dispatch OptInConfirmedEvent', [
-				'plugin' => 'double-opt-in',
-				'error'  => $e->getMessage(),
-			] );
+			$this->getLogger()->warning(
+				'Failed to dispatch OptInConfirmedEvent',
+				array(
+					'plugin' => 'double-opt-in',
+					'error'  => $e->getMessage(),
+				)
+			);
 		}
 	}
 
@@ -914,31 +1333,36 @@ abstract class AbstractFormIntegration implements FormIntegrationInterface {
 	 * {@inheritdoc}
 	 */
 	public function getForms(): array {
-		$posts = get_posts( [
-			'post_type'      => $this->getPostType(),
-			'posts_per_page' => -1,
-			'post_status'    => 'publish',
-			'orderby'        => 'title',
-			'order'          => 'ASC',
-		] );
+		$posts = get_posts(
+			array(
+				'post_type'      => $this->getPostType(),
+				'posts_per_page' => -1,
+				'post_status'    => 'publish',
+				'orderby'        => 'title',
+				'order'          => 'ASC',
+			)
+		);
 
-		$forms = [];
+		$forms = array();
 		foreach ( $posts as $post ) {
 			$parameter = $this->getFormParameter( $post->ID );
-			$forms[] = [
+			$forms[]   = array(
 				'id'          => $post->ID,
 				'title'       => $post->post_title,
 				'integration' => $this->getIdentifier(),
 				'enabled'     => (int) ( $parameter['enable'] ?? 0 ) === 1,
 				'edit_url'    => $this->getFormEditUrl( $post->ID ),
-			];
+			);
 		}
 
-		$this->getLogger()->debug( 'Retrieved forms for integration', [
-			'plugin'      => 'double-opt-in',
-			'integration' => $this->getIdentifier(),
-			'count'       => count( $forms ),
-		] );
+		$this->getLogger()->debug(
+			'Retrieved forms for integration',
+			array(
+				'plugin'      => 'double-opt-in',
+				'integration' => $this->getIdentifier(),
+				'count'       => count( $forms ),
+			)
+		);
 
 		return $forms;
 	}

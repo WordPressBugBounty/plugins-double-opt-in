@@ -17,7 +17,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Interface OptInRepositoryInterface
  *
- * Contract for OptIn data access operations.
+ * @api
+ *
+ * Contract for OptIn data access operations. Addons that need to read
+ * opt-in data (analytics, exports, custom reports) resolve this from the
+ * container rather than issuing direct `$wpdb` queries against the shared
+ * opt-in table. Covered by the Addon API semver policy as of Core API 4.3.0.
  */
 interface OptInRepositoryInterface {
 
@@ -74,7 +79,7 @@ interface OptInRepositoryInterface {
 	 *
 	 * @return OptIn[]
 	 */
-	public function findByCategory( int $categoryId, array $options = [] ): array;
+	public function findByCategory( int $categoryId, array $options = array() ): array;
 
 	/**
 	 * Count OptIns by category.

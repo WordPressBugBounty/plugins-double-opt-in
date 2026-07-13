@@ -17,7 +17,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Class OptInDeletedEvent
  *
+ * @api
+ *
  * Dispatched when an opt-in record is deleted.
+ * Covered by the Addon API semver policy as of Core API 4.3.0.
  */
 class OptInDeletedEvent extends Event {
 

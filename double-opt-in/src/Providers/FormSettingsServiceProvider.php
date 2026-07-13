@@ -37,27 +37,36 @@ class FormSettingsServiceProvider implements BootableProviderInterface {
 	 */
 	public function register( Container $container ): void {
 		// Register validator as singleton
-		$container->singleton( FormSettingsValidator::class, function () {
-			return new FormSettingsValidator();
-		} );
+		$container->singleton(
+			FormSettingsValidator::class,
+			function () {
+				return new FormSettingsValidator();
+			}
+		);
 
 		// Register service as singleton
-		$container->singleton( FormSettingsService::class, function ( Container $c ) {
-			return new FormSettingsService(
-				$c->get( LoggerInterface::class ),
-				FormIntegrationRegistry::getInstance(),
-				$c->get( FormSettingsValidator::class )
-			);
-		} );
+		$container->singleton(
+			FormSettingsService::class,
+			function ( Container $c ) {
+				return new FormSettingsService(
+					$c->get( LoggerInterface::class ),
+					FormIntegrationRegistry::getInstance(),
+					$c->get( FormSettingsValidator::class )
+				);
+			}
+		);
 
 		// Register controller as singleton
-		$container->singleton( FormSettingsController::class, function ( Container $c ) {
-			return new FormSettingsController(
-				$c->get( LoggerInterface::class ),
-				$c->get( FormSettingsService::class ),
-				$c->get( FormSettingsValidator::class )
-			);
-		} );
+		$container->singleton(
+			FormSettingsController::class,
+			function ( Container $c ) {
+				return new FormSettingsController(
+					$c->get( LoggerInterface::class ),
+					$c->get( FormSettingsService::class ),
+					$c->get( FormSettingsValidator::class )
+				);
+			}
+		);
 	}
 
 	/**
@@ -72,7 +81,7 @@ class FormSettingsServiceProvider implements BootableProviderInterface {
 		$controller = $container->get( FormSettingsController::class );
 		$controller->registerActions();
 
-		// Note: UIForms is automatically loaded by the UI class
-		// since it follows the UI*.class.php naming convention in the ui/ directory
+		// The forms admin screen is the React SPA (AdminPageController), which
+		// consumes this controller's REST routes.
 	}
 }

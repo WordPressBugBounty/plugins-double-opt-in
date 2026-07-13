@@ -15,7 +15,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Class Event
  *
+ * @api
+ *
  * Base class for all domain events. Provides propagation control and metadata.
+ * Addon authors subclass this when dispatching their own custom events.
+ * Covered by the Addon API semver policy as of Core API 4.3.0.
  */
 abstract class Event implements StoppableEventInterface {
 

@@ -15,7 +15,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Interface EventDispatcherInterface
  *
+ * @api
+ *
  * PSR-14 inspired event dispatcher with WordPress hook bridging support.
+ *
+ * Covered by the Addon API semver policy as of Core API 4.3.0. Use
+ * `$container->get(EventDispatcherInterface::class)` inside an addon's
+ * boot() to subscribe to lifecycle events. See docs/addon-api.md §6 for
+ * the event catalogue.
  */
 interface EventDispatcherInterface {
 

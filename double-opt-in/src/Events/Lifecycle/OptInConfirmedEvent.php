@@ -17,7 +17,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Class OptInConfirmedEvent
  *
+ * @api
+ *
  * Dispatched when an opt-in is confirmed via the confirmation link.
+ * Covered by the Addon API semver policy as of Core API 4.3.0.
  */
 class OptInConfirmedEvent extends Event {
 
@@ -44,7 +47,7 @@ class OptInConfirmedEvent extends Event {
 		string $email,
 		string $confirmedIp,
 		int $formId,
-		array $formData = []
+		array $formData = array()
 	) {
 		parent::__construct();
 		$this->optInId     = $optInId;

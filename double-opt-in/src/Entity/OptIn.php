@@ -22,25 +22,26 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class OptIn {
 
-	private int $id = 0;
-	private int $formId = 0;
-	private bool $confirmed = false;
-	private string $content = '';
-	private string $hash = '';
-	private int $createTime = 0;
-	private int $updateTime = 0;
-	private int $optOutTime = 0;
-	private string $ipRegister = '';
+	private int $id                = 0;
+	private int $formId            = 0;
+	private bool $confirmed        = false;
+	private string $content        = '';
+	private string $hash           = '';
+	private int $createTime        = 0;
+	private int $updateTime        = 0;
+	private int $optOutTime        = 0;
+	private string $ipRegister     = '';
 	private string $ipConfirmation = '';
-	private string $ipOptOut = '';
-	private string $files = '';
-	private int $category = 0;
-	private string $form = '';
-	private string $mailOptIn = '';
-	private string $email = '';
-	private string $consentText = '';
-	private int $reminderSentAt = 0;
-	private string $mailReminder = '';
+	private string $ipOptOut       = '';
+	private string $files          = '';
+	private int $category          = 0;
+	private string $form           = '';
+	private string $mailOptIn      = '';
+	private string $email          = '';
+	private string $consentText    = '';
+	private string $consentField   = '';
+	private int $reminderSentAt    = 0;
+	private string $mailReminder   = '';
 
 	/**
 	 * Private constructor - use static factory methods.
@@ -95,6 +96,7 @@ class OptIn {
 		$optIn->mailOptIn      = (string) ( $data['mail_optin'] ?? '' );
 		$optIn->email          = (string) ( $data['email'] ?? '' );
 		$optIn->consentText    = (string) ( $data['consent_text'] ?? '' );
+		$optIn->consentField   = (string) ( $data['consent_field'] ?? '' );
 		$optIn->reminderSentAt = self::parseTimestamp( $data['reminder_sent_at'] ?? 0 );
 		$optIn->mailReminder   = (string) ( $data['mail_reminder'] ?? '' );
 
@@ -118,27 +120,28 @@ class OptIn {
 	 * @return array
 	 */
 	public function toArray(): array {
-		return [
-			'id'                   => $this->id,
-			'cf_form_id'           => $this->formId,
-			'doubleoptin'          => (int) $this->confirmed,
-			'content'              => $this->content,
-			'hash'                 => $this->hash,
-			'createtime'           => $this->createTime > 0 ? gmdate( 'Y-m-d H:i:s', $this->createTime ) : '',
-			'updatetime'           => $this->updateTime > 0 ? gmdate( 'Y-m-d H:i:s', $this->updateTime ) : '',
-			'optouttime'           => $this->optOutTime > 0 ? gmdate( 'Y-m-d H:i:s', $this->optOutTime ) : '',
-			'ipaddr_register'      => $this->ipRegister,
-			'ipaddr_confirmation'  => $this->ipConfirmation,
-			'ipaddr_optout'        => $this->ipOptOut,
-			'files'                => $this->files,
-			'category'             => $this->category,
-			'form'                 => $this->form,
-			'mail_optin'           => $this->mailOptIn,
-			'email'                => $this->email,
-			'consent_text'         => $this->consentText,
-			'reminder_sent_at'     => $this->reminderSentAt > 0 ? gmdate( 'Y-m-d H:i:s', $this->reminderSentAt ) : '',
-			'mail_reminder'        => $this->mailReminder,
-		];
+		return array(
+			'id'                  => $this->id,
+			'cf_form_id'          => $this->formId,
+			'doubleoptin'         => (int) $this->confirmed,
+			'content'             => $this->content,
+			'hash'                => $this->hash,
+			'createtime'          => $this->createTime > 0 ? gmdate( 'Y-m-d H:i:s', $this->createTime ) : '',
+			'updatetime'          => $this->updateTime > 0 ? gmdate( 'Y-m-d H:i:s', $this->updateTime ) : '',
+			'optouttime'          => $this->optOutTime > 0 ? gmdate( 'Y-m-d H:i:s', $this->optOutTime ) : '',
+			'ipaddr_register'     => $this->ipRegister,
+			'ipaddr_confirmation' => $this->ipConfirmation,
+			'ipaddr_optout'       => $this->ipOptOut,
+			'files'               => $this->files,
+			'category'            => $this->category,
+			'form'                => $this->form,
+			'mail_optin'          => $this->mailOptIn,
+			'email'               => $this->email,
+			'consent_text'        => $this->consentText,
+			'consent_field'       => $this->consentField,
+			'reminder_sent_at'    => $this->reminderSentAt > 0 ? gmdate( 'Y-m-d H:i:s', $this->reminderSentAt ) : '',
+			'mail_reminder'       => $this->mailReminder,
+		);
 	}
 
 	/**
@@ -179,7 +182,7 @@ class OptIn {
 	 */
 	public function getContentArray(): array {
 		$data = maybe_unserialize( $this->content );
-		return is_array( $data ) ? $data : [];
+		return is_array( $data ) ? $data : array();
 	}
 
 	public function getHash(): string {
@@ -280,7 +283,7 @@ class OptIn {
 	 */
 	public function getFilesArray(): array {
 		$data = maybe_unserialize( $this->files );
-		return is_array( $data ) ? $data : [];
+		return is_array( $data ) ? $data : array();
 	}
 
 	public function getCategory(): int {
@@ -301,6 +304,10 @@ class OptIn {
 
 	public function getConsentText(): string {
 		return $this->consentText;
+	}
+
+	public function getConsentField(): string {
+		return $this->consentField;
 	}
 
 	public function getReminderSentAt(): int {
@@ -498,6 +505,12 @@ class OptIn {
 	public function withConsentText( string $consentText ): self {
 		$clone              = clone $this;
 		$clone->consentText = $consentText;
+		return $clone;
+	}
+
+	public function withConsentField( string $consentField ): self {
+		$clone               = clone $this;
+		$clone->consentField = $consentField;
 		return $clone;
 	}
 

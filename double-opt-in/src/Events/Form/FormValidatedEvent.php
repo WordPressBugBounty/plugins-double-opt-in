@@ -41,7 +41,7 @@ class FormValidatedEvent extends Event {
 		string $formType,
 		bool $isValid,
 		string $recipientEmail,
-		array $errors = []
+		array $errors = array()
 	) {
 		parent::__construct();
 		$this->formId         = $formId;

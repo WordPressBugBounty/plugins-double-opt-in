@@ -15,9 +15,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Interface FormDataInterface
  *
+ * @api
+ *
  * Represents normalized form submission data across all integration types.
  * This interface provides a standardized way to access form data regardless
  * of the underlying form system (CF7, Avada, Elementor, etc.).
+ *
+ * Used as the payload for FormSubmittedEvent and as the return type of
+ * FormIntegrationInterface::processSubmission(). Covered by the Addon API
+ * semver policy as of Core API 4.3.0.
  */
 interface FormDataInterface {
 

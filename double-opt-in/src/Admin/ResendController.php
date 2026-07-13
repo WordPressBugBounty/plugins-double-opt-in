@@ -28,8 +28,8 @@ class ResendController {
 	public function __construct( LoggerInterface $logger ) {
 		$this->logger = $logger;
 
-		add_action( 'wp_ajax_doi_resend_optin_mail', [ $this, 'handleResend' ] );
-		add_action( 'f12_cf7_doubleoptin_ui_view_optin_options', [ $this, 'renderResendButton' ] );
+		add_action( 'wp_ajax_doi_resend_optin_mail', array( $this, 'handleResend' ) );
+		add_action( 'f12_cf7_doubleoptin_ui_view_optin_options', array( $this, 'renderResendButton' ) );
 	}
 
 	/**
@@ -59,24 +59,30 @@ class ResendController {
 		}
 		?>
 		<button type="button"
-		        class="button"
-		        id="doi-resend-btn"
-		        data-id="<?php echo esc_attr( $id ); ?>"
-		        data-nonce="<?php echo esc_attr( $nonce ); ?>"
-		        <?php echo $disabled ? 'disabled' : ''; ?>
-		        <?php echo ! empty( $title ) ? 'title="' . esc_attr( $title ) . '"' : ''; ?>
-		        style="<?php echo $disabled ? 'opacity:.6;cursor:not-allowed;' : ''; ?>"><?php
-			_e( 'Resend Confirmation Mail', 'double-opt-in' );
-		?></button><?php
-		if ( ! $is_pro ) : ?>
+				class="button"
+				id="doi-resend-btn"
+				data-id="<?php echo esc_attr( $id ); ?>"
+				data-nonce="<?php echo esc_attr( $nonce ); ?>"
+				<?php echo $disabled ? 'disabled' : ''; ?>
+				<?php echo ! empty( $title ) ? 'title="' . esc_attr( $title ) . '"' : ''; ?>
+				style="<?php echo $disabled ? 'opacity:.6;cursor:not-allowed;' : ''; ?>">
+				<?php
+				_e( 'Resend Confirmation Mail', 'double-opt-in' );
+				?>
+		</button>
+		<?php
+		if ( ! $is_pro ) :
+			?>
 			<span style="display:inline-block;background:linear-gradient(135deg,#e6a817,#d4941a);color:#fff;font-size:10px;font-weight:700;line-height:1;padding:3px 6px;border-radius:3px;letter-spacing:.5px;text-transform:uppercase;"
-			      title="<?php esc_attr_e( 'This feature is available in the Pro version.', 'double-opt-in' ); ?>">PRO</span>
+					title="<?php esc_attr_e( 'This feature is available in the Pro version.', 'double-opt-in' ); ?>">PRO</span>
 		<?php endif; ?>
 		<span class="doi-tooltip">
 			<span class="dashicons dashicons-info-outline"></span>
-			<span class="doi-tooltip-text"><?php
+			<span class="doi-tooltip-text">
+			<?php
 				esc_html_e( 'Re-sends the original confirmation email with the opt-in link to the recipient.', 'double-opt-in' );
-			?></span>
+			?>
+			</span>
 		</span>
 		<span id="doi-resend-feedback" style="font-size:13px;"></span>
 		<?php if ( $is_pro && ! $disabled ) : ?>
@@ -133,21 +139,21 @@ class ResendController {
 	 */
 	public function handleResend(): void {
 		if ( ! apply_filters( 'f12_doi_is_pro_active', false ) ) {
-			wp_send_json_error( [ 'message' => __( 'This feature requires the Pro version.', 'double-opt-in' ) ], 403 );
+			wp_send_json_error( array( 'message' => __( 'This feature requires the Pro version.', 'double-opt-in' ) ), 403 );
 		}
 
 		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_send_json_error( [ 'message' => __( 'You do not have permission to perform this action.', 'double-opt-in' ) ], 403 );
+			wp_send_json_error( array( 'message' => __( 'You do not have permission to perform this action.', 'double-opt-in' ) ), 403 );
 		}
 
 		if ( ! check_ajax_referer( 'doi_resend_mail', '_wpnonce', false ) ) {
-			wp_send_json_error( [ 'message' => __( 'Security check failed.', 'double-opt-in' ) ], 403 );
+			wp_send_json_error( array( 'message' => __( 'Security check failed.', 'double-opt-in' ) ), 403 );
 		}
 
 		$optinId = isset( $_POST['optin_id'] ) ? (int) $_POST['optin_id'] : 0;
 
 		if ( $optinId <= 0 ) {
-			wp_send_json_error( [ 'message' => __( 'Invalid Opt-In ID.', 'double-opt-in' ) ] );
+			wp_send_json_error( array( 'message' => __( 'Invalid Opt-In ID.', 'double-opt-in' ) ) );
 		}
 
 		try {
@@ -155,30 +161,33 @@ class ResendController {
 			$repository = $container->get( OptInRepositoryInterface::class );
 			$entity     = $repository->findById( $optinId );
 		} catch ( \Exception $e ) {
-			$this->logger->error( 'Failed to load OptIn for resend', [
-				'plugin' => 'double-opt-in',
-				'id'     => $optinId,
-				'error'  => $e->getMessage(),
-			] );
-			wp_send_json_error( [ 'message' => __( 'Failed to load Opt-In.', 'double-opt-in' ) ] );
+			$this->logger->error(
+				'Failed to load OptIn for resend',
+				array(
+					'plugin' => 'double-opt-in',
+					'id'     => $optinId,
+					'error'  => $e->getMessage(),
+				)
+			);
+			wp_send_json_error( array( 'message' => __( 'Failed to load Opt-In.', 'double-opt-in' ) ) );
 		}
 
 		if ( ! $entity ) {
-			wp_send_json_error( [ 'message' => __( 'Opt-In not found.', 'double-opt-in' ) ] );
+			wp_send_json_error( array( 'message' => __( 'Opt-In not found.', 'double-opt-in' ) ) );
 		}
 
 		if ( $entity->isConfirmed() ) {
-			wp_send_json_error( [ 'message' => __( 'This Opt-In is already confirmed.', 'double-opt-in' ) ] );
+			wp_send_json_error( array( 'message' => __( 'This Opt-In is already confirmed.', 'double-opt-in' ) ) );
 		}
 
 		$body = $entity->getMailOptIn();
 		if ( empty( $body ) ) {
-			wp_send_json_error( [ 'message' => __( 'No mail body stored for this Opt-In.', 'double-opt-in' ) ] );
+			wp_send_json_error( array( 'message' => __( 'No mail body stored for this Opt-In.', 'double-opt-in' ) ) );
 		}
 
 		$email = $entity->getEmail();
 		if ( empty( $email ) ) {
-			wp_send_json_error( [ 'message' => __( 'No recipient email found.', 'double-opt-in' ) ] );
+			wp_send_json_error( array( 'message' => __( 'No recipient email found.', 'double-opt-in' ) ) );
 		}
 
 		// Load subject from form settings with fallback
@@ -188,7 +197,7 @@ class ResendController {
 			? $formParameter['subject']
 			: __( 'Please confirm your opt-in', 'double-opt-in' );
 
-		$headers = [ 'Content-Type: text/html; charset=UTF-8' ];
+		$headers = array( 'Content-Type: text/html; charset=UTF-8' );
 
 		if ( ! empty( $formParameter['sender'] ) ) {
 			if ( ! empty( $formParameter['sender_name'] ) ) {
@@ -201,19 +210,25 @@ class ResendController {
 		$sent = wp_mail( $email, $subject, $body, $headers );
 
 		if ( $sent ) {
-			$this->logger->info( 'Confirmation mail resent', [
-				'plugin'   => 'double-opt-in',
-				'optin_id' => $optinId,
-				'email'    => $email,
-			] );
-			wp_send_json_success( [ 'message' => __( 'Confirmation mail has been resent.', 'double-opt-in' ) ] );
+			$this->logger->info(
+				'Confirmation mail resent',
+				array(
+					'plugin'   => 'double-opt-in',
+					'optin_id' => $optinId,
+					'email'    => $email,
+				)
+			);
+			wp_send_json_success( array( 'message' => __( 'Confirmation mail has been resent.', 'double-opt-in' ) ) );
 		} else {
-			$this->logger->error( 'Failed to resend confirmation mail', [
-				'plugin'   => 'double-opt-in',
-				'optin_id' => $optinId,
-				'email'    => $email,
-			] );
-			wp_send_json_error( [ 'message' => __( 'Failed to send mail. Please check your mail configuration.', 'double-opt-in' ) ] );
+			$this->logger->error(
+				'Failed to resend confirmation mail',
+				array(
+					'plugin'   => 'double-opt-in',
+					'optin_id' => $optinId,
+					'email'    => $email,
+				)
+			);
+			wp_send_json_error( array( 'message' => __( 'Failed to send mail. Please check your mail configuration.', 'double-opt-in' ) ) );
 		}
 	}
 }

@@ -60,9 +60,19 @@
 					return;
 				}
 
-				showNotification( response.data.error.message );
+				showNotification( response.data.error.message, 'error' );
 
 				// Prevent duplicate checks for 5 seconds
+				cooldown = true;
+				setTimeout( function () {
+					cooldown = false;
+				}, 5000 );
+			} else if ( response.success && response.data && response.data.success_message ) {
+				// A "sent — please confirm" message stashed server-side by an
+				// integration that die()s early (Avada) and so can't show the
+				// form plugin's own confirmation. Render it as a success toast.
+				showNotification( response.data.success_message, 'success' );
+
 				cooldown = true;
 				setTimeout( function () {
 					cooldown = false;
@@ -113,11 +123,14 @@
 	}
 
 	/**
-	 * Show a toast notification with the error message.
+	 * Show a toast notification.
 	 *
-	 * @param {string} message The error message to display.
+	 * @param {string} message The message to display.
+	 * @param {string} [type]  'error' (default) or 'success' — controls colour + icon.
 	 */
-	function showNotification( message ) {
+	function showNotification( message, type ) {
+		type = type === 'success' ? 'success' : 'error';
+
 		var existing = document.querySelector( '.doi-error-notification' );
 		if ( existing ) {
 			existing.remove();
@@ -125,14 +138,18 @@
 
 		var notification = document.createElement( 'div' );
 		notification.className = 'doi-error-notification';
-		notification.setAttribute( 'role', 'alert' );
+		if ( type === 'success' ) {
+			notification.className += ' doi-error-notification--success';
+		}
+		notification.setAttribute( 'role', type === 'success' ? 'status' : 'alert' );
 
 		var content = document.createElement( 'div' );
 		content.className = 'doi-error-notification__content';
 
 		var icon = document.createElement( 'span' );
 		icon.className = 'doi-error-notification__icon';
-		icon.innerHTML = '&#9888;';
+		// Check mark for success, warning triangle for error.
+		icon.innerHTML = type === 'success' ? '&#10003;' : '&#9888;';
 
 		var text = document.createElement( 'p' );
 		text.className = 'doi-error-notification__message';

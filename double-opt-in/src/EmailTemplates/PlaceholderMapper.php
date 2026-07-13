@@ -26,56 +26,56 @@ class PlaceholderMapper {
 	 *
 	 * @var array
 	 */
-	private static array $standardPlaceholders = [
-		'doi_email' => [
+	private static array $standardPlaceholders = array(
+		'doi_email'      => array(
 			'label'    => 'E-Mail',
-			'patterns' => [ 'email', 'your-email', 'e-mail', 'mail', 'user-email', 'user_email', 'e_mail' ],
-		],
-		'doi_name' => [
+			'patterns' => array( 'email', 'your-email', 'e-mail', 'mail', 'user-email', 'user_email', 'e_mail' ),
+		),
+		'doi_name'       => array(
 			'label'    => 'Name (Full)',
-			'patterns' => [ 'name', 'your-name', 'full-name', 'fullname', 'full_name', 'your_name' ],
-		],
-		'doi_first_name' => [
+			'patterns' => array( 'name', 'your-name', 'full-name', 'fullname', 'full_name', 'your_name' ),
+		),
+		'doi_first_name' => array(
 			'label'    => 'First Name',
-			'patterns' => [ 'first-name', 'firstname', 'vorname', 'first_name', 'fname', 'given-name' ],
-		],
-		'doi_last_name' => [
+			'patterns' => array( 'first-name', 'firstname', 'vorname', 'first_name', 'fname', 'given-name' ),
+		),
+		'doi_last_name'  => array(
 			'label'    => 'Last Name',
-			'patterns' => [ 'last-name', 'lastname', 'nachname', 'surname', 'last_name', 'lname', 'family-name' ],
-		],
-		'doi_phone' => [
+			'patterns' => array( 'last-name', 'lastname', 'nachname', 'surname', 'last_name', 'lname', 'family-name' ),
+		),
+		'doi_phone'      => array(
 			'label'    => 'Phone',
-			'patterns' => [ 'phone', 'tel', 'telephone', 'your-phone', 'telefon', 'mobile', 'handy', 'phone_number' ],
-		],
-		'doi_company' => [
+			'patterns' => array( 'phone', 'tel', 'telephone', 'your-phone', 'telefon', 'mobile', 'handy', 'phone_number' ),
+		),
+		'doi_company'    => array(
 			'label'    => 'Company',
-			'patterns' => [ 'company', 'firma', 'organization', 'organisation', 'business', 'company_name', 'unternehmen' ],
-		],
-		'doi_message' => [
+			'patterns' => array( 'company', 'firma', 'organization', 'organisation', 'business', 'company_name', 'unternehmen' ),
+		),
+		'doi_message'    => array(
 			'label'    => 'Message',
-			'patterns' => [ 'message', 'your-message', 'comment', 'nachricht', 'text', 'your_message', 'comments', 'body' ],
-		],
-		'doi_subject' => [
+			'patterns' => array( 'message', 'your-message', 'comment', 'nachricht', 'text', 'your_message', 'comments', 'body' ),
+		),
+		'doi_subject'    => array(
 			'label'    => 'Subject',
-			'patterns' => [ 'subject', 'your-subject', 'betreff', 'topic', 'your_subject' ],
-		],
-		'doi_address' => [
+			'patterns' => array( 'subject', 'your-subject', 'betreff', 'topic', 'your_subject' ),
+		),
+		'doi_address'    => array(
 			'label'    => 'Address',
-			'patterns' => [ 'address', 'adresse', 'street', 'strasse', 'your-address' ],
-		],
-		'doi_city' => [
+			'patterns' => array( 'address', 'adresse', 'street', 'strasse', 'your-address' ),
+		),
+		'doi_city'       => array(
 			'label'    => 'City',
-			'patterns' => [ 'city', 'stadt', 'ort', 'town' ],
-		],
-		'doi_zip' => [
+			'patterns' => array( 'city', 'stadt', 'ort', 'town' ),
+		),
+		'doi_zip'        => array(
 			'label'    => 'ZIP/Postal Code',
-			'patterns' => [ 'zip', 'plz', 'postal', 'postcode', 'postal_code', 'zipcode' ],
-		],
-		'doi_country' => [
+			'patterns' => array( 'zip', 'plz', 'postal', 'postcode', 'postal_code', 'zipcode' ),
+		),
+		'doi_country'    => array(
 			'label'    => 'Country',
-			'patterns' => [ 'country', 'land', 'nation' ],
-		],
-	];
+			'patterns' => array( 'country', 'land', 'nation' ),
+		),
+	);
 
 	/**
 	 * Meta key for storing custom mappings.
@@ -99,7 +99,7 @@ class PlaceholderMapper {
 	 * @return array Associative array of placeholder => label.
 	 */
 	public static function getPlaceholderLabels(): array {
-		$labels = [];
+		$labels = array();
 		foreach ( self::$standardPlaceholders as $key => $config ) {
 			$labels[ $key ] = $config['label'];
 		}
@@ -113,8 +113,8 @@ class PlaceholderMapper {
 	 * @return array Detected mapping [ 'doi_email' => 'your-email', ... ].
 	 */
 	public static function autoDetectMapping( array $fieldNames ): array {
-		$mapping = [];
-		$usedFields = [];
+		$mapping    = array();
+		$usedFields = array();
 
 		foreach ( self::$standardPlaceholders as $placeholder => $config ) {
 			foreach ( $config['patterns'] as $pattern ) {
@@ -125,12 +125,12 @@ class PlaceholderMapper {
 					}
 
 					// Check for exact match or partial match
-					$normalizedField = strtolower( str_replace( [ '-', '_' ], '', $fieldName ) );
-					$normalizedPattern = strtolower( str_replace( [ '-', '_' ], '', $pattern ) );
+					$normalizedField   = strtolower( str_replace( array( '-', '_' ), '', $fieldName ) );
+					$normalizedPattern = strtolower( str_replace( array( '-', '_' ), '', $pattern ) );
 
 					if ( $normalizedField === $normalizedPattern || strpos( $normalizedField, $normalizedPattern ) !== false ) {
 						$mapping[ $placeholder ] = $fieldName;
-						$usedFields[] = $fieldName;
+						$usedFields[]            = $fieldName;
 						break 2; // Found match, move to next placeholder
 					}
 				}
@@ -149,8 +149,8 @@ class PlaceholderMapper {
 	 */
 	public static function getCustomMapping( int $formId, string $formType = 'cf7' ): array {
 		$optionKey = self::getOptionKey( $formId, $formType );
-		$mapping = get_option( $optionKey, [] );
-		return is_array( $mapping ) ? $mapping : [];
+		$mapping   = get_option( $optionKey, array() );
+		return is_array( $mapping ) ? $mapping : array();
 	}
 
 	/**
@@ -177,7 +177,7 @@ class PlaceholderMapper {
 	 * @return array Merged mapping array.
 	 */
 	public static function getEffectiveMapping( int $formId, array $fieldNames, string $formType = 'cf7' ): array {
-		$autoMapping = self::autoDetectMapping( $fieldNames );
+		$autoMapping   = self::autoDetectMapping( $fieldNames );
 		$customMapping = self::getCustomMapping( $formId, $formType );
 
 		// Custom mapping takes precedence over auto-detection
@@ -199,9 +199,9 @@ class PlaceholderMapper {
 		string $content,
 		array $formData,
 		int $formId,
-		array $fieldNames = [],
+		array $fieldNames = array(),
 		string $formType = 'cf7',
-		array $customMapping = []
+		array $customMapping = array()
 	): string {
 		// Extract field names from form data if not provided
 		if ( empty( $fieldNames ) ) {
@@ -267,57 +267,57 @@ class PlaceholderMapper {
 	 * @return array Array of placeholder info for UI.
 	 */
 	public static function getAvailablePlaceholdersForEditor(): array {
-		$placeholders = [];
+		$placeholders = array();
 
 		// Add standard placeholders
 		foreach ( self::$standardPlaceholders as $key => $config ) {
-			$placeholders[] = [
+			$placeholders[] = array(
 				'tag'         => '[' . $key . ']',
 				'label'       => $config['label'],
 				'category'    => 'form_fields',
 				'description' => sprintf( __( 'Auto-detected or mapped %s field', 'double-opt-in' ), $config['label'] ),
-			];
+			);
 		}
 
 		// Add system placeholders
-		$systemPlaceholders = [
-			[
+		$systemPlaceholders = array(
+			array(
 				'tag'         => '[doubleoptinlink]',
 				'label'       => __( 'Confirmation Link', 'double-opt-in' ),
 				'category'    => 'system',
 				'description' => __( 'Link to confirm the opt-in', 'double-opt-in' ),
-			],
-			[
+			),
+			array(
 				'tag'         => '[doubleoptoutlink]',
 				'label'       => __( 'Opt-out Link', 'double-opt-in' ),
 				'category'    => 'system',
 				'description' => __( 'Link to opt-out/unsubscribe', 'double-opt-in' ),
-			],
-			[
+			),
+			array(
 				'tag'         => '[doubleoptin_form_date]',
 				'label'       => __( 'Submission Date', 'double-opt-in' ),
 				'category'    => 'system',
 				'description' => __( 'Date of form submission', 'double-opt-in' ),
-			],
-			[
+			),
+			array(
 				'tag'         => '[doubleoptin_form_time]',
 				'label'       => __( 'Submission Time', 'double-opt-in' ),
 				'category'    => 'system',
 				'description' => __( 'Time of form submission', 'double-opt-in' ),
-			],
-			[
+			),
+			array(
 				'tag'         => '[doubleoptin_form_url]',
 				'label'       => __( 'Form URL', 'double-opt-in' ),
 				'category'    => 'system',
 				'description' => __( 'URL where the form was submitted', 'double-opt-in' ),
-			],
-			[
+			),
+			array(
 				'tag'         => '[doubleoptin_privacy_url]',
 				'label'       => __( 'Privacy Policy URL', 'double-opt-in' ),
 				'category'    => 'system',
 				'description' => __( 'URL to the privacy policy page (GDPR)', 'double-opt-in' ),
-			],
-		];
+			),
+		);
 
 		return array_merge( $placeholders, $systemPlaceholders );
 	}
@@ -330,16 +330,16 @@ class PlaceholderMapper {
 	 */
 	public static function extractCF7FieldNames( int $formId ): array {
 		if ( ! function_exists( 'wpcf7_contact_form' ) ) {
-			return [];
+			return array();
 		}
 
 		$contactForm = wpcf7_contact_form( $formId );
 		if ( ! $contactForm ) {
-			return [];
+			return array();
 		}
 
-		$tags = $contactForm->scan_form_tags();
-		$fieldNames = [];
+		$tags       = $contactForm->scan_form_tags();
+		$fieldNames = array();
 
 		foreach ( $tags as $tag ) {
 			if ( ! empty( $tag->name ) ) {

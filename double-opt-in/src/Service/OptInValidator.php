@@ -29,7 +29,7 @@ class OptInValidator {
 	 *
 	 * @var array<string, string>
 	 */
-	private array $errors = [];
+	private array $errors = array();
 
 	/**
 	 * Constructor.
@@ -48,17 +48,20 @@ class OptInValidator {
 	 * @return bool True if valid.
 	 */
 	public function validate( OptIn $optIn ): bool {
-		$this->errors = [];
+		$this->errors = array();
 
 		$this->validateEmail( $optIn );
 		$this->validateFormId( $optIn );
 		$this->validateContent( $optIn );
 
 		if ( ! empty( $this->errors ) ) {
-			$this->logger->warning( 'OptIn validation failed', [
-				'plugin' => 'double-opt-in',
-				'errors' => $this->errors,
-			] );
+			$this->logger->warning(
+				'OptIn validation failed',
+				array(
+					'plugin' => 'double-opt-in',
+					'errors' => $this->errors,
+				)
+			);
 			return false;
 		}
 

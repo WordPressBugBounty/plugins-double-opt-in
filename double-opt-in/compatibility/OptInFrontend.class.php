@@ -503,8 +503,29 @@ abstract class OptInFrontend {
 		// Replace standard placeholders (doi_email, doi_name, etc.)
 		$formData = maybe_unserialize( $OptIn->get_content() );
 		if ( is_array( $formData ) ) {
-			// Handle nested content structure (e.g., Avada stores {data: {...}, field_labels: {...}, ...})
-			$fieldData = isset( $formData['data'] ) && is_array( $formData['data'] ) ? $formData['data'] : $formData;
+			// Per-integration nesting unwrap. The serialized OptIn content
+			// is whatever each frontend stored, which differs by integration:
+			//   - Avada wraps submitted values under `data` (plus
+			//     `field_labels`, `field_types`, ... siblings).
+			//   - Elementor stores the original $_POST parameter dict; the
+			//     actual form-field values live under `form_fields`
+			//     (or `fields` on older Elementor Pro versions — see
+			//     ElementorFrontend Z. 315 for the same key fallback).
+			//   - CF7 / GF / WPForms write the field values flat at the
+			//     top level, so no unwrap needed.
+			// Without this, PlaceholderMapper::replacePlaceholders looks
+			// for `$formData[$mappedField]` at the top level and finds
+			// nothing for Elementor — every `[doi_*]` placeholder renders
+			// as an empty string in the confirmation mail.
+			if ( isset( $formData['form_fields'] ) && is_array( $formData['form_fields'] ) ) {
+				$fieldData = $formData['form_fields'];
+			} elseif ( isset( $formData['fields'] ) && is_array( $formData['fields'] ) ) {
+				$fieldData = $formData['fields'];
+			} elseif ( isset( $formData['data'] ) && is_array( $formData['data'] ) ) {
+				$fieldData = $formData['data'];
+			} else {
+				$fieldData = $formData;
+			}
 
 			$body = PlaceholderMapper::replacePlaceholders(
 				$body,
@@ -515,8 +536,12 @@ abstract class OptInFrontend {
 			);
 
 			$this->get_logger()->debug( 'Standard placeholders replaced', [
-				'plugin'  => 'double-opt-in',
-				'form_id' => $OptIn->get_cf_form_id(),
+				'plugin'           => 'double-opt-in',
+				'form_id'          => $OptIn->get_cf_form_id(),
+				'field_data_keys'  => array_keys( $fieldData ),
+				'unwrapped_from'   => isset( $formData['form_fields'] ) ? 'form_fields'
+					: ( isset( $formData['fields'] ) ? 'fields'
+					: ( isset( $formData['data'] ) ? 'data' : 'top-level' ) ),
 			] );
 		}
 
@@ -862,13 +887,28 @@ abstract class OptInFrontend {
 		}
 
 		/**
-		 * Validate recipient (extensible via Pro plugin: MX check, unique email, etc.)
-		 * Uses a lightweight proxy so filters that expect FormDataInterface::getFormId() keep working.
+		 * Validate recipient (extensible via Pro plugin: MX check, unique
+		 * email, etc.). Uses a lightweight proxy so filters that expect
+		 * FormDataInterface::getFormId() keep working.
+		 *
+		 * IMPORTANT: `getFormType()` must be set to `$this->type` — that's
+		 * the integration identifier ("elementor", "cf7" via legacy path,
+		 * "avada" via legacy path). The Unique Email validator's
+		 * resolver matches conditions on the (integration, form_id) pair;
+		 * a proxy without getFormType returns '' and breaks the
+		 * `selected` and `all_except` modes for every form that flows
+		 * through this legacy path. User-reported 2026-05-13. Pinned by
+		 * `LegacyFormDataProxyTest` in core tests.
 		 */
-		$formDataProxy = new class( $formId ) {
+		$formDataProxy = new class( $formId, $this->type ) {
 			private int $formId;
-			public function __construct( int $formId ) { $this->formId = $formId; }
+			private string $formType;
+			public function __construct( int $formId, string $formType ) {
+				$this->formId   = $formId;
+				$this->formType = $formType;
+			}
 			public function getFormId(): int { return $this->formId; }
+			public function getFormType(): string { return $this->formType; }
 		};
 
 		$recipientValid = \apply_filters(
@@ -905,16 +945,26 @@ abstract class OptInFrontend {
 		}
 
 		/**
-		 * Consent-Text aus den Form-Settings als Snapshot laden
+		 * Consent-Snapshot aus den Form-Settings laden. Both the wording
+		 * shown to the user (`consent_text`) AND the form-field key the
+		 * user had to tick (`consent_field`) need to be persisted, or
+		 * the Consent Evidence panel reports "No acknowledgment field
+		 * configured — consent text is stored but not legally provable"
+		 * even when the admin wired up the checkbox. The modern
+		 * AbstractFormIntegration::buildOptInProperties() path includes
+		 * both; this legacy path (used by Elementor + the CF7/Avada
+		 * legacy compat shims) used to only carry consent_text.
 		 */
-		$consentText = '';
+		$consentText  = '';
+		$consentField = '';
 		try {
 			$container      = \Forge12\DoubleOptIn\Container\Container::getInstance();
 			$settingsService = $container->get( \Forge12\DoubleOptIn\FormSettings\FormSettingsService::class );
 			$formSettings   = $settingsService->getSettings( $formId );
 			$consentText    = $formSettings->consentText ?? '';
+			$consentField   = $formSettings->consentField ?? '';
 		} catch ( \Exception $e ) {
-			$this->get_logger()->debug( 'Could not load consent text from FormSettings', [
+			$this->get_logger()->debug( 'Could not load consent snapshot from FormSettings', [
 				'plugin' => 'double-opt-in',
 				'error'  => $e->getMessage(),
 			] );
@@ -923,18 +973,16 @@ abstract class OptInFrontend {
 		/**
 		 * Eigenschaften des OptIn-Objekts festlegen
 		 */
-		$properties = [
-			'cf_form_id'      => $formId,
-			'doubleoptin'     => 0,
-			'createtime'      => time(),
-			'content'         => maybe_serialize( $parameter ),
-			'files'           => maybe_serialize( $files ),
-			'ipaddr_register' => IPHelper::getIPAdress(),
-			'category'        => (int) $formParameter['category'],
-			'form'            => $formHtml,
-			'email'           => $recipient,
-			'consent_text'    => $consentText,
-		];
+		$properties = $this->buildLegacyOptInProperties(
+			$formId,
+			$formHtml,
+			$parameter,
+			$files,
+			$formParameter,
+			$recipient,
+			$consentText,
+			$consentField
+		);
 
 		$this->get_logger()->debug( 'OptIn properties created', [
 			'plugin'     => 'double-opt-in',
@@ -1264,5 +1312,52 @@ abstract class OptInFrontend {
 				'error'  => $e->getMessage(),
 			] );
 		}
+	}
+
+	/**
+	 * Assemble the legacy OptIn properties array.
+	 *
+	 * Extracted from {@see maybeCreateOptIn()} so the column inventory
+	 * is unit-testable without standing up the whole submit pipeline
+	 * (rate limiter, FormSettingsService, $wpdb save, etc.). The
+	 * modern {@see \Forge12\DoubleOptIn\Integration\AbstractFormIntegration::buildOptInProperties()}
+	 * has a sibling helper; the two MUST stay in sync — every column
+	 * the modern path snapshots, this legacy path also has to snapshot,
+	 * otherwise integrations on the legacy compat path (Elementor +
+	 * the CF7/Avada legacy shims) lose the column silently.
+	 *
+	 * The 2026-05-13 incident this guards against: `consent_field`
+	 * was missing here, so Elementor opt-ins shipped with an empty
+	 * acknowledgment field even when the admin configured one. The
+	 * Consent Evidence panel then rendered "No acknowledgment field
+	 * configured — consent text is stored but not legally provable"
+	 * on a record that was, in fact, ticked through a configured
+	 * checkbox.
+	 *
+	 * @return array<string, mixed>
+	 */
+	protected function buildLegacyOptInProperties(
+		int $formId,
+		string $formHtml,
+		array $parameter,
+		array $files,
+		array $formParameter,
+		string $recipient,
+		string $consentText,
+		string $consentField
+	): array {
+		return [
+			'cf_form_id'      => $formId,
+			'doubleoptin'     => 0,
+			'createtime'      => time(),
+			'content'         => maybe_serialize( $parameter ),
+			'files'           => maybe_serialize( $files ),
+			'ipaddr_register' => IPHelper::getIPAdress(),
+			'category'        => (int) ( $formParameter['category'] ?? 0 ),
+			'form'            => $formHtml,
+			'email'           => $recipient,
+			'consent_text'    => $consentText,
+			'consent_field'   => $consentField,
+		];
 	}
 }

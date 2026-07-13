@@ -17,8 +17,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Class FormSubmittedEvent
  *
+ * @api
+ *
  * Dispatched when a form is submitted before opt-in creation.
  * Listeners can modify this event to skip opt-in creation.
+ * Covered by the Addon API semver policy as of Core API 4.3.0.
  */
 class FormSubmittedEvent extends Event {
 
@@ -28,7 +31,7 @@ class FormSubmittedEvent extends Event {
 	private array $uploadedFiles;
 	private string $formUrl;
 	private bool $shouldCreateOptIn = true;
-	private ?string $skipReason = null;
+	private ?string $skipReason     = null;
 
 	/**
 	 * Constructor.

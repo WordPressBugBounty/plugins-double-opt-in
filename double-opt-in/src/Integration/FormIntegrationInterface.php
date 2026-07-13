@@ -17,8 +17,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Interface FormIntegrationInterface
  *
+ * @api
+ *
  * Contract for all form integration implementations.
  * Each form system (CF7, Avada, Elementor, etc.) must implement this interface.
+ *
+ * Covered by the Addon API semver policy as of Core API 4.3.0. See
+ * docs/addon-api.md §4.3 for usage and §7 for the deprecation process.
  */
 interface FormIntegrationInterface {
 

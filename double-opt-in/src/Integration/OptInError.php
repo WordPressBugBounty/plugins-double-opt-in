@@ -56,6 +56,13 @@ class OptInError {
 	public const SAVE_FAILED = 'save_failed';
 
 	/**
+	 * Error code: Consent acceptance gate failed — the form has a
+	 * configured consent_field, but the user did not check it. We
+	 * reject the opt-in instead of fabricating GDPR Art. 7 evidence.
+	 */
+	public const CONSENT_NOT_GIVEN = 'consent_not_given';
+
+	/**
 	 * The error code.
 	 *
 	 * @var string
@@ -83,7 +90,7 @@ class OptInError {
 	 * @param string $message The error message.
 	 * @param array  $context Additional context data.
 	 */
-	public function __construct( string $code, string $message, array $context = [] ) {
+	public function __construct( string $code, string $message, array $context = array() ) {
 		$this->code    = $code;
 		$this->message = $message;
 		$this->context = $context;
@@ -97,7 +104,7 @@ class OptInError {
 	 *
 	 * @return self
 	 */
-	public static function fromCode( string $code, array $context = [] ): self {
+	public static function fromCode( string $code, array $context = array() ): self {
 		$messages = self::getDefaultMessages();
 		$message  = $messages[ $code ] ?? __( 'An unknown error occurred.', 'double-opt-in' );
 
@@ -137,14 +144,15 @@ class OptInError {
 	 * @return array<string, string>
 	 */
 	private static function getDefaultMessages(): array {
-		return [
-			self::SUBMISSION_CANCELLED => __( 'The form submission has been cancelled.', 'double-opt-in' ),
-			self::NO_RECIPIENT         => __( 'No valid email address was found.', 'double-opt-in' ),
-			self::RATE_LIMIT_IP        => __( 'Too many requests. Please try again later.', 'double-opt-in' ),
-			self::RATE_LIMIT_EMAIL     => __( 'Too many requests for this email address. Please try again later.', 'double-opt-in' ),
-			self::RECIPIENT_INVALID        => __( 'The email address could not be verified.', 'double-opt-in' ),
-			self::UNIQUE_EMAIL_DUPLICATE   => __( 'This email address has already been used.', 'double-opt-in' ),
-			self::SAVE_FAILED          => __( 'An error occurred. Please try again.', 'double-opt-in' ),
-		];
+		return array(
+			self::SUBMISSION_CANCELLED   => __( 'The form submission has been cancelled.', 'double-opt-in' ),
+			self::NO_RECIPIENT           => __( 'No valid email address was found.', 'double-opt-in' ),
+			self::RATE_LIMIT_IP          => __( 'Too many requests. Please try again later.', 'double-opt-in' ),
+			self::RATE_LIMIT_EMAIL       => __( 'Too many requests for this email address. Please try again later.', 'double-opt-in' ),
+			self::RECIPIENT_INVALID      => __( 'The email address could not be verified.', 'double-opt-in' ),
+			self::UNIQUE_EMAIL_DUPLICATE => __( 'This email address has already been used.', 'double-opt-in' ),
+			self::SAVE_FAILED            => __( 'An error occurred. Please try again.', 'double-opt-in' ),
+			self::CONSENT_NOT_GIVEN      => __( 'You must agree to the consent statement to continue.', 'double-opt-in' ),
+		);
 	}
 }

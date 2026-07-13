@@ -764,6 +764,7 @@ class OptIn {
 			'email'               => 'email',
 			'id'                  => 'id',
 			'consent_text'        => 'consent_text',
+			'consent_field'       => 'consent_field',
 		];
 
 		$result = [];

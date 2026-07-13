@@ -28,9 +28,9 @@ class MailPreparingEvent extends Event {
 	private string $body;
 	private string $sender;
 	private string $senderName;
-	private array $headers = [];
-	private array $attachments = [];
-	private bool $shouldSend = true;
+	private array $headers     = array();
+	private array $attachments = array();
+	private bool $shouldSend   = true;
 
 	/**
 	 * Constructor.

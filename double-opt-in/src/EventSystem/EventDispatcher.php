@@ -26,14 +26,14 @@ class EventDispatcher implements EventDispatcherInterface {
 	 *
 	 * @var array<string, array<int, callable[]>>
 	 */
-	private array $listeners = [];
+	private array $listeners = array();
 
 	/**
 	 * Sorted listeners cache.
 	 *
 	 * @var array<string, callable[]>
 	 */
-	private array $sorted = [];
+	private array $sorted = array();
 
 	/**
 	 * Logger instance.
@@ -66,12 +66,15 @@ class EventDispatcher implements EventDispatcherInterface {
 	public function dispatch( object $event ): object {
 		$eventName = get_class( $event );
 
-		$this->logger->debug( 'Dispatching event', [
-			'plugin'       => 'double-opt-in',
-			'component'    => 'event-dispatcher',
-			'event'        => $eventName,
-			'triggered_by' => $event instanceof Event ? $event->getTriggeredBy() : null,
-		] );
+		$this->logger->debug(
+			'Dispatching event',
+			array(
+				'plugin'       => 'double-opt-in',
+				'component'    => 'event-dispatcher',
+				'event'        => $eventName,
+				'triggered_by' => $event instanceof Event ? $event->getTriggeredBy() : null,
+			)
+		);
 
 		// Bridge to WordPress hooks for backward compatibility
 		if ( $this->bridgeToWordPress && $event instanceof Event && $event->shouldBridgeToWordPress() ) {
@@ -84,11 +87,14 @@ class EventDispatcher implements EventDispatcherInterface {
 				 */
 				do_action( $wpHookName, $event );
 
-				$this->logger->debug( 'WordPress hook bridged', [
-					'plugin'    => 'double-opt-in',
-					'component' => 'event-dispatcher',
-					'wp_hook'   => $wpHookName,
-				] );
+				$this->logger->debug(
+					'WordPress hook bridged',
+					array(
+						'plugin'    => 'double-opt-in',
+						'component' => 'event-dispatcher',
+						'wp_hook'   => $wpHookName,
+					)
+				);
 			}
 		}
 
@@ -97,23 +103,29 @@ class EventDispatcher implements EventDispatcherInterface {
 
 		foreach ( $listeners as $listener ) {
 			if ( $event instanceof StoppableEventInterface && $event->isPropagationStopped() ) {
-				$this->logger->debug( 'Event propagation stopped', [
-					'plugin'    => 'double-opt-in',
-					'component' => 'event-dispatcher',
-					'event'     => $eventName,
-				] );
+				$this->logger->debug(
+					'Event propagation stopped',
+					array(
+						'plugin'    => 'double-opt-in',
+						'component' => 'event-dispatcher',
+						'event'     => $eventName,
+					)
+				);
 				break;
 			}
 
 			try {
 				$listener( $event );
 			} catch ( \Throwable $e ) {
-				$this->logger->error( 'Event listener threw exception', [
-					'plugin'    => 'double-opt-in',
-					'component' => 'event-dispatcher',
-					'event'     => $eventName,
-					'exception' => $e->getMessage(),
-				] );
+				$this->logger->error(
+					'Event listener threw exception',
+					array(
+						'plugin'    => 'double-opt-in',
+						'component' => 'event-dispatcher',
+						'event'     => $eventName,
+						'exception' => $e->getMessage(),
+					)
+				);
 			}
 		}
 
@@ -127,12 +139,15 @@ class EventDispatcher implements EventDispatcherInterface {
 		$this->listeners[ $eventName ][ $priority ][] = $listener;
 		unset( $this->sorted[ $eventName ] );
 
-		$this->logger->debug( 'Listener registered', [
-			'plugin'    => 'double-opt-in',
-			'component' => 'event-dispatcher',
-			'event'     => $eventName,
-			'priority'  => $priority,
-		] );
+		$this->logger->debug(
+			'Listener registered',
+			array(
+				'plugin'    => 'double-opt-in',
+				'component' => 'event-dispatcher',
+				'event'     => $eventName,
+				'priority'  => $priority,
+			)
+		);
 	}
 
 	/**
@@ -164,7 +179,7 @@ class EventDispatcher implements EventDispatcherInterface {
 	 */
 	public function getListeners( string $eventName ): array {
 		if ( ! isset( $this->listeners[ $eventName ] ) ) {
-			return [];
+			return array();
 		}
 
 		if ( ! isset( $this->sorted[ $eventName ] ) ) {
@@ -184,7 +199,7 @@ class EventDispatcher implements EventDispatcherInterface {
 	 * @return void
 	 */
 	private function sortListeners( string $eventName ): void {
-		$this->sorted[ $eventName ] = [];
+		$this->sorted[ $eventName ] = array();
 
 		if ( isset( $this->listeners[ $eventName ] ) ) {
 			krsort( $this->listeners[ $eventName ] ); // Higher priority first
@@ -207,17 +222,24 @@ class EventDispatcher implements EventDispatcherInterface {
 	 * @return void
 	 */
 	public function bridgeWordPressHook( string $wpHookName, string $eventClass ): void {
-		add_action( $wpHookName, function ( ...$args ) use ( $eventClass ) {
-			// If the first argument is already our typed event, skip
-			if ( isset( $args[0] ) && $args[0] instanceof Event ) {
-				return;
-			}
+		add_action(
+			$wpHookName,
+			function ( ...$args ) use ( $eventClass ) {
+				// If the first argument is already our typed event, skip
+				if ( isset( $args[0] ) && $args[0] instanceof Event ) {
+					return;
+				}
 
-			$this->logger->debug( 'WordPress hook received (legacy)', [
-				'plugin'    => 'double-opt-in',
-				'component' => 'event-dispatcher',
-				'wp_hook'   => $eventClass::getWordPressHookName(),
-			] );
-		}, 1 );
+				$this->logger->debug(
+					'WordPress hook received (legacy)',
+					array(
+						'plugin'    => 'double-opt-in',
+						'component' => 'event-dispatcher',
+						'wp_hook'   => $eventClass::getWordPressHookName(),
+					)
+				);
+			},
+			1
+		);
 	}
 }

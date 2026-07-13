@@ -26,7 +26,7 @@ class BlockRegistry {
 	 *
 	 * @var string[]
 	 */
-	const FREE_BLOCKS = [
+	const FREE_BLOCKS = array(
 		'email-wrapper',
 		'row',
 		'columns-1',
@@ -41,14 +41,14 @@ class BlockRegistry {
 		'placeholder-time',
 		'placeholder-url',
 		'placeholder-custom',
-	];
+	);
 
 	/**
 	 * Blocks that require the Pro version.
 	 *
 	 * @var string[]
 	 */
-	const PRO_BLOCKS = [
+	const PRO_BLOCKS = array(
 		'columns-2',
 		'columns-2-sidebar',
 		'columns-3',
@@ -57,7 +57,7 @@ class BlockRegistry {
 		'header',
 		'footer',
 		'conditional-content',
-	];
+	);
 
 	/**
 	 * Get the template limit based on Pro status.
@@ -93,23 +93,23 @@ class BlockRegistry {
 	 * @return array
 	 */
 	public function getBlockAvailability(): array {
-		$isProActive = $this->isProActive();
-		$availability = [];
+		$isProActive  = $this->isProActive();
+		$availability = array();
 
 		foreach ( self::FREE_BLOCKS as $blockType ) {
-			$availability[ $blockType ] = [
+			$availability[ $blockType ] = array(
 				'type'        => $blockType,
 				'available'   => true,
 				'requiresPro' => false,
-			];
+			);
 		}
 
 		foreach ( self::PRO_BLOCKS as $blockType ) {
-			$availability[ $blockType ] = [
+			$availability[ $blockType ] = array(
 				'type'        => $blockType,
 				'available'   => $isProActive,
 				'requiresPro' => true,
-			];
+			);
 		}
 
 		/**
@@ -153,7 +153,7 @@ class BlockRegistry {
 	 * @return array Array of invalid block types found. Empty if all valid.
 	 */
 	public function validateBlocks( array $blocks ): array {
-		$invalidBlocks = [];
+		$invalidBlocks = array();
 		$this->validateBlocksRecursive( $blocks, $invalidBlocks );
 
 		return $invalidBlocks;

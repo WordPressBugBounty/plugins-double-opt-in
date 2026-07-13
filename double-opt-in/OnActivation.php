@@ -48,6 +48,7 @@ function createTableOptIn() {
         form LONGTEXT,
         mail_optin LONGTEXT,
         consent_text TEXT,
+        consent_field varchar(64) DEFAULT '',
         reminder_sent_at varchar(255) DEFAULT '',
         mail_reminder LONGTEXT,
         PRIMARY KEY  (id)
@@ -125,11 +126,13 @@ function onActivation( $network_wide = false ) {
 			switch_to_blog( $site_id );
 			createTableOptin();
 			createTableOptinCategories();
+			createTableAuditLog();
 			restore_current_blog();
 		}
 	} else {
 		createTableOptin();
 		createTableOptinCategories();
+		createTableAuditLog();
 	}
 
 	$logger->info( 'Plugin activation completed', [
@@ -137,6 +140,51 @@ function onActivation( $network_wide = false ) {
 		'network_wide' => $network_wide,
 		'class'        => __CLASS__ ?? null,
 		'method'       => __FUNCTION__,
+	] );
+}
+
+/**
+ * Create the table for the audit log.
+ *
+ * @since 4.2.0
+ * @return void
+ */
+function createTableAuditLog() {
+	global $wpdb;
+
+	$logger = Logger::getInstance();
+
+	$tableName   = 'f12_cf7_doubleoptin_audit_log';
+	$wpTableName = $wpdb->prefix . $tableName;
+
+	$logger->info( 'Creating audit log table', [
+		'plugin'     => 'double-opt-in',
+		'table_name' => $wpTableName,
+		'method'     => __FUNCTION__,
+	] );
+
+	require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+
+	$sql = "CREATE TABLE " . $wpTableName . " (
+        id bigint(20) unsigned NOT NULL auto_increment,
+        event_type varchar(50) NOT NULL,
+        severity varchar(20) NOT NULL DEFAULT 'info',
+        message text NOT NULL,
+        user_id bigint(20) unsigned DEFAULT NULL,
+        details longtext DEFAULT NULL,
+        created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        PRIMARY KEY  (id),
+        KEY idx_type (event_type),
+        KEY idx_severity (severity),
+        KEY idx_created (created_at)
+    )";
+
+	dbDelta( $sql );
+
+	$logger->info( 'Audit log table created or updated', [
+		'plugin'     => 'double-opt-in',
+		'table_name' => $wpTableName,
+		'method'     => __FUNCTION__,
 	] );
 }
 
@@ -151,5 +199,6 @@ add_action( 'wp_initialize_site', function ( $new_site ) {
 	switch_to_blog( $new_site->blog_id );
 	createTableOptin();
 	createTableOptinCategories();
+	createTableAuditLog();
 	restore_current_blog();
 }, 900 );

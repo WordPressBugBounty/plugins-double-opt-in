@@ -312,7 +312,7 @@ namespace forge12\contactform7\CF7DoubleOptIn {
 			}
 
 			$metadata   = CF7DoubleOptIn::getInstance()->getParameter( $post->id() );
-			$centralUrl = admin_url( 'admin.php?page=f12-cf7-doubleoptin_forms' );
+			$centralUrl = admin_url( 'admin.php?page=f12-doi-admin#/forms' );
 			$isEnabled  = isset( $metadata['enable'] ) && $metadata['enable'] == 1;
 
 			$this->get_logger()->debug( 'Rendering CF7 panel notice', [
