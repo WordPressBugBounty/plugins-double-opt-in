@@ -94,7 +94,8 @@ namespace forge12\contactform7\CF7DoubleOptIn {
 			] );
 
 			// Check for nonce verification
-			if ( ! \wp_verify_nonce( wp_unslash( $_POST['f12_cf7_doubleoptin_ui_table_options_nonce'] ), 'f12_cf7_doubleoptin_ui_table_options_action' ) ) {
+			if ( ! isset( $_POST['f12_cf7_doubleoptin_ui_table_options_nonce'] )
+				|| ! \wp_verify_nonce( wp_unslash( $_POST['f12_cf7_doubleoptin_ui_table_options_nonce'] ), 'f12_cf7_doubleoptin_ui_table_options_action' ) ) {
 				$this->get_logger()->warning( 'Nonce verification failed during category update.', [
 					'plugin' => 'double-opt-in',
 					'nonce'  => $_POST['f12_cf7_doubleoptin_ui_table_options_nonce'] ?? 'not set',

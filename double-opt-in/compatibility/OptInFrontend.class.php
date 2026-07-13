@@ -450,24 +450,15 @@ abstract class OptInFrontend {
 			'parameter' => $parameter,
 		] );
 
-		// set the default timezone
-		$timezone = get_option( 'timezone_string' );
-
-		// set fallback timezone
-		if ( empty( $timezone ) ) {
-			$timezone = 'Europe/Berlin';
-			$this->get_logger()->debug( 'No timezone set in options, using fallback Europe/Berlin', [
-				'plugin' => 'double-opt-in',
-			] );
-		}
-
-		date_default_timezone_set( $timezone );
-
 		$placeholder = [
-			'doubleoptin_form_url'     => $parameter['formUrl']   ?? '',
+			// User-influenced submit URL — sanitise so a crafted query string
+			// can't reflect into the mail HTML (esc_url_raw keeps text-mail intact).
+			'doubleoptin_form_url'     => esc_url_raw( (string) ( $parameter['formUrl'] ?? '' ) ),
 			'doubleoptin_form_subject' => $parameter['subject']   ?? '',
-			'doubleoptin_form_date'    => date( get_option( 'date_format' ) ),
-			'doubleoptin_form_time'    => date( get_option( 'time_format' ) ),
+			// wp_date() formats in the site's timezone without mutating PHP's
+			// global timezone (the old date() + date_default_timezone_set() did).
+			'doubleoptin_form_date'    => wp_date( get_option( 'date_format' ) ),
+			'doubleoptin_form_time'    => wp_date( get_option( 'time_format' ) ),
 			'doubleoptin_form_email'   => get_option( 'admin_email' ),
 			'doubleoptinlink'          => $OptIn->get_link_optin( $parameter ),
 			'doubleoptoutlink'         => $OptIn->get_link_optout(),

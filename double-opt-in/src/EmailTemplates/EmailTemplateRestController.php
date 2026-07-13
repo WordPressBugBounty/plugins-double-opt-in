@@ -816,11 +816,6 @@ class EmailTemplateRestController {
 		$blocksJson       = wp_json_encode( $blocks, JSON_UNESCAPED_UNICODE );
 		$globalStylesJson = wp_json_encode( $globalStyles, JSON_UNESCAPED_UNICODE );
 
-		// Debug logging
-		error_log( 'DOI Preset Debug: preset_id=' . $presetId );
-		error_log( 'DOI Preset Debug: blocks_count=' . count( $blocks ) );
-		error_log( 'DOI Preset Debug: blocks_json_length=' . strlen( $blocksJson ) );
-
 		$templateData = array(
 			'title'         => ! empty( $title ) ? $title : $preset['name'],
 			'blocks_json'   => $blocksJson,

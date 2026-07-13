@@ -49,6 +49,10 @@ namespace forge12\contactform7\CF7DoubleOptIn {
 		 * Load and get the template we need.
 		 */
 		public function getTemplate() {
+			// A nonce proves intent, not authorization — gate on capability too.
+			if ( ! current_user_can( 'manage_options' ) ) {
+				wp_die( -1, 403 );
+			}
 			$this->get_logger()->debug( 'getTemplate called', [
 				'plugin' => 'double-opt-in',
 				'class'  => __CLASS__,
@@ -101,6 +105,11 @@ namespace forge12\contactform7\CF7DoubleOptIn {
 		 * Return the Popup for the HASH DOI
 		 */
 		public function getDetails() {
+			// Exposes opt-in PII (email, IPs, all form fields). A nonce proves
+			// intent, not authorization — require the capability explicitly.
+			if ( ! current_user_can( 'manage_options' ) ) {
+				wp_die( -1, 403 );
+			}
 			$this->get_logger()->debug( 'getDetails called', [
 				'plugin' => 'double-opt-in',
 				'class'  => __CLASS__,
@@ -258,8 +267,9 @@ namespace forge12\contactform7\CF7DoubleOptIn {
 			] );
 
 			if ( $hook == 'tools_page_f12doubleoptin' ) {
-				wp_enqueue_style( 'f12-cf7-doubleoptin-admin', plugins_url( 'assets/admin-style.css', __FILE__ ) );
-				wp_enqueue_script( 'f12-cf7-doubleoptin-admin', plugins_url( 'assets/f12-cf7-popup.js', __FILE__ ), [ 'jquery' ] );
+				$ver = defined( 'FORGE12_OPTIN_VERSION' ) ? FORGE12_OPTIN_VERSION : false;
+				wp_enqueue_style( 'f12-cf7-doubleoptin-admin', plugins_url( 'assets/admin-style.css', __FILE__ ), array(), $ver );
+				wp_enqueue_script( 'f12-cf7-doubleoptin-admin', plugins_url( 'assets/f12-cf7-popup.js', __FILE__ ), [ 'jquery' ], $ver, true );
 
 				$this->get_logger()->info( 'Admin styles and scripts enqueued for DOI tools page', [
 					'plugin' => 'double-opt-in',

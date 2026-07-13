@@ -87,3 +87,9 @@ if ( should_keep_data_on_uninstall() ) {
 	drop_table_categories();
 	drop_table_optin();
 }
+
+// Purely operational options with no value after removal. Admin-set config
+// (f12-doi-settings) is intentionally left in place, and cross-package options
+// (bundle-pro licence, addon settings) are owned by their own uninstallers.
+delete_option( 'f12_cf7_doubleoptin_installed_at' );
+delete_option( 'f12_cf7_doubleoptin_installation_uuid' );

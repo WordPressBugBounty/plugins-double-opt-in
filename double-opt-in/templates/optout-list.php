@@ -1,4 +1,7 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 /**
  * Opt-out subscription list — rendered after the visitor clicks the
  * hashed link in the opt-out invitation email.
@@ -60,7 +63,7 @@ foreach ( $list as $OptIn ) {
 	<?php elseif ( $done_form_id > 0 ) :
 		$doneTitle = get_the_title( $done_form_id );
 		if ( $doneTitle === '' ) {
-			$doneTitle = sprintf( __( 'Form #%d', 'double-opt-in-opt-out' ), $done_form_id );
+			$doneTitle = sprintf( __( 'Form #%d', 'double-opt-in' ), $done_form_id );
 		}
 		?>
 		<div class="f12-doi-optout-notice f12-doi-optout-notice--success" role="status">
@@ -70,7 +73,7 @@ foreach ( $list as $OptIn ) {
 	<?php elseif ( $reoptin_form_id > 0 ) :
 		$reoptinTitle = get_the_title( $reoptin_form_id );
 		if ( $reoptinTitle === '' ) {
-			$reoptinTitle = sprintf( __( 'Form #%d', 'double-opt-in-opt-out' ), $reoptin_form_id );
+			$reoptinTitle = sprintf( __( 'Form #%d', 'double-opt-in' ), $reoptin_form_id );
 		}
 		?>
 		<div class="f12-doi-optout-notice f12-doi-optout-notice--success" role="status">
@@ -119,7 +122,7 @@ foreach ( $list as $OptIn ) {
 					$formId    = $OptIn->get_cf_form_id();
 					$formTitle = $formId > 0 ? get_the_title( $formId ) : '';
 					if ( $formTitle === '' ) {
-						$formTitle = sprintf( __( 'Form #%d', 'double-opt-in-opt-out' ), $formId );
+						$formTitle = sprintf( __( 'Form #%d', 'double-opt-in' ), $formId );
 					}
 					$isConfirmed = $OptIn->is_confirmed();
 					// Highlight only the SPECIFIC row that was just

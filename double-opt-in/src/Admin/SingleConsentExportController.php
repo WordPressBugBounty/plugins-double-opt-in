@@ -127,12 +127,33 @@ class SingleConsentExportController {
 	private function toCsv( array $record ): string {
 		$output = fopen( 'php://temp', 'r+' );
 		fwrite( $output, "\xEF\xBB\xBF" );
-		fputcsv( $output, array_keys( $record ) );
-		fputcsv( $output, $record );
+		fputcsv( $output, array_map( array( self::class, 'neutraliseCsvCell' ), array_keys( $record ) ) );
+		fputcsv( $output, array_map( array( self::class, 'neutraliseCsvCell' ), array_values( $record ) ) );
 		rewind( $output );
 		$csv = stream_get_contents( $output );
 		fclose( $output );
 
 		return $csv;
+	}
+
+	/**
+	 * Neutralise CSV/formula injection (OWASP): a spreadsheet evaluates any
+	 * cell whose value starts with = + - @ (or a leading tab/CR that can
+	 * smuggle one, or the full-width variants ＝＋－＠) as a formula. Values
+	 * here include attacker-influenced fields (e.g. a spoofed X-Forwarded-For
+	 * IP, or the email). Prefixing with a single quote stops evaluation while
+	 * keeping the value human-readable.
+	 *
+	 * Pure + static so it is unit-testable without WordPress.
+	 *
+	 * @param mixed $value
+	 * @return string
+	 */
+	public static function neutraliseCsvCell( $value ): string {
+		$value = (string) $value;
+		if ( $value !== '' && preg_match( '/^[=+\-@\t\r\x{FF1D}\x{FF0B}\x{FF0D}\x{FF20}]/u', $value ) ) {
+			return "'" . $value;
+		}
+		return $value;
 	}
 }

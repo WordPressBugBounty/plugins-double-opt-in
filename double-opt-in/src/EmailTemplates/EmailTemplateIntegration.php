@@ -137,6 +137,12 @@ class EmailTemplateIntegration {
 			return; // Let default handler run
 		}
 
+		// A nonce proves intent, not authorization — a template's rendered HTML
+		// must only be readable by users who may manage the plugin.
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+
 		$templateKey = isset( $_POST['template'] ) ? sanitize_text_field( $_POST['template'] ) : '';
 
 		if ( ! $this->isCustomTemplate( $templateKey ) ) {

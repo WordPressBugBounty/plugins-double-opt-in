@@ -5,7 +5,7 @@ Tags: contact form 7, double opt-in, gdpr, email verification
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 5.1.2
+Stable tag: 5.1.5
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -235,6 +235,12 @@ Telemetry is used **only for product improvement and maintenance**.
 
 == Upgrade Notice ==
 
+= 5.1.5 =
+Security & code-quality hardening. Note: the visitor IP is now read from REMOTE_ADDR by default — sites behind a CDN/reverse proxy should register their proxy ranges via the new `f12_doi_trusted_proxies` filter. Safe to update — no schema changes.
+
+= 5.1.4 =
+Maintenance release — safe to update, no schema changes.
+
 = 5.1.2 =
 Email Template editor fixes: centered text now stays centered in sent emails, the builder no longer shows a duplicate Save button, and the Social Icons block gained an editable settings panel. Safe to update — no schema changes.
 
@@ -292,6 +298,20 @@ New features: Visual email editor, centralized form settings, GDPR anonymization
 Adds optional anonymous telemetry (opt-out). No breaking changes.
 
 == Changelog ==
+
+= 5.1.5 =
+
+**Security & hardening:**
+
+* Fix: the legacy AJAX endpoints (opt-in details, template loader) now require the `manage_options` capability — not just a nonce — and the privileged nonce is no longer emitted on every wp-admin page.
+* Fix: the consent CSV export neutralises spreadsheet formula injection (values beginning with `=` `+` `-` `@`).
+* Fix: the visitor IP is resolved from `REMOTE_ADDR` and only trusts `X-Forwarded-For` from proxies you configure via the new `f12_doi_trusted_proxies` filter — this prevents spoofing the opt-in rate limiter and the stored GDPR consent IP.
+* Fix: the form-URL email placeholder is URL-escaped.
+* Maintenance: removed leftover debug logging, added ABSPATH guards to directly-reachable files, and corrected a text domain (wordpress.org compliance).
+
+= 5.1.4 =
+
+* Maintenance: internal refactor and packaging cleanup. (Automatic updates for the paid Pro bundle and addon plugins are handled by the Pro bundle plugin, not the free Core plugin.)
 
 = 5.1.2 =
 

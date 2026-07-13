@@ -1,4 +1,8 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 if ( ! function_exists( 'f12_cf7_doubleoptin_get_installation_uuid' ) ) {
 	function f12_cf7_doubleoptin_get_installation_uuid(): string {
 		$uuid = get_option( 'f12_cf7_doubleoptin_installation_uuid' );

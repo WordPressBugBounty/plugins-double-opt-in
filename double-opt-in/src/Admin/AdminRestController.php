@@ -2081,7 +2081,7 @@ class AdminRestController {
 		// 2. Title collision — a page literally titled "Opt-Out" but
 		//    without the shortcode is the user's own content. Refuse
 		//    to silently modify it.
-		$desiredTitle = __( 'Opt-Out', 'double-opt-in-opt-out' );
+		$desiredTitle = __( 'Opt-Out', 'double-opt-in' );
 		$collisionId  = (int) get_page_by_path( sanitize_title( $desiredTitle ), OBJECT, 'page' )?->ID;
 		if ( $collisionId > 0 ) {
 			return new \WP_REST_Response(

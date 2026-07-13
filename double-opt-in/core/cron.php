@@ -3,6 +3,10 @@ namespace forge12\contactform7\CF7DoubleOptIn;
 
 use Forge12\Shared\Logger;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * Registriert alle Cronjobs für das Plugin.
  */

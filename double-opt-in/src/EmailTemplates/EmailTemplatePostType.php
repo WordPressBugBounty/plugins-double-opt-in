@@ -174,10 +174,7 @@ class EmailTemplatePostType {
 			return $value;
 		}
 
-		// Invalid JSON - log and return empty
-		error_log( 'DOI sanitizeJson: Invalid JSON - ' . json_last_error_msg() );
-		error_log( 'DOI sanitizeJson: First 200 chars: ' . substr( $value, 0, 200 ) );
-
+		// Invalid JSON — return empty.
 		return '';
 	}
 }

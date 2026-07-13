@@ -56,6 +56,19 @@ namespace forge12\contactform7\CF7DoubleOptIn {
 		 * Add the styles for the form
 		 */
 		public function addStyles( $hook ) {
+			// Only load the DOI admin scripts — and their privileged
+			// `f12_doi_details` nonce — on the screens that actually use them
+			// (Contact Form 7's admin/editor and the DOI admin), NOT on every
+			// wp-admin page. Broadcasting the nonce everywhere let a
+			// low-privilege user scrape it from e.g. profile.php.
+			$hook = (string) $hook;
+			$onPluginScreen = ( strpos( $hook, 'wpcf7' ) !== false )
+				|| ( strpos( $hook, 'f12-doi' ) !== false )
+				|| ( strpos( $hook, 'f12-cf7-doubleoptin' ) !== false );
+			if ( ! $onPluginScreen ) {
+				return;
+			}
+
 			$this->get_logger()->debug( 'Enqueuing admin styles and scripts', [
 				'plugin' => 'double-opt-in',
 				'class'  => __CLASS__,
@@ -66,7 +79,9 @@ namespace forge12\contactform7\CF7DoubleOptIn {
 			wp_enqueue_script(
 				'f12-cf7-doubleoptin-admin',
 				plugins_url( 'assets/f12-cf7-popup.js', __FILE__ ),
-				[ 'jquery' ]
+				[ 'jquery' ],
+				defined( 'FORGE12_OPTIN_VERSION' ) ? FORGE12_OPTIN_VERSION : false,
+				true
 			);
 			$this->get_logger()->debug( 'Admin popup script enqueued', [
 				'plugin' => 'double-opt-in',
@@ -87,7 +102,9 @@ namespace forge12\contactform7\CF7DoubleOptIn {
 			wp_enqueue_script(
 				'f12-cf7-doubleoptin-templateloader',
 				plugins_url( 'assets/f12-cf7-templateloader.js', __FILE__ ),
-				[ 'jquery' ]
+				[ 'jquery' ],
+				defined( 'FORGE12_OPTIN_VERSION' ) ? FORGE12_OPTIN_VERSION : false,
+				true
 			);
 			$this->get_logger()->debug( 'Template loader script enqueued', [
 				'plugin' => 'double-opt-in',

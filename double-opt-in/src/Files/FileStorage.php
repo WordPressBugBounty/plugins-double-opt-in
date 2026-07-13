@@ -8,6 +8,10 @@
 
 namespace Forge12\DoubleOptIn\Files;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 use Forge12\Shared\LoggerInterface;
 
 /**

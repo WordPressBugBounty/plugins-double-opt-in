@@ -242,15 +242,7 @@ class EmailTemplateRepository {
 			// See: https://developer.wordpress.org/reference/functions/update_post_meta/
 			$slashed_json = wp_slash( $json );
 
-			// Debug logging
-			error_log( 'DOI saveMeta: blocks_json length=' . strlen( $json ) );
-
-			$result = update_post_meta( $id, EmailTemplatePostType::META_BLOCKS_JSON, $slashed_json );
-			error_log( 'DOI saveMeta: update_post_meta result=' . var_export( $result, true ) );
-
-			// Verify save
-			$saved = get_post_meta( $id, EmailTemplatePostType::META_BLOCKS_JSON, true );
-			error_log( 'DOI saveMeta: verified saved length=' . strlen( $saved ) );
+			update_post_meta( $id, EmailTemplatePostType::META_BLOCKS_JSON, $slashed_json );
 		}
 
 		if ( isset( $data['global_styles'] ) ) {

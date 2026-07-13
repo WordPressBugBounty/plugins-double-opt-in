@@ -642,17 +642,17 @@ abstract class AbstractFormIntegration implements FormIntegrationInterface {
 	 * @return string The body with placeholders replaced.
 	 */
 	protected function addSystemPlaceholders( string $body, OptIn $optIn, array $formParameter ): string {
-		$timezone = get_option( 'timezone_string' );
-		if ( empty( $timezone ) ) {
-			$timezone = 'Europe/Berlin';
-		}
-		date_default_timezone_set( $timezone );
-
 		$placeholders = array(
-			'doubleoptin_form_url'     => $formParameter['formUrl'] ?? '',
+			// User-influenced (the submit page URL incl. query string) — sanitise
+			// as a URL so a crafted `?x="><script>` can't reflect into the mail
+			// HTML. esc_url_raw (not esc_url) keeps ampersands un-entity-encoded
+			// so the plain-text mail variant stays intact too.
+			'doubleoptin_form_url'     => esc_url_raw( (string) ( $formParameter['formUrl'] ?? '' ) ),
 			'doubleoptin_form_subject' => $formParameter['subject'] ?? '',
-			'doubleoptin_form_date'    => date( get_option( 'date_format' ) ),
-			'doubleoptin_form_time'    => date( get_option( 'time_format' ) ),
+			// wp_date() formats in the site's timezone without mutating PHP's
+			// global timezone (the old date() + date_default_timezone_set() did).
+			'doubleoptin_form_date'    => wp_date( get_option( 'date_format' ) ),
+			'doubleoptin_form_time'    => wp_date( get_option( 'time_format' ) ),
 			'doubleoptin_form_email'   => get_option( 'admin_email' ),
 			'doubleoptinlink'          => $optIn->get_link_optin( $formParameter ),
 			'doubleoptoutlink'         => $optIn->get_link_optout(),
