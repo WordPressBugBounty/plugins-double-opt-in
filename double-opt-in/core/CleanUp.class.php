@@ -81,8 +81,15 @@ namespace forge12\contactform7\CF7DoubleOptIn {
 
         /**
          * Delete the given hash entry
+         *
+         * No native return type: `int|false` is a PHP 8.0 union type and the
+         * plugin supports PHP 7.4.
+         *
+         * @param string $hash The opt-in hash to delete.
+         *
+         * @return int|false Number of deleted rows, or false on failure.
          */
-	    public function deleteByHash(string $hash): int|false{
+	    public function deleteByHash(string $hash){
 		    // Authorization check (fail fast)
 		    if (!current_user_can('manage_options')) {
 			    $this->get_logger()->warning('Unauthorized attempt to delete opt-in entry.', [

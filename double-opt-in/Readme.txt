@@ -5,7 +5,7 @@ Tags: contact form 7, double opt-in, gdpr, email verification
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 5.1.5
+Stable tag: 5.1.6
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -235,6 +235,9 @@ Telemetry is used **only for product improvement and maintenance**.
 
 == Upgrade Notice ==
 
+= 5.1.6 =
+PHP 7.4 compatibility fix. The plugin declared support for PHP 7.4 but shipped a small amount of PHP 8 syntax, which would have caused a fatal error on a 7.4 server. Recommended for everyone — no schema changes.
+
 = 5.1.5 =
 Security & code-quality hardening. Note: the visitor IP is now read from REMOTE_ADDR by default — sites behind a CDN/reverse proxy should register their proxy ranges via the new `f12_doi_trusted_proxies` filter. Safe to update — no schema changes.
 
@@ -298,6 +301,15 @@ New features: Visual email editor, centralized form settings, GDPR anonymization
 Adds optional anonymous telemetry (opt-out). No breaking changes.
 
 == Changelog ==
+
+= 5.1.6 =
+
+**PHP 7.4 compatibility:**
+
+* Fix: the plugin declared `Requires PHP: 7.4` but shipped PHP 8 syntax (a nullsafe operator and a union return type), which would have caused a fatal error on a PHP 7.4 server. Both are gone — the whole plugin now parses and runs on 7.4.
+* New: minimum-PHP guard. On a server older than PHP 7.4 the plugin stops before loading anything and shows an admin notice, instead of taking the site down with a white screen.
+* Fix: the plugin header was missing `Requires at least` and `Requires PHP` entirely, so WordPress could not block activation on an unsupported server. Both are now declared.
+* Maintenance: the build now refuses to package any file that would fail on PHP 7.4, so this class of problem cannot come back unnoticed.
 
 = 5.1.5 =
 

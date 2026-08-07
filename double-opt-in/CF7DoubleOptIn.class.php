@@ -15,12 +15,49 @@ namespace forge12\contactform7\CF7DoubleOptIn {
 	 * Description: This plugin allows you to add a double OptIn System to your Contact Form 7 & Avada Forms.
 	 * Text Domain: double-opt-in
 	 * Domain Path: /languages
-	 * Version: 5.1.5
+	 * Version: 5.1.6
+	 * Requires at least: 6.0
+	 * Requires PHP: 7.4
 	 * Author: Forge12 Interactive GmbH
 	 * Author URI: https://www.forge12.com
 	 */
+
+	/**
+	 * Minimum-PHP fail-safe.
+	 *
+	 * The "Requires PHP" header above makes WordPress refuse *activation* and
+	 * *updates* on an unsupported version, but it is not re-checked when a host
+	 * later moves an already-active site to an older PHP. Without this guard the
+	 * next request would fatal on 7.4-only syntax inside the files required
+	 * below, leaving the site with a white screen and no explanation.
+	 *
+	 * Everything above this point must stay parseable by old PHP — a parse error
+	 * happens before any code runs, so a guard in an unparseable file is dead
+	 * weight. That is also why CF7DoubleOptIn::$logger carries its type in a
+	 * DocBlock instead of a native (PHP 7.4) property type.
+	 */
+	if ( PHP_VERSION_ID < 70400 ) {
+		add_action(
+			'admin_notices',
+			function () {
+				echo '<div class="notice notice-error"><p>';
+				echo esc_html(
+					sprintf(
+					/* translators: 1: minimum required PHP version, 2: PHP version currently running */
+						__( 'Double Opt-In requires PHP %1$s or newer. This server is running PHP %2$s, so the plugin was stopped to prevent a fatal error. Please ask your host to update PHP.', 'double-opt-in' ),
+						'7.4',
+						PHP_VERSION
+					)
+				);
+				echo '</p></div>';
+			}
+		);
+
+		return;
+	}
+
 	if ( ! defined( 'FORGE12_OPTIN_VERSION' ) ) {
-		define( 'FORGE12_OPTIN_VERSION', '5.1.5' );
+		define( 'FORGE12_OPTIN_VERSION', '5.1.6' );
 	}
 
 	// Addon API version — semver-independent from the plugin's marketing
@@ -88,7 +125,14 @@ namespace forge12\contactform7\CF7DoubleOptIn {
 	 * @package forge12\contactform7
 	 */
 	class CF7DoubleOptIn {
-		private LoggerInterface $logger;
+		/**
+		 * Deliberately untyped: a native property type is PHP 7.4 syntax and
+		 * would make this file unparseable on older PHP, which would defeat the
+		 * minimum-PHP guard at the top of this file.
+		 *
+		 * @var LoggerInterface
+		 */
+		private $logger;
 		/**
 		 * @var CF7DoubleOptIn|Null
 		 */
