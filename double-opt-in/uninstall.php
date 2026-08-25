@@ -93,3 +93,9 @@ if ( should_keep_data_on_uninstall() ) {
 // (bundle-pro licence, addon settings) are owned by their own uninstallers.
 delete_option( 'f12_cf7_doubleoptin_installed_at' );
 delete_option( 'f12_cf7_doubleoptin_installation_uuid' );
+delete_option( 'f12_cf7_doubleoptin_telemetry_counters' );
+
+// The daily telemetry job is no longer scheduled, but an installation that ran
+// an older version still carries the event. Uninstalling has to take it with
+// it, otherwise the entry outlives the plugin in the WP-Cron table.
+wp_clear_scheduled_hook( 'f12_cf7_doubleoptin_daily_telemetry' );

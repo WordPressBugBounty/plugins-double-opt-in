@@ -103,7 +103,7 @@ final class AvadaDeprecationNotice {
 						<?php esc_html_e( 'Dismiss until update', 'double-opt-in' ); ?>
 					</button>
 				<?php endif; ?>
-				<a href="https://forge12.com/double-opt-in/avada-migration"
+				<a href="https://www.forge12.com/shop/contact-form-7-double-opt-in"
 					target="_blank"
 					rel="noopener">
 					<?php esc_html_e( 'Learn more', 'double-opt-in' ); ?>

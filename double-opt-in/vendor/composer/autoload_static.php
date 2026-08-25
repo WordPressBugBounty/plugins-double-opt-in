@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit94f9586f83b90307b571c8749eb16577
+class ComposerStaticInit6611bf15f27dde15388ef5491537f8b8
 {
     public static $prefixLengthsPsr4 = array (
         'F' => 
@@ -68,6 +68,11 @@ class ComposerStaticInit94f9586f83b90307b571c8749eb16577
         'Forge12\\DoubleOptIn\\FormSettings\\FormSettingsService' => __DIR__ . '/../..' . '/src/FormSettings/FormSettingsService.php',
         'Forge12\\DoubleOptIn\\FormSettings\\FormSettingsValidator' => __DIR__ . '/../..' . '/src/FormSettings/FormSettingsValidator.php',
         'Forge12\\DoubleOptIn\\Frontend\\ErrorNotification' => __DIR__ . '/../..' . '/src/Frontend/ErrorNotification.php',
+        'Forge12\\DoubleOptIn\\Health\\DatabaseTableHealthCheck' => __DIR__ . '/../..' . '/src/Health/DatabaseTableHealthCheck.php',
+        'Forge12\\DoubleOptIn\\Health\\HealthCheckInterface' => __DIR__ . '/../..' . '/src/Health/HealthCheckInterface.php',
+        'Forge12\\DoubleOptIn\\Health\\HealthCheckRegistry' => __DIR__ . '/../..' . '/src/Health/HealthCheckRegistry.php',
+        'Forge12\\DoubleOptIn\\Health\\HealthCheckResult' => __DIR__ . '/../..' . '/src/Health/HealthCheckResult.php',
+        'Forge12\\DoubleOptIn\\Health\\SiteHealthIntegration' => __DIR__ . '/../..' . '/src/Health/SiteHealthIntegration.php',
         'Forge12\\DoubleOptIn\\Integration\\AbstractFormIntegration' => __DIR__ . '/../..' . '/src/Integration/AbstractFormIntegration.php',
         'Forge12\\DoubleOptIn\\Integration\\AdminPanelInterface' => __DIR__ . '/../..' . '/src/Integration/AdminPanelInterface.php',
         'Forge12\\DoubleOptIn\\Integration\\CF7Integration' => __DIR__ . '/../..' . '/src/Integration/CF7Integration.php',
@@ -90,6 +95,7 @@ class ComposerStaticInit94f9586f83b90307b571c8749eb16577
         'Forge12\\DoubleOptIn\\Providers\\EventServiceProvider' => __DIR__ . '/../..' . '/src/Providers/EventServiceProvider.php',
         'Forge12\\DoubleOptIn\\Providers\\FormSettingsServiceProvider' => __DIR__ . '/../..' . '/src/Providers/FormSettingsServiceProvider.php',
         'Forge12\\DoubleOptIn\\Providers\\GdprServiceProvider' => __DIR__ . '/../..' . '/src/Providers/GdprServiceProvider.php',
+        'Forge12\\DoubleOptIn\\Providers\\HealthServiceProvider' => __DIR__ . '/../..' . '/src/Providers/HealthServiceProvider.php',
         'Forge12\\DoubleOptIn\\Providers\\IntegrationServiceProvider' => __DIR__ . '/../..' . '/src/Providers/IntegrationServiceProvider.php',
         'Forge12\\DoubleOptIn\\Providers\\LicensingServiceProvider' => __DIR__ . '/../..' . '/src/Providers/LicensingServiceProvider.php',
         'Forge12\\DoubleOptIn\\Providers\\MigrationServiceProvider' => __DIR__ . '/../..' . '/src/Providers/MigrationServiceProvider.php',
@@ -106,9 +112,9 @@ class ComposerStaticInit94f9586f83b90307b571c8749eb16577
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit94f9586f83b90307b571c8749eb16577::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit94f9586f83b90307b571c8749eb16577::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit94f9586f83b90307b571c8749eb16577::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit6611bf15f27dde15388ef5491537f8b8::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit6611bf15f27dde15388ef5491537f8b8::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit6611bf15f27dde15388ef5491537f8b8::$classMap;
 
         }, null, ClassLoader::class);
     }

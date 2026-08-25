@@ -3228,3 +3228,63 @@ msgstr ""
 #: core/ui/UISettings.class.php:586
 msgid "In the table on the left side, you'll find an list global settings. They will affect all forms using the double opt-in."
 msgstr ""
+
+#: src/Health
+msgid "This check could not be completed: %s"
+msgstr ""
+
+#: src/Health
+msgid "%s: the database table is present"
+msgstr ""
+
+#: src/Health
+msgid "The table %s exists and is writable by the plugin."
+msgstr ""
+
+#: src/Health
+msgid "%s: a required database table is missing"
+msgstr ""
+
+#: src/Health
+msgid "The table %1$s does not exist, so \"%2$s\" cannot store anything and will fail for your visitors. Double Opt-In tries to create the table automatically whenever an administrator opens the WordPress admin. If this message persists, the database user is most likely missing the CREATE privilege — your hosting provider can grant it."
+msgstr ""
+
+#: src/Health
+msgid "Core version"
+msgstr ""
+
+#: src/Health
+msgid "Core API version"
+msgstr ""
+
+#: src/Health
+msgid "unknown"
+msgstr ""
+
+#: src/Health
+msgid "Runtime preconditions checked by the Double Opt-In plugin family. Send this section along when you contact support."
+msgstr ""
+
+#: src/Health
+msgid "Double Opt-In has detected a problem that will affect your visitors."
+msgstr ""
+
+#: src/Health
+msgid "Open Site Health"
+msgstr ""
+
+#: src/Health
+msgid "Open Double Opt-In"
+msgstr ""
+
+#: src/Health
+msgid "Opt-in records"
+msgstr ""
+
+#: src/Health
+msgid "Opt-in categories"
+msgstr ""
+
+#: src/Health
+msgid "Consent audit log"
+msgstr ""

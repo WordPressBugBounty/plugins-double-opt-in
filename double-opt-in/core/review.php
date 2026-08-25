@@ -30,12 +30,16 @@ if ( ! function_exists( __NAMESPACE__ . '\\f12_cf7_doubleoptin_maybe_show_review
 
 		// Conditions:
 		// - installed for at least 10 days
-		// - at least 3 confirmed opt-ins
+		// - at least 25 confirmed opt-ins
+		//
+		// The threshold used to be 3. Three confirmations is a site that has
+		// barely started; asking for a public review at that point is asking
+		// someone to vouch for something they have not seen work yet.
 		if ( ( time() - $installed_at ) < DAY_IN_SECONDS * 10 ) {
 			return;
 		}
 
-		if ( $confirmed_optins < 3 ) {
+		if ( $confirmed_optins < 25 ) {
 			return;
 		}
 
@@ -52,15 +56,25 @@ if ( ! function_exists( __NAMESPACE__ . '\\f12_cf7_doubleoptin_maybe_show_review
 			return;
 		}
 
+		// Claim this screen. The credit-link notice runs later on the same hook
+		// and stands down when it sees this — asking a site owner for two
+		// favours at once is how a plugin earns a one-star review, and the
+		// review request is the more valuable of the two.
+		$GLOBALS['f12_doi_review_notice_shown'] = true;
+
 		?>
 		<div class="notice notice-info is-dismissible f12-cf7-doubleoptin-review-notice">
 			<p>
 				<?php printf(
-					__(
-						'<strong>Double Opt-In for WordPress</strong> has already confirmed <strong>%d email subscriptions</strong>. Would you support us with a quick review?',
-						'double-opt-in'
+					wp_kses(
+						/* translators: %d: number of confirmed opt-ins. */
+						__(
+							'<strong>Double Opt-In for WordPress</strong> has already confirmed <strong>%d email subscriptions</strong>. Would you support us with a quick review?',
+							'double-opt-in'
+						),
+						array( 'strong' => array() )
 					),
-					$confirmed_optins
+					(int) $confirmed_optins
 				); ?>
 			</p>
 			<p>
@@ -68,6 +82,18 @@ if ( ! function_exists( __NAMESPACE__ . '\\f12_cf7_doubleoptin_maybe_show_review
 				   target="_blank"
 				   class="button button-primary">
 					<?php _e( 'Leave a review now', 'double-opt-in' ); ?>
+				</a>
+				<?php
+				// The only path out of this notice used to be a public review.
+				// Someone who is unhappy has no other outlet, so the feedback
+				// lands as a one-star rating that nobody can answer. This gives
+				// them somewhere to say it to us instead.
+				?>
+				<a href="<?php echo esc_url( get_feedback_url( 'review-notice' ) ); ?>"
+				   target="_blank"
+				   rel="noopener"
+				   class="button">
+					<?php esc_html_e( 'Something not working? Tell us', 'double-opt-in' ); ?>
 				</a>
 				<a href="<?php echo esc_url( wp_nonce_url( add_query_arg( 'f12_cf7_doubleoptin_review_remind', '1' ), 'doi_review_action' ) ); ?>"
 				   class="button">

@@ -6493,3 +6493,63 @@ msgstr "Bestätigte und unbestätigte Opt-Ins pro Tag"
 #: packages/addon-analytics/admin-ui/src/pages/AnalyticsPage.tsx
 msgid "%1$s: %2$d confirmed, %3$d unconfirmed"
 msgstr "%1$s: %2$d bestätigt, %3$d unbestätigt"
+
+#: src/Health
+msgid "This check could not be completed: %s"
+msgstr "Diese Prüfung konnte nicht abgeschlossen werden: %s"
+
+#: src/Health
+msgid "%s: the database table is present"
+msgstr "%s: Die Datenbanktabelle ist vorhanden"
+
+#: src/Health
+msgid "The table %s exists and is writable by the plugin."
+msgstr "Die Tabelle %s existiert und ist für das Plugin beschreibbar."
+
+#: src/Health
+msgid "%s: a required database table is missing"
+msgstr "%s: Eine benötigte Datenbanktabelle fehlt"
+
+#: src/Health
+msgid "The table %1$s does not exist, so \"%2$s\" cannot store anything and will fail for your visitors. Double Opt-In tries to create the table automatically whenever an administrator opens the WordPress admin. If this message persists, the database user is most likely missing the CREATE privilege — your hosting provider can grant it."
+msgstr "Die Tabelle %1$s existiert nicht. „%2$s\" kann deshalb nichts speichern und schlägt für deine Besucher fehl. Double Opt-In versucht die Tabelle automatisch anzulegen, sobald ein Administrator das WordPress-Backend öffnet. Bleibt diese Meldung stehen, fehlt dem Datenbank-Benutzer sehr wahrscheinlich das CREATE-Recht — das kann dein Hoster freischalten."
+
+#: src/Health
+msgid "Core version"
+msgstr "Core-Version"
+
+#: src/Health
+msgid "Core API version"
+msgstr "Core-API-Version"
+
+#: src/Health
+msgid "unknown"
+msgstr "unbekannt"
+
+#: src/Health
+msgid "Runtime preconditions checked by the Double Opt-In plugin family. Send this section along when you contact support."
+msgstr "Laufzeit-Voraussetzungen, die die Double-Opt-In-Plugin-Familie prüft. Schick diesen Abschnitt mit, wenn du den Support kontaktierst."
+
+#: src/Health
+msgid "Double Opt-In has detected a problem that will affect your visitors."
+msgstr "Double Opt-In hat ein Problem erkannt, das deine Besucher betrifft."
+
+#: src/Health
+msgid "Open Site Health"
+msgstr "Website-Zustand öffnen"
+
+#: src/Health
+msgid "Open Double Opt-In"
+msgstr "Double Opt-In öffnen"
+
+#: src/Health
+msgid "Opt-in records"
+msgstr "Opt-in-Datensätze"
+
+#: src/Health
+msgid "Opt-in categories"
+msgstr "Opt-in-Kategorien"
+
+#: src/Health
+msgid "Consent audit log"
+msgstr "Einwilligungs-Audit-Log"

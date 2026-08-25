@@ -125,10 +125,45 @@ if (!class_exists(__NAMESPACE__ . '\\Telemetry')) {
 		}
 
 		/**
+		 * Whether the site owner has left telemetry switched on.
+		 *
+		 * Defaults to enabled, matching the setting's own default — but an
+		 * absent option must not be read as consent to something the user
+		 * turned off, so the value is taken from the same key the settings
+		 * screen writes.
+		 */
+		public static function is_enabled(): bool {
+			$settings = get_option('f12-doi-settings', []);
+
+			if (!is_array($settings) || !array_key_exists('telemetry', $settings)) {
+				return true;
+			}
+
+			return (int) $settings['telemetry'] === 1;
+		}
+
+		/**
 		 * Static: send snapshot
+		 *
+		 * Currently unwired: no cron schedules this any more (see core/cron.php).
+		 * The transport is kept — including the payload — so that switching it
+		 * back on is a matter of scheduling the job again once a reachable
+		 * endpoint exists, rather than rewriting it from memory.
 		 */
 		public static function send_snapshot(): void {
-			$logger  = Logger::getInstance();
+			$logger = Logger::getInstance();
+
+			// The consent check belongs here rather than at the call site: this
+			// method is public and was previously reachable from a cron job that
+			// never asked. Anything that calls it in future inherits the check.
+			if (!self::is_enabled()) {
+				$logger->debug("Telemetry skipped — disabled in settings", [
+					'plugin' => FORGE12_OPTIN_SLUG,
+				]);
+
+				return;
+			}
+
 			$payload = self::build_payload();
 
 			$logger->debug("Telemetry Payload prepared", [
@@ -170,5 +205,7 @@ if (!class_exists(__NAMESPACE__ . '\\Telemetry')) {
 	}
 }
 
-// Cron Hook registrieren
-add_action('f12_cf7_doubleoptin_daily_telemetry', [Telemetry::class, 'send_snapshot']);
+// Kein Cron-Hook mehr: der Tagesjob ist abgeschafft (siehe core/cron.php, das
+// bestehende Planungen auch wieder austrägt). Die Bindung bleibt bewusst weg,
+// damit ein Event, das auf einer alten Installation noch im WP-Cron steht, bis
+// zum Aufräumen ins Leere läuft statt an einen toten Endpoint zu posten.

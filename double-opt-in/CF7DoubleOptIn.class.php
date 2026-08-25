@@ -15,7 +15,7 @@ namespace forge12\contactform7\CF7DoubleOptIn {
 	 * Description: This plugin allows you to add a double OptIn System to your Contact Form 7 & Avada Forms.
 	 * Text Domain: double-opt-in
 	 * Domain Path: /languages
-	 * Version: 5.1.6
+	 * Version: 5.3.1
 	 * Requires at least: 6.0
 	 * Requires PHP: 7.4
 	 * Author: Forge12 Interactive GmbH
@@ -57,7 +57,7 @@ namespace forge12\contactform7\CF7DoubleOptIn {
 	}
 
 	if ( ! defined( 'FORGE12_OPTIN_VERSION' ) ) {
-		define( 'FORGE12_OPTIN_VERSION', '5.1.6' );
+		define( 'FORGE12_OPTIN_VERSION', '5.3.1' );
 	}
 
 	// Addon API version — semver-independent from the plugin's marketing
@@ -85,7 +85,15 @@ namespace forge12\contactform7\CF7DoubleOptIn {
 	require_once 'logger/logger.php';
 	require_once 'core/helpers/uuid.php';
 	require_once 'core/telemetry.php';
+	// feedback.php first: review.php, credit_nudge.php and the deactivation
+	// survey all build their links with it.
+	require_once 'core/feedback.php';
 	require_once 'core/review.php';
+	require_once 'core/confirmation_output.php';
+	require_once 'core/credit_link.php';
+	require_once 'core/credit_nudge.php';
+	require_once 'core/deactivation_survey.php';
+	require_once 'core/admin_links.php';
 	require_once 'core/cron.php';
 	require_once 'core/BaseController.class.php';
 
@@ -438,6 +446,12 @@ namespace forge12\contactform7\CF7DoubleOptIn {
 			// Register addon system (v4.3.0+ — public Addon API)
 			$container->addProvider( new \Forge12\DoubleOptIn\Providers\AddonServiceProvider() );
 
+			// Register health checks (v5.3.0+ — Site Health surfaces for
+			// broken runtime preconditions such as a missing DB table).
+			// After AddonServiceProvider so addon-contributed checks are
+			// picked up by the registry's filter pass.
+			$container->addProvider( new \Forge12\DoubleOptIn\Providers\HealthServiceProvider() );
+
 			// Register RateLimiter as singleton
 			$container->singleton(
 				\Forge12\DoubleOptIn\Service\RateLimiter::class,
@@ -549,6 +563,15 @@ namespace forge12\contactform7\CF7DoubleOptIn {
 				'delete_period'             => 'months',
 				'delete_unconfirmed_period' => 'months',
 				'privacy_policy_page'       => 0,
+				// Must be listed even though the opt-out addon owns the
+				// feature: getSettings() rebuilds its return value from
+				// THIS array and silently drops any stored key that is
+				// missing here. Without the entry, every consumer of
+				// getSettings()['optout_page'] — OptInLinkGenerator and
+				// OptIn::get_link_optout(), i.e. the `[doubleoptoutlink]`
+				// placeholder — fell back to home_url() no matter what
+				// the admin had configured.
+				'optout_page'               => 0,
 				'token_expiry_hours'        => 48,
 				'rate_limit_ip'             => 5,
 				'rate_limit_email'          => 3,

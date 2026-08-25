@@ -3237,3 +3237,63 @@ msgstr "How does the Domain Blocklist work?"
 #: core/ui/UISettings.class.php:536
 msgid "The domain blocklist prevents opt-in submissions from disposable or unwanted email domains. When enabled, the plugin extracts the domain from the submitted email address and checks it against your configured list. This is useful for blocking temporary email services (e.g. tempmail.com, guerrillamail.com) that are commonly used for spam. The check is case-insensitive and runs alongside other validations like MX record checking."
 msgstr "The domain blocklist prevents opt-in submissions from disposable or unwanted email domains. When enabled, the plugin extracts the domain from the submitted email address and checks it against your configured list. This is useful for blocking temporary email services (e.g. tempmail.com, guerrillamail.com) that are commonly used for spam. The check is case-insensitive and runs alongside other validations like MX record checking."
+
+#: src/Health
+msgid "This check could not be completed: %s"
+msgstr "This check could not be completed: %s"
+
+#: src/Health
+msgid "%s: the database table is present"
+msgstr "%s: the database table is present"
+
+#: src/Health
+msgid "The table %s exists and is writable by the plugin."
+msgstr "The table %s exists and is writable by the plugin."
+
+#: src/Health
+msgid "%s: a required database table is missing"
+msgstr "%s: a required database table is missing"
+
+#: src/Health
+msgid "The table %1$s does not exist, so \"%2$s\" cannot store anything and will fail for your visitors. Double Opt-In tries to create the table automatically whenever an administrator opens the WordPress admin. If this message persists, the database user is most likely missing the CREATE privilege — your hosting provider can grant it."
+msgstr "The table %1$s does not exist, so \"%2$s\" cannot store anything and will fail for your visitors. Double Opt-In tries to create the table automatically whenever an administrator opens the WordPress admin. If this message persists, the database user is most likely missing the CREATE privilege — your hosting provider can grant it."
+
+#: src/Health
+msgid "Core version"
+msgstr "Core version"
+
+#: src/Health
+msgid "Core API version"
+msgstr "Core API version"
+
+#: src/Health
+msgid "unknown"
+msgstr "unknown"
+
+#: src/Health
+msgid "Runtime preconditions checked by the Double Opt-In plugin family. Send this section along when you contact support."
+msgstr "Runtime preconditions checked by the Double Opt-In plugin family. Send this section along when you contact support."
+
+#: src/Health
+msgid "Double Opt-In has detected a problem that will affect your visitors."
+msgstr "Double Opt-In has detected a problem that will affect your visitors."
+
+#: src/Health
+msgid "Open Site Health"
+msgstr "Open Site Health"
+
+#: src/Health
+msgid "Open Double Opt-In"
+msgstr "Open Double Opt-In"
+
+#: src/Health
+msgid "Opt-in records"
+msgstr "Opt-in records"
+
+#: src/Health
+msgid "Opt-in categories"
+msgstr "Opt-in categories"
+
+#: src/Health
+msgid "Consent audit log"
+msgstr "Consent audit log"

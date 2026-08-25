@@ -1440,6 +1440,11 @@ class AdminRestController {
 	public function getSettings( \WP_REST_Request $request ): \WP_REST_Response {
 		$defaults = array(
 			'telemetry'                 => 1,
+			// Optional "Double Opt-In by Forge12" credit on the confirmation
+			// page. Defaults to 0 and must stay that way: wordpress.org
+			// guideline 10 requires credit links to be off unless the site
+			// owner explicitly turns them on.
+			'credit_link'               => 0,
 			'delete'                    => 12,
 			'delete_unconfirmed'        => 7,
 			'delete_period'             => 'months',
@@ -1512,6 +1517,11 @@ class AdminRestController {
 				'values' => array( 'months', 'days', 'years' ),
 			),
 			'telemetry'                 => array(
+				'type' => 'int',
+				'min'  => 0,
+				'max'  => 1,
+			),
+			'credit_link'               => array(
 				'type' => 'int',
 				'min'  => 0,
 				'max'  => 1,

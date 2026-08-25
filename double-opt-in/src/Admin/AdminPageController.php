@@ -251,7 +251,9 @@ class AdminPageController {
 			'registeredAddons' => $this->getRegisteredAddonIds(),
 			'version'        => defined( 'FORGE12_OPTIN_VERSION' ) ? FORGE12_OPTIN_VERSION : '0.0.0',
 			'emailEditorUrl' => admin_url( 'admin.php?page=f12-doi-admin#/email-templates' ),
-			'upgradeUrl'     => 'https://www.forge12.com',
+			'upgradeUrl'     => $this->productUrl( 'admin-upgrade', 'https://www.forge12.com' ),
+			'supportUrl'     => $this->supportUrl(),
+			'feedbackUrl'    => $this->feedbackUrl(),
 			'adminUrl'       => admin_url(),
 			// Nonce for the legacy admin-ajax `doi_export_consent`
 			// handler. The handler hard-requires `_wpnonce` in
@@ -277,6 +279,41 @@ class AdminPageController {
 		$config = apply_filters( 'f12_doi_admin_localize_data', $config );
 
 		wp_localize_script( 'doi-admin-ui', 'doiAdmin', $config );
+	}
+
+	/**
+	 * Product-site link for the SPA.
+	 *
+	 * The URL builders live in core/feedback.php, a plain-function file in the
+	 * legacy namespace rather than an autoloaded class. The guard is not
+	 * ceremony: this controller is also exercised by tests that do not load that
+	 * file, and a fatal there would be a poor trade for a marketing link.
+	 *
+	 * @param string $from     Entry point recorded on the link.
+	 * @param string $fallback Used when core/feedback.php is not loaded.
+	 */
+	private function productUrl( string $from, string $fallback ): string {
+		$fn = '\\forge12\\contactform7\\CF7DoubleOptIn\\get_product_url';
+
+		return function_exists( $fn ) ? esc_url_raw( $fn( $from ) ) : $fallback;
+	}
+
+	/**
+	 * Support link for the SPA. Empty when unavailable, so the UI can hide it.
+	 */
+	private function supportUrl(): string {
+		$fn = '\\forge12\\contactform7\\CF7DoubleOptIn\\get_support_url';
+
+		return function_exists( $fn ) ? esc_url_raw( $fn( 'admin-spa' ) ) : '';
+	}
+
+	/**
+	 * Feedback link for the SPA. Empty when unavailable, so the UI can hide it.
+	 */
+	private function feedbackUrl(): string {
+		$fn = '\\forge12\\contactform7\\CF7DoubleOptIn\\get_feedback_url';
+
+		return function_exists( $fn ) ? esc_url_raw( $fn( 'admin-spa' ) ) : '';
 	}
 
 	/**

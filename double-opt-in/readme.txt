@@ -1,0 +1,751 @@
+=== Double Opt-In for Contact Form 7 – Secure, GDPR-Compliant Email Verification ===
+Contributors: forge12
+Donate link: https://www.paypal.com/donate?hosted_button_id=MGZTVZH3L5L2G
+Tags: contact form 7, double opt-in, gdpr, email verification
+Requires at least: 6.0
+Tested up to: 7.0
+Requires PHP: 7.4
+Stable tag: 5.3.1
+License: GPLv3
+License URI: http://www.gnu.org/licenses/gpl-3.0.html
+
+**Protect your Contact Form 7 forms with GDPR-compliant Double Opt-In.**
+Ensure valid emails, prevent fake signups, and stay compliant. Extend with paid addons for Avada, Elementor, Gravity Forms, WPForms and more.
+
+== Description ==
+
+**Double Opt-In** adds a mandatory email verification step to your Contact Form 7 forms.
+When a visitor submits your form, the original mail is **not** sent immediately. Instead, the plugin:
+
+1. Stores the submission in a secure database table.
+2. Sends a confirmation email with a unique, time-limited link.
+3. Only after the visitor clicks that link is the original form mail delivered.
+
+This ensures:
+
+* Only **valid, verified email addresses** reach your inbox.
+* **GDPR / DSGVO requirements** are met with proper consent tracking, IP logging, and data retention.
+* Your database stays **clean and reliable** -- no fake or mistyped addresses.
+
+Out-of-the-box support for **Contact Form 7**. Additional form systems — Avada, Elementor, Gravity Forms, WPForms — are available as separate addon plugins.
+
+= How It Works =
+
+1. A visitor fills out your Contact Form 7 form and clicks submit.
+2. The plugin intercepts the submission, stores the form data, and generates a unique hash.
+3. A confirmation email is sent to the visitor's email address containing a verification link.
+4. The visitor clicks the link. The plugin verifies the hash, marks the opt-in as confirmed, and sends the original form mail (as if the form was just submitted).
+5. The confirmed opt-in is logged in the admin dashboard with timestamps and IP addresses for full GDPR compliance.
+
+= Quick Start =
+
+[Read the Quick Guide](https://www.forge12.com/blog/so-verwendest-du-das-double-opt-in-fuer-contact-form-7/)
+
+= Free Features =
+
+* **Visual Email Editor** -- drag & drop block-based email template editor with live preview and mobile preview
+* **Double Opt-In for Contact Form 7** -- per-form activation with full CF7 integration
+* **Centralized Form Settings** -- manage all form integrations from a single admin panel
+* **Email Template Presets** -- choose from pre-built templates or create your own
+* **Send Test Email** -- preview your confirmation emails before going live
+* **Custom Confirmation Pages** -- redirect users to a specific page after confirmation
+* **Dynamic Conditions** -- enable opt-in based on user input (e.g. only when a checkbox is checked)
+* **Resend Confirmation** -- resend the confirmation email from the admin dashboard
+* **Delete Confirmation Modal** -- safety dialog before deleting an opt-in record to prevent accidental deletion
+* **GDPR Consent Export** -- export individual consent records as JSON or CSV directly from the opt-in detail view
+* **CAPTCHA Compatibility** -- automatically bypasses Forge12 Captcha, Google reCAPTCHA, and hCaptcha during opt-in confirmation to ensure mail delivery
+* **Rate Limiting** -- configurable IP and email rate limits to prevent abuse
+* **Error Redirect Page** -- redirect users to a custom page when an opt-in error occurs (rate limit, invalid email)
+* **Token Expiry** -- confirmation links expire after a configurable time period
+* **GDPR Data Storage** -- tracks Form ID, Email, Registration/Confirmation Date & IP, Consent Text
+* **GDPR Anonymization** -- anonymize personal data instead of deleting it
+* **WordPress Privacy Tools** -- integrates with WordPress personal data export and erasure requests
+* **Automatic Cleanup** -- configurable auto-deletion of confirmed and unconfirmed entries
+* **Category System** -- organize opt-ins into categories for better management
+* **Pagination & Search** -- search and filter opt-in records in the admin dashboard
+* **Admin Tooltips** -- contextual help tooltips throughout the admin interface
+* **WordPress Multisite** -- network-wide activation creates tables on all sites automatically
+* **Developer Hooks** -- 18 action hooks, 23 filters, and 11 typed events for full extensibility
+
+= Pro Features =
+
+Unlock the full potential of Double Opt-In with the [Pro version](https://www.forge12.com):
+
+**Additional Form Integrations:**
+
+* **Double Opt-In for Elementor Forms** -- seamless integration with Elementor's form widget
+* **Double Opt-In for WPForms** -- full support for WPForms submissions
+* **Double Opt-In for Gravity Forms** -- complete Gravity Forms integration
+
+**Email Validation & Spam Protection:**
+
+* **Unique Email Validation** -- prevent duplicate submissions per email address (block, silent, or redirect mode)
+* **MX Validation** -- verify that the email domain has a valid mail server before sending
+* **Domain Blocklist** -- block disposable and temporary email domains
+
+**Email & Communication:**
+
+* **Double Opt-Out System** -- unique opt-out links per submission with confirmation emails
+* **Opt-In Reminder System** -- automatic reminders for unconfirmed opt-ins via cron
+* **Conditional Email Templates** -- dynamic content blocks based on form data
+* **Multi-Column Layouts** -- 2-column, 3-column, and sidebar layouts in the email editor
+* **Image & Social Blocks** -- add images and social media icons to your emails
+
+**Analytics & Export:**
+
+* **Analytics Dashboard** -- charts and statistics for opt-in/opt-out rates
+* **CSV Export** -- export all opt-in records for external processing
+
+**User Management:**
+
+* **Auto User Creation** -- automatically create WordPress users after opt-in confirmation with configurable role assignment
+
+**Support:**
+
+* **Premium Support** -- priority email support
+
+== Installation ==
+
+= Automatic Installation =
+
+1. Go to **Plugins > Add New** in your WordPress admin.
+2. Search for **"Double Opt-In"**.
+3. Click **Install Now** and then **Activate**.
+
+= Manual Installation =
+
+1. Download the plugin ZIP file.
+2. Upload it to `/wp-content/plugins/double-opt-in/` or use **Plugins > Add New > Upload Plugin**.
+3. Activate via the WordPress **Plugins** menu.
+
+= First-Time Setup =
+
+1. After activation, go to **Double Opt-In** in the WordPress admin menu.
+2. Navigate to **Forms** to see all detected Contact Form 7 forms.
+3. Click on a form to enable Double Opt-In and configure the confirmation email.
+4. Set the **Recipient Field** to the form field that contains the visitor's email address (e.g. `your-email`).
+5. Customize the **Subject** and **Body** of the confirmation email, or choose a template preset.
+6. Save the settings and test the form.
+
+= Requirements =
+
+* WordPress 6.0 or higher
+* PHP 7.4 or higher
+* Contact Form 7 5.0+ (for the CF7 integration bundled with Core)
+
+== Frequently Asked Questions ==
+
+= How does Double Opt-In work? =
+
+When a visitor submits your form, the plugin stores the submission and sends a confirmation email with a unique link. The original form mail is only delivered after the visitor clicks that link. This verifies that the email address is valid and belongs to the person who filled out the form.
+
+= Is this plugin GDPR / DSGVO compliant? =
+
+Yes. The plugin tracks all data required for GDPR compliance: consent text, registration and confirmation timestamps, IP addresses, and form data. It integrates with WordPress Privacy Tools for personal data export and erasure requests. You can configure automatic data retention and anonymization policies.
+
+= Which form plugins are supported? =
+
+The free Core plugin supports **Contact Form 7** out of the box. Support for **Avada Forms**, **Elementor Pro Forms**, **WPForms**, and **Gravity Forms** is available through separate paid addon plugins (install alongside Core).
+
+= I used Avada with this plugin before. What happens now? =
+
+If you configured Double Opt-In on an Avada form before Core 5.0, a one-time notice appears in your WordPress admin with a **"Claim free Avada grandfather license"** button. One click installs the paid Avada addon with a permanent free license bound to your site. Your existing setup continues working with zero configuration changes. The free claim window is open until October 2026.
+
+= Can I customize the confirmation email? =
+
+Yes. The plugin includes a visual drag & drop email editor with block-based design. You can choose from pre-built template presets or create your own. Placeholders like `[doubleoptinlink]`, `[doubleoptin_form_date]`, and form field values are replaced automatically.
+
+= What happens if the user does not confirm? =
+
+Unconfirmed opt-ins are stored in the database and can be cleaned up automatically. You can configure the retention period for unconfirmed entries in the settings (e.g. delete after 30 days). In the Pro version, you can also send automatic reminder emails.
+
+= Can I redirect the user to a specific page after confirmation? =
+
+Yes. In the per-form settings, you can select a **Confirmation Page**. The user will be redirected there after clicking the confirmation link.
+
+= Does the plugin work with CAPTCHA plugins? =
+
+Yes. The plugin automatically disables CAPTCHA validation (Google reCAPTCHA, hCaptcha, CF7 Captcha by Forge12) when re-sending the original form mail after confirmation. This prevents false spam detections during the confirmation step. CAPTCHA is re-enabled immediately after the mail has been sent.
+
+= Can I enable Double Opt-In only when a checkbox is checked? =
+
+Yes. Use the **Conditions** setting in the per-form configuration. Enter the name of a form field (e.g. a checkbox). Double Opt-In will only be triggered when that field has a value.
+
+= How do I access form data after confirmation? =
+
+**Legacy approach (WordPress hook):**
+
+`add_action( 'f12_cf7_doubleoptin_after_confirm', function( $hash, $optIn ) {`
+`    $data = maybe_unserialize( $optIn->get_content() );`
+`}, 10, 2 );`
+
+**Modern approach (typed event, since 4.0):**
+
+Use `OptInConfirmedEvent` via the EventDispatcher. The event provides `getFormData()`, `getEmail()`, `getFormId()`, and more. See `docs/hooks-and-events.md` for the complete reference.
+
+= Does it work with WordPress Multisite? =
+
+Yes. When activated network-wide, the plugin creates database tables on all existing sites. New sites added to the network automatically get their own tables via the `wp_initialize_site` hook.
+
+= Can I use this without Contact Form 7 or Avada? =
+
+The free version requires at least one supported form plugin. However, developers can register custom form integrations using the `f12_cf7_doubleoptin_register_integrations` action hook. See the developer documentation for details.
+
+= Where can I find the developer documentation? =
+
+The complete hook, filter, and event reference is available at `docs/hooks-and-events.md` inside the plugin directory. It covers all 18 action hooks, 23 filters, and 11 typed events with code examples.
+
+= How do I report a bug or request a feature? =
+
+Please visit [forge12.com](https://www.forge12.com) or contact us via the WordPress support forum.
+
+== Screenshots ==
+
+1. **Opt-In Dashboard** -- Overview of all opt-in records with status, email, form, date, and actions.
+2. **Form Settings** -- Per-form configuration with sender, subject, recipient field, confirmation page, and conditions.
+3. **Email Template Editor** -- Visual drag & drop editor with blocks, live preview, and mobile preview.
+4. **Template Presets** -- Choose from pre-built email template designs.
+5. **Single Opt-In View** -- Detailed view of an opt-in record with form data, timestamps, and IP addresses.
+6. **Global Settings** -- Configure data retention, token expiry, telemetry, and opt-out settings.
+7. **Category Management** -- Organize opt-in records into categories.
+
+== Privacy & Telemetry ==
+
+**As of version 5.1.7 the plugin no longer transmits any telemetry.** The daily
+job that used to send a usage snapshot has been removed, and an update also
+removes it from the WP-Cron schedule of sites that already had it.
+
+Usage counters (how many opt-ins were confirmed, for example) are still kept,
+but they never leave the site. They are stored in a single WordPress option and
+are used only in the admin -- for instance to decide whether the plugin has been
+useful long enough to ask you for a review.
+
+**We never sell or share data.**
+
+= GDPR / DSGVO Compliance =
+
+* No personal data, no cookies, no user tracking.
+* Nothing is sent to any external server. Counters stay in your database and are
+  removed when you uninstall the plugin.
+* The telemetry setting under **Double Opt-In > Settings** is retained: should
+  transmission ever be reintroduced, it will be honoured before anything is sent.
+
+= Bundled assets =
+
+The admin interface uses the Inter typeface. It is **self-hosted** -- the font
+file is embedded in the plugin's own admin bundle, so opening the plugin's
+screens does not contact Google Fonts or any other third party. Inter is
+licensed under the SIL Open Font License 1.1 (see licenses/inter-OFL-1.1.txt).
+
+== Upgrade Notice ==
+
+= 5.2.0 =
+Adds Support and Feedback links so problems can reach us instead of only reaching the review page, and an optional credit link on the confirmation page -- off unless you switch it on. Also repairs the plugin's own links, which pointed at pages that no longer exist. No schema changes.
+
+= 5.1.7 =
+Telemetry is switched off for good: the daily snapshot is gone and the scheduled job is removed from your site. Nothing left the site before either -- the endpoint had been unreachable -- but the setting that was meant to prevent it was never checked. Recommended for everyone, no schema changes.
+
+= 5.1.6 =
+PHP 7.4 compatibility fix. The plugin declared support for PHP 7.4 but shipped a small amount of PHP 8 syntax, which would have caused a fatal error on a 7.4 server. Recommended for everyone — no schema changes.
+
+= 5.1.5 =
+Security & code-quality hardening. Note: the visitor IP is now read from REMOTE_ADDR by default — sites behind a CDN/reverse proxy should register their proxy ranges via the new `f12_doi_trusted_proxies` filter. Safe to update — no schema changes.
+
+= 5.1.4 =
+Maintenance release — safe to update, no schema changes.
+
+= 5.1.2 =
+Email Template editor fixes: centered text now stays centered in sent emails, the builder no longer shows a duplicate Save button, and the Social Icons block gained an editable settings panel. Safe to update — no schema changes.
+
+= 5.1.1 =
+Cosmetic + maintenance update: the admin menu now reads "Double Opt-In" (was "DOI Admin"), plus bundle-only Addons-page polish (a single "Upgrade to Pro" CTA, no per-module license prompts). Safe to update — no schema changes.
+
+= 5.1.0 =
+Form completeness gate: forms with missing required fields are now auto-disabled on upgrade and at save time, so a half-configured form can no longer silently swallow opt-ins. New file-lifecycle hooks delete attachments when an opt-in is deleted (CF7, Avada, Elementor, Gravity, WPForms). New REST endpoints for opt-out page generation and consent-export audit history. Several legacy-frontend and Avada placeholder fixes. Safe to update — no schema changes; one idempotent admin_init migration disables incomplete forms.
+
+= 5.0.0 =
+**Major release.** The free Core plugin now focuses on Contact Form 7. All other form integrations (Avada, Elementor, Gravity Forms, WPForms) move to separate paid addon plugins. Existing free-plugin users with Avada forms configured qualify for a free permanent grandfather license — a one-click claim button appears in admin. Requires PHP 7.4+ (no longer PHP 8.0).
+
+= 3.7.2 =
+Bugfix: Fixed placeholder replacement and admin display broken for Avada forms. Form field placeholders like `[doi_email]` and `[doi_name]` now work correctly in emails. Admin detail view and AJAX modal now show actual form data instead of metadata keys. Added missing `[doubleoptin_privacy_url]` system placeholder. Safe to update.
+
+= 3.7.1 =
+Bugfix: Fixed toggle switch, Avada DOI settings, and Avada recipient field resolution. **Important:** Avada Forms support will move to the Pro version in 3.8.0 -- upgrade now to keep using it. Contact Form 7 remains free. Safe to update.
+
+= 3.7.0 =
+CSS fix for table width on admin pages. Improved compatibility with Pro 3.7.0 license system. Safe to update.
+
+= 3.6.0 =
+Moved consent export to Pro plugin. The export UI and AJAX endpoint are no longer available without the Pro plugin.
+Added `f12_doi_database_page_after_forms` hook for extensibility. Safe to update.
+
+= 3.5.0 =
+Fixed confirmation mail not being sent for forms with Quiz, Acceptance, or required fields.
+CF7 validation is now bypassed during opt-in confirmation mail delivery. Safe to update.
+
+= 3.4.0 =
+Fixed translation loading issues on WordPress 6.7+, review notice not displaying, and database table missing errors.
+Added 133+ missing German translations for the Email Editor and related features. Safe to update.
+
+= 3.3.0 =
+New: Delete confirmation modal, GDPR consent export (JSON/CSV), admin tooltips, error redirect page, hCaptcha compatibility.
+New: Unique Email redirect behavior (Pro).
+Fixed reCAPTCHA re-activation typo. Safe to update -- no database changes.
+
+= 3.2.3 =
+Bugfix release: Fixes broken toggle switches on the settings page. Safe to update -- no database changes.
+
+= 3.2.2 =
+Bugfix release: Fixes double-firing of the after_confirm hook. Safe to update -- no database changes.
+
+= 3.2.1 =
+Bugfix release: Fixes a fatal error on new, unsaved CF7 forms. Safe to update.
+
+= 3.2.0 =
+**Important: Major Update -- Please backup before updating!**
+This version includes significant changes to the form management system, email templates, and database structure.
+We strongly recommend creating a full site backup before updating.
+New features: Visual email editor, centralized form settings, GDPR anonymization, and more.
+
+= 3.1.0 =
+Adds optional anonymous telemetry (opt-out). No breaking changes.
+
+== Changelog ==
+
+= 5.3.1 =
+
+* Fix: the opt-out page you selected was discarded when settings were read, so the `[doubleoptoutlink]` placeholder in confirmation and reminder mails pointed at your front page instead of your consent centre. It now resolves to the page you configured.
+
+= 5.3.0 =
+
+**Telling you when something is broken:**
+
+* New: Double Opt-In now reports its own runtime preconditions under Tools → Site Health. If one of the plugin's database tables is missing, you see it there as a critical issue with the reason spelled out, instead of a feature silently failing for your visitors.
+* New: a "Double Opt-In" section in Site Health → Info listing table status and version numbers. It is exportable — send it along when you contact support and we can skip a round of questions.
+* New: an admin notice on the dashboard, the plugins screen and the plugin's own pages for as long as such a problem is unresolved.
+* New: addons contribute their own checks through the `f12_doi_health_checks` filter, so this covers future addons without further work.
+
+= 5.2.0 =
+
+**Getting hold of us:**
+
+* New: Support and Feedback links in the plugin sidebar, in the plugin list and in the admin menu. Until now the only route out of the plugin was the review page, so a problem could only be reported as a public rating that nobody could answer.
+* New: the review notice offers "Something not working? Tell us" alongside the review button.
+* Change: the review notice now waits for 25 confirmed opt-ins instead of 3. Three confirmations is too early to ask anyone to vouch for the plugin.
+* New: an optional dialog when deactivating asks what went wrong. It never blocks or delays deactivation, sends nothing by itself, and appears once.
+
+**Optional credit link:**
+
+* New: a "Double Opt-In by Forge12" link can be shown on the page a subscriber lands on after confirming. **Off by default** -- it appears only if you switch it on under Settings, and it is marked `nofollow`.
+* New: after 50 confirmed opt-ins the plugin asks once whether you would like to show it, with a preview of exactly what would appear. Asked once, either answer ends it.
+* New: filter `f12_doi_confirmation_output` for anyone who wants to put their own markup on the confirmation page -- the plugin had no hook there at all.
+
+**Fixes:**
+
+* Fix: the plugin's own links pointed into a section of forge12.com that does not exist. Every addon's "Visit plugin site" link, the documentation links, and the link in the Avada migration notice returned 404. Corrected everywhere, including inside the translations, which carried their own copies.
+
+= 5.1.7 =
+
+**Telemetry removed:**
+
+* Fix: the telemetry setting was never checked. The daily job was scheduled regardless of it, and the sending routine did not look at it either -- so switching telemetry off in the settings did not actually switch anything off.
+* Fix: the daily snapshot has been removed entirely, and updating also removes the job from your site's scheduled tasks. It had been posting to an endpoint that no longer exists, so it failed every day without saying so.
+* Privacy: usage counters remain on your site and are never transmitted. They are deleted when the plugin is uninstalled.
+* Note: nothing had actually been transmitted for some time -- the receiving server's TLS certificate was invalid, so WordPress refused the connection. The consent bug is fixed regardless.
+
+= 5.1.6 =
+
+**PHP 7.4 compatibility:**
+
+* Fix: the plugin declared `Requires PHP: 7.4` but shipped PHP 8 syntax (a nullsafe operator and a union return type), which would have caused a fatal error on a PHP 7.4 server. Both are gone — the whole plugin now parses and runs on 7.4.
+* New: minimum-PHP guard. On a server older than PHP 7.4 the plugin stops before loading anything and shows an admin notice, instead of taking the site down with a white screen.
+* Fix: the plugin header was missing `Requires at least` and `Requires PHP` entirely, so WordPress could not block activation on an unsupported server. Both are now declared.
+* Maintenance: the build now refuses to package any file that would fail on PHP 7.4, so this class of problem cannot come back unnoticed.
+
+= 5.1.5 =
+
+**Security & hardening:**
+
+* Fix: the legacy AJAX endpoints (opt-in details, template loader) now require the `manage_options` capability — not just a nonce — and the privileged nonce is no longer emitted on every wp-admin page.
+* Fix: the consent CSV export neutralises spreadsheet formula injection (values beginning with `=` `+` `-` `@`).
+* Fix: the visitor IP is resolved from `REMOTE_ADDR` and only trusts `X-Forwarded-For` from proxies you configure via the new `f12_doi_trusted_proxies` filter — this prevents spoofing the opt-in rate limiter and the stored GDPR consent IP.
+* Fix: the form-URL email placeholder is URL-escaped.
+* Maintenance: removed leftover debug logging, added ABSPATH guards to directly-reachable files, and corrected a text domain (wordpress.org compliance).
+
+= 5.1.4 =
+
+* Maintenance: internal refactor and packaging cleanup. (Automatic updates for the paid Pro bundle and addon plugins are handled by the Pro bundle plugin, not the free Core plugin.)
+
+= 5.1.2 =
+
+**Email Template Editor fixes:**
+
+* Fix: Centered (and right-aligned) text now keeps its alignment in the actual and test emails. The generator wraps text and footer content in a `<div>` instead of a `<p>`, so alignment survives multi-line rich-text content (a block-level tag inside a `<p>` is invalid HTML and email clients dropped the alignment).
+* Fix: The builder no longer shows two "Save" buttons — removed a deprecated legacy editor-bundle enqueue that could mount the editor twice, and hardened the mount path against double-mounting.
+* New: The Social Icons block now has an editable settings panel (network + URL per icon, add/remove, plus icon size, spacing, alignment, and padding).
+
+= 5.1.1 =
+
+* Improved: Admin menu label renamed from "DOI Admin" to "Double Opt-In".
+* Improved: Bundle-only licensing polish on the Addons page — a single "Upgrade to Pro" bundle CTA replaces per-addon purchase links, and gated pages no longer show per-module "license required" states (one key unlocks every included module).
+* Maintenance: Excluded a stray TypeScript build-cache file from the distributed plugin.
+* Maintenance: WordPress compatibility updated to 7.0 ("Tested up to").
+
+= 5.1.0 =
+
+**Form Completeness Gate:**
+
+* New: Per-form completeness check — a form must have all its required fields (recipient field, subject, body, sender address) before Double Opt-In can be enabled. Half-configured forms are now caught at save time and at the toggle endpoint instead of silently dropping opt-ins at runtime.
+* New: `getMissingRequiredFields()` on the form-settings model returns the list of unconfigured fields and powers the page-level banner + master-toggle lock in the admin UI.
+* New: Forms-list "Incomplete" badge + disabled toggle for incomplete forms, with parity between the React UI and the REST gate.
+* New: Live auto-disable on required-field clear — clearing the recipient field (or any other required input) instantly disables the form in the UI and removes the runtime hook, without waiting for a page reload.
+* New: One-shot upgrade migration that audits every stored form on `admin_init` and disables any that fail the completeness check. Idempotent, runs once per site.
+* New: REST `save` and `toggle` endpoints reject any payload that would leave a form incomplete-but-enabled, with a structured error code the React UI surfaces inline.
+
+**File Lifecycle (GDPR data minimization):**
+
+* New: `f12_doi_optin_pre_delete` cascade hook fires before an opt-in is removed, allowing addons to delete their own per-submission artefacts (uploaded files, third-party form-plugin entries).
+* New: `FileStorage` service + template-method base for file hand-off — CF7, Avada, Elementor, Gravity Forms, and WPForms now all delete uploaded files when the parent opt-in is deleted or expires.
+* New: CF7 post-mail file-cleanup hook removes attachments from the temporary store as soon as the confirmation mail leaves the system.
+* New: Reset-feature integration with the file-lifecycle so a manual reset cleans up attached files alongside the opt-in row.
+* Improved: WP_DEBUG-gated reset-confirmation endpoint + admin button for developer-only re-testing of the confirmation pipeline.
+
+**Form Settings UX:**
+
+* New: Page-level completeness banner with a sticky warning marker until all required fields are filled.
+* Improved: General tab — relabelled fields, clearer helper text, required-field markers, page-section descriptions.
+* Improved: Email tab — relabelled fields, clearer helper text, required markers, recipient-field stale-flag (recipient was set but the field no longer exists on the form).
+* Improved: Mapping tab — expanded description with auto-detect hint, surfacing the symmetric `f12_doi_settings_dto_from_array` / `f12_doi_settings_dto_sanitize` filter pair so addons can round-trip arbitrary keys cleanly.
+* Improved: Forms-tabs polish + addon-settings routing — `/addon-settings/<id>` is now the canonical mount point for Pro and free addons.
+* Fix: Removed the fake header Save button that lied to users — only the per-tab Save action persists settings.
+* Fix: AdminLayout no longer reverts `enabled=true` when a save is rejected by the completeness gate; the gate marker stays sticky until the user fixes the underlying problem.
+
+**Addon Platform:**
+
+* New: Marketplace AddonsPage with state-aware CTAs (install / activate / a single "Upgrade to Pro" bundle CTA), plus a registry-driven Features Overview card on the dashboard.
+* New: Per-addon feature toggle pages, decoupled from plugin activation — a feature can be installed but disabled without uninstalling.
+* New: Addons self-contribute sidebar entries via a manifest, replacing the old hard-coded core sidebar.
+* New: Per-addon mount points on Form Settings → Pro Features (e.g. unique-email, conditional, user-registration self-render their per-form panel).
+* Improved: Bundle-only licensing — every paid module is unlocked by the one Pro bundle license, so ProGate/AddonGate show either install guidance or a single bundle-activation CTA, with no per-addon purchase links or per-module license states.
+
+**REST API:**
+
+* New: `POST /f12-doi/v1/optout/page/generate` — idempotently creates the Opt-Out landing page with both shortcodes, returns 409 with an edit link on title collision.
+* New: `GET /f12-doi/v1/consent-export/history?limit=N` — recent audit-runs for the consent-export "Recent exports" card.
+* New: `GET /f12-doi/v1/consent-export/stream-info` — live hint-counts: how many records this stream has exported already and when the last run was.
+* New: `DELETE /f12-doi/v1/consent-export/history` and `DELETE /f12-doi/v1/consent-export/history/<id>` — bulk and per-run audit deletion.
+
+**Bug Fixes:**
+
+* Fix: `consent_text` snapshot was lost when the runtime migrated from the legacy `OptInFrontend` to `AbstractFormIntegration`. Opt-in records since then displayed "Not recorded" instead of the actual configured consent text. The new `buildOptInProperties()` shared base now captures it (and the new `consent_field`) on every opt-in.
+* Fix: Legacy frontend `FormData` proxy now resolves `getFormType` correctly so consent-field plumbing works on CF7.
+* Fix: Elementor `form_fields` are unwrapped in placeholder substitution — `[doi_email]` and friends now resolve in confirmation mails on Elementor forms regardless of nesting.
+* Fix: Confirmation and error redirect pages now resolve at runtime via the page-resolver, not at save time, so renames stay in sync.
+* Fix: `href="#"` in legacy templates no longer breaks the confirmation link in inline-styled mails.
+* Fix: Table doesn't exist error for `f12_cf7_doubleoptin_categories` on manual file upload — both custom tables now verify on every update cycle.
+
+**Architecture:**
+
+* New: Migration registry — addons register schema migrations; Core applies pending ones on `admin_init`.
+* New: Symmetric `f12_doi_settings_dto_from_array` / `f12_doi_settings_dto_sanitize` filter pair — addons can round-trip arbitrary keys through the form settings DTO without monkey-patching the model.
+* Improved: Plugin is now part of a monorepo; build pipeline produces one ZIP per package; PHPUnit gate aborts the build on red tests.
+* Improved: Test count Core: 655 → 1712 unit tests across the monorepo, all green.
+
+= 5.0.0 =
+
+**Breaking change: plugin family restructured into Core + paid addons.**
+
+* Breaking: Avada Forms integration removed from Core. Available as a separate paid addon (`double-opt-in-avada`). Existing free-plugin users with DOI configured on Avada forms get a free permanent grandfather license via a one-click claim button in admin.
+* Breaking: PHP minimum lowered from 8.0 to 7.4 to align with WordPress's supported PHP versions.
+* New: Addon API stabilised and covered by semver (`F12_DOI_CORE_API_VERSION` = 4.3.0). See `docs/addon-api.md`.
+* New: Addon license registry (`AddonLicenseRegistryInterface`) — license providers (Pro bundle, standalone keys) grant entitlements; addons check `isLicensed()`.
+* New: Migration registry (`MigrationRegistry`) — addons register schema migrations; Core applies pending ones on admin_init.
+* New: GDPR Art. 7 consent-acceptance evidence chain. Form Settings → General now exposes a "Consent acceptance field" dropdown; on every opt-in Core captures the consent text, the acceptance field name, and the user-acknowledged value. The opt-in detail view shows a proper Consent Evidence card.
+* New: Form Settings → Pro Features tab is now contributed by addons (unique-email, conditional, user-registration, …) via the `forms.pro-features` mount point. With no Pro addon active, the tab disappears entirely instead of rendering an empty panel.
+* New: Dashboard widgets are now contributed via the `dashboard.widget` mount point. With the Analytics addon active, Top Forms / Activity / Conversion Rate cards appear; without it, the base dashboard shows totals + recent opt-ins only.
+* Fix: `fieldMapping` save bug — placeholder mappings configured under Form Settings → Mapping were captured by the React form but silently dropped before persistence. Now correctly round-trips through the new symmetric `f12_doi_settings_dto_from_array` / `f12_doi_settings_dto_sanitize` filter pair.
+* Fix: `consent_text` snapshot was lost when the runtime migrated from the legacy `OptInFrontend` to `AbstractFormIntegration` — opt-in records since then displayed "Not recorded" instead of the actual configured consent text. The new `buildOptInProperties()` shared base captures it (and the new `consent_field`) on every opt-in.
+* Fix: Tailwind utilities now reliably beat WP-admin's unlayered tag-level CSS inside the SPA (added `important: '#doi-admin-root'` config + Radix Portal container so popovers stay styled).
+* Improved: All public interfaces tagged `@api`; implementation details tagged `@internal`. Deprecation policy: 1 minor release of warning before removal.
+* Improved: Plugin is now part of a monorepo; build pipeline produces one ZIP per package.
+* Improved: PHPUnit gate in the build pipeline — red unit tests now abort the build. Total Core test count: 466 → 655 (+189).
+
+= 3.7.2 =
+
+**Bug Fixes:**
+
+* Fix: Fixed all form field placeholders (`[doi_email]`, `[doi_name]`, `[doi_phone]`, etc.) not being replaced in confirmation emails for Avada forms. The Avada integration stores opt-in content in a nested structure (`{data: {...}, field_labels: {...}}`), but the placeholder replacement expected a flat field array. The nested `data` key is now extracted correctly before replacement.
+* Fix: Applied the same nested content handling to the legacy `OptInFrontend::addPlaceholders()` code path.
+* Fix: Added missing `[doubleoptin_privacy_url]` system placeholder to the new `AbstractFormIntegration::addSystemPlaceholders()` method. This placeholder was available in the legacy code but was not ported to the 4.0.0 integration architecture, causing it to appear unreplaced in emails.
+* Fix: Fixed the admin opt-in detail view displaying Avada metadata keys (`data`, `field_labels`, `field_types`, etc.) instead of actual form field values. The nested content structure is now unwrapped before rendering.
+* Fix: Fixed the AJAX opt-in detail modal showing the same incorrect metadata for Avada opt-ins.
+
+= 3.7.1 =
+
+**Bug Fixes:**
+
+* Fix: Fixed the toggle switch in the admin form list showing an incorrect state for forms with custom conditions. The `getForms()` method used the runtime `isOptInEnabled()` check (which evaluates `$_GET['optin']` and `$_POST` condition fields) instead of reading the stored database value. This caused the toggle to display as "off" even when DOI was enabled, and clicking "enable" would actually disable it.
+* Fix: Fixed Avada forms ignoring Double Opt-In settings entirely. The conditions check in `isOptInEnabled()` looked for form field values in `$_POST[$condition]`, but Avada sends form data inside `$_POST['formData']` as a URL-encoded string. The `AvadaIntegration` now overrides `isOptInEnabled()` to parse Avada's POST format correctly.
+* Fix: Fixed Avada forms showing "No valid email address was found" error on submission. `AvadaIntegration::resolveRecipient()` did not strip square brackets from the recipient field name (e.g. `[email]` → `email`), so the field was never matched in the form data. Now uses the same bracket-stripping logic as `CF7Integration`.
+
+**Announcements:**
+
+* Notice: Starting with version 3.8.0, Avada Forms integration will move to the Pro version. Contact Form 7 support remains free.
+* New: Dismissible admin notice for sites with active Avada/Fusion Builder, informing about the upcoming change.
+* New: Yellow info banner on the Forms management page in the Avada section.
+* New: Plugin update message warning when Avada is active.
+
+= 3.7.0 =
+
+**Bug Fixes:**
+
+* Fix: Fixed `.doi-table` not using full width on admin pages due to conflicting CSS rules. Table width now uses `!important` to ensure consistent layout.
+
+**Compatibility:**
+
+* Updated: Full compatibility with Pro version 3.7.0 and its new license management system.
+
+= 3.6.0 =
+
+**Architecture:**
+
+* Moved: Consent export (CSV/JSON) is now a Pro-only feature. The `ConsentExportController` and `ConsentExportService` have been removed from the free plugin and moved to the Pro plugin.
+* Security: The `doi_export_consent` AJAX endpoint is no longer registered in the free plugin, preventing unauthorized access without a Pro license.
+* New: Added `f12_doi_database_page_after_forms` action hook on the Database admin page, allowing extensions to render additional UI after the built-in database management forms.
+
+= 3.5.0 =
+
+**Bug Fixes:**
+
+* Fix: Fixed confirmation mail not being sent after opt-in verification for forms using Quiz fields (`[quiz]`), Acceptance checkboxes (`[acceptance]`), or other validated field types. CF7 re-ran all form validations when creating a `WPCF7_Submission` instance during confirmation, which failed because quiz answers and checkbox states are not available in a GET request context. Validation is now bypassed during confirmation mail delivery.
+* Fix: Applied the same validation bypass to the legacy `CF7Frontend::sendDefaultMail()` code path, which had the same issue.
+
+**Improvements:**
+
+* Improved: `beforeSendConfirmationMail()` now disables CF7 field validation (`wpcf7_validate`), spam detection (`wpcf7_spam`), and spam check (`wpcf7_skip_spam_check`) in addition to the existing CAPTCHA bypasses. All filters are properly restored in `afterSendConfirmationMail()`.
+
+= 3.4.0 =
+
+**Bug Fixes:**
+
+* Fix: Fixed translation loading too early warning on WordPress 6.7+ (`_load_textdomain_just_in_time` notice).
+* Fix: Fixed review notice never displaying due to namespace resolution issue.
+* Fix: Fixed Free and Pro plugin constant/function redeclaration conflicts when both plugins are active simultaneously.
+* Fix: Fixed TestEmailBlocker fatal error in distribution builds where test dependencies are not included.
+* Fix: Fixed Pro upgrade prompt ("Pro Feature", "The '{block}' block requires the Pro version.") displaying in English instead of the active language.
+* Fix: Fixed database "table doesn't exist" error for `f12_cf7_doubleoptin_categories` when plugin files are uploaded manually or the database is restored without custom tables.
+
+**Improvements:**
+
+* Improved: Added 133+ missing German translations covering the Email Editor, Placeholder Mapping, Email Template Post Type, Email Presets, and Pro upgrade prompts.
+* Improved: Added formal German (Sie) translations for all new strings.
+* Improved: Database table existence safety net -- both custom tables are now verified and recreated on every update cycle, independent of the activation hook.
+* Improved: Updated "Upgrade to Pro" links to point to the correct product page.
+
+= 3.3.0 =
+
+**New Features:**
+
+* New: Delete confirmation modal -- clicking "Delete DOI" now opens a confirmation dialog to prevent accidental deletion. Dismissible via Cancel, overlay click, or Escape key.
+* New: GDPR consent record export -- export individual opt-in records as JSON or CSV directly from the opt-in detail view.
+* New: Admin tooltips -- contextual help tooltips with descriptions throughout the admin interface.
+* New: Error redirect page -- configure a per-form redirect page for opt-in errors (rate limit, invalid email, etc.).
+* New: hCaptcha compatibility -- hCaptcha validation is now automatically bypassed during opt-in confirmation mail delivery, alongside Forge12 Captcha and Google reCAPTCHA.
+
+**New Features (Pro):**
+
+* New: Unique Email – Redirect behavior. When a duplicate email is detected, users can now be redirected to a configurable WordPress page instead of just seeing an error or silent rejection.
+* New: Dedicated Redirect Page selector in the Unique Email settings (per-form). Only visible when behavior is set to "Redirect to page".
+* New: `UNIQUE_EMAIL_DUPLICATE` error code for distinguishing duplicate email rejections from other validation errors (e.g. MX check).
+
+**Bug Fixes:**
+
+* Fix: Success and error messages (e.g. "Opt-In deleted") are now rendered as styled alerts instead of plain text.
+* Fix: Fixed a typo in `OptInFrontend::afterSendDefaultMail()` that prevented Google reCAPTCHA from being re-enabled after opt-in confirmation mail delivery (`wpcf7_recaptcha_verifiy_response` → `wpcf7_recaptcha_verify_response`).
+* Fix: Silent mode for Unique Email no longer shows the raw string `unique_email_rejected` in the toast notification. It now displays a properly translated message.
+* Fix: CF7 no longer sends its default success mail when a duplicate email is detected. The original mail is now correctly blocked via `wpcf7_skip_mail`.
+* Fix: CF7 now shows an inline error message (instead of the success message) when Unique Email rejects a submission in block or redirect mode.
+* Fix: WPForms and Gravity Forms no longer display a contradictory success confirmation when a validation error occurs. The confirmation message is automatically hidden and replaced by the error toast or redirect.
+* Fix: Elementor Forms now correctly validate unique emails. The `f12_cf7_doubleoptin_validate_recipient` filter was not called in the legacy `OptInFrontend::maybeCreateOptIn()` path used by Elementor, so duplicate emails were never detected.
+* Fix: Elementor success messages are now hidden when a validation error (block/redirect) occurs, preventing contradictory success and error messages.
+* Fix: Error notification AJAX polling no longer loops infinitely. The internal `doi_check_submission_error` request was intercepted by its own XHR hook, causing a continuous polling cycle every ~800ms.
+
+**Improvements:**
+
+* Improved: Updated translations (German, German formal, French, English).
+* Improved: CAPTCHA bypass now covers Forge12 Captcha, Google reCAPTCHA, and hCaptcha across all three bypass layers (SpamMechanics, AbstractFormIntegration, OptInFrontend).
+* Improved: ErrorNotification system now stores a `hide_confirmation` flag based on the validation error behavior (block/redirect vs. silent). The frontend uses this to hide form-plugin success messages when an error should be visible.
+* Improved: Error handling in CF7 integration prevents mail sending for all rejection modes (block, silent, redirect).
+* Improved: `OptInFrontend::maybeCreateOptIn()` now calls the `f12_cf7_doubleoptin_validate_recipient` filter, enabling MX validation, domain blocklist, and unique email checks for all legacy form integrations (Elementor).
+
+**Testing:**
+
+* New: Unit tests for SpamMechanics (10 tests) -- verifies CAPTCHA bypass for Forge12 Captcha, Google reCAPTCHA, and hCaptcha, including guard conditions (no hash, invalid hash, already confirmed).
+* New: E2E tests for delete confirmation modal (7 tests) -- verifies modal open/close behavior (Cancel, overlay click, Escape), re-open, correct delete URL, and red button styling.
+
+= 3.2.4 =
+
+**New Features:**
+
+* New: Universal Error Notification System – displays a toast notification to the user when an OptIn error occurs (rate limit, invalid email, etc.), independent of the form plugin used.
+* New: Error Redirect Page – configure a per-form redirect page for OptIn errors. When set, users are redirected to the selected page instead of seeing a toast notification. The error code is appended as a query parameter (`?doi_error=rate_limit_ip`) for context-specific content.
+* New: OptInError value object for typed, translatable error codes across all integrations.
+
+**Improvements:**
+
+* Improved: Error handling in all form integrations now uses the centralized OptInError and ErrorNotification system.
+* Improved: Frontend error detection covers Contact Form 7, WPForms, Gravity Forms, Avada, Elementor, and generic AJAX/form submissions.
+
+= 3.2.3 =
+
+**Bug Fixes:**
+
+* Fix: Fixed broken toggle switches on the settings page. Clicking the toggle button or its label text now correctly toggles the value.
+* Fix: Removed stale `<label class="toggle-label">` elements that were rendered as duplicate toggle buttons due to WordPress admin CSS.
+* Fix: Removed non-functional `<label class="overlay">` elements (leftover from an older CSS-only toggle pattern).
+* Fix: Replaced incorrect `esc_attr_e()` with `echo esc_attr()` for HTML `for` attribute values in the telemetry toggle.
+
+**Improvements:**
+
+* Improved: The entire toggle row (button + description text) is now clickable, not just the small toggle button.
+* Improved: Added CSS for `.f12-checkbox-toggle` for proper flex layout of toggle components.
+
+= 3.2.2 =
+
+**Bug Fixes:**
+
+* Fix: Fixed double-firing of the `f12_cf7_doubleoptin_after_confirm` hook. The hook was triggered twice per confirmation (once by the EventDispatcher bridge and once manually). It now fires exactly once with the original `($hash, $optIn)` parameters.
+
+**Developer Features:**
+
+* New: Added `getFormData()` method to `OptInConfirmedEvent`, providing direct access to submitted form field data via the typed event system.
+* New: Added `shouldBridgeToWordPress()` to the Event base class, allowing individual events to opt out of automatic WordPress hook bridging to prevent duplicate hook calls.
+* New: Added comprehensive developer documentation (`docs/hooks-and-events.md`) with complete reference for all 18 action hooks, 23 filters, and 11 typed events.
+
+**Improvements:**
+
+* Improved: Updated hook usage hints in the admin panel with both legacy and event-based code examples.
+
+= 3.2.1 =
+
+**Bug Fixes:**
+
+* Fix: Fixed a fatal error (TypeError) when opening the Double Opt-In panel on a new, unsaved Contact Form 7 form.
+
+**Improvements:**
+
+* Improved: Added a notice in the CF7 Double Opt-In tab prompting users to save the form before configuring Double Opt-In.
+
+= 3.2.0 =
+
+**Email Template Editor:**
+
+* New: Visual drag & drop email template editor with block-based design.
+* New: Pre-built email template presets (Blank, Dark Professional, Yellow Bold, Minimal Clean, Opt-Out Confirmation).
+* New: Placeholder library with all available form fields and system variables.
+* New: Opt-out email template support in the editor.
+* New: Send test email functionality to preview emails before going live.
+* New: Mobile preview mode to check responsive email design.
+* New: Rich text editing with formatting options (bold, italic, links, lists).
+* New: Block registry for extensible template components (Pro: multi-column, images, social icons).
+
+**Form Management:**
+
+* New: Centralized form settings management panel for all form integrations (CF7, Avada, Elementor).
+* New: Resend confirmation email directly from the admin dashboard.
+* New: Unified settings interface across all supported form plugins.
+* New: Field mapping system for connecting form fields to email placeholders.
+
+**WordPress & Multisite:**
+
+* New: Full WordPress Multisite support -- network-wide activation creates database tables on all existing sites.
+* New: Automatic table creation for new sites added to the network (via `wp_initialize_site` hook).
+
+**GDPR & Security:**
+
+* New: GDPR-compliant anonymization of personal data instead of deletion.
+* New: Rate limiting for form submissions to prevent abuse (configurable per IP and per email).
+* New: Consent text snapshot stored per opt-in record for audit trail.
+* New: Consent export (CSV) for GDPR compliance.
+* New: WordPress Privacy Tools integration (personal data export & erasure requests).
+* New: Configurable token expiry settings (default: 48 hours).
+* New: Configurable data retention settings for confirmed and unconfirmed entries.
+* Security: Fixed potential XSS vulnerabilities in admin screens.
+* Security: Improved input sanitization throughout the plugin.
+
+**Architecture & Performance:**
+
+* New: Event-driven architecture with 11 typed events for form submissions and opt-in lifecycle.
+* New: Service container with dependency injection for improved extensibility.
+* New: `WordPressHookBridge` for backward compatibility between legacy hooks and typed events.
+* New: Form integration registry for pluggable form builder support.
+* New: REST API for email template management (`/wp-json/f12-doi/v1/email-templates`).
+* Improved: CSS extracted to external files for better caching.
+* Improved: Code refactored to PSR-4 autoloading with modern PHP architecture.
+
+**Bug Fixes & Improvements:**
+
+* Fix: Fixed double mail sending issue on CF7 and Avada forms.
+* Fix: Fixed email button URLs being incorrectly escaped when using placeholders.
+* Improved: Refactored CF7 and Avada form integration architecture.
+* Improved: Redesigned admin dashboard with dedicated opt-in management views.
+* Improved: Updated translations (German).
+
+= 3.1.1 =
+
+* Improved: Enhanced compatibility with major CAPTCHA plugins to ensure smoother user verification.
+
+= 3.1.0 =
+
+* New: Added optional anonymous telemetry (opt-out) to improve plugin performance and usability.
+* Privacy: Documented all telemetry fields collected.
+* Improved: Minor optimizations for compatibility and maintainability.
+* Change: Removed frontend support link injection for improved transparency and compliance with WordPress guidelines.
+* Improved: Branding is now shown only in the plugin settings (admin area).
+
+= 3.0.72 =
+
+* Improved: Increased compatibility between Free and Pro version.
+* Improved: Added support for Avada 7.12.2.
+
+= 3.0.70 =
+
+* Fixed: Fixed a bug stopping the CF7 forms to attach uploaded files after opt-in confirmation.
+
+= 3.0.62 =
+
+* New: Added hook `f12_cf7_doubleoptin_skip_option` to allow skipping opt-ins if required.
+
+= 3.0.60 =
+
+* Fix: Fixed a bug causing Elementor to stop sending opt-in mails.
+
+= 3.0.51 =
+
+* New: Avada Opt-In now leverages the Notification System for handling emails. The "Send to Email" action remains supported.
+
+= 3.0.50 =
+
+* New: Added Avada Forms integration.
+* Improved: Reworked admin UI for better usability.
+
+= 3.0.0 =
+
+* New: Complete rewrite of the plugin core.
+* New: Category system for organizing opt-in records.
+* New: Improved admin dashboard with pagination and search.
+* New: Custom confirmation page redirects.
+* New: Dynamic conditions for enabling opt-in per form.
+* Improved: Database schema with additional tracking fields.
+
+= 2.0.0 =
+
+* New: Support for custom email templates.
+* New: IP address logging for registration and confirmation.
+* Improved: Opt-in record management in the admin dashboard.
+
+= 1.0.0 =
+
+* Initial release.
+* Double Opt-In for Contact Form 7.
+* Basic confirmation email customization.
