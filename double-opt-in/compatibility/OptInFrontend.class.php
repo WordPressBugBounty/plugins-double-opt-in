@@ -495,28 +495,19 @@ abstract class OptInFrontend {
 		$formData = maybe_unserialize( $OptIn->get_content() );
 		if ( is_array( $formData ) ) {
 			// Per-integration nesting unwrap. The serialized OptIn content
-			// is whatever each frontend stored, which differs by integration:
-			//   - Avada wraps submitted values under `data` (plus
-			//     `field_labels`, `field_types`, ... siblings).
-			//   - Elementor stores the original $_POST parameter dict; the
-			//     actual form-field values live under `form_fields`
-			//     (or `fields` on older Elementor Pro versions — see
-			//     ElementorFrontend Z. 315 for the same key fallback).
-			//   - CF7 / GF / WPForms write the field values flat at the
-			//     top level, so no unwrap needed.
+			// is whatever each frontend stored, and that differs by
+			// integration — see SubmittedContent for the table.
 			// Without this, PlaceholderMapper::replacePlaceholders looks
 			// for `$formData[$mappedField]` at the top level and finds
 			// nothing for Elementor — every `[doi_*]` placeholder renders
 			// as an empty string in the confirmation mail.
-			if ( isset( $formData['form_fields'] ) && is_array( $formData['form_fields'] ) ) {
-				$fieldData = $formData['form_fields'];
-			} elseif ( isset( $formData['fields'] ) && is_array( $formData['fields'] ) ) {
-				$fieldData = $formData['fields'];
-			} elseif ( isset( $formData['data'] ) && is_array( $formData['data'] ) ) {
-				$fieldData = $formData['data'];
-			} else {
-				$fieldData = $formData;
-			}
+			//
+			// The chain used to be spelled out here. It now lives in
+			// SubmittedContent because the audit reader needs the same
+			// knowledge, and the copy it had was one shape short — every
+			// Elementor opt-in reported its consent checkbox as unticked
+			// (customer report 2026-08-27).
+			$fieldData = \Forge12\DoubleOptIn\Integration\SubmittedContent::unwrapFields( $formData );
 
 			$body = PlaceholderMapper::replacePlaceholders(
 				$body,
@@ -530,9 +521,7 @@ abstract class OptInFrontend {
 				'plugin'           => 'double-opt-in',
 				'form_id'          => $OptIn->get_cf_form_id(),
 				'field_data_keys'  => array_keys( $fieldData ),
-				'unwrapped_from'   => isset( $formData['form_fields'] ) ? 'form_fields'
-					: ( isset( $formData['fields'] ) ? 'fields'
-					: ( isset( $formData['data'] ) ? 'data' : 'top-level' ) ),
+				'unwrapped_from'   => \Forge12\DoubleOptIn\Integration\SubmittedContent::describeShape( $formData ),
 			] );
 		}
 

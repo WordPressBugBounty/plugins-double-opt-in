@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit6611bf15f27dde15388ef5491537f8b8
+class ComposerStaticInitd983b20e9cb113a4a1e664a1e43033b6
 {
     public static $prefixLengthsPsr4 = array (
         'F' => 
@@ -81,6 +81,7 @@ class ComposerStaticInit6611bf15f27dde15388ef5491537f8b8
         'Forge12\\DoubleOptIn\\Integration\\FormIntegrationInterface' => __DIR__ . '/../..' . '/src/Integration/FormIntegrationInterface.php',
         'Forge12\\DoubleOptIn\\Integration\\FormIntegrationRegistry' => __DIR__ . '/../..' . '/src/Integration/FormIntegrationRegistry.php',
         'Forge12\\DoubleOptIn\\Integration\\OptInError' => __DIR__ . '/../..' . '/src/Integration/OptInError.php',
+        'Forge12\\DoubleOptIn\\Integration\\SubmittedContent' => __DIR__ . '/../..' . '/src/Integration/SubmittedContent.php',
         'Forge12\\DoubleOptIn\\Licensing\\AddonLicenseRegistry' => __DIR__ . '/../..' . '/src/Licensing/AddonLicenseRegistry.php',
         'Forge12\\DoubleOptIn\\Licensing\\AddonLicenseRegistryInterface' => __DIR__ . '/../..' . '/src/Licensing/AddonLicenseRegistryInterface.php',
         'Forge12\\DoubleOptIn\\Migration\\AvadaDeprecationNotice' => __DIR__ . '/../..' . '/src/Migration/AvadaDeprecationNotice.php',
@@ -112,9 +113,9 @@ class ComposerStaticInit6611bf15f27dde15388ef5491537f8b8
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit6611bf15f27dde15388ef5491537f8b8::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit6611bf15f27dde15388ef5491537f8b8::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit6611bf15f27dde15388ef5491537f8b8::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitd983b20e9cb113a4a1e664a1e43033b6::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitd983b20e9cb113a4a1e664a1e43033b6::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInitd983b20e9cb113a4a1e664a1e43033b6::$classMap;
 
         }, null, ClassLoader::class);
     }

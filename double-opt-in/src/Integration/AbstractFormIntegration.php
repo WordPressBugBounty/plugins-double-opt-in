@@ -464,6 +464,23 @@ abstract class AbstractFormIntegration implements FormIntegrationInterface {
 			return null;
 		}
 
+		// Reconcile the configured name with what the form actually
+		// submitted. Settings saved before 5.3.2 ran through
+		// sanitize_key(), which lowercased them — a CF7 field named
+		// `Datenschutz` was stored as `datenschutz`, was never found
+		// here, and the gate then rejected EVERY submission with
+		// "consent not given" (customer report 2026-08-27).
+		//
+		// An exact match always wins, so a form carrying both spellings
+		// still resolves to the one the admin configured. When nothing
+		// matches at all the original name is kept and the rejection
+		// below carries it into the log — that case is a genuinely
+		// misconfigured form and has to stay visible.
+		$resolvedField = SubmittedContent::matchFieldName( $consentField, array_keys( $formData->getFields() ) );
+		if ( $resolvedField !== '' ) {
+			$consentField = $resolvedField;
+		}
+
 		$consentValue = $formData->getField( $consentField );
 
 		// Diagnostic — 2026-05-13 user report: WPForms Checkbox field

@@ -135,10 +135,11 @@ class FormSettingsValidator {
 
 		// Consent acknowledgment field — name of the form field that
 		// captures the user's explicit consent (e.g. CF7 [acceptance]).
-		// Stored as a sanitize_key string since it must match a real
-		// form-field name at submit time.
+		// It has to match a real form-field name at submit time, so it
+		// is normalised to what a field name can legally contain — but
+		// NOT lowercased. See sanitizeFieldName().
 		$dto->consentField = isset( $data['consentField'] ) || isset( $data['consent_field'] )
-			? sanitize_key( (string) ( $data['consentField'] ?? $data['consent_field'] ) )
+			? $this->sanitizeFieldName( (string) ( $data['consentField'] ?? $data['consent_field'] ) )
 			: '';
 
 		// Field-mapping (placeholder-tag → form-field-name) for the
@@ -191,6 +192,41 @@ class FormSettingsValidator {
 		);
 
 		return $messages[ $field ] ?? __( 'Required field is missing.', 'double-opt-in' );
+	}
+
+	/**
+	 * Normalise a form-field name the admin picked from a dropdown.
+	 *
+	 * `sanitize_key()` used to do this job and was the wrong tool: it
+	 * lowercases. Form systems do not.
+	 *
+	 * Elementor's field-id control states its own rule as "This field
+	 * allows A-z 0-9 & underscore chars without spaces" — capitals
+	 * included — and a German site names its consent checkbox
+	 * `Datenschutz`. That was stored as `datenschutz`, never matched the
+	 * form's field list again, and the settings page showed "the
+	 * selected acceptance field does not exist on this form" for good,
+	 * because re-picking it from the dropdown lowercased it again
+	 * (customer report 2026-08-27). On integrations that enforce the
+	 * consent gate the same mangling rejected every submission outright.
+	 *
+	 * Same character allow-list as before, plus the column width
+	 * (`consent_field` is `varchar(64)`; a longer value would be
+	 * truncated by MySQL and then never match either). Only the
+	 * lowercasing is gone.
+	 *
+	 * @param string $value Raw field name from the request.
+	 *
+	 * @return string Sanitized field name.
+	 */
+	private function sanitizeFieldName( string $value ): string {
+		$value = preg_replace( '/[^A-Za-z0-9_\-]/', '', trim( $value ) );
+
+		if ( ! is_string( $value ) ) {
+			return '';
+		}
+
+		return substr( $value, 0, 64 );
 	}
 
 	/**

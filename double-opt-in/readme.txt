@@ -5,7 +5,7 @@ Tags: contact form 7, double opt-in, gdpr, email verification
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 5.3.1
+Stable tag: 5.3.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -43,14 +43,13 @@ Out-of-the-box support for **Contact Form 7**. Additional form systems — Avada
 
 = Free Features =
 
-* **Visual Email Editor** -- drag & drop block-based email template editor with live preview and mobile preview
+* **Block-Based Email Templates** -- build your confirmation email from heading, text, button, spacer, divider and placeholder blocks
 * **Double Opt-In for Contact Form 7** -- per-form activation with full CF7 integration
 * **Centralized Form Settings** -- manage all form integrations from a single admin panel
-* **Email Template Presets** -- choose from pre-built templates or create your own
+* **Email Template Presets** -- start from a pre-built template (one saved template on the free version)
 * **Send Test Email** -- preview your confirmation emails before going live
 * **Custom Confirmation Pages** -- redirect users to a specific page after confirmation
 * **Dynamic Conditions** -- enable opt-in based on user input (e.g. only when a checkbox is checked)
-* **Resend Confirmation** -- resend the confirmation email from the admin dashboard
 * **Delete Confirmation Modal** -- safety dialog before deleting an opt-in record to prevent accidental deletion
 * **GDPR Consent Export** -- export individual consent records as JSON or CSV directly from the opt-in detail view
 * **CAPTCHA Compatibility** -- automatically bypasses Forge12 Captcha, Google reCAPTCHA, and hCaptcha during opt-in confirmation to ensure mail delivery
@@ -65,7 +64,7 @@ Out-of-the-box support for **Contact Form 7**. Additional form systems — Avada
 * **Pagination & Search** -- search and filter opt-in records in the admin dashboard
 * **Admin Tooltips** -- contextual help tooltips throughout the admin interface
 * **WordPress Multisite** -- network-wide activation creates tables on all sites automatically
-* **Developer Hooks** -- 18 action hooks, 23 filters, and 11 typed events for full extensibility
+* **Developer Hooks** -- 29 action hooks, 63 filters, and 11 typed events for full extensibility
 
 = Pro Features =
 
@@ -87,6 +86,8 @@ Unlock the full potential of Double Opt-In with the [Pro version](https://www.fo
 
 * **Double Opt-Out System** -- unique opt-out links per submission with confirmation emails
 * **Opt-In Reminder System** -- automatic reminders for unconfirmed opt-ins via cron
+* **Visual Email Editor** -- drag & drop editor with live preview and mobile preview, plus unlimited saved templates
+* **Resend Confirmation** -- resend the confirmation email to a single recipient from the admin dashboard
 * **Conditional Email Templates** -- dynamic content blocks based on form data
 * **Multi-Column Layouts** -- 2-column, 3-column, and sidebar layouts in the email editor
 * **Image & Social Blocks** -- add images and social media icons to your emails
@@ -239,6 +240,12 @@ licensed under the SIL Open Font License 1.1 (see licenses/inter-OFL-1.1.txt).
 
 == Upgrade Notice ==
 
+= 5.3.1 =
+Fixes the opt-out link in your emails. The opt-out page you selected was being discarded when settings were read, so `[doubleoptoutlink]` sent recipients to your front page instead of your consent centre. Unsubscribing still worked, but people never saw their overview. Recommended for everyone, no schema changes.
+
+= 5.3.0 =
+The plugin now checks its own runtime requirements and tells you when one is not met: a missing database table shows up under Tools > Site Health with the cause spelled out, plus an exportable "Double Opt-In" section in Site Health > Info to send along with support requests. Nothing to configure, no schema changes.
+
 = 5.2.0 =
 Adds Support and Feedback links so problems can reach us instead of only reaching the review page, and an optional credit link on the confirmation page -- off unless you switch it on. Also repairs the plugin's own links, which pointed at pages that no longer exist. No schema changes.
 
@@ -311,6 +318,13 @@ New features: Visual email editor, centralized form settings, GDPR anonymization
 Adds optional anonymous telemetry (opt-out). No breaking changes.
 
 == Changelog ==
+
+= 5.3.2 =
+
+* Fix: opt-ins collected through an Elementor form always showed "User acknowledged: no" in the consent audit, even when the visitor had ticked the consent checkbox. Elementor stores its submitted fields differently from the other integrations and the audit view did not know that layout, so it looked in the wrong place. It now reads every integration's layout, and existing records show their acknowledgment correctly without anything having to be re-saved.
+* Fix: the acceptance field you picked for a form was silently converted to lower case when saved. Any form field whose name contains a capital letter — which Elementor explicitly allows, and which is common on German sites ("Datenschutz") — therefore stopped matching, the form settings kept warning that the selected field does not exist, and picking it again changed nothing. Field names are now stored exactly as the form spells them, and a name that was already converted is repaired the next time the form settings are opened.
+* Fix: on the integrations that enforce the consent gate, that same conversion meant the configured checkbox was never found at submit time and every registration was rejected as "consent not given". Those forms accept registrations again.
+* Improved: the warning about a missing acceptance field no longer promises that submissions would be rejected on integrations where the consent gate does not run.
 
 = 5.3.1 =
 

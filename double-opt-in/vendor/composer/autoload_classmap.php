@@ -66,6 +66,7 @@ return array(
     'Forge12\\DoubleOptIn\\Integration\\FormIntegrationInterface' => $baseDir . '/src/Integration/FormIntegrationInterface.php',
     'Forge12\\DoubleOptIn\\Integration\\FormIntegrationRegistry' => $baseDir . '/src/Integration/FormIntegrationRegistry.php',
     'Forge12\\DoubleOptIn\\Integration\\OptInError' => $baseDir . '/src/Integration/OptInError.php',
+    'Forge12\\DoubleOptIn\\Integration\\SubmittedContent' => $baseDir . '/src/Integration/SubmittedContent.php',
     'Forge12\\DoubleOptIn\\Licensing\\AddonLicenseRegistry' => $baseDir . '/src/Licensing/AddonLicenseRegistry.php',
     'Forge12\\DoubleOptIn\\Licensing\\AddonLicenseRegistryInterface' => $baseDir . '/src/Licensing/AddonLicenseRegistryInterface.php',
     'Forge12\\DoubleOptIn\\Migration\\AvadaDeprecationNotice' => $baseDir . '/src/Migration/AvadaDeprecationNotice.php',

@@ -10,6 +10,7 @@ namespace Forge12\DoubleOptIn\FormSettings;
 
 use Forge12\DoubleOptIn\EmailTemplates\EmailTemplateRepository;
 use Forge12\DoubleOptIn\Integration\FormIntegrationRegistry;
+use Forge12\DoubleOptIn\Integration\SubmittedContent;
 use Forge12\Shared\LoggerInterface;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -331,6 +332,40 @@ class FormSettingsService {
 				'name'  => (string) $name,
 				'label' => $label,
 			);
+		}
+
+		// Reconcile the stored consent field with the form's real field
+		// names. Settings written before 5.3.2 went through
+		// sanitize_key(), which lowercased them — so an Elementor
+		// checkbox with the id `Datenschutz` sits in post_meta as
+		// `datenschutz`, matches nothing, and the settings page warns
+		// that the field does not exist. Forever: re-picking it from
+		// the dropdown lowercased it again (customer report 2026-08-27).
+		//
+		// The validator no longer mangles new saves; this repairs the
+		// installations that already have a mangled one. Doing it on
+		// read means an untouched site recovers the moment the page is
+		// opened, and the corrected spelling is what the next save
+		// persists.
+		//
+		// A name that matches NOTHING is left exactly as it is — the
+		// field really was removed from the form, and the red banner
+		// saying so is the correct answer.
+		$storedConsentField = (string) ( $settingsArray['consentField'] ?? '' );
+		if ( $storedConsentField !== '' ) {
+			$canonical = SubmittedContent::matchFieldName( $storedConsentField, array_keys( $fields ) );
+			if ( $canonical !== '' && $canonical !== $storedConsentField ) {
+				$this->logger->info(
+					'Repaired a consent field name that only differed in case',
+					array(
+						'plugin'  => 'double-opt-in',
+						'form_id' => $formId,
+						'stored'  => $storedConsentField,
+						'form'    => $canonical,
+					)
+				);
+				$settingsArray['consentField'] = $canonical;
+			}
 		}
 
 		return array(

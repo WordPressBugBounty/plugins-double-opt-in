@@ -15,6 +15,7 @@ use Forge12\DoubleOptIn\Audit\AuditLogger;
 use Forge12\DoubleOptIn\FormSettings\FormSettingsDTO;
 use Forge12\DoubleOptIn\FormSettings\FormSettingsService;
 use Forge12\DoubleOptIn\FormSettings\FormSettingsValidator;
+use Forge12\DoubleOptIn\Integration\SubmittedContent;
 use Forge12\Shared\LoggerInterface;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -2419,26 +2420,29 @@ class AdminRestController {
 			// Truthy = explicit acknowledgment captured. Falsy = either
 			// gate wasn't enforced or this is a legacy record.
 			//
-			// Storage shape varies per integration:
-			//   - CF7 / WPForms / GF (default path) store fields flat
-			//     at the top level: $content[fieldName] = value.
-			//   - Avada wraps fields under a `data` sub-key alongside
-			//     metadata (field_labels, field_types, form_parameter)
-			//     — its OnSubmit overrides the flat content set by
-			//     createOptIn(). For Avada records, $content[fieldName]
-			//     is undefined; the value lives at $content['data'][fieldName].
+			// Where that value sits differs per integration, and this
+			// reader got the list wrong twice:
 			//
-			// Pre-2026-05-01 we only checked the flat shape, so every
-			// Avada opt-in showed "User acknowledged: ✗ No" even when
-			// the user explicitly checked the GDPR box. The fallback
-			// below recognises the Avada shape too — adding a third
-			// shape would be the next addition.
-			$data['consentAcknowledged'] = ! empty( $data['consentField'] )
-				&& is_array( $content )
-				&& (
-					! empty( $content[ $data['consentField'] ] )
-					|| ! empty( $content['data'][ $data['consentField'] ] ?? null )
-				);
+			//   2026-05-01  Avada wraps its fields under `data`, so the
+			//               flat lookup missed and every Avada opt-in
+			//               showed "User acknowledged: ✗ No" even with
+			//               the GDPR box explicitly checked.
+			//   2026-08-27  Elementor stores the whole $_POST parameter
+			//               dict, so its fields sit under `form_fields`
+			//               — the same symptom, one integration further
+			//               on. The docblock added after the Avada fix
+			//               had predicted exactly this ("adding a third
+			//               shape would be the next addition").
+			//
+			// The shape list now lives in SubmittedContent, shared with
+			// OptInFrontend::addPlaceholders() — the other consumer that
+			// already knew all of them. A fourth integration with a
+			// fourth layout is taught to both at once.
+			//
+			// The lookup also tolerates a consent_field that the
+			// pre-5.3.2 sanitize_key() lowercased, so installations
+			// recover from the update without re-saving every form.
+			$data['consentAcknowledged'] = SubmittedContent::hasValue( $content, (string) $data['consentField'] );
 
 			// Parse mail_optin
 			$mailOptin         = maybe_unserialize( $row['mail_optin'] );
