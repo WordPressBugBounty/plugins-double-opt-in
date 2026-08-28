@@ -13,6 +13,7 @@ use Forge12\DoubleOptIn\Container\Container;
 use Forge12\DoubleOptIn\Health\DatabaseTableHealthCheck;
 use Forge12\DoubleOptIn\Health\HealthCheckRegistry;
 use Forge12\DoubleOptIn\Health\SiteHealthIntegration;
+use Forge12\DoubleOptIn\Health\StaleConsentFieldCheck;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -87,6 +88,12 @@ class HealthServiceProvider implements BootableProviderInterface {
 				$optInsUrl
 			)
 		);
+
+		// Not a table check: this one asks whether the forms' consent
+		// settings still match the forms. A stale acceptance field does
+		// not break anything visibly — it quietly turns every opt-in of
+		// that form into consent evidence nobody ever confirmed.
+		$registry->register( new StaleConsentFieldCheck() );
 
 		( new SiteHealthIntegration( $registry ) )->register();
 	}

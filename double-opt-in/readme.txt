@@ -5,7 +5,7 @@ Tags: contact form 7, double opt-in, gdpr, email verification
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 5.3.2
+Stable tag: 5.4.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -240,6 +240,9 @@ licensed under the SIL Open Font License 1.1 (see licenses/inter-OFL-1.1.txt).
 
 == Upgrade Notice ==
 
+= 5.4.0 =
+Changes how submissions are handled on forms where you selected an acceptance field. That checkbox is now required at submit time on every form system, including those where it was previously only recorded — a submission that does not confirm it is rejected. Forms whose acceptance field no longer exists keep accepting submissions and are reported under Tools > Site Health instead, so a settings mistake cannot take your registrations offline. No schema changes.
+
 = 5.3.1 =
 Fixes the opt-out link in your emails. The opt-out page you selected was being discarded when settings were read, so `[doubleoptoutlink]` sent recipients to your front page instead of your consent centre. Unsubscribing still worked, but people never saw their overview. Recommended for everyone, no schema changes.
 
@@ -318,6 +321,16 @@ New features: Visual email editor, centralized form settings, GDPR anonymization
 Adds optional anonymous telemetry (opt-out). No breaking changes.
 
 == Changelog ==
+
+= 5.4.0 =
+
+**The consent checkbox is now enforced everywhere**
+
+* Fix: a consent checkbox configured for an Elementor form was recorded but never required. The visitor could submit without ticking it, and the opt-in was stored with your consent text as proof of an agreement nobody had given. The same gap applied to Contact Form 7 and Avada forms running through the older compatibility path. Every form system now enforces the checkbox at submit time, and a submission without it is rejected with "You must agree to the consent statement to continue."
+* Change: if the acceptance field you configured is **not on the form any more** — renamed or deleted in your form builder — the submission is no longer rejected. It is accepted, and the mismatch is reported under Tools > Site Health instead. A settings mistake should not take your registrations offline, which is what used to happen: the form silently stopped accepting anyone and nothing said why.
+* New: a Site Health check listing every form whose acceptance field no longer exists, naming the form and the field. Until now nothing pointed this out unless you happened to open that particular form's settings.
+* New: filter `f12_doi_enforce_consent_gate` to switch the rejection off for a single form, and action `f12_doi_consent_field_unknown` to react to the mismatch yourself.
+* Improved: the warning on the form settings tab now says what actually happens — submissions go through, but without provable consent — instead of promising a rejection. It is also translated again; since 5.3.2 that warning had been showing in English on German and French sites.
 
 = 5.3.2 =
 

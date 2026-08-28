@@ -6553,3 +6553,49 @@ msgstr "Opt-in-Kategorien"
 #: src/Health
 msgid "Consent audit log"
 msgstr "Einwilligungs-Audit-Log"
+
+#: packages/core/admin-ui/src/components/forms/GeneralTab.tsx
+msgid "The selected acceptance field \"%s\" does not exist on this form."
+msgstr "Das ausgewählte Zustimmungsfeld \"%s\" existiert auf diesem Formular nicht."
+
+#: packages/core/admin-ui/src/components/forms/GeneralTab.tsx
+msgid "Submissions are still accepted, but they are stored without any provable consent."
+msgstr "Übermittlungen werden weiterhin angenommen, aber ohne nachweisbare Einwilligung gespeichert."
+
+#: packages/core/admin-ui/src/components/forms/GeneralTab.tsx
+msgid "Pick a field that's actually present, or leave the dropdown empty."
+msgstr "Wähle ein tatsächlich vorhandenes Feld aus oder lass das Dropdown leer."
+
+#: packages/core/src/Health/StaleConsentFieldCheck.php
+msgid "Consent acceptance fields"
+msgstr "Zustimmungsfelder"
+
+#: packages/core/src/Health/StaleConsentFieldCheck.php
+msgid "Every configured acceptance field exists"
+msgstr "Jedes konfigurierte Zustimmungsfeld existiert"
+
+#: packages/core/src/Health/StaleConsentFieldCheck.php
+msgid "Each form that requires a consent checkbox points at a field that is actually on the form, so the stored consent is backed by a confirmation."
+msgstr "Jedes Formular mit Zustimmungspflicht verweist auf ein Feld, das tatsächlich auf dem Formular liegt — die gespeicherte Einwilligung ist damit durch eine Bestätigung gedeckt."
+
+#: packages/core/src/Health/StaleConsentFieldCheck.php
+msgid "“%1$s” (field “%2$s”)"
+msgstr "„%1$s“ (Feld „%2$s“)"
+
+#: packages/core/src/Health/StaleConsentFieldCheck.php
+msgid "%1$s and %2$d more"
+msgstr "%1$s und %2$d weitere"
+
+#: packages/core/src/Health/StaleConsentFieldCheck.php
+msgid "%d form has an acceptance field that no longer exists"
+msgid_plural "%d forms have an acceptance field that no longer exists"
+msgstr[0] "%d Formular hat ein Zustimmungsfeld, das es nicht mehr gibt"
+msgstr[1] "%d Formulare haben ein Zustimmungsfeld, das es nicht mehr gibt"
+
+#: packages/core/src/Health/StaleConsentFieldCheck.php
+msgid "These forms store a consent text as proof, but the field the visitor was supposed to tick is not on the form: %s. Submissions are still accepted — a settings mistake must not take your registrations offline — but the stored consent is not provable. Pick a field that exists, or clear the setting."
+msgstr "Diese Formulare speichern einen Zustimmungstext als Beleg, aber das Feld, das der Besucher anhaken sollte, liegt nicht auf dem Formular: %s. Anmeldungen werden weiterhin angenommen — ein Einstellungsfehler darf deine Registrierungen nicht lahmlegen —, aber die gespeicherte Einwilligung ist nicht nachweisbar. Wähle ein vorhandenes Feld aus oder leere die Einstellung."
+
+#: packages/core/src/Health/StaleConsentFieldCheck.php
+msgid "Review form settings"
+msgstr "Formular-Einstellungen prüfen"

@@ -19,8 +19,8 @@ msgstr ""
 msgid " (%s total)"
 msgstr ""
 
-#: packages/core/admin-ui/src/components/forms/GeneralTab.tsx:120
-#: packages/core/admin-ui/src/components/forms/GeneralTab.tsx:123
+#: packages/core/admin-ui/src/components/forms/GeneralTab.tsx:122
+#: packages/core/admin-ui/src/components/forms/GeneralTab.tsx:125
 #: packages/core/admin-ui/src/components/forms/MappingTab.tsx:177
 msgid "-- None --"
 msgstr ""
@@ -638,7 +638,7 @@ msgid "Categories"
 msgstr ""
 
 #: packages/core/admin-ui/src/components/addon-settings/ConsentExportSettingsPanel.tsx:555
-#: packages/core/admin-ui/src/components/forms/GeneralTab.tsx:161
+#: packages/core/admin-ui/src/components/forms/GeneralTab.tsx:163
 #: packages/core/admin-ui/src/pages/OptInDetailPage.tsx:302
 #: packages/core/admin-ui/src/pages/OptInDetailPage.tsx:603
 #: packages/core/admin-ui/src/pages/OptInsPage.tsx:180
@@ -667,7 +667,7 @@ msgstr ""
 msgid "Check the Addons page for diagnostic details. A prerequisite (such as a third-party plugin) may be missing."
 msgstr ""
 
-#: packages/core/admin-ui/src/components/forms/GeneralTab.tsx:137
+#: packages/core/admin-ui/src/components/forms/GeneralTab.tsx:139
 msgid "checkbox). Submissions without this field set are rejected — the user must actively confirm. Leave empty for no acknowledgment gate (audit log only, not GDPR-compliant)."
 msgstr ""
 
@@ -724,7 +724,7 @@ msgstr ""
 msgid "Conditional Templates settings saved."
 msgstr ""
 
-#: packages/core/admin-ui/src/components/forms/GeneralTab.tsx:193
+#: packages/core/admin-ui/src/components/forms/GeneralTab.tsx:195
 msgid "Conditional trigger"
 msgstr ""
 
@@ -799,7 +799,7 @@ msgstr ""
 msgid "Confirmation IP"
 msgstr ""
 
-#: packages/core/admin-ui/src/components/forms/GeneralTab.tsx:222
+#: packages/core/admin-ui/src/components/forms/GeneralTab.tsx:224
 msgid "Confirmation page"
 msgstr ""
 
@@ -856,11 +856,11 @@ msgstr ""
 msgid "Connection Status"
 msgstr ""
 
-#: packages/core/admin-ui/src/components/forms/GeneralTab.tsx:90
+#: packages/core/admin-ui/src/components/forms/GeneralTab.tsx:92
 msgid "Consent & categorization"
 msgstr ""
 
-#: packages/core/admin-ui/src/components/forms/GeneralTab.tsx:112
+#: packages/core/admin-ui/src/components/forms/GeneralTab.tsx:114
 msgid "Consent acceptance field"
 msgstr ""
 
@@ -872,11 +872,11 @@ msgstr ""
 msgid "Consent Text"
 msgstr ""
 
-#: packages/core/admin-ui/src/components/forms/GeneralTab.tsx:97
+#: packages/core/admin-ui/src/components/forms/GeneralTab.tsx:99
 msgid "Consent text (GDPR)"
 msgstr ""
 
-#: packages/core/admin-ui/src/components/forms/GeneralTab.tsx:80
+#: packages/core/admin-ui/src/components/forms/GeneralTab.tsx:82
 msgid "Consent text is configured but no acceptance field is set. The text is stored with each opt-in for audit, but the user never has to confirm it — this is not GDPR Art. 7 compliant. Pick an acceptance field below to enable the consent gate."
 msgstr ""
 
@@ -1021,7 +1021,7 @@ msgstr ""
 msgid "Deactivating…"
 msgstr ""
 
-#: packages/core/admin-ui/src/components/forms/GeneralTab.tsx:188
+#: packages/core/admin-ui/src/components/forms/GeneralTab.tsx:190
 msgid "Decide when a submission triggers the opt-in and where the user lands afterwards."
 msgstr ""
 
@@ -1149,7 +1149,7 @@ msgstr ""
 msgid "Diagnostic info"
 msgstr ""
 
-#: packages/core/admin-ui/src/components/forms/GeneralTab.tsx:202
+#: packages/core/admin-ui/src/components/forms/GeneralTab.tsx:204
 #: packages/core/admin-ui/src/pages/FormSettingsPage.tsx:295
 msgid "Disabled"
 msgstr ""
@@ -1376,7 +1376,7 @@ msgstr ""
 msgid "Error — session expired"
 msgstr ""
 
-#: packages/core/admin-ui/src/components/forms/GeneralTab.tsx:244
+#: packages/core/admin-ui/src/components/forms/GeneralTab.tsx:246
 msgid "Error redirect page"
 msgstr ""
 
@@ -1422,10 +1422,6 @@ msgstr ""
 
 #: packages/core/admin-ui/src/components/addon-settings/ConsentExportSettingsPanel.tsx:63
 msgid "Every record — confirmed, unconfirmed, and opted-out."
-msgstr ""
-
-#: packages/core/admin-ui/src/components/forms/GeneralTab.tsx:56
-msgid "Every submission would be rejected."
 msgstr ""
 
 #: packages/core/admin-ui/src/pages/OptOutPage.tsx:1112
@@ -1670,7 +1666,7 @@ msgstr ""
 msgid "Form Data (%s fields)"
 msgstr ""
 
-#: packages/core/admin-ui/src/components/forms/GeneralTab.tsx:137
+#: packages/core/admin-ui/src/components/forms/GeneralTab.tsx:139
 msgid "Form field that captures the user's explicit consent (e.g. a CF7"
 msgstr ""
 
@@ -1752,7 +1748,7 @@ msgstr ""
 msgid "Full event information"
 msgstr ""
 
-#: packages/core/admin-ui/src/components/forms/GeneralTab.tsx:216
+#: packages/core/admin-ui/src/components/forms/GeneralTab.tsx:218
 msgid "Gate the opt-in on a form field. Example: only fire the confirmation mail when the user ticked a \"Subscribe me\" checkbox. Different from the consent acceptance field above — that one is the mandatory GDPR gate, this one is an optional secondary trigger. Set to"
 msgstr ""
 
@@ -1826,7 +1822,7 @@ msgstr ""
 msgid "HTML wrapper for the body."
 msgstr ""
 
-#: packages/core/admin-ui/src/components/forms/GeneralTab.tsx:101
+#: packages/core/admin-ui/src/components/forms/GeneralTab.tsx:103
 msgid "I agree to receive the newsletter..."
 msgstr ""
 
@@ -2429,7 +2425,7 @@ msgstr ""
 msgid "Opted out"
 msgstr ""
 
-#: packages/core/admin-ui/src/components/forms/GeneralTab.tsx:178
+#: packages/core/admin-ui/src/components/forms/GeneralTab.tsx:180
 msgid "Optional grouping for opt-ins in the overview and stats. Useful when several forms feed into different topics (newsletter, contact, etc.)."
 msgstr ""
 
@@ -2527,7 +2523,7 @@ msgstr ""
 msgid "Per-row button to re-activate a cancelled subscription."
 msgstr ""
 
-#: packages/core/admin-ui/src/components/forms/GeneralTab.tsx:73
+#: packages/core/admin-ui/src/components/forms/GeneralTab.tsx:75
 msgid "Pick a field that's actually present, or leave the dropdown empty."
 msgstr ""
 
@@ -2902,7 +2898,7 @@ msgstr ""
 msgid "Select all"
 msgstr ""
 
-#: packages/core/admin-ui/src/components/forms/GeneralTab.tsx:167
+#: packages/core/admin-ui/src/components/forms/GeneralTab.tsx:169
 msgid "Select category"
 msgstr ""
 
@@ -2918,8 +2914,8 @@ msgstr ""
 msgid "Select opt-in %s"
 msgstr ""
 
-#: packages/core/admin-ui/src/components/forms/GeneralTab.tsx:228
-#: packages/core/admin-ui/src/components/forms/GeneralTab.tsx:250
+#: packages/core/admin-ui/src/components/forms/GeneralTab.tsx:230
+#: packages/core/admin-ui/src/components/forms/GeneralTab.tsx:252
 #: packages/core/admin-ui/src/pages/SettingsPage.tsx:233
 msgid "Select page"
 msgstr ""
@@ -3173,12 +3169,12 @@ msgstr ""
 msgid "Subject, template, and the body shown to the user."
 msgstr ""
 
-#: packages/core/admin-ui/src/components/forms/GeneralTab.tsx:186
+#: packages/core/admin-ui/src/components/forms/GeneralTab.tsx:188
 msgid "Submission rules"
 msgstr ""
 
 #: packages/core/admin-ui/src/components/forms/GeneralTab.tsx:57
-msgid "Submissions are stored without any provable consent."
+msgid "Submissions are still accepted, but they are stored without any provable consent."
 msgstr ""
 
 #: packages/core/admin-ui/src/pages/UserCreationPage.tsx:81
@@ -3306,7 +3302,7 @@ msgstr ""
 msgid "The same address may opt into Form A AND Form B."
 msgstr ""
 
-#: packages/core/admin-ui/src/components/forms/GeneralTab.tsx:65
+#: packages/core/admin-ui/src/components/forms/GeneralTab.tsx:67
 msgid "The selected acceptance field \"%s\" does not exist on this form."
 msgstr ""
 
@@ -3322,7 +3318,7 @@ msgstr ""
 msgid "The validator only runs on forms in the list. Each listed form checks for duplicates WITHIN ITSELF — they do not affect each other. Forms not listed are completely ignored."
 msgstr ""
 
-#: packages/core/admin-ui/src/components/forms/GeneralTab.tsx:107
+#: packages/core/admin-ui/src/components/forms/GeneralTab.tsx:109
 msgid "The wording the user is asked to agree to. Stored alongside each opt-in for the GDPR Art. 7 audit trail. Should match the label of the acceptance field below."
 msgstr ""
 
@@ -3383,7 +3379,7 @@ msgstr ""
 msgid "Title"
 msgstr ""
 
-#: packages/core/admin-ui/src/components/forms/GeneralTab.tsx:216
+#: packages/core/admin-ui/src/components/forms/GeneralTab.tsx:218
 msgid "to always fire when the form is submitted."
 msgstr ""
 
@@ -3591,7 +3587,7 @@ msgstr ""
 msgid "Warnings"
 msgstr ""
 
-#: packages/core/admin-ui/src/components/forms/GeneralTab.tsx:92
+#: packages/core/admin-ui/src/components/forms/GeneralTab.tsx:94
 msgid "What gets stored with each opt-in for GDPR audit, and how this form's opt-ins are grouped."
 msgstr ""
 
@@ -3623,11 +3619,11 @@ msgstr ""
 msgid "Where the confirmation email comes from and which form field carries the user's address."
 msgstr ""
 
-#: packages/core/admin-ui/src/components/forms/GeneralTab.tsx:261
+#: packages/core/admin-ui/src/components/forms/GeneralTab.tsx:263
 msgid "Where the user is sent on opt-in errors (invalid email, expired link, etc.). Leave on default to show a toast notification instead of a redirect."
 msgstr ""
 
-#: packages/core/admin-ui/src/components/forms/GeneralTab.tsx:239
+#: packages/core/admin-ui/src/components/forms/GeneralTab.tsx:241
 msgid "Where the user lands after clicking the confirmation link. Leave on default to fall back to the site-wide confirmation page."
 msgstr ""
 

@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitd983b20e9cb113a4a1e664a1e43033b6
+class ComposerStaticInit1d50e62cb279e74e728eae1cf063ffb8
 {
     public static $prefixLengthsPsr4 = array (
         'F' => 
@@ -34,6 +34,7 @@ class ComposerStaticInitd983b20e9cb113a4a1e664a1e43033b6
         'Forge12\\DoubleOptIn\\Admin\\SingleConsentExportController' => __DIR__ . '/../..' . '/src/Admin/SingleConsentExportController.php',
         'Forge12\\DoubleOptIn\\Audit\\AuditLogger' => __DIR__ . '/../..' . '/src/Audit/AuditLogger.php',
         'Forge12\\DoubleOptIn\\Bridge\\WordPressHookBridge' => __DIR__ . '/../..' . '/src/Bridge/WordPressHookBridge.php',
+        'Forge12\\DoubleOptIn\\Consent\\ConsentGate' => __DIR__ . '/../..' . '/src/Consent/ConsentGate.php',
         'Forge12\\DoubleOptIn\\Container\\BootableProviderInterface' => __DIR__ . '/../..' . '/src/Container/BootableProviderInterface.php',
         'Forge12\\DoubleOptIn\\Container\\Container' => __DIR__ . '/../..' . '/src/Container/Container.php',
         'Forge12\\DoubleOptIn\\Container\\ContainerInterface' => __DIR__ . '/../..' . '/src/Container/ContainerInterface.php',
@@ -73,6 +74,7 @@ class ComposerStaticInitd983b20e9cb113a4a1e664a1e43033b6
         'Forge12\\DoubleOptIn\\Health\\HealthCheckRegistry' => __DIR__ . '/../..' . '/src/Health/HealthCheckRegistry.php',
         'Forge12\\DoubleOptIn\\Health\\HealthCheckResult' => __DIR__ . '/../..' . '/src/Health/HealthCheckResult.php',
         'Forge12\\DoubleOptIn\\Health\\SiteHealthIntegration' => __DIR__ . '/../..' . '/src/Health/SiteHealthIntegration.php',
+        'Forge12\\DoubleOptIn\\Health\\StaleConsentFieldCheck' => __DIR__ . '/../..' . '/src/Health/StaleConsentFieldCheck.php',
         'Forge12\\DoubleOptIn\\Integration\\AbstractFormIntegration' => __DIR__ . '/../..' . '/src/Integration/AbstractFormIntegration.php',
         'Forge12\\DoubleOptIn\\Integration\\AdminPanelInterface' => __DIR__ . '/../..' . '/src/Integration/AdminPanelInterface.php',
         'Forge12\\DoubleOptIn\\Integration\\CF7Integration' => __DIR__ . '/../..' . '/src/Integration/CF7Integration.php',
@@ -113,9 +115,9 @@ class ComposerStaticInitd983b20e9cb113a4a1e664a1e43033b6
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitd983b20e9cb113a4a1e664a1e43033b6::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitd983b20e9cb113a4a1e664a1e43033b6::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInitd983b20e9cb113a4a1e664a1e43033b6::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit1d50e62cb279e74e728eae1cf063ffb8::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit1d50e62cb279e74e728eae1cf063ffb8::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit1d50e62cb279e74e728eae1cf063ffb8::$classMap;
 
         }, null, ClassLoader::class);
     }

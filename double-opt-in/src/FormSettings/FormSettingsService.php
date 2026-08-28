@@ -9,6 +9,7 @@
 namespace Forge12\DoubleOptIn\FormSettings;
 
 use Forge12\DoubleOptIn\EmailTemplates\EmailTemplateRepository;
+use Forge12\DoubleOptIn\Health\StaleConsentFieldCheck;
 use Forge12\DoubleOptIn\Integration\FormIntegrationRegistry;
 use Forge12\DoubleOptIn\Integration\SubmittedContent;
 use Forge12\Shared\LoggerInterface;
@@ -144,6 +145,12 @@ class FormSettingsService {
 				'enabled' => $settings->enabled,
 			)
 		);
+
+		// The acceptance-field health check caches its scan for hours.
+		// Someone who just saved these settings very likely did so to fix
+		// what that check reported, and a stale "still broken" would be a
+		// bad answer.
+		StaleConsentFieldCheck::flush();
 
 		return true;
 	}

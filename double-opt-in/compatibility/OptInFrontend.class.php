@@ -3,12 +3,14 @@
 namespace forge12\contactform7\CF7DoubleOptIn;
 
 
+use Forge12\DoubleOptIn\Consent\ConsentGate;
 use Forge12\DoubleOptIn\Container\Container;
 use Forge12\DoubleOptIn\EmailTemplates\PlaceholderMapper;
 use Forge12\DoubleOptIn\EventSystem\EventDispatcherInterface;
 use Forge12\DoubleOptIn\Events\Lifecycle\OptInConfirmedEvent;
 use Forge12\DoubleOptIn\Events\Lifecycle\OptInCreatedEvent;
 use Forge12\DoubleOptIn\Frontend\ErrorNotification;
+use Forge12\DoubleOptIn\Integration\FormIntegrationRegistry;
 use Forge12\DoubleOptIn\Integration\OptInError;
 use Forge12\DoubleOptIn\Service\RateLimiter;
 use Forge12\Shared\Logger;
@@ -769,14 +771,24 @@ abstract class OptInFrontend {
 	/**
 	 * Create the OptIn
 	 *
-	 * @param int    $formId    The identifier of the form
-	 * @param string $formHtml  The HTML code of the form
-	 * @param array  $parameter The Post Parameter of the form.
-	 * @param array  $files     The Files attached to the form.
+	 * @param int    $formId      The identifier of the form
+	 * @param string $formHtml    The HTML code of the form
+	 * @param array  $parameter   The Post Parameter of the form.
+	 * @param array  $files       The Files attached to the form.
+	 * @param array  $knownFields The fields this form declares, `name => label`
+	 *                            or a plain list. Only the consent gate uses
+	 *                            them, to tell an unticked checkbox from a
+	 *                            setting that points at a field which no
+	 *                            longer exists. A shim that knows its form
+	 *                            better than the registry does (Elementor
+	 *                            has the Form_Record in hand) passes them in;
+	 *                            everyone else leaves it empty and
+	 *                            {@see self::resolveKnownFieldNames()} asks
+	 *                            the integration.
 	 *
 	 * @return OptIn|null
 	 */
-	protected function maybeCreateOptIn( int $formId, string $formHtml, array $parameter, array $files = array() ): ?OptIn {
+	protected function maybeCreateOptIn( int $formId, string $formHtml, array $parameter, array $files = array(), array $knownFields = array() ): ?OptIn {
 		$this->get_logger()->debug( 'maybeCreateOptIn called', [
 			'plugin'   => 'double-opt-in',
 			'class'    => __CLASS__,
@@ -826,6 +838,68 @@ abstract class OptInFrontend {
 				$formId
 			);
 			return null;
+		}
+
+		/**
+		 * Consent gate (GDPR Art. 7) — same position in the flow as in
+		 * AbstractFormIntegration::createOptIn(): after the recipient is
+		 * known, before rate limiting.
+		 *
+		 * Until 5.4.0 this path had no gate at all. Everything that does
+		 * not extend AbstractFormIntegration comes through here —
+		 * Elementor, plus the CF7 and Avada legacy shims — so on those
+		 * forms the acceptance checkbox was stored as consent proof
+		 * without ever having been enforced. The banner in the admin UI
+		 * said as much since 5.3.2; this closes it.
+		 *
+		 * ConsentGate::FIELD_UNKNOWN never rejects. See the class for why
+		 * that matters: a stale `consent_field` must not take a site's
+		 * registrations offline.
+		 */
+		$consentSnapshot = $this->loadConsentSnapshot( $formId, $formParameter );
+		$consentField    = $consentSnapshot['field'];
+		$consentGate     = ConsentGate::evaluate(
+			$consentField,
+			$parameter,
+			$this->resolveKnownFieldNames( $formId, $knownFields )
+		);
+
+		if ( $consentGate === ConsentGate::NOT_GIVEN && ! ConsentGate::isEnforced( $formId, $this->type ) ) {
+			$this->get_logger()->warning( 'Consent gate disabled by filter — accepting an unconfirmed submission', [
+				'plugin'        => 'double-opt-in',
+				'form_id'       => $formId,
+				'integration'   => $this->type,
+				'consent_field' => $consentField,
+			] );
+			$consentGate = ConsentGate::PASSED;
+		}
+
+		if ( $consentGate === ConsentGate::NOT_GIVEN ) {
+			$this->get_logger()->info( 'Consent acceptance not given, rejecting OptIn', [
+				'plugin'        => 'double-opt-in',
+				'form_id'       => $formId,
+				'integration'   => $this->type,
+				'consent_field' => $consentField,
+			] );
+			do_action( 'f12_cf7_doubleoptin_consent_not_given', $formId, $consentField );
+			ErrorNotification::store(
+				OptInError::fromCode(
+					OptInError::CONSENT_NOT_GIVEN,
+					[ 'form_id' => $formId, 'consent_field' => $consentField ]
+				),
+				$formId
+			);
+			return null;
+		}
+
+		if ( $consentGate === ConsentGate::FIELD_UNKNOWN ) {
+			$this->get_logger()->warning( 'Consent field is not on this form — opt-in accepted without provable consent', [
+				'plugin'        => 'double-opt-in',
+				'form_id'       => $formId,
+				'integration'   => $this->type,
+				'consent_field' => $consentField,
+			] );
+			do_action( 'f12_doi_consent_field_unknown', $formId, $consentField, $this->type );
 		}
 
 		/**
@@ -935,20 +1009,8 @@ abstract class OptInFrontend {
 		 * both; this legacy path (used by Elementor + the CF7/Avada
 		 * legacy compat shims) used to only carry consent_text.
 		 */
-		$consentText  = '';
-		$consentField = '';
-		try {
-			$container      = \Forge12\DoubleOptIn\Container\Container::getInstance();
-			$settingsService = $container->get( \Forge12\DoubleOptIn\FormSettings\FormSettingsService::class );
-			$formSettings   = $settingsService->getSettings( $formId );
-			$consentText    = $formSettings->consentText ?? '';
-			$consentField   = $formSettings->consentField ?? '';
-		} catch ( \Exception $e ) {
-			$this->get_logger()->debug( 'Could not load consent snapshot from FormSettings', [
-				'plugin' => 'double-opt-in',
-				'error'  => $e->getMessage(),
-			] );
-		}
+		$consentText  = $consentSnapshot['text'];
+		$consentField = $consentSnapshot['field'];
 
 		/**
 		 * Eigenschaften des OptIn-Objekts festlegen
@@ -1291,6 +1353,100 @@ abstract class OptInFrontend {
 				'plugin' => 'double-opt-in',
 				'error'  => $e->getMessage(),
 			] );
+		}
+	}
+
+	/**
+	 * Load the consent snapshot (wording + acceptance field) for a form.
+	 *
+	 * The authoritative source is `FormSettingsService`, not the
+	 * `$formParameter` array this legacy path carries — the settings the
+	 * admin edits in the React UI land in post_meta and only some of them
+	 * make it into `getParameter()`. `$formParameter` is used purely as a
+	 * fallback for the case where the container is not available.
+	 *
+	 * Read once per submission and used twice: by the consent gate before
+	 * the opt-in is created, and by the snapshot that is persisted with
+	 * it. They must agree — a gate that reads a different field than the
+	 * record stores would produce a proof of the wrong checkbox.
+	 *
+	 * @param int   $formId        The form being submitted.
+	 * @param array $formParameter The legacy form-parameter array.
+	 *
+	 * @return array{text:string,field:string}
+	 */
+	protected function loadConsentSnapshot( int $formId, array $formParameter = array() ): array {
+		$snapshot = [
+			'text'  => (string) ( $formParameter['consent_text'] ?? '' ),
+			'field' => (string) ( $formParameter['consent_field'] ?? '' ),
+		];
+
+		try {
+			$container       = Container::getInstance();
+			$settingsService = $container->get( \Forge12\DoubleOptIn\FormSettings\FormSettingsService::class );
+			$formSettings    = $settingsService->getSettings( $formId );
+
+			$snapshot['text']  = (string) ( $formSettings->consentText ?? '' );
+			$snapshot['field'] = (string) ( $formSettings->consentField ?? '' );
+		} catch ( \Throwable $e ) {
+			$this->get_logger()->debug( 'Could not load consent snapshot from FormSettings', [
+				'plugin'  => 'double-opt-in',
+				'form_id' => $formId,
+				'error'   => $e->getMessage(),
+			] );
+		}
+
+		return $snapshot;
+	}
+
+	/**
+	 * The field names this form declares, for the consent gate.
+	 *
+	 * An unticked checkbox never reaches the server, so the payload alone
+	 * cannot distinguish "the visitor left the box alone" from "the
+	 * configured field does not exist any more". The form's own
+	 * definition can, and every integration exposes it through
+	 * `FormIntegrationInterface::getFormFields()`.
+	 *
+	 * A shim may pass the inventory in directly — Elementor does, because
+	 * its `Form_Record` lists every declared field including the empty
+	 * ones, while the composite form ID its `getFormFields()` wants
+	 * (`{postId}_{widgetId}`) is not what this legacy path carries.
+	 * Otherwise we ask the registry for the integration behind
+	 * `$this->type`.
+	 *
+	 * Returning an empty array is a valid answer and means "unknown" —
+	 * the gate then rejects nothing it cannot prove.
+	 *
+	 * @param int   $formId   The form being submitted.
+	 * @param array $explicit Inventory supplied by the caller, if any.
+	 *
+	 * @return array<int,string>
+	 */
+	protected function resolveKnownFieldNames( int $formId, array $explicit = array() ): array {
+		if ( $explicit !== array() ) {
+			return ConsentGate::normalizeFieldNames( $explicit );
+		}
+
+		if ( $this->type === '' || ! class_exists( FormIntegrationRegistry::class ) ) {
+			return array();
+		}
+
+		try {
+			$integration = FormIntegrationRegistry::getInstance()->get( $this->type );
+			if ( $integration === null ) {
+				return array();
+			}
+
+			return ConsentGate::normalizeFieldNames( $integration->getFormFields( $formId ) );
+		} catch ( \Throwable $e ) {
+			$this->get_logger()->warning( 'Could not read the form field inventory for the consent gate', [
+				'plugin'  => 'double-opt-in',
+				'form_id' => $formId,
+				'error'   => $e->getMessage(),
+			] );
+
+			return array();
 		}
 	}
 

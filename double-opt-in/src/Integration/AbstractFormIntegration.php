@@ -8,6 +8,7 @@
 
 namespace Forge12\DoubleOptIn\Integration;
 
+use Forge12\DoubleOptIn\Consent\ConsentGate;
 use Forge12\DoubleOptIn\Container\Container;
 use Forge12\DoubleOptIn\EmailTemplates\PlaceholderMapper;
 use Forge12\DoubleOptIn\EventSystem\EventDispatcherInterface;
@@ -441,22 +442,25 @@ abstract class AbstractFormIntegration implements FormIntegrationInterface {
 	/**
 	 * Validate the consent-acceptance gate (GDPR Art. 7).
 	 *
-	 * When the form has a configured `consent_field`, the user must
-	 * have actively confirmed it. Otherwise we'd be storing a
-	 * `consent_text` snapshot the user never saw — fabricated audit
-	 * evidence. Empty `consent_field` means "no gate"
-	 * (backward-compat; admins who haven't migrated yet keep working).
+	 * The decision itself lives in {@see ConsentGate} — this method only
+	 * turns it into the return value `createOptIn()` expects and writes
+	 * the log lines. Both halves of the plugin share that class now: the
+	 * integrations that extend this base, and the legacy path in
+	 * `OptInFrontend::maybeCreateOptIn()` that serves Elementor and the
+	 * CF7/Avada shims.
 	 *
-	 * Extracted into its own method so the gate behavior is testable
-	 * in isolation — the full createOptIn() flow has too many
-	 * side-effects (rate-limiting, file storage, container access)
-	 * for clean unit testing of just this branch.
+	 * `ConsentGate::FIELD_UNKNOWN` — the configured field is not on this
+	 * form — deliberately does NOT reject. Until 5.4.0 it did, which took
+	 * a site's registrations offline over a settings mistake the visitor
+	 * could neither see nor fix (customer report 2026-08-27). The admin
+	 * now hears about it through the log, the Site Health check and the
+	 * banner on the form's settings tab instead.
 	 *
 	 * @param FormDataInterface    $formData      The submitted form data.
 	 * @param array<string, mixed> $formParameter The form-settings snapshot.
 	 *
-	 * @return OptInError|null Error when the gate fails; null when it
-	 *                         passes (gate disabled or value truthy).
+	 * @return OptInError|null Error when the gate rejects; null when the
+	 *                         submission may proceed.
 	 */
 	protected function validateConsentAcceptance( FormDataInterface $formData, array $formParameter ): ?OptInError {
 		$consentField = (string) ( $formParameter['consent_field'] ?? '' );
@@ -464,85 +468,63 @@ abstract class AbstractFormIntegration implements FormIntegrationInterface {
 			return null;
 		}
 
-		// Reconcile the configured name with what the form actually
-		// submitted. Settings saved before 5.3.2 ran through
-		// sanitize_key(), which lowercased them — a CF7 field named
-		// `Datenschutz` was stored as `datenschutz`, was never found
-		// here, and the gate then rejected EVERY submission with
-		// "consent not given" (customer report 2026-08-27).
-		//
-		// An exact match always wins, so a form carrying both spellings
-		// still resolves to the one the admin configured. When nothing
-		// matches at all the original name is kept and the rejection
-		// below carries it into the log — that case is a genuinely
-		// misconfigured form and has to stay visible.
-		$resolvedField = SubmittedContent::matchFieldName( $consentField, array_keys( $formData->getFields() ) );
-		if ( $resolvedField !== '' ) {
-			$consentField = $resolvedField;
-		}
-
-		$consentValue = $formData->getField( $consentField );
-
-		// Diagnostic — 2026-05-13 user report: WPForms Checkbox field
-		// ticked, gate still rejects. Need to see the actual shape of
-		// `$consentValue` to know whether `! empty()` is the wrong
-		// predicate for WPForms checkbox payloads (e.g. array with
-		// empty string, scalar 0, etc.).
-		$this->getLogger()->info(
-			'Consent gate evaluation',
-			array(
-				'plugin'         => 'double-opt-in',
-				'form_id'        => $formData->getFormId(),
-				'consent_field'  => $consentField,
-				'value_type'     => gettype( $consentValue ),
-				'value_preview'  => is_scalar( $consentValue )
-					? (string) $consentValue
-					: wp_json_encode( $consentValue ),
-				'is_empty'       => empty( $consentValue ),
-			)
+		$verdict = ConsentGate::evaluate(
+			$consentField,
+			$formData->getFields(),
+			$this->getKnownFieldNames( $formData->getFormId() )
 		);
 
-		if ( ! empty( $consentValue ) ) {
+		if ( $verdict === ConsentGate::PASSED ) {
 			return null;
 		}
 
-		// Fallback for WPForms checkbox shape: when the user ticked
-		// the box, the bare-id key may carry the joined-string `value`
-		// while the truthful "did the user actually tick anything"
-		// signal lives in the `field_{id}` mirror's `value_raw`
-		// (array of internal slugs). If `value_raw` is a non-empty
-		// array with at least one non-empty entry, treat as consent
-		// given — `empty()` over the joined string is a false
-		// negative when the checkbox's display labels are empty.
-		$mirror = $formData->getField( 'field_' . $consentField );
-		if ( is_array( $mirror ) ) {
-			$valueRaw = $mirror['value_raw'] ?? null;
-			$value    = $mirror['value']     ?? null;
-			$hasTicked = false;
-			foreach ( array( $valueRaw, $value ) as $candidate ) {
-				if ( is_array( $candidate ) ) {
-					foreach ( $candidate as $entry ) {
-						if ( is_scalar( $entry ) && (string) $entry !== '' ) {
-							$hasTicked = true;
-							break 2;
-						}
-					}
-				} elseif ( is_scalar( $candidate ) && (string) $candidate !== '' ) {
-					$hasTicked = true;
-					break;
-				}
-			}
-			if ( $hasTicked ) {
-				$this->getLogger()->info(
-					'Consent gate passed via field_{id} mirror fallback',
-					array(
-						'plugin'        => 'double-opt-in',
-						'form_id'      => $formData->getFormId(),
-						'consent_field' => $consentField,
-					)
-				);
-				return null;
-			}
+		if ( $verdict === ConsentGate::FIELD_UNKNOWN ) {
+			// Never a rejection — see the ConsentGate docblock. Logged as
+			// a warning all the same: until someone fixes the setting, the
+			// consent proof stored with every opt-in of this form is
+			// worthless.
+			$this->getLogger()->warning(
+				'Consent field is not on this form — opt-in accepted without provable consent',
+				array(
+					'plugin'        => 'double-opt-in',
+					'form_id'       => $formData->getFormId(),
+					'integration'   => $this->getIdentifier(),
+					'consent_field' => $consentField,
+				)
+			);
+
+			/**
+			 * Fires when a form's configured acceptance field cannot be
+			 * found on the form itself. The submission is accepted.
+			 *
+			 * @since 5.4.0
+			 *
+			 * @param int    $formId       The form the submission came from.
+			 * @param string $consentField The configured field name.
+			 * @param string $integration  The integration identifier.
+			 */
+			do_action(
+				'f12_doi_consent_field_unknown',
+				$formData->getFormId(),
+				$consentField,
+				$this->getIdentifier()
+			);
+
+			return null;
+		}
+
+		if ( ! ConsentGate::isEnforced( $formData->getFormId(), $this->getIdentifier() ) ) {
+			$this->getLogger()->warning(
+				'Consent gate disabled by filter — accepting an unconfirmed submission',
+				array(
+					'plugin'        => 'double-opt-in',
+					'form_id'       => $formData->getFormId(),
+					'integration'   => $this->getIdentifier(),
+					'consent_field' => $consentField,
+				)
+			);
+
+			return null;
 		}
 
 		return OptInError::fromCode(
@@ -552,6 +534,36 @@ abstract class AbstractFormIntegration implements FormIntegrationInterface {
 				'consent_field' => $consentField,
 			)
 		);
+	}
+
+	/**
+	 * The names of the fields this form actually declares.
+	 *
+	 * Needed to tell an unticked checkbox — which the browser leaves out
+	 * of the payload entirely — from a `consent_field` pointing at a
+	 * field the admin has since renamed or deleted. An integration that
+	 * cannot answer yields an empty list, and the gate then stays on the
+	 * cautious side and rejects nothing it cannot prove.
+	 *
+	 * @param int $formId The form to inspect.
+	 *
+	 * @return array<int,string>
+	 */
+	protected function getKnownFieldNames( int $formId ): array {
+		try {
+			return ConsentGate::normalizeFieldNames( $this->getFormFields( $formId ) );
+		} catch ( \Throwable $e ) {
+			$this->getLogger()->warning(
+				'Could not read the form field inventory for the consent gate',
+				array(
+					'plugin'  => 'double-opt-in',
+					'form_id' => $formId,
+					'error'   => $e->getMessage(),
+				)
+			);
+
+			return array();
+		}
 	}
 
 	/**
