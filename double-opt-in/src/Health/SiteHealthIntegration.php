@@ -215,16 +215,39 @@ final class SiteHealthIntegration {
 		echo esc_html__( 'Double Opt-In has detected a problem that will affect your visitors.', 'double-opt-in' );
 		echo '</strong></p><ul style="list-style:disc;margin-left:1.5em">';
 
+		$actions = array();
+
 		foreach ( $criticals as $result ) {
 			printf(
 				'<li><strong>%s</strong><br>%s</li>',
 				esc_html( $result->getLabel() ),
 				esc_html( $result->getDescription() )
 			);
+
+			// Collected rather than printed inline so the buttons end up
+			// in one row under the list instead of interrupting it.
+			if ( $result->getActionUrl() !== '' && $result->getActionLabel() !== '' ) {
+				$actions[ $result->getActionUrl() ] = $result->getActionLabel();
+			}
+		}
+
+		echo '</ul><p>';
+
+		// A check that knows how to fix itself says so here. Site Health is
+		// where the full report lives, but a fix that is one click away
+		// should not require finding that screen first — this notice runs
+		// on the dashboard and the plugins list, which is where an operator
+		// already stands when something has just gone wrong.
+		foreach ( $actions as $url => $label ) {
+			printf(
+				'<a class="button button-primary" style="margin-right:.5em" href="%s">%s</a>',
+				esc_url( $url ),
+				esc_html( $label )
+			);
 		}
 
 		printf(
-			'</ul><p><a class="button button-primary" href="%s">%s</a></p></div>',
+			'<a class="button" href="%s">%s</a></p></div>',
 			esc_url( admin_url( 'site-health.php' ) ),
 			esc_html__( 'Open Site Health', 'double-opt-in' )
 		);

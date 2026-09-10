@@ -172,6 +172,35 @@ namespace forge12\contactform7\CF7DoubleOptIn {
 						'component_path' => $component['path'],
 					] );
 
+					// Guard BEFORE the require, not after it.
+					//
+					// Component directories come from a filter, and the
+					// legacy Pro monolith (<= 3.7) still hooks its own
+					// compatibility/ directory in here. It declares the same
+					// class names in the same namespace as the addon-elementor
+					// and addon-opt-out compat classes. Two different files
+					// declaring one class name is exactly what require_once
+					// does NOT protect against — it deduplicates by path —
+					// so loading the second one is a fatal
+					// "Cannot redeclare class", and the whole admin is gone.
+					//
+					// Whoever loads first wins. The site is functionally
+					// degraded in that case, but it stays reachable, which is
+					// the precondition for the operator being able to fix the
+					// real problem (see LegacyMonolithCheck, which tells them
+					// to deactivate the old plugin).
+					//
+					// The class_exists() call two lines down already existed;
+					// it just ran too late to prevent anything.
+					if ( class_exists( $component['name'], false ) ) {
+						$this->get_logger()->warning( 'Component ' . $component['name'] . ' is already declared elsewhere — skipping this copy to avoid a fatal redeclare.', [
+							'plugin' => 'double-opt-in',
+							'component_name' => $component['name'],
+							'component_path' => $component['path'],
+						] );
+						continue;
+					}
+
 					require_once( $component['path'] );
 
 					if ( class_exists($component['name']) ) {

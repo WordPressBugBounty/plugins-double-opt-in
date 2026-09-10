@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit1d50e62cb279e74e728eae1cf063ffb8
+class ComposerStaticInitd2939376d744d019cd102c009e2b48ab
 {
     public static $prefixLengthsPsr4 = array (
         'F' => 
@@ -73,8 +73,13 @@ class ComposerStaticInit1d50e62cb279e74e728eae1cf063ffb8
         'Forge12\\DoubleOptIn\\Health\\HealthCheckInterface' => __DIR__ . '/../..' . '/src/Health/HealthCheckInterface.php',
         'Forge12\\DoubleOptIn\\Health\\HealthCheckRegistry' => __DIR__ . '/../..' . '/src/Health/HealthCheckRegistry.php',
         'Forge12\\DoubleOptIn\\Health\\HealthCheckResult' => __DIR__ . '/../..' . '/src/Health/HealthCheckResult.php',
+        'Forge12\\DoubleOptIn\\Health\\HealthRepairController' => __DIR__ . '/../..' . '/src/Health/HealthRepairController.php',
+        'Forge12\\DoubleOptIn\\Health\\LegacyMonolithCheck' => __DIR__ . '/../..' . '/src/Health/LegacyMonolithCheck.php',
+        'Forge12\\DoubleOptIn\\Health\\LegacyMonolithDetector' => __DIR__ . '/../..' . '/src/Health/LegacyMonolithDetector.php',
+        'Forge12\\DoubleOptIn\\Health\\LegacyProEnvironment' => __DIR__ . '/../..' . '/src/Health/LegacyProEnvironment.php',
         'Forge12\\DoubleOptIn\\Health\\SiteHealthIntegration' => __DIR__ . '/../..' . '/src/Health/SiteHealthIntegration.php',
         'Forge12\\DoubleOptIn\\Health\\StaleConsentFieldCheck' => __DIR__ . '/../..' . '/src/Health/StaleConsentFieldCheck.php',
+        'Forge12\\DoubleOptIn\\Health\\StaleProMarkersCheck' => __DIR__ . '/../..' . '/src/Health/StaleProMarkersCheck.php',
         'Forge12\\DoubleOptIn\\Integration\\AbstractFormIntegration' => __DIR__ . '/../..' . '/src/Integration/AbstractFormIntegration.php',
         'Forge12\\DoubleOptIn\\Integration\\AdminPanelInterface' => __DIR__ . '/../..' . '/src/Integration/AdminPanelInterface.php',
         'Forge12\\DoubleOptIn\\Integration\\CF7Integration' => __DIR__ . '/../..' . '/src/Integration/CF7Integration.php',
@@ -115,9 +120,9 @@ class ComposerStaticInit1d50e62cb279e74e728eae1cf063ffb8
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit1d50e62cb279e74e728eae1cf063ffb8::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit1d50e62cb279e74e728eae1cf063ffb8::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit1d50e62cb279e74e728eae1cf063ffb8::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitd2939376d744d019cd102c009e2b48ab::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitd2939376d744d019cd102c009e2b48ab::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInitd2939376d744d019cd102c009e2b48ab::$classMap;
 
         }, null, ClassLoader::class);
     }

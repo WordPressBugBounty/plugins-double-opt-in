@@ -1284,6 +1284,10 @@ msgstr ""
 msgid "Email Body"
 msgstr ""
 
+#: packages/core/admin-ui/src/components/forms/formSettingsTypes.ts:153
+msgid "Email body or template"
+msgstr ""
+
 #: packages/core/admin-ui/src/components/forms/EmailTab.tsx:110
 msgid "Email content"
 msgstr ""
@@ -2653,6 +2657,7 @@ msgid "Recipient"
 msgstr ""
 
 #: packages/core/admin-ui/src/components/forms/EmailTab.tsx:52
+#: packages/core/admin-ui/src/components/forms/formSettingsTypes.ts:149
 msgid "Recipient field"
 msgstr ""
 
@@ -3145,6 +3150,7 @@ msgid "String Translation → Domain \"double-opt-in-opt-out\""
 msgstr ""
 
 #: packages/core/admin-ui/src/components/forms/EmailTab.tsx:118
+#: packages/core/admin-ui/src/components/forms/formSettingsTypes.ts:151
 #: packages/core/admin-ui/src/pages/OptOutPage.tsx:962
 msgid "Subject"
 msgstr ""

@@ -6574,3 +6574,138 @@ msgstr "Ces formulaires enregistrent un texte de consentement comme preuve, mais
 #: packages/core/src/Health/StaleConsentFieldCheck.php
 msgid "Review form settings"
 msgstr "Vérifier les réglages du formulaire"
+
+msgid "%s installed."
+msgstr "%s installé."
+
+msgid "%s is included in Pro"
+msgstr "%s est inclus dans Pro"
+
+msgid "Activate your Double Opt-In Pro bundle to unlock %s."
+msgstr "Activez votre bundle Double Opt-In Pro pour débloquer %s."
+
+msgid "addon isn't active on this site. Install and activate it to use %s."
+msgstr "n'est pas actif sur ce site. Installez-le et activez-le pour utiliser %s."
+
+msgid "Adds a small \"Double Opt-In by Forge12\" link on the page a subscriber lands on after confirming. Off by default."
+msgstr "Ajoute un petit lien « Double Opt-In by Forge12 » sur la page où arrive l'abonné après confirmation. Désactivé par défaut."
+
+msgid "Error — email not sent"
+msgstr "Erreur — e-mail non envoyé"
+
+msgid "Every module below is unlocked by your Pro bundle license. A check means it is installed and active on this site."
+msgstr "Chaque module ci-dessous est débloqué par votre licence bundle Pro. Une coche signifie qu'il est installé et actif sur ce site."
+
+msgid "Failed to install addon."
+msgstr "Échec de l'installation de l'extension."
+
+msgid "Feedback"
+msgstr "Retours"
+
+msgid "Included modules"
+msgstr "Modules inclus"
+
+msgid "Installing…"
+msgstr "Installation…"
+
+msgid "Open Addons Page"
+msgstr "Ouvrir la page des extensions"
+
+msgid "Pro Bundle Required"
+msgstr "Bundle Pro requis"
+
+msgid "Show credit link"
+msgstr "Afficher le lien de crédit"
+
+msgid "Shown when the request was recorded but the email could not go out — most often because the subject or body below is still empty. This case used to show the success notice instead, so visitors waited for a mail that was never sent."
+msgstr "S'affiche lorsque la demande a été enregistrée mais que l'e-mail n'a pas pu partir — le plus souvent parce que l'objet ou le corps ci-dessous est encore vide. Auparavant, ce cas affichait le message de succès et les visiteurs attendaient donc un e-mail qui n'a jamais été envoyé."
+
+msgid "Support"
+msgstr "Assistance"
+
+msgid "This addon is part of the Double Opt-In Pro bundle. Activate your bundle license to unlock it — one key unlocks every included module."
+msgstr "Cette extension fait partie du bundle Double Opt-In Pro. Activez votre licence bundle pour la débloquer — une seule clé débloque tous les modules inclus."
+
+#: src/Health
+msgid "You are not allowed to run this repair."
+msgstr "Vous n'êtes pas autorisé à lancer cette réparation."
+
+#: src/Health
+msgid "The old Double Opt-In Pro plugin has been deactivated. You can now activate Double Opt-In Pro 4 and install the modules you need. To remove the old plugin for good, delete its folder over FTP — do not use the WordPress delete button, which would drop your opt-out table."
+msgstr "L'ancienne extension Double Opt-In Pro a été désactivée. Vous pouvez maintenant activer Double Opt-In Pro 4 et installer les modules nécessaires. Pour supprimer définitivement l'ancienne extension, effacez son dossier par FTP — n'utilisez pas le bouton de suppression de WordPress, il supprimerait votre table d'opt-out."
+
+#: src/Health
+msgid "The Pro setup markers have been cleared. Licence migration and module installation can run again. Your licence key was not touched."
+msgstr "Les marqueurs d'installation Pro ont été supprimés. La migration de licence et l'installation des modules peuvent de nouveau s'exécuter. Votre clé de licence n'a pas été touchée."
+
+#: src/Health
+msgid "Nothing to repair — no active copy of the old Double Opt-In Pro plugin was found."
+msgstr "Rien à réparer — aucune copie active de l'ancienne extension Double Opt-In Pro n'a été trouvée."
+
+#: src/Health
+msgid "Old Double Opt-In Pro plugin"
+msgstr "Ancienne extension Double Opt-In Pro"
+
+#: src/Health
+msgid "No outdated Pro plugin is installed"
+msgstr "Aucune extension Pro obsolète n'est installée"
+
+#: src/Health
+msgid "The pre-4.0 version of Double Opt-In Pro is not present on this site. Nothing to do."
+msgstr "La version antérieure à 4.0 de Double Opt-In Pro n'est pas présente sur ce site. Rien à faire."
+
+#: src/Health
+msgid "An outdated Double Opt-In Pro plugin is active"
+msgstr "Une extension Double Opt-In Pro obsolète est active"
+
+#: src/Health
+msgid "The plugin folder \"%1$s\" contains Double Opt-In Pro %2$s. That version ships program parts under the same names as the current modules, so with both active one of the two is not running, and older releases fail with \"There has been a critical error on this website\". Deactivate it — your consent records are stored separately and are not affected."
+msgstr "Le dossier d'extension « %1$s » contient Double Opt-In Pro %2$s. Cette version fournit des composants portant les mêmes noms que les modules actuels : si les deux sont actifs, l'un des deux ne fonctionne pas, et les versions plus anciennes échouent avec « Une erreur critique est survenue sur ce site ». Désactivez-la — vos preuves de consentement sont stockées séparément et ne sont pas affectées."
+
+#: src/Health
+msgid "Deactivate the old plugin now"
+msgstr "Désactiver maintenant l'ancienne extension"
+
+#: src/Health
+msgid "An outdated Double Opt-In Pro plugin is still installed"
+msgstr "Une extension Double Opt-In Pro obsolète est toujours installée"
+
+#: src/Health
+msgid "The folder \"%1$s\" still holds Double Opt-In Pro %2$s. It is deactivated, so nothing is broken right now, but activating it again would collide with the current modules. Remove the folder over FTP or SSH. Important: do not delete it through the WordPress plugin screen — that version's uninstall routine drops the opt-out database table, and the records in it are gone for good."
+msgstr "Le dossier « %1$s » contient toujours Double Opt-In Pro %2$s. Il est désactivé, donc rien n'est cassé pour l'instant, mais le réactiver entrerait en conflit avec les modules actuels. Supprimez le dossier par FTP ou SSH. Important : ne le supprimez pas depuis l'écran des extensions de WordPress — la routine de désinstallation de cette version supprime la table d'opt-out, et les enregistrements qu'elle contient sont alors définitivement perdus."
+
+#: src/Health
+msgid "unknown version"
+msgstr "version inconnue"
+
+#: src/Health
+msgid "Pro setup markers"
+msgstr "Marqueurs d'installation Pro"
+
+#: src/Health
+msgid "No leftover Pro setup markers"
+msgstr "Aucun marqueur d'installation Pro résiduel"
+
+#: src/Health
+msgid "Nothing in the database would block a Pro installation from setting itself up."
+msgstr "Rien dans la base de données n'empêcherait une installation Pro de se configurer."
+
+#: src/Health
+msgid "Pro setup markers belong to the running installation"
+msgstr "Les marqueurs d'installation Pro appartiennent à l'installation en cours"
+
+#: src/Health
+msgid "Double Opt-In Pro is active and has completed its setup. The stored markers are expected."
+msgstr "Double Opt-In Pro est actif et a terminé sa configuration. Les marqueurs enregistrés sont normaux."
+
+#: src/Health
+msgid "Leftover Pro setup markers will block a new installation"
+msgstr "Des marqueurs d'installation Pro résiduels bloqueront une nouvelle installation"
+
+#: src/Health
+msgid "Double Opt-In Pro is not active, but this site still stores the markers saying its licence migration and module installation have already run. A fresh install would find them and skip both steps — no licence, no modules, and the \"Install\" button on the Add-ons screen failing with a routing error. Clearing them lets the setup run again. Your licence key and all form settings stay untouched."
+msgstr "Double Opt-In Pro n'est pas actif, mais ce site conserve encore les marqueurs indiquant que la migration de licence et l'installation des modules ont déjà eu lieu. Une nouvelle installation les trouverait et sauterait les deux étapes — pas de licence, pas de modules, et le bouton « Installer » de l'écran des modules échouant avec une erreur de routage. Les supprimer permet à la configuration de s'exécuter à nouveau. Votre clé de licence et tous les réglages de formulaire restent intacts."
+
+#: src/Health
+msgid "Clear the setup markers"
+msgstr "Supprimer les marqueurs d'installation"

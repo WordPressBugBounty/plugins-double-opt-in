@@ -12,8 +12,11 @@ use Forge12\DoubleOptIn\Container\BootableProviderInterface;
 use Forge12\DoubleOptIn\Container\Container;
 use Forge12\DoubleOptIn\Health\DatabaseTableHealthCheck;
 use Forge12\DoubleOptIn\Health\HealthCheckRegistry;
+use Forge12\DoubleOptIn\Health\HealthRepairController;
+use Forge12\DoubleOptIn\Health\LegacyMonolithCheck;
 use Forge12\DoubleOptIn\Health\SiteHealthIntegration;
 use Forge12\DoubleOptIn\Health\StaleConsentFieldCheck;
+use Forge12\DoubleOptIn\Health\StaleProMarkersCheck;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -94,6 +97,15 @@ class HealthServiceProvider implements BootableProviderInterface {
 		// not break anything visibly — it quietly turns every opt-in of
 		// that form into consent evidence nobody ever confirmed.
 		$registry->register( new StaleConsentFieldCheck() );
+
+		// The two checks around the Pro 3.x -> 4.x upgrade. They live in
+		// free Core on purpose: both describe a site where Pro is broken
+		// or absent, so a check shipped inside bundle-pro would be the one
+		// thing not loaded when it is needed.
+		$registry->register( new LegacyMonolithCheck() );
+		$registry->register( new StaleProMarkersCheck() );
+
+		( new HealthRepairController() )->register();
 
 		( new SiteHealthIntegration( $registry ) )->register();
 	}

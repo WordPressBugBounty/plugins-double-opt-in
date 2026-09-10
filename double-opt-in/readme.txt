@@ -5,7 +5,7 @@ Tags: contact form 7, double opt-in, gdpr, email verification
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 5.4.0
+Stable tag: 5.5.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -64,7 +64,7 @@ Out-of-the-box support for **Contact Form 7**. Additional form systems — Avada
 * **Pagination & Search** -- search and filter opt-in records in the admin dashboard
 * **Admin Tooltips** -- contextual help tooltips throughout the admin interface
 * **WordPress Multisite** -- network-wide activation creates tables on all sites automatically
-* **Developer Hooks** -- 29 action hooks, 63 filters, and 11 typed events for full extensibility
+* **Developer Hooks** -- 43 action hooks, 71 filters, and 11 typed events for full extensibility
 
 = Pro Features =
 
@@ -194,7 +194,7 @@ The free version requires at least one supported form plugin. However, developer
 
 = Where can I find the developer documentation? =
 
-The complete hook, filter, and event reference is available at `docs/hooks-and-events.md` inside the plugin directory. It covers all 18 action hooks, 23 filters, and 11 typed events with code examples.
+A hook, filter, and event reference with code examples ships at `docs/hooks-and-events.md` inside the plugin directory. It documents 26 of the 43 action hooks, 20 of the 71 filters, and all 11 typed events — the ones extensions actually reach for. The rest are discoverable in the source; if you need one documented, ask and we will add it.
 
 = How do I report a bug or request a feature? =
 
@@ -239,6 +239,9 @@ screens does not contact Google Fonts or any other third party. Inter is
 licensed under the SIL Open Font License 1.1 (see licenses/inter-OFL-1.1.txt).
 
 == Upgrade Notice ==
+
+= 5.5.0 =
+Recommended if you ever ran a Double Opt-In Pro older than 4.0. Such a plugin, left installed next to the current modules, made WordPress fail with a critical error that also locked you out of the admin. This release keeps the site reachable in that situation and adds two Site Health checks that name the problem and repair it in one click. Nothing is deleted from your server, and no schema changes.
 
 = 5.4.0 =
 Changes how submissions are handled on forms where you selected an acceptance field. That checkbox is now required at submit time on every form system, including those where it was previously only recorded — a submission that does not confirm it is rejected. Forms whose acceptance field no longer exists keep accepting submissions and are reported under Tools > Site Health instead, so a settings mistake cannot take your registrations offline. No schema changes.
@@ -321,6 +324,17 @@ New features: Visual email editor, centralized form settings, GDPR anonymization
 Adds optional anonymous telemetry (opt-out). No breaking changes.
 
 == Changelog ==
+
+= 5.5.0 =
+
+**An old Pro plugin no longer takes the site down with it**
+
+* Fix: with a Double Opt-In Pro older than 4.0 installed next to the current modules, WordPress failed with "There has been a critical error on this website" — including the admin, so the old plugin could not be deactivated, the licence page could not be opened, and even deleting it from the dashboard failed. The two products declare some program parts under the same names; the compatibility loader now skips the duplicate instead of loading it a second time. The site stays reachable, and one of the two copies is simply not run.
+* New: a Site Health check naming the outdated Pro plugin, its folder and its version, with a one-click "Deactivate the old plugin now". It also appears on the dashboard and the plugins screen, where the problem is usually noticed.
+* New: a Site Health check for leftover Pro setup markers. Pro records that it has migrated its licence and installed its modules, and those records survive uninstalling it — so a fresh installation used to find them and skip both steps: no licence, no modules, and the "Install" button on the Add-ons screen failing with a routing error. One click clears them; your licence key and all form settings are left alone.
+* Note: neither repair deletes anything from your server. Removing the old plugin's folder stays a manual step over FTP or SSH on purpose — that version's uninstall routine drops the opt-out database table, and the WordPress delete button would run it.
+* Fix: the "required field" labels in the admin appeared in English on German and French sites, along with 17 other untranslated strings.
+* Improved: the hook reference shipped with the plugin now documents the consent-gate hooks and matches the hooks that actually exist.
 
 = 5.4.0 =
 
