@@ -76,6 +76,13 @@ function drop_table_categories() {
 	] );
 }
 
+function drop_table_followup() {
+	global $wpdb;
+
+	// Follow-up status only references opt-ins; it goes with them.
+	$wpdb->query( "DROP TABLE IF EXISTS " . esc_sql( $wpdb->prefix . 'f12_cf7_doubleoptin_followup' ) );
+}
+
 if ( should_keep_data_on_uninstall() ) {
 	Logger::getInstance()->info( 'Uninstall: keeping opt-in data (keep_data_on_uninstall enabled).', [
 		'plugin' => 'double-opt-in',
@@ -85,6 +92,7 @@ if ( should_keep_data_on_uninstall() ) {
 		'plugin' => 'double-opt-in',
 	] );
 	drop_table_categories();
+	drop_table_followup();
 	drop_table_optin();
 }
 
@@ -99,3 +107,7 @@ delete_option( 'f12_cf7_doubleoptin_telemetry_counters' );
 // an older version still carries the event. Uninstalling has to take it with
 // it, otherwise the entry outlives the plugin in the WP-Cron table.
 wp_clear_scheduled_hook( 'f12_cf7_doubleoptin_daily_telemetry' );
+wp_clear_scheduled_hook( 'f12_doi_follow_up_sweep' );
+// Retry events carry the opt-in id as argument; only unschedule_hook
+// removes them regardless of arguments.
+wp_unschedule_hook( 'f12_doi_follow_up_retry' );

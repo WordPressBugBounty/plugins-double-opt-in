@@ -623,6 +623,24 @@ abstract class OptInFrontend {
 		}
 
 		/**
+		 * Enable / Disable default mail.
+		 *
+		 * @param bool $status Enable (true) or disable (false) the default mail.
+		 * @param int  $postId The ID of the Post / Form.
+		 *
+		 * @since 2.3.3
+		 */
+		$sendDefaultMail = (bool) apply_filters( 'f12_cf7_doubleoptin_send_default_mail', true, $OptIn->get_cf_form_id() );
+
+		/**
+		 * Bind the follow-up plan before the confirmation is saved (see
+		 * AbstractFormIntegration::validateOptIn). False when no adapter
+		 * handles this integration → previous behaviour below.
+		 */
+		$coordinator = \Forge12\DoubleOptIn\FollowUp\FollowUpCoordinator::instance();
+		$managed     = $coordinator !== null && $coordinator->plan( $OptIn, $sendDefaultMail );
+
+		/**
 		 * Confirm the OptIn.
 		 */
 		if ( $this->updateOptInByHash( $hash, 1, $OptIn ) <= 0 ) {
@@ -636,15 +654,21 @@ abstract class OptInFrontend {
 
 		$this->setValidationStatus( 'confirmed' );
 
-		/**
-		 * Enable / Disable default mail.
-		 *
-		 * @param bool $status Enable (true) or disable (false) the default mail.
-		 * @param int  $postId The ID of the Post / Form.
-		 *
-		 * @since 2.3.3
-		 */
-		if ( ! apply_filters( 'f12_cf7_doubleoptin_send_default_mail', true, $OptIn->get_cf_form_id() ) ) {
+		if ( $managed ) {
+			// Planned actions (skipped ones included) are recorded by the
+			// coordinator; trigger_default_mail is not fired for managed
+			// opt-ins, so no listener can replay them a second time.
+			if ( $sendDefaultMail ) {
+				do_action( 'f12_cf7_doubleoptin_before_send_default_mail', $OptIn );
+			}
+			$coordinator->run( $OptIn, \Forge12\DoubleOptIn\FollowUp\FollowUpAttempt::TRIGGER_CONFIRM );
+			if ( $sendDefaultMail ) {
+				do_action( 'f12_cf7_doubleoptin_after_send_default_mail', $OptIn );
+			}
+			return true;
+		}
+
+		if ( ! $sendDefaultMail ) {
 			$this->get_logger()->info( 'Default mail disabled for OptIn', [
 				'plugin'   => 'double-opt-in',
 				'form_id'  => $OptIn->get_cf_form_id(),
@@ -1074,9 +1098,11 @@ abstract class OptInFrontend {
 	 * Validate if the optin is enabled.
 	 */
 	protected function isOptinEnabled( int $formId ): bool {
-		// Disable optin sending if the optin flag is set.
-		if ( isset( $_GET['optin'] ) ) {
-			$this->get_logger()->debug( 'Optin disabled due to optin flag in GET request', [
+		// Disable optin sending while our own post-confirmation replay runs.
+		// Not `isset( $_GET['optin'] )`: that is client input and let a
+		// submitter switch the double opt-in off.
+		if ( \Forge12\DoubleOptIn\Integration\AbstractFormIntegration::isReplaying() ) {
+			$this->get_logger()->debug( 'Optin disabled during post-confirmation replay', [
 				'plugin' => 'double-opt-in',
 				'class'  => __CLASS__,
 				'method' => __METHOD__,
@@ -1187,6 +1213,21 @@ abstract class OptInFrontend {
 				'method' => __METHOD__,
 				'hash'   => $hash,
 			] );
+			return;
+		}
+
+		/**
+		 * Only for this integration's own opt-in, only right after it was
+		 * confirmed in this request, and only when no follow-up adapter
+		 * owns the files. Previously any `?optin=` request — an expired
+		 * link, a second click, another integration's hash — deleted the
+		 * stored files, including ones a pending action still needed.
+		 */
+		if ( ! $OptIn->isType( $this->type ) || self::$validationStatus !== 'confirmed' ) {
+			return;
+		}
+		$coordinator = \Forge12\DoubleOptIn\FollowUp\FollowUpCoordinator::instance();
+		if ( $coordinator !== null && $coordinator->adapterFor( $OptIn ) !== null ) {
 			return;
 		}
 

@@ -12,6 +12,8 @@ use Forge12\DoubleOptIn\Container\Container;
 use Forge12\DoubleOptIn\Container\BootableProviderInterface;
 use Forge12\DoubleOptIn\Integration\FormIntegrationRegistry;
 use Forge12\DoubleOptIn\Integration\CF7Integration;
+use Forge12\DoubleOptIn\Integration\CF7FollowUpAdapter;
+use Forge12\DoubleOptIn\FollowUp\FollowUpAdapterRegistry;
 use Forge12\DoubleOptIn\Frontend\ErrorNotification;
 use Forge12\Shared\LoggerInterface;
 
@@ -147,6 +149,10 @@ class IntegrationServiceProvider implements BootableProviderInterface {
 		try {
 			$cf7Integration = $container->get( CF7Integration::class );
 			$registry->register( $cf7Integration );
+
+			if ( $container->has( FollowUpAdapterRegistry::class ) ) {
+				$container->get( FollowUpAdapterRegistry::class )->register( new CF7FollowUpAdapter( $cf7Integration ) );
+			}
 		} catch ( \Exception $e ) {
 			// Log but don't fail if CF7 integration can't be loaded
 			if ( $container->has( LoggerInterface::class ) ) {

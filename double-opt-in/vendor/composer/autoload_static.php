@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitd2939376d744d019cd102c009e2b48ab
+class ComposerStaticInit292675813cb4e197aba687c330d4d94b
 {
     public static $prefixLengthsPsr4 = array (
         'F' => 
@@ -29,6 +29,7 @@ class ComposerStaticInitd2939376d744d019cd102c009e2b48ab
         'Forge12\\DoubleOptIn\\Admin\\AdminNoticeIncompleteForms' => __DIR__ . '/../..' . '/src/Admin/AdminNoticeIncompleteForms.php',
         'Forge12\\DoubleOptIn\\Admin\\AdminPageController' => __DIR__ . '/../..' . '/src/Admin/AdminPageController.php',
         'Forge12\\DoubleOptIn\\Admin\\AdminRestController' => __DIR__ . '/../..' . '/src/Admin/AdminRestController.php',
+        'Forge12\\DoubleOptIn\\Admin\\FollowUpRestController' => __DIR__ . '/../..' . '/src/Admin/FollowUpRestController.php',
         'Forge12\\DoubleOptIn\\Admin\\FormSettingsController' => __DIR__ . '/../..' . '/src/Admin/FormSettingsController.php',
         'Forge12\\DoubleOptIn\\Admin\\ResendController' => __DIR__ . '/../..' . '/src/Admin/ResendController.php',
         'Forge12\\DoubleOptIn\\Admin\\SingleConsentExportController' => __DIR__ . '/../..' . '/src/Admin/SingleConsentExportController.php',
@@ -65,6 +66,15 @@ class ComposerStaticInitd2939376d744d019cd102c009e2b48ab
         'Forge12\\DoubleOptIn\\Events\\Mail\\MailSentEvent' => __DIR__ . '/../..' . '/src/Events/Mail/MailSentEvent.php',
         'Forge12\\DoubleOptIn\\Events\\Mail\\ReminderSentEvent' => __DIR__ . '/../..' . '/src/Events/Mail/ReminderSentEvent.php',
         'Forge12\\DoubleOptIn\\Files\\FileStorage' => __DIR__ . '/../..' . '/src/Files/FileStorage.php',
+        'Forge12\\DoubleOptIn\\FollowUp\\FollowUpAction' => __DIR__ . '/../..' . '/src/FollowUp/FollowUpAction.php',
+        'Forge12\\DoubleOptIn\\FollowUp\\FollowUpAdapterInterface' => __DIR__ . '/../..' . '/src/FollowUp/FollowUpAdapterInterface.php',
+        'Forge12\\DoubleOptIn\\FollowUp\\FollowUpAdapterRegistry' => __DIR__ . '/../..' . '/src/FollowUp/FollowUpAdapterRegistry.php',
+        'Forge12\\DoubleOptIn\\FollowUp\\FollowUpAttempt' => __DIR__ . '/../..' . '/src/FollowUp/FollowUpAttempt.php',
+        'Forge12\\DoubleOptIn\\FollowUp\\FollowUpCoordinator' => __DIR__ . '/../..' . '/src/FollowUp/FollowUpCoordinator.php',
+        'Forge12\\DoubleOptIn\\FollowUp\\FollowUpRecord' => __DIR__ . '/../..' . '/src/FollowUp/FollowUpRecord.php',
+        'Forge12\\DoubleOptIn\\FollowUp\\FollowUpResult' => __DIR__ . '/../..' . '/src/FollowUp/FollowUpResult.php',
+        'Forge12\\DoubleOptIn\\FollowUp\\FollowUpStatus' => __DIR__ . '/../..' . '/src/FollowUp/FollowUpStatus.php',
+        'Forge12\\DoubleOptIn\\FollowUp\\LoopbackClassifier' => __DIR__ . '/../..' . '/src/FollowUp/LoopbackClassifier.php',
         'Forge12\\DoubleOptIn\\FormSettings\\FormSettingsDTO' => __DIR__ . '/../..' . '/src/FormSettings/FormSettingsDTO.php',
         'Forge12\\DoubleOptIn\\FormSettings\\FormSettingsService' => __DIR__ . '/../..' . '/src/FormSettings/FormSettingsService.php',
         'Forge12\\DoubleOptIn\\FormSettings\\FormSettingsValidator' => __DIR__ . '/../..' . '/src/FormSettings/FormSettingsValidator.php',
@@ -82,6 +92,7 @@ class ComposerStaticInitd2939376d744d019cd102c009e2b48ab
         'Forge12\\DoubleOptIn\\Health\\StaleProMarkersCheck' => __DIR__ . '/../..' . '/src/Health/StaleProMarkersCheck.php',
         'Forge12\\DoubleOptIn\\Integration\\AbstractFormIntegration' => __DIR__ . '/../..' . '/src/Integration/AbstractFormIntegration.php',
         'Forge12\\DoubleOptIn\\Integration\\AdminPanelInterface' => __DIR__ . '/../..' . '/src/Integration/AdminPanelInterface.php',
+        'Forge12\\DoubleOptIn\\Integration\\CF7FollowUpAdapter' => __DIR__ . '/../..' . '/src/Integration/CF7FollowUpAdapter.php',
         'Forge12\\DoubleOptIn\\Integration\\CF7Integration' => __DIR__ . '/../..' . '/src/Integration/CF7Integration.php',
         'Forge12\\DoubleOptIn\\Integration\\FormData' => __DIR__ . '/../..' . '/src/Integration/FormData.php',
         'Forge12\\DoubleOptIn\\Integration\\FormDataInterface' => __DIR__ . '/../..' . '/src/Integration/FormDataInterface.php',
@@ -101,6 +112,7 @@ class ComposerStaticInitd2939376d744d019cd102c009e2b48ab
         'Forge12\\DoubleOptIn\\Providers\\CoreServiceProvider' => __DIR__ . '/../..' . '/src/Providers/CoreServiceProvider.php',
         'Forge12\\DoubleOptIn\\Providers\\EmailTemplateServiceProvider' => __DIR__ . '/../..' . '/src/Providers/EmailTemplateServiceProvider.php',
         'Forge12\\DoubleOptIn\\Providers\\EventServiceProvider' => __DIR__ . '/../..' . '/src/Providers/EventServiceProvider.php',
+        'Forge12\\DoubleOptIn\\Providers\\FollowUpServiceProvider' => __DIR__ . '/../..' . '/src/Providers/FollowUpServiceProvider.php',
         'Forge12\\DoubleOptIn\\Providers\\FormSettingsServiceProvider' => __DIR__ . '/../..' . '/src/Providers/FormSettingsServiceProvider.php',
         'Forge12\\DoubleOptIn\\Providers\\GdprServiceProvider' => __DIR__ . '/../..' . '/src/Providers/GdprServiceProvider.php',
         'Forge12\\DoubleOptIn\\Providers\\HealthServiceProvider' => __DIR__ . '/../..' . '/src/Providers/HealthServiceProvider.php',
@@ -108,6 +120,9 @@ class ComposerStaticInitd2939376d744d019cd102c009e2b48ab
         'Forge12\\DoubleOptIn\\Providers\\LicensingServiceProvider' => __DIR__ . '/../..' . '/src/Providers/LicensingServiceProvider.php',
         'Forge12\\DoubleOptIn\\Providers\\MigrationServiceProvider' => __DIR__ . '/../..' . '/src/Providers/MigrationServiceProvider.php',
         'Forge12\\DoubleOptIn\\Providers\\RepositoryServiceProvider' => __DIR__ . '/../..' . '/src/Providers/RepositoryServiceProvider.php',
+        'Forge12\\DoubleOptIn\\Repository\\FollowUpRepository' => __DIR__ . '/../..' . '/src/Repository/FollowUpRepository.php',
+        'Forge12\\DoubleOptIn\\Repository\\FollowUpRepositoryInterface' => __DIR__ . '/../..' . '/src/Repository/FollowUpRepositoryInterface.php',
+        'Forge12\\DoubleOptIn\\Repository\\FollowUpSchema' => __DIR__ . '/../..' . '/src/Repository/FollowUpSchema.php',
         'Forge12\\DoubleOptIn\\Repository\\OptInRepository' => __DIR__ . '/../..' . '/src/Repository/OptInRepository.php',
         'Forge12\\DoubleOptIn\\Repository\\OptInRepositoryInterface' => __DIR__ . '/../..' . '/src/Repository/OptInRepositoryInterface.php',
         'Forge12\\DoubleOptIn\\Service\\OptInLinkGenerator' => __DIR__ . '/../..' . '/src/Service/OptInLinkGenerator.php',
@@ -120,9 +135,9 @@ class ComposerStaticInitd2939376d744d019cd102c009e2b48ab
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitd2939376d744d019cd102c009e2b48ab::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitd2939376d744d019cd102c009e2b48ab::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInitd2939376d744d019cd102c009e2b48ab::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit292675813cb4e197aba687c330d4d94b::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit292675813cb4e197aba687c330d4d94b::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit292675813cb4e197aba687c330d4d94b::$classMap;
 
         }, null, ClassLoader::class);
     }

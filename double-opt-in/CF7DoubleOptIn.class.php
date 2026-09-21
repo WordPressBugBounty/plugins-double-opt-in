@@ -15,7 +15,7 @@ namespace forge12\contactform7\CF7DoubleOptIn {
 	 * Description: This plugin allows you to add a double OptIn System to your Contact Form 7 & Avada Forms.
 	 * Text Domain: double-opt-in
 	 * Domain Path: /languages
-	 * Version: 5.5.0
+	 * Version: 5.6.0
 	 * Requires at least: 6.0
 	 * Requires PHP: 7.4
 	 * Author: Forge12 Interactive GmbH
@@ -57,7 +57,7 @@ namespace forge12\contactform7\CF7DoubleOptIn {
 	}
 
 	if ( ! defined( 'FORGE12_OPTIN_VERSION' ) ) {
-		define( 'FORGE12_OPTIN_VERSION', '5.5.0' );
+		define( 'FORGE12_OPTIN_VERSION', '5.6.0' );
 	}
 
 	// Addon API version — semver-independent from the plugin's marketing
@@ -65,8 +65,12 @@ namespace forge12\contactform7\CF7DoubleOptIn {
 	// (AddonInterface, AddonRegistry, AddonLicenseRegistry, FormIntegrationInterface,
 	// event payloads). Addons declare their requirement against this constant,
 	// not FORGE12_OPTIN_VERSION.
+	//
+	// 4.4.0 (additive): FollowUp\FollowUpAdapterInterface, FollowUpCoordinator,
+	// FollowUpAdapterRegistry. Addons that implement follow-up adapters
+	// require ^4.4; everything else keeps working against 4.3.
 	if ( ! defined( 'F12_DOI_CORE_API_VERSION' ) ) {
-		define( 'F12_DOI_CORE_API_VERSION', '4.3.0' );
+		define( 'F12_DOI_CORE_API_VERSION', '4.4.0' );
 	}
 	if ( ! defined( 'FORGE12_OPTIN_SLUG' ) ) {
 		define( 'FORGE12_OPTIN_SLUG', 'f12-cf7-doubleoptin' );
@@ -99,6 +103,9 @@ namespace forge12\contactform7\CF7DoubleOptIn {
 
 	require_once 'OnActivation.php';
 	require_once 'OnDeactivation.php';
+	// OnUpdate runs at include time, before autoload.php is registered
+	// further down — load the one PSR-4 class it needs explicitly.
+	require_once 'src/Repository/FollowUpSchema.php';
 	require_once 'OnUpdate.php';
 	require_once 'compatibility/OptInFrontend.class.php';
 	require_once 'core/SpamMechanics.class.php';
@@ -442,6 +449,11 @@ namespace forge12\contactform7\CF7DoubleOptIn {
 
 			// Register migration registry (v4.3.0+ — runs pending DB migrations on admin_init)
 			$container->addProvider( new \Forge12\DoubleOptIn\Providers\MigrationServiceProvider() );
+
+			// Register follow-up coordinator (v5.6.0+ — status + retry of
+			// post-confirmation actions). Before AddonServiceProvider so
+			// the adapter registry exists when the form addons boot.
+			$container->addProvider( new \Forge12\DoubleOptIn\Providers\FollowUpServiceProvider() );
 
 			// Register addon system (v4.3.0+ — public Addon API)
 			$container->addProvider( new \Forge12\DoubleOptIn\Providers\AddonServiceProvider() );

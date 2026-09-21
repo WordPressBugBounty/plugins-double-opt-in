@@ -738,6 +738,16 @@ class AdminRestController {
 			$params[] = (int) $formId;
 		}
 
+		// Confirmed opt-ins whose follow-up actions failed or have an
+		// unknown outcome — the admin's "needs attention" list.
+		if ( sanitize_text_field( (string) ( $request->get_param( 'follow_up' ) ?? '' ) ) === 'problem' ) {
+			$followUpTable = $wpdb->prefix . \Forge12\DoubleOptIn\Repository\FollowUpSchema::TABLE_NAME;
+			$problems      = \Forge12\DoubleOptIn\FollowUp\FollowUpStatus::problematic();
+			$where[]       = "EXISTS (SELECT 1 FROM {$followUpTable} fu WHERE fu.optin_id = {$table}.id AND fu.status IN ("
+				. implode( ', ', array_fill( 0, count( $problems ), '%s' ) ) . '))';
+			$params        = array_merge( $params, $problems );
+		}
+
 		$whereClause = implode( ' AND ', $where );
 
 		// Count

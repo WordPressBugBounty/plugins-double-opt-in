@@ -127,12 +127,14 @@ function onActivation( $network_wide = false ) {
 			createTableOptin();
 			createTableOptinCategories();
 			createTableAuditLog();
+			\Forge12\DoubleOptIn\Repository\FollowUpSchema::install();
 			restore_current_blog();
 		}
 	} else {
 		createTableOptin();
 		createTableOptinCategories();
 		createTableAuditLog();
+		\Forge12\DoubleOptIn\Repository\FollowUpSchema::install();
 	}
 
 	$logger->info( 'Plugin activation completed', [
@@ -200,5 +202,6 @@ add_action( 'wp_initialize_site', function ( $new_site ) {
 	createTableOptin();
 	createTableOptinCategories();
 	createTableAuditLog();
+	\Forge12\DoubleOptIn\Repository\FollowUpSchema::install();
 	restore_current_blog();
 }, 900 );

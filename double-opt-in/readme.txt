@@ -5,7 +5,7 @@ Tags: contact form 7, double opt-in, gdpr, email verification
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 5.5.0
+Stable tag: 5.6.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -64,7 +64,7 @@ Out-of-the-box support for **Contact Form 7**. Additional form systems — Avada
 * **Pagination & Search** -- search and filter opt-in records in the admin dashboard
 * **Admin Tooltips** -- contextual help tooltips throughout the admin interface
 * **WordPress Multisite** -- network-wide activation creates tables on all sites automatically
-* **Developer Hooks** -- 43 action hooks, 71 filters, and 11 typed events for full extensibility
+* **Developer Hooks** -- 44 action hooks, 72 filters, and 11 typed events for full extensibility
 
 = Pro Features =
 
@@ -194,7 +194,7 @@ The free version requires at least one supported form plugin. However, developer
 
 = Where can I find the developer documentation? =
 
-A hook, filter, and event reference with code examples ships at `docs/hooks-and-events.md` inside the plugin directory. It documents 26 of the 43 action hooks, 20 of the 71 filters, and all 11 typed events — the ones extensions actually reach for. The rest are discoverable in the source; if you need one documented, ask and we will add it.
+A hook, filter, and event reference with code examples ships at `docs/hooks-and-events.md` inside the plugin directory. It documents 27 of the 44 action hooks, 21 of the 72 filters, and all 11 typed events — the ones extensions actually reach for. The rest are discoverable in the source; if you need one documented, ask and we will add it.
 
 = How do I report a bug or request a feature? =
 
@@ -239,6 +239,9 @@ screens does not contact Google Fonts or any other third party. Inter is
 licensed under the SIL Open Font License 1.1 (see licenses/inter-OFL-1.1.txt).
 
 == Upgrade Notice ==
+
+= 5.6.0 =
+Security release — update recommended. Also records every action that runs after the confirmation click, retries temporary failures automatically and shows the result on each opt-in. Adds one database table, created automatically on update. If you use the Elementor, Avada, WPForms or Gravity Forms add-ons, update them after this release.
 
 = 5.5.0 =
 Recommended if you ever ran a Double Opt-In Pro older than 4.0. Such a plugin, left installed next to the current modules, made WordPress fail with a critical error that also locked you out of the admin. This release keeps the site reachable in that situation and adds two Site Health checks that name the problem and repair it in one click. Nothing is deleted from your server, and no schema changes.
@@ -324,6 +327,20 @@ New features: Visual email editor, centralized form settings, GDPR anonymization
 Adds optional anonymous telemetry (opt-out). No breaking changes.
 
 == Changelog ==
+
+= 5.6.0 =
+
+**What happens after the confirmation click is now recorded, retried and visible**
+
+* Security: a crafted request could switch off the double opt-in for a single submission, so the form's follow-up actions ran without a confirmed address. This is closed for all form systems. Update recommended.
+* New: every action that runs after a subscriber confirms — the form's notification mail, the stored entry, and for Elementor each "Actions After Submit" step — is now recorded individually with its outcome. The opt-in detail page shows them in a new "Follow-up actions" panel.
+* New: an action that fails for a temporary reason (mail server unreachable, timeout) is retried automatically after 1, 5 and 30 minutes. Actions that already succeeded are never run again, so a retry does not send a second mail or write a second entry. An action whose outcome is unclear (the connection broke after the request was sent) is not retried automatically; the panel says so and asks before you retry it by hand.
+* New: a "Retry failed actions" button on the opt-in detail page, and a "Follow-ups need attention" filter in the opt-in list. A manual retry starts a fresh set of automatic attempts.
+* New: a Site Health check when follow-up actions keep failing, and entries in the audit log for every attempt.
+* Fix: on Elementor forms the actions after the confirmation could be cut short by a CAPTCHA or honeypot field that was checked a second time, long after the visitor had passed it.
+* Fix: a second click on the confirmation link no longer runs the follow-up actions again.
+* Fix: with debug logging switched on, the log files could be downloaded from the uploads folder. The folder is now protected and the files carry names that cannot be guessed; existing log files are renamed on the next request.
+* Developer: new filter `f12_doi_follow_up_backoff` and adapter interface for form integrations; Core API 4.4.0 (additive, no breaking change).
 
 = 5.5.0 =
 

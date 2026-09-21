@@ -186,6 +186,21 @@ function onUpdate() {
 		] );
 	}
 
+	if ( version_compare( $currentVersion, '5.6.0' ) < 0 ) {
+		$logger->info( 'Updating to version 5.6.0 (adds follow-up status table)', [
+			'plugin'  => 'double-opt-in',
+			'current' => $currentVersion,
+			'target'  => '5.6.0',
+		] );
+
+		// New table only. Opt-ins confirmed before this version get no
+		// rows and are shown as "no status recorded" — deliberately not
+		// replayed, which would re-send historic mails.
+		\Forge12\DoubleOptIn\Repository\FollowUpSchema::install();
+
+		update_option( FORGE12_OPTIN_SLUG . '_version', '5.6.0' );
+	}
+
 	// Safety net: Ensure both tables always exist regardless of stored version.
 	// Handles edge cases such as database migrations, manual file uploads, or
 	// restored backups that are missing the custom tables.
@@ -207,6 +222,11 @@ function onUpdate() {
 	if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $auditTable ) ) !== $auditTable ) {
 		$logger->warning( 'Audit log table missing – recreating.', [ 'plugin' => 'double-opt-in', 'table' => $auditTable ] );
 		createTableAuditLog();
+	}
+
+	if ( ! \Forge12\DoubleOptIn\Repository\FollowUpSchema::isCurrent() ) {
+		$logger->warning( 'Follow-up table missing or outdated – running dbDelta.', [ 'plugin' => 'double-opt-in' ] );
+		\Forge12\DoubleOptIn\Repository\FollowUpSchema::install();
 	}
 
 	// Always pin the stored version to the live plugin version. The

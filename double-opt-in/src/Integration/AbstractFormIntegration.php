@@ -16,6 +16,8 @@ use Forge12\DoubleOptIn\Events\Integration\FormSubmissionEvent;
 use Forge12\DoubleOptIn\Events\Lifecycle\OptInConfirmedEvent;
 use Forge12\DoubleOptIn\Events\Lifecycle\OptInCreatedEvent;
 use Forge12\DoubleOptIn\Files\FileStorage;
+use Forge12\DoubleOptIn\FollowUp\FollowUpAttempt;
+use Forge12\DoubleOptIn\FollowUp\FollowUpCoordinator;
 use Forge12\DoubleOptIn\Frontend\ErrorNotification;
 use Forge12\DoubleOptIn\Service\RateLimiter;
 use forge12\contactform7\CF7DoubleOptIn\CF7DoubleOptIn;
@@ -82,6 +84,45 @@ abstract class AbstractFormIntegration implements FormIntegrationInterface {
 	 *
 	 * @return string One of: '', 'confirmed', 'already_confirmed', 'expired', 'not_found'.
 	 */
+	/**
+	 * Nesting depth of post-confirmation replays in this request.
+	 *
+	 * @var int
+	 */
+	private static $replayDepth = 0;
+
+	/**
+	 * True while a post-confirmation replay (re-submitting the stored
+	 * data to the form plugin) runs in this request. Set only by server
+	 * code via {@see runAsReplay()} — never derived from request input.
+	 *
+	 * @since 5.6.0
+	 */
+	public static function isReplaying(): bool {
+		return self::$replayDepth > 0;
+	}
+
+	/**
+	 * Run $fn as a post-confirmation replay: form-submit hooks that fire
+	 * inside it (wpcf7_before_send_mail, gform_after_submission, …) see
+	 * {@see isReplaying()} and do not create a new opt-in.
+	 *
+	 * @template T
+	 * @param callable():T $fn
+	 *
+	 * @return T
+	 *
+	 * @since 5.6.0
+	 */
+	public static function runAsReplay( callable $fn ) {
+		self::$replayDepth++;
+		try {
+			return $fn();
+		} finally {
+			self::$replayDepth--;
+		}
+	}
+
 	public static function getValidationStatus(): string {
 		return self::$validationStatus;
 	}
@@ -172,10 +213,17 @@ abstract class AbstractFormIntegration implements FormIntegrationInterface {
 	 * {@inheritdoc}
 	 */
 	public function isOptInEnabled( int $formId ): bool {
-		// Disable if opt-in confirmation is in progress
-		if ( isset( $_GET['optin'] ) ) {
+		// Disable while our own post-confirmation replay runs — the stored
+		// submission must be processed, not turned into a new opt-in.
+		//
+		// This used to test `isset( $_GET['optin'] )`. That flag is set by
+		// whoever sends the request: `…/feedback?optin=1` on the CF7 REST
+		// route submitted a DOI form with every mail and no confirmation.
+		// It also broke every replay outside the confirmation request
+		// (cron, admin retry), which has no `?optin` in its URL.
+		if ( self::isReplaying() ) {
 			$this->getLogger()->debug(
-				'Opt-in disabled due to optin flag in GET request',
+				'Opt-in disabled during post-confirmation replay',
 				array(
 					'plugin' => 'double-opt-in',
 					'class'  => static::class,
@@ -1032,6 +1080,22 @@ abstract class AbstractFormIntegration implements FormIntegrationInterface {
 			return false;
 		}
 
+		/**
+		 * Enable / Disable default mail.
+		 *
+		 * @param bool $status Enable (true) or disable (false) the default mail.
+		 * @param int  $postId The ID of the Post / Form.
+		 *
+		 * @since 2.3.3
+		 */
+		$sendDefaultMail = (bool) apply_filters( 'f12_cf7_doubleoptin_send_default_mail', true, $optIn->get_cf_form_id() );
+
+		// Bind the follow-up plan BEFORE the confirmation is saved, so a
+		// request that dies in between leaves rows the sweep can finish.
+		// False = no adapter for this integration → previous behaviour.
+		$coordinator = FollowUpCoordinator::instance();
+		$managed     = $coordinator !== null && $coordinator->plan( $optIn, $sendDefaultMail );
+
 		// Confirm the opt-in
 		do_action( 'f12_cf7_doubleoptin_before_confirm', $hash, $optIn );
 
@@ -1059,14 +1123,30 @@ abstract class AbstractFormIntegration implements FormIntegrationInterface {
 		// Dispatch event
 		$this->dispatchOptInConfirmedEvent( $optIn, $hash );
 
-		do_action( 'f12_cf7_doubleoptin_after_confirm', $hash, $optIn );
+		// Everything from here on re-processes the stored submission.
+		self::runAsReplay(
+			function () use ( $hash, $optIn, $managed, $coordinator, $sendDefaultMail ) {
+				do_action( 'f12_cf7_doubleoptin_after_confirm', $hash, $optIn );
 
-		// Send the original mail if enabled
-		if ( apply_filters( 'f12_cf7_doubleoptin_send_default_mail', true, $optIn->get_cf_form_id() ) ) {
-			do_action( 'f12_cf7_doubleoptin_before_send_default_mail', $optIn );
-			$this->sendConfirmationMail( $optIn );
-			do_action( 'f12_cf7_doubleoptin_after_send_default_mail', $optIn );
-		}
+				if ( $managed ) {
+					// The coordinator runs every planned action — entry and
+					// mail — and records a result per action. The before/after
+					// hooks keep firing for listeners that depend on them.
+					if ( $sendDefaultMail ) {
+						do_action( 'f12_cf7_doubleoptin_before_send_default_mail', $optIn );
+					}
+					$coordinator->run( $optIn, FollowUpAttempt::TRIGGER_CONFIRM );
+					if ( $sendDefaultMail ) {
+						do_action( 'f12_cf7_doubleoptin_after_send_default_mail', $optIn );
+					}
+				} elseif ( $sendDefaultMail ) {
+					// Send the original mail if enabled
+					do_action( 'f12_cf7_doubleoptin_before_send_default_mail', $optIn );
+					$this->sendConfirmationMail( $optIn );
+					do_action( 'f12_cf7_doubleoptin_after_send_default_mail', $optIn );
+				}
+			}
+		);
 
 		$this->getLogger()->info(
 			'OptIn confirmed successfully',

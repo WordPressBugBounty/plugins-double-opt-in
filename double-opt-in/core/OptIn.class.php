@@ -112,6 +112,46 @@ class OptIn {
 	}
 
 	/**
+	 * Get OptIn by its database id.
+	 *
+	 * Server-side use only (cron, admin REST). Public links always
+	 * address an opt-in by its random hash, never by id.
+	 *
+	 * @param int $id The opt-in id.
+	 *
+	 * @return OptIn|null
+	 *
+	 * @since 5.6.0
+	 */
+	public static function get_by_id( int $id ): ?OptIn {
+		if ( $id <= 0 ) {
+			return null;
+		}
+
+		$logger = Logger::getInstance();
+
+		try {
+			$entity = self::getRepository()->findById( $id );
+
+			if ( ! $entity ) {
+				return null;
+			}
+
+			$optIn         = new self( $logger );
+			$optIn->entity = $entity;
+
+			return $optIn;
+		} catch ( \Exception $e ) {
+			$logger->error( 'Failed to get OptIn by id', [
+				'plugin'   => 'double-opt-in',
+				'optin_id' => $id,
+				'error'    => $e->getMessage(),
+			] );
+			return null;
+		}
+	}
+
+	/**
 	 * Get count by form ID.
 	 *
 	 * @param int $formId The form ID.

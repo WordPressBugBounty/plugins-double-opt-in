@@ -3372,3 +3372,295 @@ msgstr ""
 #: src/Health
 msgid "Clear the setup markers"
 msgstr ""
+
+#: core/admin-ui/src (follow-up actions)
+msgid "Action"
+msgstr ""
+
+#: core/admin-ui/src (follow-up actions)
+msgid "All follow-ups"
+msgstr ""
+
+#: core/admin-ui/src (follow-up actions)
+msgid "Also retry unclear actions"
+msgstr ""
+
+#: core/admin-ui/src (follow-up actions)
+msgid "An unexpected error interrupted the action — it may have run."
+msgstr ""
+
+#: core/admin-ui/src (follow-up actions)
+msgid "Attempts"
+msgstr ""
+
+#: core/admin-ui/src (follow-up actions)
+msgid "Automatic retries depend on WP-Cron, which only runs when the site has visitors. Use \"Retry failed actions\" to run them now."
+msgstr ""
+
+#: core/admin-ui/src (follow-up actions)
+msgid "Completed"
+msgstr ""
+
+#: core/admin-ui/src (follow-up actions)
+msgid "Copy diagnosis"
+msgstr ""
+
+#: core/admin-ui/src (follow-up actions)
+msgid "Diagnosis copied to clipboard"
+msgstr ""
+
+#: core/admin-ui/src (follow-up actions)
+msgid "Disabled by the f12_cf7_doubleoptin_send_default_mail filter."
+msgstr ""
+
+#: core/admin-ui/src (follow-up actions)
+msgid "Done"
+msgstr ""
+
+#: core/admin-ui/src (follow-up actions)
+msgid "Entry: %s"
+msgstr ""
+
+#: core/admin-ui/src (follow-up actions)
+msgid "Failed"
+msgstr ""
+
+#: core/admin-ui/src (follow-up actions)
+msgid "Failed — retry scheduled"
+msgstr ""
+
+#: core/admin-ui/src (follow-up actions)
+msgid "Follow-up actions"
+msgstr ""
+
+#: core/admin-ui/src (follow-up actions)
+msgid "Follow-up actions completed"
+msgstr ""
+
+#: core/admin-ui/src (follow-up actions)
+msgid "Follow-ups need attention"
+msgstr ""
+
+#: core/admin-ui/src (follow-up actions)
+msgid "In progress"
+msgstr ""
+
+#: core/admin-ui/src (follow-up actions)
+msgid "Last attempt (UTC)"
+msgstr ""
+
+#: core/admin-ui/src (follow-up actions)
+msgid "Next automatic attempt: %s"
+msgstr ""
+
+#: core/admin-ui/src (follow-up actions)
+msgid "No recipient configured."
+msgstr ""
+
+#: core/admin-ui/src (follow-up actions)
+msgid "No status recorded"
+msgstr ""
+
+#: core/admin-ui/src (follow-up actions)
+msgid "Not applicable after confirmation."
+msgstr ""
+
+#: core/admin-ui/src (follow-up actions)
+msgid "Not supported by this form plugin edition."
+msgstr ""
+
+#: core/admin-ui/src (follow-up actions)
+msgid "Outcome unknown"
+msgstr ""
+
+#: core/admin-ui/src (follow-up actions)
+msgid "Partially successful"
+msgstr ""
+
+#: core/admin-ui/src (follow-up actions)
+msgid "Reason"
+msgstr ""
+
+#: core/admin-ui/src (follow-up actions)
+msgid "Retry actions with an unknown outcome?"
+msgstr ""
+
+#: core/admin-ui/src (follow-up actions)
+msgid "Retry anyway"
+msgstr ""
+
+#: core/admin-ui/src (follow-up actions)
+msgid "Retry failed"
+msgstr ""
+
+#: core/admin-ui/src (follow-up actions)
+msgid "Retry failed actions"
+msgstr ""
+
+#: core/admin-ui/src (follow-up actions)
+msgid "Retry finished — some actions still need attention"
+msgstr ""
+
+#: core/admin-ui/src (follow-up actions)
+msgid "Running"
+msgstr ""
+
+#: core/admin-ui/src (follow-up actions)
+msgid "Running..."
+msgstr ""
+
+#: core/admin-ui/src (follow-up actions)
+msgid "Skipped"
+msgstr ""
+
+#: core/admin-ui/src (follow-up actions)
+msgid "The action did not report a result — it may have run."
+msgstr ""
+
+#: core/admin-ui/src (follow-up actions)
+msgid "The action reported an error."
+msgstr ""
+
+#: core/admin-ui/src (follow-up actions)
+msgid "The action was removed from the form after the opt-in was confirmed."
+msgstr ""
+
+#: core/admin-ui/src (follow-up actions)
+msgid "The address has opted out."
+msgstr ""
+
+#: core/admin-ui/src (follow-up actions)
+msgid "The attempt was interrupted — the action may have run."
+msgstr ""
+
+#: core/admin-ui/src (follow-up actions)
+msgid "The confirmation stays valid either way. This shows whether the form's own actions — stored entry, notification mails, webhooks — ran after it."
+msgstr ""
+
+#: core/admin-ui/src (follow-up actions)
+msgid "The connection broke after the request was sent — the action may have run."
+msgstr ""
+
+#: core/admin-ui/src (follow-up actions)
+msgid "The entry could not be saved."
+msgstr ""
+
+#: core/admin-ui/src (follow-up actions)
+msgid "The entry was saved incompletely."
+msgstr ""
+
+#: core/admin-ui/src (follow-up actions)
+msgid "The follow-up actions could not be determined."
+msgstr ""
+
+#: core/admin-ui/src (follow-up actions)
+msgid "The form has no follow-up actions."
+msgstr ""
+
+#: core/admin-ui/src (follow-up actions)
+msgid "The form no longer exists."
+msgstr ""
+
+#: core/admin-ui/src (follow-up actions)
+msgid "The form plugin aborted the submission."
+msgstr ""
+
+#: core/admin-ui/src (follow-up actions)
+msgid "The form plugin is not active."
+msgstr ""
+
+#: core/admin-ui/src (follow-up actions)
+msgid "The form plugin's actions could not be restricted; nothing was executed."
+msgstr ""
+
+#: core/admin-ui/src (follow-up actions)
+msgid "The form rejected the stored submission."
+msgstr ""
+
+#: core/admin-ui/src (follow-up actions)
+msgid "The form's spam check rejected the stored submission."
+msgstr ""
+
+#: core/admin-ui/src (follow-up actions)
+msgid "The internal request target was not found (HTTP 404)."
+msgstr ""
+
+#: core/admin-ui/src (follow-up actions)
+msgid "The internal request was blocked (HTTP 401/403) — usually a firewall or security plugin."
+msgstr ""
+
+#: core/admin-ui/src (follow-up actions)
+msgid "The internal request was not accepted as an authorised replay."
+msgstr ""
+
+#: core/admin-ui/src (follow-up actions)
+msgid "The internal request was rate-limited (HTTP 429)."
+msgstr ""
+
+#: core/admin-ui/src (follow-up actions)
+msgid "The internal request was redirected; redirects are not followed."
+msgstr ""
+
+#: core/admin-ui/src (follow-up actions)
+msgid "The internal request was rejected."
+msgstr ""
+
+#: core/admin-ui/src (follow-up actions)
+msgid "The mail was not handed to the mailer."
+msgstr ""
+
+#: core/admin-ui/src (follow-up actions)
+msgid "The request timed out after it was sent — the action may have run."
+msgstr ""
+
+#: core/admin-ui/src (follow-up actions)
+msgid "The response could not be read — the action may have run."
+msgstr ""
+
+#: core/admin-ui/src (follow-up actions)
+msgid "The server answered with an error (HTTP 5xx) — the action may have run."
+msgstr ""
+
+#: core/admin-ui/src (follow-up actions)
+msgid "The site could not reach itself; nothing was executed."
+msgstr ""
+
+#: core/admin-ui/src (follow-up actions)
+msgid "The spam protection rejected the confirmed submission."
+msgstr ""
+
+#: core/admin-ui/src (follow-up actions)
+msgid "The stored form entry no longer exists."
+msgstr ""
+
+#: core/admin-ui/src (follow-up actions)
+msgid "The stored submission data is missing."
+msgstr ""
+
+#: core/admin-ui/src (follow-up actions)
+msgid "These actions may already have run — for example a mail that was sent before the connection broke. Retrying them can send a duplicate mail or create a duplicate entry. Check the recipient's mailbox or the form plugin's entries first."
+msgstr ""
+
+#: core/admin-ui/src (follow-up actions)
+msgid "This opt-in was confirmed before follow-up actions were recorded (or by an integration that does not report them). It is not replayed automatically, so historic mails are not sent again."
+msgstr ""
+
+#: core/admin-ui/src (follow-up actions)
+msgid "Unclear"
+msgstr ""
+
+#: core/admin-ui/src (follow-up actions)
+msgid "Uploaded files needed for this action are missing."
+msgstr ""
+
+#: core/admin-ui/src (follow-up actions)
+msgid "Follow-up actions only run for confirmed opt-ins."
+msgstr ""
+
+#: core/admin-ui/src (follow-up actions)
+msgid "The form integration of this opt-in is not active."
+msgstr ""
+
+#: core/admin-ui/src (follow-up actions)
+msgid "Follow-up action status"
+msgstr ""

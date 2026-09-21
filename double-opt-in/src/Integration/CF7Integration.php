@@ -10,6 +10,9 @@ namespace Forge12\DoubleOptIn\Integration;
 
 use Forge12\DoubleOptIn\Container\Container;
 use Forge12\DoubleOptIn\EmailTemplates\PlaceholderMapper;
+use Forge12\DoubleOptIn\FollowUp\FollowUpAttempt;
+use Forge12\DoubleOptIn\FollowUp\FollowUpCoordinator;
+use Forge12\DoubleOptIn\FollowUp\FollowUpResult;
 use forge12\contactform7\CF7DoubleOptIn\Category;
 use forge12\contactform7\CF7DoubleOptIn\CF7DoubleOptIn;
 use forge12\contactform7\CF7DoubleOptIn\HTMLSelect;
@@ -85,7 +88,7 @@ class CF7Integration extends AbstractFormIntegration implements AdminPanelInterf
 		// Confirmation mail hooks
 		add_action( 'f12_cf7_doubleoptin_before_send_default_mail', array( $this, 'beforeSendDefaultMail' ) );
 		add_action( 'f12_cf7_doubleoptin_after_send_default_mail', array( $this, 'afterSendDefaultMail' ) );
-		add_action( 'f12_cf7_doubleoptin_trigger_default_mail', array( $this, 'sendConfirmationMail' ) );
+		add_action( 'f12_cf7_doubleoptin_trigger_default_mail', array( $this, 'onTriggerDefaultMail' ) );
 
 		// File hand-off + pending-cleanup. CF7 attaches files to the
 		// confirmation mail in attachExtraAttachments (hooked on
@@ -246,8 +249,8 @@ class CF7Integration extends AbstractFormIntegration implements AdminPanelInterf
 		);
 
 		if ( ! $this->isOptInEnabled( $formId ) ) {
-			// Handle file attachments for confirmation
-			if ( isset( $_GET['optin'] ) ) {
+			// Our own post-confirmation replay: attach the stored files.
+			if ( self::isReplaying() ) {
 				$this->attachStoredFiles( $submission );
 			}
 			return;
@@ -362,23 +365,58 @@ class CF7Integration extends AbstractFormIntegration implements AdminPanelInterf
 	 * {@inheritdoc}
 	 */
 	public function sendConfirmationMail( OptIn $optIn ): void {
-		if ( ! $this->isAvailable() ) {
+		self::runAsReplay(
+			function () use ( $optIn ) {
+				$this->replaySubmission( $optIn );
+			}
+		);
+	}
+
+	/**
+	 * Listener on the global `f12_cf7_doubleoptin_trigger_default_mail`.
+	 * That action fires for every integration's opt-in; this used to run
+	 * the CF7 submission for Elementor opt-ins too, overwriting $_POST.
+	 * Managed opt-ins go through the follow-up coordinator, so a second
+	 * trigger never sends twice.
+	 *
+	 * @param OptIn $optIn The confirmed opt-in.
+	 *
+	 * @since 5.6.0
+	 */
+	public function onTriggerDefaultMail( OptIn $optIn ): void {
+		if ( ! $optIn->isType( $this->getIdentifier() ) ) {
+			return;
+		}
+
+		$coordinator = FollowUpCoordinator::instance();
+		if ( $coordinator !== null && $coordinator->plan( $optIn, true ) ) {
+			$coordinator->run( $optIn, FollowUpAttempt::TRIGGER_LEGACY );
+			return;
+		}
+
+		$this->sendConfirmationMail( $optIn );
+	}
+
+	/**
+	 * Re-run the stored submission through CF7 and report what CF7 says.
+	 *
+	 * Must run inside {@see runAsReplay()} so our own
+	 * `wpcf7_before_send_mail` listener processes it as the confirmed
+	 * submission (attachments) instead of creating a new opt-in.
+	 *
+	 * @since 5.6.0
+	 */
+	public function replaySubmission( OptIn $optIn ): FollowUpResult {
+		if ( ! $this->isAvailable() || ! class_exists( '\\WPCF7_ContactForm' ) || ! class_exists( '\\WPCF7_Submission' ) ) {
 			$this->getLogger()->warning(
 				'CF7 not available for confirmation mail',
 				array(
 					'plugin' => 'double-opt-in',
 				)
 			);
-			return;
+			return FollowUpResult::failedRetryable( 'integration_unavailable' );
 		}
 
-		$this->currentOptIn = $optIn;
-
-		// Restore POST data
-		$data  = maybe_unserialize( $optIn->get_content() );
-		$_POST = SanitizeHelper::sanitize_array( $data );
-
-		// Get CF7 form
 		$contactForm = \WPCF7_ContactForm::get_instance( $optIn->get_cf_form_id() );
 		if ( ! $contactForm ) {
 			$this->getLogger()->warning(
@@ -388,29 +426,50 @@ class CF7Integration extends AbstractFormIntegration implements AdminPanelInterf
 					'form_id' => $optIn->get_cf_form_id(),
 				)
 			);
-			return;
+			return FollowUpResult::failedPermanent( 'form_missing' );
 		}
 
-		// Add attachment hook
-		add_action( 'wpcf7_before_send_mail', array( $this, 'attachExtraAttachments' ), 10, 3 );
+		$data = maybe_unserialize( $optIn->get_content() );
+		if ( ! is_array( $data ) ) {
+			return FollowUpResult::failedPermanent( 'payload_missing' );
+		}
 
-		// Disable validation and spam checks before creating submission
-		$this->beforeSendConfirmationMail();
+		$previousPost       = $_POST;
+		$previousOptIn      = $this->currentOptIn;
+		$this->currentOptIn = $optIn;
+		$status             = '';
 
-		// Create submission and send mail
-		$submission = \WPCF7_Submission::get_instance( $contactForm );
+		try {
+			$_POST = SanitizeHelper::sanitize_array( $data );
 
-		// Re-enable validation and spam checks
-		$this->afterSendConfirmationMail();
+			// Disable validation and spam checks before creating submission
+			$this->beforeSendConfirmationMail();
+
+			// Create submission and send mail. Attachments are added by
+			// onSubmit() → attachStoredFiles() while isReplaying().
+			$submission = \WPCF7_Submission::get_instance( $contactForm );
+
+			if ( is_object( $submission ) && method_exists( $submission, 'get_status' ) ) {
+				$status = (string) $submission->get_status();
+			}
+		} finally {
+			// Re-enable validation and spam checks, restore request state.
+			$this->afterSendConfirmationMail();
+			$_POST              = $previousPost;
+			$this->currentOptIn = $previousOptIn;
+		}
 
 		$this->getLogger()->info(
 			'Confirmation mail triggered via CF7',
 			array(
-				'plugin'   => 'double-opt-in',
-				'form_id'  => $optIn->get_cf_form_id(),
-				'optin_id' => $optIn->get_id(),
+				'plugin'     => 'double-opt-in',
+				'form_id'    => $optIn->get_cf_form_id(),
+				'optin_id'   => $optIn->get_id(),
+				'cf7_status' => $status,
 			)
 		);
+
+		return CF7FollowUpAdapter::mapStatus( $status );
 	}
 
 	/**
@@ -473,8 +532,9 @@ class CF7Integration extends AbstractFormIntegration implements AdminPanelInterf
 	 * @return void
 	 */
 	private function attachStoredFiles( $submission ): void {
-		$hash  = sanitize_text_field( $_GET['optin'] );
-		$optIn = OptIn::get_by_hash( $hash );
+		// The opt-in being replayed — not the one named in the URL, which
+		// a cron or admin retry does not have (and a visitor controls).
+		$optIn = $this->currentOptIn;
 
 		if ( ! $optIn ) {
 			return;
@@ -538,6 +598,14 @@ class CF7Integration extends AbstractFormIntegration implements AdminPanelInterf
 	 * @since 4.3.0
 	 */
 	public function cleanupPendingAfterMail( OptIn $optIn ): void {
+		// Managed opt-ins: CF7FollowUpAdapter::onSettled() cleans up only
+		// once the mail was actually handed over. This hook fires after
+		// the attempt regardless of its outcome.
+		$coordinator = FollowUpCoordinator::instance();
+		if ( $coordinator !== null && $coordinator->adapterFor( $optIn ) !== null ) {
+			return;
+		}
+
 		// Template-method's $hash arg is unused inside processFilesOnConfirm;
 		// passing an empty string keeps the contract tight.
 		$this->processFilesOnConfirm( '', $optIn );

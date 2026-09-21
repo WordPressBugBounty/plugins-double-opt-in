@@ -6709,3 +6709,222 @@ msgstr "Double Opt-In Pro n'est pas actif, mais ce site conserve encore les marq
 #: src/Health
 msgid "Clear the setup markers"
 msgstr "Supprimer les marqueurs d'installation"
+
+msgid "Action"
+msgstr "Action"
+
+msgid "All follow-ups"
+msgstr "Toutes les actions de suivi"
+
+msgid "Also retry unclear actions"
+msgstr "Relancer aussi les actions incertaines"
+
+msgid "An unexpected error interrupted the action — it may have run."
+msgstr "Une erreur inattendue a interrompu l’action — elle a peut-être été exécutée."
+
+msgid "Attempts"
+msgstr "Tentatives"
+
+msgid "Automatic retries depend on WP-Cron, which only runs when the site has visitors. Use \"Retry failed actions\" to run them now."
+msgstr "Les relances automatiques dépendent de WP-Cron, qui ne s’exécute que lors des visites. Utilisez « Relancer les actions échouées » pour les exécuter maintenant."
+
+msgid "Completed"
+msgstr "Terminé"
+
+msgid "Copy diagnosis"
+msgstr "Copier le diagnostic"
+
+msgid "Diagnosis copied to clipboard"
+msgstr "Diagnostic copié dans le presse-papiers"
+
+msgid "Disabled by the f12_cf7_doubleoptin_send_default_mail filter."
+msgstr "Désactivé par le filtre f12_cf7_doubleoptin_send_default_mail."
+
+msgid "Done"
+msgstr "Effectué"
+
+msgid "Entry: %s"
+msgstr "Entrée : %s"
+
+msgid "Failed"
+msgstr "Échec"
+
+msgid "Failed — retry scheduled"
+msgstr "Échec — relance planifiée"
+
+msgid "Follow-up actions"
+msgstr "Actions de suivi"
+
+msgid "Follow-up actions completed"
+msgstr "Actions de suivi terminées"
+
+msgid "Follow-ups need attention"
+msgstr "Actions de suivi à vérifier"
+
+msgid "In progress"
+msgstr "En cours"
+
+msgid "Last attempt (UTC)"
+msgstr "Dernière tentative (UTC)"
+
+msgid "Next automatic attempt: %s"
+msgstr "Prochaine tentative automatique : %s"
+
+msgid "No recipient configured."
+msgstr "Aucun destinataire configuré."
+
+msgid "No status recorded"
+msgstr "Aucun statut enregistré"
+
+msgid "Not applicable after confirmation."
+msgstr "Non applicable après la confirmation."
+
+msgid "Not supported by this form plugin edition."
+msgstr "Non pris en charge par cette édition de l’extension de formulaire."
+
+msgid "Outcome unknown"
+msgstr "Résultat incertain"
+
+msgid "Partially successful"
+msgstr "Partiellement réussi"
+
+msgid "Reason"
+msgstr "Raison"
+
+msgid "Retry actions with an unknown outcome?"
+msgstr "Relancer les actions au résultat incertain ?"
+
+msgid "Retry anyway"
+msgstr "Relancer quand même"
+
+msgid "Retry failed"
+msgstr "La relance a échoué"
+
+msgid "Retry failed actions"
+msgstr "Relancer les actions échouées"
+
+msgid "Retry finished — some actions still need attention"
+msgstr "Relance terminée — certaines actions restent à vérifier"
+
+msgid "Running"
+msgstr "En cours d’exécution"
+
+msgid "Running..."
+msgstr "Exécution…"
+
+msgid "Skipped"
+msgstr "Ignoré"
+
+msgid "The action did not report a result — it may have run."
+msgstr "L’action n’a renvoyé aucun résultat — elle a peut-être été exécutée."
+
+msgid "The action reported an error."
+msgstr "L’action a signalé une erreur."
+
+msgid "The action was removed from the form after the opt-in was confirmed."
+msgstr "L’action a été retirée du formulaire après la confirmation."
+
+msgid "The address has opted out."
+msgstr "L’adresse s’est désinscrite."
+
+msgid "The attempt was interrupted — the action may have run."
+msgstr "La tentative a été interrompue — l’action a peut-être été exécutée."
+
+msgid "The confirmation stays valid either way. This shows whether the form's own actions — stored entry, notification mails, webhooks — ran after it."
+msgstr "La confirmation reste valable dans tous les cas. Vous voyez ici si les actions du formulaire — entrée enregistrée, e-mails de notification, webhooks — ont été exécutées ensuite."
+
+msgid "The connection broke after the request was sent — the action may have run."
+msgstr "La connexion a été coupée après l’envoi — l’action a peut-être été exécutée."
+
+msgid "The entry could not be saved."
+msgstr "L’entrée n’a pas pu être enregistrée."
+
+msgid "The entry was saved incompletely."
+msgstr "L’entrée a été enregistrée de façon incomplète."
+
+msgid "The follow-up actions could not be determined."
+msgstr "Les actions de suivi n’ont pas pu être déterminées."
+
+msgid "The form has no follow-up actions."
+msgstr "Le formulaire n’a aucune action de suivi."
+
+msgid "The form no longer exists."
+msgstr "Le formulaire n’existe plus."
+
+msgid "The form plugin aborted the submission."
+msgstr "L’extension de formulaire a interrompu l’envoi."
+
+msgid "The form plugin is not active."
+msgstr "L’extension de formulaire n’est pas active."
+
+msgid "The form plugin's actions could not be restricted; nothing was executed."
+msgstr "Les actions de l’extension de formulaire n’ont pas pu être limitées ; rien n’a été exécuté."
+
+msgid "The form rejected the stored submission."
+msgstr "Le formulaire a refusé l’envoi enregistré."
+
+msgid "The form's spam check rejected the stored submission."
+msgstr "Le contrôle anti-spam du formulaire a refusé l’envoi enregistré."
+
+msgid "The internal request target was not found (HTTP 404)."
+msgstr "La cible de la requête interne est introuvable (HTTP 404)."
+
+msgid "The internal request was blocked (HTTP 401/403) — usually a firewall or security plugin."
+msgstr "La requête interne a été bloquée (HTTP 401/403) — généralement par un pare-feu ou une extension de sécurité."
+
+msgid "The internal request was not accepted as an authorised replay."
+msgstr "La requête interne n’a pas été acceptée comme relance autorisée."
+
+msgid "The internal request was rate-limited (HTTP 429)."
+msgstr "La requête interne a été limitée (HTTP 429)."
+
+msgid "The internal request was redirected; redirects are not followed."
+msgstr "La requête interne a été redirigée ; les redirections ne sont pas suivies."
+
+msgid "The internal request was rejected."
+msgstr "La requête interne a été refusée."
+
+msgid "The mail was not handed to the mailer."
+msgstr "L’e-mail n’a pas été transmis au service d’envoi."
+
+msgid "The request timed out after it was sent — the action may have run."
+msgstr "La requête a expiré après l’envoi — l’action a peut-être été exécutée."
+
+msgid "The response could not be read — the action may have run."
+msgstr "La réponse est illisible — l’action a peut-être été exécutée."
+
+msgid "The server answered with an error (HTTP 5xx) — the action may have run."
+msgstr "Le serveur a répondu par une erreur (HTTP 5xx) — l’action a peut-être été exécutée."
+
+msgid "The site could not reach itself; nothing was executed."
+msgstr "Le site n’a pas pu se joindre lui-même ; rien n’a été exécuté."
+
+msgid "The spam protection rejected the confirmed submission."
+msgstr "La protection anti-spam a refusé l’envoi confirmé."
+
+msgid "The stored form entry no longer exists."
+msgstr "L’entrée de formulaire enregistrée n’existe plus."
+
+msgid "The stored submission data is missing."
+msgstr "Les données enregistrées de l’envoi sont manquantes."
+
+msgid "These actions may already have run — for example a mail that was sent before the connection broke. Retrying them can send a duplicate mail or create a duplicate entry. Check the recipient's mailbox or the form plugin's entries first."
+msgstr "Ces actions ont peut-être déjà été exécutées — par exemple un e-mail envoyé avant la coupure. Les relancer peut envoyer un e-mail en double ou créer une entrée en double. Vérifiez d’abord la boîte du destinataire ou les entrées de l’extension de formulaire."
+
+msgid "This opt-in was confirmed before follow-up actions were recorded (or by an integration that does not report them). It is not replayed automatically, so historic mails are not sent again."
+msgstr "Cet opt-in a été confirmé avant l’enregistrement des actions de suivi (ou par une intégration qui ne les signale pas). Il n’est pas relancé automatiquement afin de ne pas renvoyer d’anciens e-mails."
+
+msgid "Unclear"
+msgstr "Incertain"
+
+msgid "Uploaded files needed for this action are missing."
+msgstr "Des fichiers envoyés nécessaires à cette action sont manquants."
+
+msgid "Follow-up actions only run for confirmed opt-ins."
+msgstr "Les actions de suivi ne s’exécutent que pour les opt-ins confirmés."
+
+msgid "The form integration of this opt-in is not active."
+msgstr "L’intégration de formulaire de cet opt-in n’est pas active."
+
+msgid "Follow-up action status"
+msgstr "Statut des actions de suivi"
