@@ -5,7 +5,7 @@ Tags: contact form 7, double opt-in, gdpr, email verification
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 5.6.0
+Stable tag: 5.6.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -194,7 +194,7 @@ The free version requires at least one supported form plugin. However, developer
 
 = Where can I find the developer documentation? =
 
-A hook, filter, and event reference with code examples ships at `docs/hooks-and-events.md` inside the plugin directory. It documents 27 of the 44 action hooks, 21 of the 72 filters, and all 11 typed events — the ones extensions actually reach for. The rest are discoverable in the source; if you need one documented, ask and we will add it.
+A hook, filter, and event reference with code examples ships at `docs/hooks-and-events.md` inside the plugin directory. It documents 27 of the 44 action hooks, 22 of the 72 filters, and all 11 typed events — the ones extensions actually reach for. The rest are discoverable in the source; if you need one documented, ask and we will add it.
 
 = How do I report a bug or request a feature? =
 
@@ -239,6 +239,15 @@ screens does not contact Google Fonts or any other third party. Inter is
 licensed under the SIL Open Font License 1.1 (see licenses/inter-OFL-1.1.txt).
 
 == Upgrade Notice ==
+
+= 5.6.3 =
+Ships the hook and Addon API reference the readme refers to. No functional changes.
+
+= 5.6.2 =
+Visitors who forget the consent checkbox now see why their sign-up was not accepted, instead of a success message. No settings or data change.
+
+= 5.6.1 =
+Fixes a blank or partly loaded Double Opt-In admin on sites with Avada and other themes or plugins that use the Underscore/Lodash library. No settings or data change.
 
 = 5.6.0 =
 Security release — update recommended. Also records every action that runs after the confirmation click, retries temporary failures automatically and shows the result on each opt-in. Adds one database table, created automatically on update. If you use the Elementor, Avada, WPForms or Gravity Forms add-ons, update them after this release.
@@ -327,6 +336,26 @@ New features: Visual email editor, centralized form settings, GDPR anonymization
 Adds optional anonymous telemetry (opt-out). No breaking changes.
 
 == Changelog ==
+
+= 5.6.3 =
+
+* Fix: the developer reference this readme points to — `docs/hooks-and-events.md` and `docs/addon-api.md` — was never actually included in the plugin. Both files now ship.
+* Improved: the notice for major updates on the Plugins screen no longer starts with an emoji; it already sits in a warning box.
+
+= 5.6.2 =
+
+**A refused consent no longer looks like a successful sign-up**
+
+* Fix: when a visitor left the consent checkbox unticked, Contact Form 7 still showed "Thank you for your message. It has been sent." and emptied the form. The actual reason appeared only in a small notice that disappeared after ten seconds — so the visitor believed they were subscribed and waited for a confirmation mail that never came. The form now stops with "You must agree to the consent statement to continue." and keeps everything the visitor typed; they only have to tick the box.
+* Fix: the same on Elementor, WPForms and Gravity Forms forms — the consent checkbox is now marked the way a missed required field is, and the form stays on the page with the visitor's input. This needs the Elementor add-on 1.2.1, the WPForms add-on 1.1.1 and the Gravity Forms add-on 1.1.1. With older add-ons the success message is at least hidden and the notice stays until the visitor closes it.
+* Developer: new `AbstractFormIntegration::refusedConsentBeforeSubmit()` for integrations whose submit hook runs after the form plugin has accepted the submission (Core API 4.5.0, additive).
+* Note: this applies to the consent checkbox only. Other refusals (rate limits, blocked domains, …) keep their current behaviour and can be shown in the form with the filter `f12_cf7_doubleoptin_show_validation_error`, which now also receives the error and the form ID.
+
+= 5.6.1 =
+
+**The admin no longer stays blank next to Avada and similar plugins**
+
+* Fix: on some sites the Double Opt-In admin stayed blank or loaded only partly after 5.6.0, depending on the browser, with "clearTimeout is not a function" in the browser console. The admin script accidentally registered an internal helper under the global name `_`, which WordPress and many themes and plugins (Avada among them) use for the Underscore/Lodash library. Whichever loaded last won. The admin script now keeps all of its names to itself, and it no longer replaces WordPress' own `_` either.
 
 = 5.6.0 =
 

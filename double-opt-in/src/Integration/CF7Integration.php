@@ -13,6 +13,7 @@ use Forge12\DoubleOptIn\EmailTemplates\PlaceholderMapper;
 use Forge12\DoubleOptIn\FollowUp\FollowUpAttempt;
 use Forge12\DoubleOptIn\FollowUp\FollowUpCoordinator;
 use Forge12\DoubleOptIn\FollowUp\FollowUpResult;
+use Forge12\DoubleOptIn\Frontend\ErrorNotification;
 use forge12\contactform7\CF7DoubleOptIn\Category;
 use forge12\contactform7\CF7DoubleOptIn\CF7DoubleOptIn;
 use forge12\contactform7\CF7DoubleOptIn\HTMLSelect;
@@ -287,12 +288,17 @@ class CF7Integration extends AbstractFormIntegration implements AdminPanelInterf
 			add_filter( 'wpcf7_skip_mail', '__return_true' );
 
 			$error = self::getLastError();
-			if ( $error && apply_filters( 'f12_cf7_doubleoptin_show_validation_error', false ) ) {
+			// Abort with the reason instead of CF7's "sent": CF7 then keeps the
+			// visitor's input and shows the message in the form. A refused
+			// consent always takes this path (OptInError::isAlwaysShown()).
+			if ( $error && $error->shouldShowToVisitor( (int) $formId ) ) {
 				$message = apply_filters( 'f12_cf7_doubleoptin_error_message', $error->getMessage(), $error, $formId );
 				if ( method_exists( $submission, 'set_response' ) ) {
 					$submission->set_response( $message );
 				}
 				$abort = true;
+				// The form shows it now — no second copy in the toast.
+				ErrorNotification::forget();
 			}
 			return;
 		}

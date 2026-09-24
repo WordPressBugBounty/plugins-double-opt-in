@@ -60,7 +60,10 @@
 					return;
 				}
 
-				showNotification( response.data.error.message, 'error' );
+				// A toast that stands in for a hidden success message stays until
+				// the visitor closes it — otherwise the form is left saying
+				// nothing at all after ten seconds.
+				showNotification( response.data.error.message, 'error', !! response.data.error.hide_confirmation );
 
 				// Prevent duplicate checks for 5 seconds
 				cooldown = true;
@@ -126,9 +129,10 @@
 	 * Show a toast notification.
 	 *
 	 * @param {string} message The message to display.
-	 * @param {string} [type]  'error' (default) or 'success' — controls colour + icon.
+	 * @param {string}  [type]   'error' (default) or 'success' — controls colour + icon.
+	 * @param {boolean} [sticky] Keep it until the visitor closes it.
 	 */
-	function showNotification( message, type ) {
+	function showNotification( message, type, sticky ) {
 		type = type === 'success' ? 'success' : 'error';
 
 		var existing = document.querySelector( '.doi-error-notification' );
@@ -173,6 +177,10 @@
 		requestAnimationFrame( function () {
 			notification.classList.add( 'doi-error-notification--visible' );
 		} );
+
+		if ( sticky ) {
+			return;
+		}
 
 		// Auto-dismiss after 10 seconds
 		setTimeout( function () {

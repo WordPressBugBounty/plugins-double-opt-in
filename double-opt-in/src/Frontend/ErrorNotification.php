@@ -82,10 +82,23 @@ class ErrorNotification {
 				'message'           => $error->getMessage(),
 				'form_id'           => $formId,
 				'time'              => time(),
-				'hide_confirmation' => (bool) apply_filters( 'f12_cf7_doubleoptin_show_validation_error', false ),
+				'hide_confirmation' => $error->shouldShowToVisitor( $formId ),
 			),
 			self::TRANSIENT_TTL
 		);
+	}
+
+	/**
+	 * Drop the stored error for the current client.
+	 *
+	 * For integrations that already put the message into the form's own
+	 * response (CF7 abort, Elementor error). Without this the toast shows
+	 * the same sentence a second time next to it.
+	 *
+	 * @return void
+	 */
+	public static function forget(): void {
+		delete_transient( self::getTransientKey() );
 	}
 
 	/**

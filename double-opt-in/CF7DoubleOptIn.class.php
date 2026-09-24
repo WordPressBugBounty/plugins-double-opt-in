@@ -15,7 +15,7 @@ namespace forge12\contactform7\CF7DoubleOptIn {
 	 * Description: This plugin allows you to add a double OptIn System to your Contact Form 7 & Avada Forms.
 	 * Text Domain: double-opt-in
 	 * Domain Path: /languages
-	 * Version: 5.6.0
+	 * Version: 5.6.3
 	 * Requires at least: 6.0
 	 * Requires PHP: 7.4
 	 * Author: Forge12 Interactive GmbH
@@ -57,7 +57,7 @@ namespace forge12\contactform7\CF7DoubleOptIn {
 	}
 
 	if ( ! defined( 'FORGE12_OPTIN_VERSION' ) ) {
-		define( 'FORGE12_OPTIN_VERSION', '5.6.0' );
+		define( 'FORGE12_OPTIN_VERSION', '5.6.3' );
 	}
 
 	// Addon API version — semver-independent from the plugin's marketing
@@ -69,8 +69,14 @@ namespace forge12\contactform7\CF7DoubleOptIn {
 	// 4.4.0 (additive): FollowUp\FollowUpAdapterInterface, FollowUpCoordinator,
 	// FollowUpAdapterRegistry. Addons that implement follow-up adapters
 	// require ^4.4; everything else keeps working against 4.3.
+	//
+	// 4.5.0 (additive): AbstractFormIntegration::refusedConsentBeforeSubmit(),
+	// OptInError::isAlwaysShown()/shouldShowToVisitor(),
+	// OptInFrontend::getLastCreationError(), ErrorNotification::forget().
+	// The Elementor, WPForms and Gravity Forms add-ons call them only when they
+	// exist (method_exists), so their requirement stays ^4.4.
 	if ( ! defined( 'F12_DOI_CORE_API_VERSION' ) ) {
-		define( 'F12_DOI_CORE_API_VERSION', '4.4.0' );
+		define( 'F12_DOI_CORE_API_VERSION', '4.5.0' );
 	}
 	if ( ! defined( 'FORGE12_OPTIN_SLUG' ) ) {
 		define( 'FORGE12_OPTIN_SLUG', 'f12-cf7-doubleoptin' );
@@ -719,7 +725,7 @@ namespace forge12\contactform7\CF7DoubleOptIn {
 			if ( version_compare( $new_minor, $current_minor, '>' ) ) {
 				$upgrade_notice = sprintf(
 					'</p><div class="notice inline notice-warning notice-alt" style="margin: 10px 0; padding: 10px; border-left-color: #ffb900;"><p><strong>%s</strong></p><p>%s</p></div><p style="display:none;">',
-					esc_html__( '⚠️ Important: Major Update – Please backup before updating!', 'double-opt-in' ),
+					esc_html__( 'Important: Major Update – Please backup before updating!', 'double-opt-in' ),
 					esc_html__( 'This version includes significant changes to the form management system, email templates, and database structure. We strongly recommend creating a full site backup before updating.', 'double-opt-in' )
 				);
 

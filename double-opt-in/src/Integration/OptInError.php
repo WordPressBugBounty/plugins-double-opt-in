@@ -139,6 +139,47 @@ class OptInError {
 	}
 
 	/**
+	 * Must the visitor see this error, whatever the site configured?
+	 *
+	 * Only for errors the visitor caused and can fix on the spot. A refused
+	 * consent is one: the form looked sent, no mail ever came, and the only
+	 * hint was a toast over a green "Thank you" that vanished after ten
+	 * seconds (CF7, Core 5.6.1). Rate limits, blocklists and the like stay
+	 * behind `f12_cf7_doubleoptin_show_validation_error` — telling a bot why
+	 * it was refused is not always wanted.
+	 *
+	 * @return bool
+	 */
+	public function isAlwaysShown(): bool {
+		return self::CONSENT_NOT_GIVEN === $this->code;
+	}
+
+	/**
+	 * Should the form show this error in place of its own success message?
+	 *
+	 * @param int $formId The form the submission came from.
+	 *
+	 * @return bool
+	 */
+	public function shouldShowToVisitor( int $formId ): bool {
+		if ( $this->isAlwaysShown() ) {
+			return true;
+		}
+
+		/**
+		 * Whether a refused submission's reason is shown in the form.
+		 *
+		 * Default false. A refused consent is always shown and never
+		 * reaches this filter.
+		 *
+		 * @param bool       $show   Show the error.
+		 * @param OptInError $error  The error (since 5.6.2).
+		 * @param int        $formId The form (since 5.6.2).
+		 */
+		return (bool) apply_filters( 'f12_cf7_doubleoptin_show_validation_error', false, $this, $formId );
+	}
+
+	/**
 	 * Get the default translatable messages for all error codes.
 	 *
 	 * @return array<string, string>

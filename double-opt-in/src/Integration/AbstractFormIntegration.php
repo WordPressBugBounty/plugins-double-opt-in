@@ -488,6 +488,79 @@ abstract class AbstractFormIntegration implements FormIntegrationInterface {
 	}
 
 	/**
+	 * The consent gate, asked at the form plugin's own validation stage.
+	 *
+	 * For integrations whose submit hook runs after the form plugin has
+	 * already accepted the submission (WPForms `wpforms_process_complete`,
+	 * Gravity Forms `gform_after_submission`). By then the form has been
+	 * replaced by its confirmation, and a refused consent could only be
+	 * reported in a toast over an empty page (5.6.2 click test). Asked from
+	 * `wpforms_process` / `gform_validation` instead, the form plugin marks
+	 * the checkbox like a missed required field and keeps the input.
+	 *
+	 * Only a refusal that would stand is returned: DOI on for the form, not
+	 * skipped by `f12_cf7_doubleoptin_skip_option`, verdict NOT_GIVEN, gate
+	 * enforced. Everything else — a stale field name, the gate switched off
+	 * by filter — is left to createOptIn(), which logs it as before.
+	 *
+	 * @param FormDataInterface $formData The submission, normalized the same
+	 *                                    way the submit hook will normalize it.
+	 * @param mixed             $rawFields What the skip filter receives in the
+	 *                                     submit hook of this integration.
+	 *
+	 * @return OptInError|null The refusal, or null to let the form through.
+	 *
+	 * @since 5.6.2
+	 */
+	public function refusedConsentBeforeSubmit( FormDataInterface $formData, $rawFields = array() ): ?OptInError {
+		$formId = $formData->getFormId();
+
+		if ( ! $this->isOptInEnabled( $formId ) ) {
+			return null;
+		}
+
+		if ( apply_filters( 'f12_cf7_doubleoptin_skip_option', false, $formId, $rawFields, $this->getIdentifier() ) ) {
+			return null;
+		}
+
+		$consentField = (string) ( $this->getFormParameter( $formId )['consent_field'] ?? '' );
+		if ( $consentField === '' ) {
+			return null;
+		}
+
+		$verdict = ConsentGate::evaluate(
+			$consentField,
+			$formData->getFields(),
+			$this->getKnownFieldNames( $formId )
+		);
+
+		if ( $verdict !== ConsentGate::NOT_GIVEN || ! ConsentGate::isEnforced( $formId, $this->getIdentifier() ) ) {
+			return null;
+		}
+
+		$this->getLogger()->info(
+			'Consent acceptance not given, rejecting submission at validation',
+			array(
+				'plugin'        => 'double-opt-in',
+				'form_id'       => $formId,
+				'integration'   => $this->getIdentifier(),
+				'consent_field' => $consentField,
+			)
+		);
+
+		/** This action is documented in createOptIn(). */
+		do_action( 'f12_cf7_doubleoptin_consent_not_given', $formId, $consentField );
+
+		return OptInError::fromCode(
+			OptInError::CONSENT_NOT_GIVEN,
+			array(
+				'form_id'       => $formId,
+				'consent_field' => $consentField,
+			)
+		);
+	}
+
+	/**
 	 * Validate the consent-acceptance gate (GDPR Art. 7).
 	 *
 	 * The decision itself lives in {@see ConsentGate} — this method only

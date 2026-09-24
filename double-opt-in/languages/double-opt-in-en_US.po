@@ -1410,8 +1410,8 @@ msgid "Maybe Later"
 msgstr "Maybe Later"
 
 #: core/CF7DoubleOptIn.class.php:603
-msgid "⚠️ Important: Major Update – Please backup before updating!"
-msgstr "⚠️ Important: Major Update – Please backup before updating!"
+msgid "Important: Major Update – Please backup before updating!"
+msgstr "Important: Major Update – Please backup before updating!"
 
 #: core/CF7DoubleOptIn.class.php:604
 msgid "This version includes significant changes to the form management system, email templates, and database structure. We strongly recommend creating a full site backup before updating."

@@ -1586,8 +1586,8 @@ msgid "Are you sure you want to permanently delete this Opt-In? This action cann
 msgstr "Sind Sie sicher, dass Sie dieses Opt-In unwiderruflich löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden."
 
 #: core/CF7DoubleOptIn.class.php:603
-msgid "⚠️ Important: Major Update – Please backup before updating!"
-msgstr "⚠️ Wichtig: Großes Update – Bitte erstellen Sie vorher ein Backup!"
+msgid "Important: Major Update – Please backup before updating!"
+msgstr "Wichtig: Großes Update – Bitte erstellen Sie vorher ein Backup!"
 
 #: core/CF7DoubleOptIn.class.php:604
 msgid "This version includes significant changes to the form management system, email templates, and database structure. We strongly recommend creating a full site backup before updating."

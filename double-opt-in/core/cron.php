@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 function add_cron_jobs() {
 	$logger = Logger::getInstance();
 
-	// 🔹 Daily Telemetry Job — abgeschafft, und bestehende Planungen aufräumen.
+	// Daily Telemetry Job — abgeschafft, und bestehende Planungen aufräumen.
 	//
 	// Der Job hat täglich an einen Endpoint gepostet, den es nicht mehr gibt:
 	// silentshield.forge12.com trägt ein Zertifikat für einen fremden Host

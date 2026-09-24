@@ -68,6 +68,32 @@ abstract class OptInFrontend {
 	protected ?OptInError $lastCreationError = null;
 
 	/**
+	 * Why the last maybeCreateOptIn() returned null, or null if it did not.
+	 *
+	 * Callers use it to answer in the form plugin's own words — Elementor
+	 * adds the message to its AJAX response when the error must reach the
+	 * visitor (OptInError::shouldShowToVisitor()).
+	 *
+	 * @return OptInError|null
+	 */
+	public function getLastCreationError(): ?OptInError {
+		return $this->lastCreationError;
+	}
+
+	/**
+	 * Remember the refusal and hand it to the frontend toast.
+	 *
+	 * @param OptInError $error  The reason.
+	 * @param int        $formId The form.
+	 *
+	 * @return void
+	 */
+	protected function storeCreationError( OptInError $error, int $formId ): void {
+		$this->lastCreationError = $error;
+		ErrorNotification::store( $error, $formId );
+	}
+
+	/**
 	 * Get the validation status from the last validateOptIn() call.
 	 *
 	 * @return string One of: '', 'confirmed', 'already_confirmed', 'expired', 'not_found'.
@@ -813,6 +839,8 @@ abstract class OptInFrontend {
 	 * @return OptIn|null
 	 */
 	protected function maybeCreateOptIn( int $formId, string $formHtml, array $parameter, array $files = array(), array $knownFields = array() ): ?OptIn {
+		$this->lastCreationError = null;
+
 		$this->get_logger()->debug( 'maybeCreateOptIn called', [
 			'plugin'   => 'double-opt-in',
 			'class'    => __CLASS__,
@@ -857,7 +885,7 @@ abstract class OptInFrontend {
 			$this->get_logger()->warning( 'No recipient found, skipping OptIn creation', [
 				'plugin' => 'double-opt-in',
 			] );
-			ErrorNotification::store(
+			$this->storeCreationError(
 				OptInError::fromCode( OptInError::NO_RECIPIENT, [ 'form_id' => $formId ] ),
 				$formId
 			);
@@ -906,7 +934,7 @@ abstract class OptInFrontend {
 				'consent_field' => $consentField,
 			] );
 			do_action( 'f12_cf7_doubleoptin_consent_not_given', $formId, $consentField );
-			ErrorNotification::store(
+			$this->storeCreationError(
 				OptInError::fromCode(
 					OptInError::CONSENT_NOT_GIVEN,
 					[ 'form_id' => $formId, 'consent_field' => $consentField ]
@@ -943,7 +971,7 @@ abstract class OptInFrontend {
 				'formId' => $formId,
 			] );
 			do_action( 'f12_cf7_doubleoptin_rate_limited', 'ip', $ip, $formId );
-			ErrorNotification::store(
+			$this->storeCreationError(
 				OptInError::fromCode( OptInError::RATE_LIMIT_IP, [ 'ip' => $ip, 'form_id' => $formId ] ),
 				$formId
 			);
@@ -957,7 +985,7 @@ abstract class OptInFrontend {
 				'formId' => $formId,
 			] );
 			do_action( 'f12_cf7_doubleoptin_rate_limited', 'email', $recipient, $formId );
-			ErrorNotification::store(
+			$this->storeCreationError(
 				OptInError::fromCode( OptInError::RATE_LIMIT_EMAIL, [ 'email' => $recipient, 'form_id' => $formId ] ),
 				$formId
 			);
@@ -1018,7 +1046,7 @@ abstract class OptInFrontend {
 				[ 'email' => $recipient, 'form_id' => $formId ]
 			);
 
-			ErrorNotification::store( $this->lastCreationError, $formId );
+			$this->storeCreationError( $this->lastCreationError, $formId );
 			return null;
 		}
 
@@ -1085,7 +1113,7 @@ abstract class OptInFrontend {
 
 		do_action( 'f12_cf7_doubleoptin_creation_failed', $formId, $recipient );
 
-		ErrorNotification::store(
+		$this->storeCreationError(
 			OptInError::fromCode( OptInError::SAVE_FAILED, [ 'form_id' => $formId ] ),
 			$formId
 		);

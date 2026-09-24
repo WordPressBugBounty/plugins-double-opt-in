@@ -550,7 +550,7 @@ msgid "Maybe Later"
 msgstr ""
 
 #: core/CF7DoubleOptIn.class.php:603
-msgid "⚠️ Important: Major Update – Please backup before updating!"
+msgid "Important: Major Update – Please backup before updating!"
 msgstr ""
 
 #: core/CF7DoubleOptIn.class.php:604
