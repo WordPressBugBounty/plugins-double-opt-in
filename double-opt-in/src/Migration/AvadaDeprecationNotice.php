@@ -103,7 +103,7 @@ final class AvadaDeprecationNotice {
 						<?php esc_html_e( 'Dismiss until update', 'double-opt-in' ); ?>
 					</button>
 				<?php endif; ?>
-				<a href="https://www.forge12.com/shop/contact-form-7-double-opt-in"
+				<a href="<?php echo esc_url( self::productUrl() ); ?>"
 					target="_blank"
 					rel="noopener">
 					<?php esc_html_e( 'Learn more', 'double-opt-in' ); ?>
@@ -270,5 +270,16 @@ final class AvadaDeprecationNotice {
 			return false;
 		}
 		return version_compare( FORGE12_OPTIN_VERSION, '5.0.0', '>=' );
+	}
+
+	/**
+	 * Shop link with the same tracking arguments as every other entry point.
+	 */
+	private static function productUrl(): string {
+		$fn = '\\forge12\\contactform7\\CF7DoubleOptIn\\get_product_url';
+
+		return function_exists( $fn )
+			? (string) $fn( 'avada-notice' )
+			: 'https://www.forge12.com/shop/contact-form-7-double-opt-in';
 	}
 }

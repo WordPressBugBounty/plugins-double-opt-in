@@ -89,6 +89,26 @@ function link_args( string $from = '' ): array {
 }
 
 /**
+ * Campaign tags for links into the shop.
+ *
+ * forge12.com runs WooCommerce, whose Order Attribution stores the utm_*
+ * parameters a buyer arrived with on the order. `from` alone only shows up in
+ * server logs; these make a sale traceable to the place in the plugin that led
+ * to it. Product links only — a feedback or support visit is not a sale.
+ *
+ * @param string $from Which entry point the click came from.
+ *
+ * @return array<string, string>
+ */
+function campaign_args( string $from ): array {
+	return array(
+		'utm_source'   => 'double-opt-in',
+		'utm_medium'   => 'plugin',
+		'utm_campaign' => $from !== '' ? $from : 'unspecified',
+	);
+}
+
+/**
  * Build a link to the product page.
  *
  * @param string $from Which entry point the click came from.
@@ -96,7 +116,7 @@ function link_args( string $from = '' ): array {
  * @return string
  */
 function get_product_url( string $from = '' ): string {
-	$url = add_query_arg( link_args( $from ), PRODUCT_BASE . PRODUCT_PATH );
+	$url = add_query_arg( link_args( $from ) + campaign_args( $from ), PRODUCT_BASE . PRODUCT_PATH );
 
 	/**
 	 * Filter a link to the product site.

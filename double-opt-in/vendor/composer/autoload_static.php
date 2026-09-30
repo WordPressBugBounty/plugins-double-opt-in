@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit3be1c9b38c1af01909fcefd322c95ea4
+class ComposerStaticInit8a6c1362c016d475de4ceee3123d7d9f
 {
     public static $prefixLengthsPsr4 = array (
         'F' => 
@@ -120,6 +120,7 @@ class ComposerStaticInit3be1c9b38c1af01909fcefd322c95ea4
         'Forge12\\DoubleOptIn\\Providers\\LicensingServiceProvider' => __DIR__ . '/../..' . '/src/Providers/LicensingServiceProvider.php',
         'Forge12\\DoubleOptIn\\Providers\\MigrationServiceProvider' => __DIR__ . '/../..' . '/src/Providers/MigrationServiceProvider.php',
         'Forge12\\DoubleOptIn\\Providers\\RepositoryServiceProvider' => __DIR__ . '/../..' . '/src/Providers/RepositoryServiceProvider.php',
+        'Forge12\\DoubleOptIn\\Providers\\SetupServiceProvider' => __DIR__ . '/../..' . '/src/Providers/SetupServiceProvider.php',
         'Forge12\\DoubleOptIn\\Repository\\FollowUpRepository' => __DIR__ . '/../..' . '/src/Repository/FollowUpRepository.php',
         'Forge12\\DoubleOptIn\\Repository\\FollowUpRepositoryInterface' => __DIR__ . '/../..' . '/src/Repository/FollowUpRepositoryInterface.php',
         'Forge12\\DoubleOptIn\\Repository\\FollowUpSchema' => __DIR__ . '/../..' . '/src/Repository/FollowUpSchema.php',
@@ -129,15 +130,22 @@ class ComposerStaticInit3be1c9b38c1af01909fcefd322c95ea4
         'Forge12\\DoubleOptIn\\Service\\OptInValidator' => __DIR__ . '/../..' . '/src/Service/OptInValidator.php',
         'Forge12\\DoubleOptIn\\Service\\PrivacyIntegration' => __DIR__ . '/../..' . '/src/Service/PrivacyIntegration.php',
         'Forge12\\DoubleOptIn\\Service\\RateLimiter' => __DIR__ . '/../..' . '/src/Service/RateLimiter.php',
+        'Forge12\\DoubleOptIn\\Setup\\FormDefaults' => __DIR__ . '/../..' . '/src/Setup/FormDefaults.php',
+        'Forge12\\DoubleOptIn\\Setup\\FormPluginDetector' => __DIR__ . '/../..' . '/src/Setup/FormPluginDetector.php',
+        'Forge12\\DoubleOptIn\\Setup\\SetupMailComposer' => __DIR__ . '/../..' . '/src/Setup/SetupMailComposer.php',
+        'Forge12\\DoubleOptIn\\Setup\\SetupRedirect' => __DIR__ . '/../..' . '/src/Setup/SetupRedirect.php',
+        'Forge12\\DoubleOptIn\\Setup\\SetupRestController' => __DIR__ . '/../..' . '/src/Setup/SetupRestController.php',
+        'Forge12\\DoubleOptIn\\Setup\\SetupService' => __DIR__ . '/../..' . '/src/Setup/SetupService.php',
+        'Forge12\\DoubleOptIn\\Setup\\SetupState' => __DIR__ . '/../..' . '/src/Setup/SetupState.php',
         'Forge12\\DoubleOptIn\\Versioning\\SemverConstraint' => __DIR__ . '/../..' . '/src/Versioning/SemverConstraint.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit3be1c9b38c1af01909fcefd322c95ea4::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit3be1c9b38c1af01909fcefd322c95ea4::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit3be1c9b38c1af01909fcefd322c95ea4::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit8a6c1362c016d475de4ceee3123d7d9f::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit8a6c1362c016d475de4ceee3123d7d9f::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit8a6c1362c016d475de4ceee3123d7d9f::$classMap;
 
         }, null, ClassLoader::class);
     }

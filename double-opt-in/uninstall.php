@@ -102,6 +102,10 @@ if ( should_keep_data_on_uninstall() ) {
 delete_option( 'f12_cf7_doubleoptin_installed_at' );
 delete_option( 'f12_cf7_doubleoptin_installation_uuid' );
 delete_option( 'f12_cf7_doubleoptin_telemetry_counters' );
+// Setup wizard progress. The sender defaults it stored (f12_doi_form_defaults)
+// are admin-set config and stay, like f12-doi-settings.
+delete_option( 'f12_doi_setup' );
+delete_transient( 'f12_doi_setup_redirect' );
 
 // The daily telemetry job is no longer scheduled, but an installation that ran
 // an older version still carries the event. Uninstalling has to take it with

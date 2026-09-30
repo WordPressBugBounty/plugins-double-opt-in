@@ -136,6 +136,10 @@ msgstr ""
 msgid "%s deactivated."
 msgstr ""
 
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:710
+msgid "%s detected."
+msgstr ""
+
 #: packages/core/admin-ui/src/pages/FormsPage.tsx:216
 msgid "%s forms"
 msgstr ""
@@ -169,11 +173,11 @@ msgstr ""
 msgid "%s was built in the email designer. Edit the message body there — this textarea is bypassed for custom templates."
 msgstr ""
 
-#: packages/core/admin-ui/src/pages/DashboardPage.tsx:109
+#: packages/core/admin-ui/src/pages/DashboardPage.tsx:110
 msgid "%s%% awaiting"
 msgstr ""
 
-#: packages/core/admin-ui/src/pages/DashboardPage.tsx:103
+#: packages/core/admin-ui/src/pages/DashboardPage.tsx:104
 msgid "%s%% conversion"
 msgstr ""
 
@@ -205,11 +209,15 @@ msgstr ""
 msgid "90 Days"
 msgstr ""
 
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:735
+msgid "Accent"
+msgstr ""
+
 #: packages/core/admin-ui/src/pages/OptInDetailPage.tsx:392
 msgid "Acknowledgment field:"
 msgstr ""
 
-#: packages/core/admin-ui/src/components/FollowUpPanel.tsx:310
+#: packages/core/admin-ui/src/components/FollowUpPanel.tsx:314
 msgid "Action"
 msgstr ""
 
@@ -262,7 +270,7 @@ msgid "Activation"
 msgstr ""
 
 #: packages/core/admin-ui/src/pages/AddonsPage.tsx:376
-#: packages/core/admin-ui/src/pages/DashboardPage.tsx:97
+#: packages/core/admin-ui/src/pages/DashboardPage.tsx:98
 #: packages/core/admin-ui/src/pages/LicensePage.tsx:104
 msgid "Active"
 msgstr ""
@@ -327,7 +335,7 @@ msgstr ""
 msgid "Addons"
 msgstr ""
 
-#: packages/core/admin-ui/src/pages/SettingsPage.tsx:339
+#: packages/core/admin-ui/src/pages/SettingsPage.tsx:340
 msgid "Adds a small \"Double Opt-In by Forge12\" link on the page a subscriber lands on after confirming. Off by default."
 msgstr ""
 
@@ -349,6 +357,10 @@ msgstr ""
 
 #: packages/core/admin-ui/src/pages/OptOutPage.tsx:224
 msgid "After re-activating"
+msgstr ""
+
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:448
+msgid "After the click"
 msgstr ""
 
 #: packages/core/admin-ui/src/components/addon-settings/UniqueEmailSettingsPanel.tsx:458
@@ -396,7 +408,7 @@ msgstr ""
 msgid "All forms EXCEPT selected (opt-out list)"
 msgstr ""
 
-#: packages/core/admin-ui/src/pages/DashboardPage.tsx:248
+#: packages/core/admin-ui/src/pages/DashboardPage.tsx:251
 msgid "All Opt-Ins"
 msgstr ""
 
@@ -416,7 +428,7 @@ msgstr ""
 msgid "All Types"
 msgstr ""
 
-#: packages/core/admin-ui/src/components/FollowUpPanel.tsx:286
+#: packages/core/admin-ui/src/components/FollowUpPanel.tsx:290
 msgid "Also retry unclear actions"
 msgstr ""
 
@@ -425,7 +437,7 @@ msgid "An unexpected error interrupted the action — it may have run."
 msgstr ""
 
 #: packages/core/admin-ui/src/components/AdminLayout.tsx:22
-#: packages/core/admin-ui/src/pages/DashboardPage.tsx:251
+#: packages/core/admin-ui/src/pages/DashboardPage.tsx:254
 msgid "Analytics"
 msgstr ""
 
@@ -507,7 +519,7 @@ msgstr ""
 msgid "At submit time, the validator looks up the email in the SAME form only. The same address may opt into Form A AND Form B without conflict."
 msgstr ""
 
-#: packages/core/admin-ui/src/components/FollowUpPanel.tsx:313
+#: packages/core/admin-ui/src/components/FollowUpPanel.tsx:317
 msgid "Attempts"
 msgstr ""
 
@@ -557,16 +569,20 @@ msgstr ""
 msgid "Auto-creation runs ONLY on the forms in the list below. The safe default — drift here from `all` would silently create users from every form."
 msgstr ""
 
-#: packages/core/admin-ui/src/pages/SettingsPage.tsx:404
+#: packages/core/admin-ui/src/pages/SettingsPage.tsx:406
 msgid "Automatic reminders"
 msgstr ""
 
-#: packages/core/admin-ui/src/components/FollowUpPanel.tsx:364
+#: packages/core/admin-ui/src/components/FollowUpPanel.tsx:368
 msgid "Automatic retries depend on WP-Cron, which only runs when the site has visitors. Use \"Retry failed actions\" to run them now."
 msgstr ""
 
 #: packages/core/admin-ui/src/pages/OptOutPage.tsx:1021
 msgid "Available placeholder:"
+msgstr ""
+
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:516
+msgid "Back"
 msgstr ""
 
 #: packages/core/admin-ui/src/pages/EmailEditorPage.tsx:165
@@ -638,7 +654,7 @@ msgid "By email address"
 msgstr ""
 
 #: packages/core/admin-ui/src/components/addon-settings/ConsentExportSettingsPanel.tsx:815
-#: packages/core/admin-ui/src/components/FollowUpPanel.tsx:382
+#: packages/core/admin-ui/src/components/FollowUpPanel.tsx:386
 #: packages/core/admin-ui/src/pages/CategoriesPage.tsx:289
 #: packages/core/admin-ui/src/pages/DatabasePage.tsx:223
 #: packages/core/admin-ui/src/pages/DatabasePage.tsx:257
@@ -667,6 +683,7 @@ msgstr ""
 #: packages/core/admin-ui/src/pages/OptInDetailPage.tsx:306
 #: packages/core/admin-ui/src/pages/OptInDetailPage.tsx:607
 #: packages/core/admin-ui/src/pages/OptInsPage.tsx:180
+#: packages/core/admin-ui/src/pages/OptInsPage.tsx:517
 #: packages/core/admin-ui/src/pages/OptInsPage.tsx:518
 #: packages/core/admin-ui/src/pages/OptInsPage.tsx:608
 msgid "Category"
@@ -702,6 +719,10 @@ msgstr ""
 
 #: packages/core/admin-ui/src/components/addon-settings/ConditionalSettingsPanel.tsx:598
 msgid "Choose a template"
+msgstr ""
+
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:683
+msgid "Choose email field …"
 msgstr ""
 
 #: packages/core/admin-ui/src/components/addon-settings/ConsentExportSettingsPanel.tsx:788
@@ -779,7 +800,7 @@ msgstr ""
 msgid "Configure"
 msgstr ""
 
-#: packages/core/admin-ui/src/pages/SettingsPage.tsx:166
+#: packages/core/admin-ui/src/pages/SettingsPage.tsx:167
 msgid "Configure automatic cleanup of opt-in records"
 msgstr ""
 
@@ -787,7 +808,7 @@ msgstr ""
 msgid "Configure Double Opt-In for this %s form."
 msgstr ""
 
-#: packages/core/admin-ui/src/pages/SettingsPage.tsx:152
+#: packages/core/admin-ui/src/pages/SettingsPage.tsx:153
 msgid "Configure global Double Opt-In settings"
 msgstr ""
 
@@ -801,6 +822,10 @@ msgstr ""
 
 #: packages/core/admin-ui/src/pages/DatabasePage.tsx:217
 msgid "Confirm Deletion"
+msgstr ""
+
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:800
+msgid "Confirm email address"
 msgstr ""
 
 #: packages/core/admin-ui/src/pages/OptOutPage.tsx:181
@@ -819,6 +844,10 @@ msgstr ""
 msgid "Confirmation Date"
 msgstr ""
 
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:448
+msgid "Confirmation email"
+msgstr ""
+
 #: packages/core/admin-ui/src/pages/OptInDetailPage.tsx:147
 #: packages/core/admin-ui/src/pages/OptInsPage.tsx:422
 msgid "Confirmation email resent"
@@ -829,7 +858,16 @@ msgid "Confirmation IP"
 msgstr ""
 
 #: packages/core/admin-ui/src/components/forms/GeneralTab.tsx:224
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:347
 msgid "Confirmation page"
+msgstr ""
+
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:846
+msgid "Confirmation page “Email address confirmed” created and published"
+msgstr ""
+
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:847
+msgid "Confirmation page: existing page"
 msgstr ""
 
 #: packages/core/admin-ui/src/pages/OptInDetailPage.tsx:158
@@ -838,8 +876,8 @@ msgstr ""
 
 #: packages/core/admin-ui/src/components/addon-settings/UniqueEmailSettingsPanel.tsx:456
 #: packages/core/admin-ui/src/components/addon-settings/UniqueEmailSettingsPanel.tsx:645
-#: packages/core/admin-ui/src/pages/DashboardPage.tsx:100
-#: packages/core/admin-ui/src/pages/DashboardPage.tsx:188
+#: packages/core/admin-ui/src/pages/DashboardPage.tsx:101
+#: packages/core/admin-ui/src/pages/DashboardPage.tsx:191
 #: packages/core/admin-ui/src/pages/DatabasePage.tsx:112
 #: packages/core/admin-ui/src/pages/OptInDetailPage.tsx:219
 #: packages/core/admin-ui/src/pages/OptInDetailPage.tsx:597
@@ -913,8 +951,16 @@ msgstr ""
 msgid "Consent text shown to user"
 msgstr ""
 
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:619
+msgid "Contact Form 7 is not installed."
+msgstr ""
+
 #: packages/core/admin-ui/src/components/addon-settings/ConditionalSettingsPanel.tsx:112
 msgid "Contains"
+msgstr ""
+
+#: packages/core/admin-ui/src/components/SetupCards.tsx:37
+msgid "Continue setup"
 msgstr ""
 
 #: packages/core/admin-ui/src/pages/UserCreationPage.tsx:82
@@ -929,7 +975,7 @@ msgstr ""
 msgid "Copied to clipboard"
 msgstr ""
 
-#: packages/core/admin-ui/src/components/FollowUpPanel.tsx:265
+#: packages/core/admin-ui/src/components/FollowUpPanel.tsx:269
 msgid "Copy diagnosis"
 msgstr ""
 
@@ -947,6 +993,10 @@ msgstr ""
 msgid "Count"
 msgstr ""
 
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:634
+msgid "Create a form"
+msgstr ""
+
 #: packages/core/admin-ui/src/pages/OptOutPage.tsx:870
 msgid "Create a new page with the opt-out shortcodes"
 msgstr ""
@@ -955,8 +1005,16 @@ msgstr ""
 msgid "Create a WordPress user automatically after opt-in confirmation"
 msgstr ""
 
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:352
+msgid "Create and publish the page “Email address confirmed”"
+msgstr ""
+
 #: packages/core/admin-ui/src/pages/EmailTemplatesPage.tsx:150
 msgid "Create New"
+msgstr ""
+
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:632
+msgid "Create one and come back here. You can also skip this step."
 msgstr ""
 
 #: packages/core/admin-ui/src/pages/EmailTemplatesPage.tsx:131
@@ -1003,19 +1061,23 @@ msgstr ""
 msgid "Custom template selected"
 msgstr ""
 
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:734
+msgid "Dark"
+msgstr ""
+
 #: packages/core/admin-ui/src/components/AdminLayout.tsx:15
 #: packages/core/admin-ui/src/components/AppSidebar.tsx:43
-#: packages/core/admin-ui/src/pages/DashboardPage.tsx:117
+#: packages/core/admin-ui/src/pages/DashboardPage.tsx:118
 msgid "Dashboard"
 msgstr ""
 
-#: packages/core/admin-ui/src/pages/SettingsPage.tsx:166
+#: packages/core/admin-ui/src/pages/SettingsPage.tsx:167
 msgid "Data Retention"
 msgstr ""
 
 #: packages/core/admin-ui/src/components/AdminLayout.tsx:21
 #: packages/core/admin-ui/src/components/AppSidebar.tsx:51
-#: packages/core/admin-ui/src/pages/DashboardPage.tsx:252
+#: packages/core/admin-ui/src/pages/DashboardPage.tsx:255
 msgid "Database"
 msgstr ""
 
@@ -1027,13 +1089,13 @@ msgstr ""
 msgid "Database reset successfully"
 msgstr ""
 
-#: packages/core/admin-ui/src/pages/DashboardPage.tsx:175
+#: packages/core/admin-ui/src/pages/DashboardPage.tsx:178
 #: packages/core/admin-ui/src/pages/OptInsPage.tsx:610
 msgid "Date"
 msgstr ""
 
-#: packages/core/admin-ui/src/pages/SettingsPage.tsx:186
-#: packages/core/admin-ui/src/pages/SettingsPage.tsx:215
+#: packages/core/admin-ui/src/pages/SettingsPage.tsx:187
+#: packages/core/admin-ui/src/pages/SettingsPage.tsx:216
 msgid "Days"
 msgstr ""
 
@@ -1136,7 +1198,7 @@ msgstr ""
 msgid "Delete Opt-In"
 msgstr ""
 
-#: packages/core/admin-ui/src/pages/SettingsPage.tsx:168
+#: packages/core/admin-ui/src/pages/SettingsPage.tsx:169
 msgid "Delete Opt-Ins after"
 msgstr ""
 
@@ -1152,7 +1214,7 @@ msgstr ""
 msgid "Delete this run from the audit history? The originally exported records remain in the database — this only removes the audit row."
 msgstr ""
 
-#: packages/core/admin-ui/src/pages/SettingsPage.tsx:197
+#: packages/core/admin-ui/src/pages/SettingsPage.tsx:198
 msgid "Delete Unconfirmed after"
 msgstr ""
 
@@ -1168,6 +1230,10 @@ msgstr ""
 #: packages/core/admin-ui/src/pages/OptInsPage.tsx:757
 #: packages/core/admin-ui/src/pages/OptInsPage.tsx:789
 msgid "Deleting..."
+msgstr ""
+
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:758
+msgid "Design"
 msgstr ""
 
 #: packages/core/admin-ui/src/pages/OptInDetailPage.tsx:261
@@ -1211,7 +1277,7 @@ msgstr ""
 msgid "Display the opt-out request form"
 msgstr ""
 
-#: packages/core/admin-ui/src/pages/SettingsPage.tsx:406
+#: packages/core/admin-ui/src/pages/SettingsPage.tsx:408
 msgid "Disposable email blocking"
 msgstr ""
 
@@ -1239,12 +1305,24 @@ msgstr ""
 msgid "Done"
 msgstr ""
 
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:841
+msgid "Double Opt-In active for: %s"
+msgstr ""
+
 #: packages/core/admin-ui/src/pages/FormSettingsPage.tsx:348
 msgid "Double Opt-In cannot be enabled for this form until the following required fields are filled in:"
 msgstr ""
 
 #: packages/core/admin-ui/src/components/AppSidebar.tsx:273
 msgid "Double Opt-In for WordPress"
+msgstr ""
+
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:669
+msgid "Double Opt-In is already active — this form stays as it is."
+msgstr ""
+
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:836
+msgid "Double Opt-In is set up"
 msgstr ""
 
 #: packages/core/admin-ui/src/pages/FormSettingsPage.tsx:114
@@ -1312,7 +1390,7 @@ msgid "Editor link unavailable"
 msgstr ""
 
 #: packages/core/admin-ui/src/pages/AuditPage.tsx:188
-#: packages/core/admin-ui/src/pages/DashboardPage.tsx:172
+#: packages/core/admin-ui/src/pages/DashboardPage.tsx:175
 #: packages/core/admin-ui/src/pages/FormSettingsPage.tsx:372
 #: packages/core/admin-ui/src/pages/OptInDetailPage.tsx:298
 #: packages/core/admin-ui/src/pages/OptInsPage.tsx:178
@@ -1337,7 +1415,7 @@ msgstr ""
 msgid "Email content"
 msgstr ""
 
-#: packages/core/admin-ui/src/pages/SettingsPage.tsx:405
+#: packages/core/admin-ui/src/pages/SettingsPage.tsx:407
 msgid "Email domain validation"
 msgstr ""
 
@@ -1347,6 +1425,14 @@ msgstr ""
 
 #: packages/core/admin-ui/src/pages/EmailEditorPage.tsx:181
 msgid "Email editor not available"
+msgstr ""
+
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:671
+msgid "Email field detected automatically"
+msgstr ""
+
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:678
+msgid "Email field for %s"
 msgstr ""
 
 #: packages/core/admin-ui/src/components/addon-settings/ReminderSettingsPanel.tsx:275
@@ -1399,7 +1485,7 @@ msgstr ""
 msgid "Enter your license key to unlock %s."
 msgstr ""
 
-#: packages/core/admin-ui/src/components/FollowUpPanel.tsx:348
+#: packages/core/admin-ui/src/components/FollowUpPanel.tsx:352
 msgid "Entry: %s"
 msgstr ""
 
@@ -1620,7 +1706,7 @@ msgstr ""
 msgid "Failed to save reminder settings."
 msgstr ""
 
-#: packages/core/admin-ui/src/pages/SettingsPage.tsx:137
+#: packages/core/admin-ui/src/pages/SettingsPage.tsx:138
 msgid "Failed to save settings"
 msgstr ""
 
@@ -1696,7 +1782,16 @@ msgstr ""
 msgid "Filters restored from this run."
 msgstr ""
 
-#: packages/core/admin-ui/src/components/FollowUpPanel.tsx:257
+#: packages/core/admin-ui/src/components/SetupCards.tsx:29
+msgid "Finish setting up Double Opt-In"
+msgstr ""
+
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:340
+msgid "Finish setup"
+msgstr ""
+
+#: packages/core/admin-ui/src/components/FollowUpPanel.tsx:255
+#: packages/core/admin-ui/src/components/FollowUpPanel.tsx:261
 #: packages/core/admin-ui/src/pages/AuditPage.tsx:190
 #: packages/core/admin-ui/src/pages/OptInsPage.tsx:552
 #: packages/core/admin-ui/src/pages/OptInsPage.tsx:553
@@ -1732,7 +1827,7 @@ msgid "Force password change on first login"
 msgstr ""
 
 #: packages/core/admin-ui/src/components/addon-settings/ConsentExportSettingsPanel.tsx:528
-#: packages/core/admin-ui/src/pages/DashboardPage.tsx:173
+#: packages/core/admin-ui/src/pages/DashboardPage.tsx:176
 #: packages/core/admin-ui/src/pages/OptInDetailPage.tsx:302
 #: packages/core/admin-ui/src/pages/OptInDetailPage.tsx:602
 #: packages/core/admin-ui/src/pages/OptInsPage.tsx:179
@@ -1773,7 +1868,7 @@ msgstr ""
 msgid "Form Management"
 msgstr ""
 
-#: packages/core/admin-ui/src/pages/DashboardPage.tsx:249
+#: packages/core/admin-ui/src/pages/DashboardPage.tsx:252
 msgid "Form Settings"
 msgstr ""
 
@@ -1791,7 +1886,13 @@ msgstr ""
 
 #: packages/core/admin-ui/src/components/AdminLayout.tsx:17
 #: packages/core/admin-ui/src/components/AppSidebar.tsx:45
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:448
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:859
 msgid "Forms"
+msgstr ""
+
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:711
+msgid "Forms built with %s do not have Double Opt-In yet. There is an addon for that."
 msgstr ""
 
 #: packages/core/admin-ui/src/pages/UserCreationPage.tsx:530
@@ -1848,16 +1949,25 @@ msgstr ""
 msgid "Get credentials at"
 msgstr ""
 
-#: packages/core/admin-ui/src/pages/DashboardPage.tsx:250
+#: packages/core/admin-ui/src/pages/DashboardPage.tsx:253
 msgid "Global Settings"
 msgstr ""
 
-#: packages/core/admin-ui/src/pages/SettingsPage.tsx:390
+#: packages/core/admin-ui/src/pages/SettingsPage.tsx:391
 msgid "Global settings affect all forms. Individual form settings can override some options."
 msgstr ""
 
 #: packages/core/admin-ui/src/pages/DatabasePage.tsx:205
 msgid "Go to Settings"
+msgstr ""
+
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:130
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:862
+msgid "Go to the dashboard"
+msgstr ""
+
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:389
+msgid "goes to %s"
 msgstr ""
 
 #: packages/core/admin-ui/src/pages/OptOutPage.tsx:225
@@ -1872,7 +1982,11 @@ msgstr ""
 msgid "Green notice shown on the list page after the visitor clicks Cancel on a single row."
 msgstr ""
 
-#: packages/core/admin-ui/src/pages/SettingsPage.tsx:310
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:798
+msgid "Hello, this email address was just entered on our site. To make sure it was really you, please confirm it with one click."
+msgstr ""
+
+#: packages/core/admin-ui/src/pages/SettingsPage.tsx:311
 msgid "Helps improve the plugin. No personal data collected."
 msgstr ""
 
@@ -1909,6 +2023,10 @@ msgstr ""
 msgid "ID"
 msgstr ""
 
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:247
+msgid "Ideally an address on your own domain."
+msgstr ""
+
 #: packages/core/admin-ui/src/pages/UserCreationPage.tsx:123
 msgid "If the email already belongs to a user, no action is taken."
 msgstr ""
@@ -1921,11 +2039,15 @@ msgstr ""
 msgid "If the email already belongs to a user, their meta fields get updated from the field map (role stays unchanged)."
 msgstr ""
 
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:803
+msgid "If you did not request this, simply ignore this email. Nothing happens without your confirmation."
+msgstr ""
+
 #: packages/core/admin-ui/src/components/FollowUpPanel.tsx:102
 msgid "In progress"
 msgstr ""
 
-#: packages/core/admin-ui/src/pages/DashboardPage.tsx:227
+#: packages/core/admin-ui/src/pages/DashboardPage.tsx:230
 #: packages/core/admin-ui/src/pages/LicensePage.tsx:104
 msgid "Inactive"
 msgstr ""
@@ -1964,6 +2086,10 @@ msgstr ""
 
 #: packages/core/admin-ui/src/pages/AddonsPage.tsx:578
 msgid "Install"
+msgstr ""
+
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:622
+msgid "Install Contact Form 7"
 msgstr ""
 
 #: packages/core/admin-ui/src/pages/UserCreationPage.tsx:514
@@ -2010,7 +2136,7 @@ msgstr ""
 msgid "JSON (pretty-printed)"
 msgstr ""
 
-#: packages/core/admin-ui/src/pages/SettingsPage.tsx:360
+#: packages/core/admin-ui/src/pages/SettingsPage.tsx:361
 msgid "Keep data on uninstall"
 msgstr ""
 
@@ -2022,11 +2148,11 @@ msgstr ""
 msgid "Key"
 msgstr ""
 
-#: packages/core/admin-ui/src/components/FollowUpPanel.tsx:314
+#: packages/core/admin-ui/src/components/FollowUpPanel.tsx:318
 msgid "Last attempt (UTC)"
 msgstr ""
 
-#: packages/core/admin-ui/src/pages/DashboardPage.tsx:163
+#: packages/core/admin-ui/src/pages/DashboardPage.tsx:166
 msgid "Latest opt-in submissions"
 msgstr ""
 
@@ -2041,7 +2167,7 @@ msgstr ""
 
 #: packages/core/admin-ui/src/components/AdminLayout.tsx:27
 #: packages/core/admin-ui/src/components/AppSidebar.tsx:105
-#: packages/core/admin-ui/src/pages/DashboardPage.tsx:226
+#: packages/core/admin-ui/src/pages/DashboardPage.tsx:229
 #: packages/core/admin-ui/src/pages/LicensePage.tsx:73
 msgid "License"
 msgstr ""
@@ -2060,6 +2186,10 @@ msgstr ""
 
 #: packages/core/admin-ui/src/pages/LicensePage.tsx:86
 msgid "License Status"
+msgstr ""
+
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:733
+msgid "Light"
 msgstr ""
 
 #: packages/core/admin-ui/src/components/addon-settings/ConsentExportSettingsPanel.tsx:585
@@ -2129,6 +2259,10 @@ msgstr ""
 msgid "Manage your opt-in database records"
 msgstr ""
 
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:266
+msgid "Many inboxes treat such mails as spam. Use an address ending in @%s."
+msgstr ""
+
 #: packages/core/admin-ui/src/components/forms/MappingTab.tsx:47
 msgid "Map placeholder tags used in the email body to the real form fields. Unmapped tags fall back to auto-detection by name (e.g."
 msgstr ""
@@ -2183,8 +2317,8 @@ msgstr ""
 msgid "Modify the opt-out email body before sending."
 msgstr ""
 
-#: packages/core/admin-ui/src/pages/SettingsPage.tsx:187
-#: packages/core/admin-ui/src/pages/SettingsPage.tsx:216
+#: packages/core/admin-ui/src/pages/SettingsPage.tsx:188
+#: packages/core/admin-ui/src/pages/SettingsPage.tsx:217
 msgid "Months"
 msgstr ""
 
@@ -2217,7 +2351,11 @@ msgstr ""
 msgid "New Category"
 msgstr ""
 
-#: packages/core/admin-ui/src/components/FollowUpPanel.tsx:339
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:522
+msgid "Next"
+msgstr ""
+
+#: packages/core/admin-ui/src/components/FollowUpPanel.tsx:343
 msgid "Next automatic attempt: %s"
 msgstr ""
 
@@ -2233,8 +2371,12 @@ msgstr ""
 msgid "No consent text was configured for this form at the time of submission."
 msgstr ""
 
-#: packages/core/admin-ui/src/pages/DashboardPage.tsx:97
+#: packages/core/admin-ui/src/pages/DashboardPage.tsx:98
 msgid "No data"
+msgstr ""
+
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:672
+msgid "No email field detected, please choose one"
 msgstr ""
 
 #: packages/core/admin-ui/src/pages/AuditPage.tsx:217
@@ -2255,6 +2397,10 @@ msgstr ""
 
 #: packages/core/admin-ui/src/components/addon-settings/ConsentExportSettingsPanel.tsx:693
 msgid "No exports yet — the table fills up as you run them."
+msgstr ""
+
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:842
+msgid "No form switched on yet — you can do that under Forms."
 msgstr ""
 
 #: packages/core/admin-ui/src/components/addon-settings/ConditionalSettingsPanel.tsx:414
@@ -2358,6 +2504,10 @@ msgstr ""
 
 #: packages/core/admin-ui/src/components/FollowUpPanel.tsx:148
 msgid "Not supported by this form plugin edition."
+msgstr ""
+
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:853
+msgid "Not switched on because settings are missing: %s"
 msgstr ""
 
 #: packages/core/admin-ui/src/pages/OptOutPage.tsx:754
@@ -2572,11 +2722,12 @@ msgstr ""
 msgid "Override the defaults above for specific forms — e.g. a different confirmation mail per newsletter, or fully disabling opt-out for a transactional form. Empty fields inherit from defaults; the on/off switch can be left on \"Inherit\" or set explicitly per form."
 msgstr ""
 
-#: packages/core/admin-ui/src/pages/DashboardPage.tsx:118
+#: packages/core/admin-ui/src/pages/DashboardPage.tsx:119
 msgid "Overview of your Double Opt-In activity"
 msgstr ""
 
 #: packages/core/admin-ui/src/components/AdminLayout.tsx:43
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:364
 msgid "Page"
 msgstr ""
 
@@ -2598,8 +2749,8 @@ msgid "Partially successful"
 msgstr ""
 
 #: packages/core/admin-ui/src/components/FollowUpPanel.tsx:75
-#: packages/core/admin-ui/src/pages/DashboardPage.tsx:106
-#: packages/core/admin-ui/src/pages/DashboardPage.tsx:188
+#: packages/core/admin-ui/src/pages/DashboardPage.tsx:107
+#: packages/core/admin-ui/src/pages/DashboardPage.tsx:191
 #: packages/core/admin-ui/src/pages/OptInDetailPage.tsx:224
 #: packages/core/admin-ui/src/pages/OptInDetailPage.tsx:597
 #: packages/core/admin-ui/src/pages/OptInsPage.tsx:169
@@ -2675,31 +2826,39 @@ msgstr ""
 msgid "placeholders — see each entry's hint."
 msgstr ""
 
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:548
+msgid "prefilled"
+msgstr ""
+
 #: packages/core/admin-ui/src/pages/AddonsPage.tsx:450
 msgid "Prerequisite missing"
 msgstr ""
 
-#: packages/core/admin-ui/src/pages/SettingsPage.tsx:362
+#: packages/core/admin-ui/src/pages/SettingsPage.tsx:363
 msgid "Preserve opt-in records and categories if the plugin is deleted. Turn off for a full cleanup on uninstall."
+msgstr ""
+
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:796
+msgid "Preview of the email text"
 msgstr ""
 
 #: packages/core/admin-ui/src/components/addon-settings/ConditionalSettingsPanel.tsx:610
 msgid "Prio"
 msgstr ""
 
-#: packages/core/admin-ui/src/pages/SettingsPage.tsx:407
+#: packages/core/admin-ui/src/pages/SettingsPage.tsx:409
 msgid "Priority support"
 msgstr ""
 
-#: packages/core/admin-ui/src/pages/SettingsPage.tsx:225
+#: packages/core/admin-ui/src/pages/SettingsPage.tsx:226
 msgid "Privacy"
 msgstr ""
 
-#: packages/core/admin-ui/src/pages/SettingsPage.tsx:225
+#: packages/core/admin-ui/src/pages/SettingsPage.tsx:226
 msgid "Privacy policy and GDPR settings"
 msgstr ""
 
-#: packages/core/admin-ui/src/pages/SettingsPage.tsx:227
+#: packages/core/admin-ui/src/pages/SettingsPage.tsx:228
 msgid "Privacy Policy Page"
 msgstr ""
 
@@ -2709,7 +2868,7 @@ msgstr ""
 msgid "PRO"
 msgstr ""
 
-#: packages/core/admin-ui/src/pages/DashboardPage.tsx:227
+#: packages/core/admin-ui/src/pages/DashboardPage.tsx:230
 msgid "Pro Active"
 msgstr ""
 
@@ -2722,33 +2881,37 @@ msgstr ""
 msgid "Pro Features"
 msgstr ""
 
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:450
+msgid "Progress"
+msgstr ""
+
 #: packages/core/admin-ui/src/pages/EmailTemplatesPage.tsx:198
 msgid "Published"
 msgstr ""
 
-#: packages/core/admin-ui/src/pages/DashboardPage.tsx:206
+#: packages/core/admin-ui/src/pages/DashboardPage.tsx:209
 #: packages/core/admin-ui/src/pages/OptInDetailPage.tsx:591
 msgid "Quick Info"
 msgstr ""
 
-#: packages/core/admin-ui/src/pages/DashboardPage.tsx:242
+#: packages/core/admin-ui/src/pages/DashboardPage.tsx:245
 msgid "Quick Links"
 msgstr ""
 
 #: packages/core/admin-ui/src/pages/AuditPage.tsx:185
-#: packages/core/admin-ui/src/pages/DashboardPage.tsx:225
+#: packages/core/admin-ui/src/pages/DashboardPage.tsx:228
 msgid "Rate Limit"
 msgstr ""
 
-#: packages/core/admin-ui/src/pages/SettingsPage.tsx:275
+#: packages/core/admin-ui/src/pages/SettingsPage.tsx:276
 msgid "Rate Limit Email"
 msgstr ""
 
-#: packages/core/admin-ui/src/pages/SettingsPage.tsx:264
+#: packages/core/admin-ui/src/pages/SettingsPage.tsx:265
 msgid "Rate Limit IP"
 msgstr ""
 
-#: packages/core/admin-ui/src/pages/SettingsPage.tsx:286
+#: packages/core/admin-ui/src/pages/SettingsPage.tsx:287
 msgid "Rate Limit Window (Min)"
 msgstr ""
 
@@ -2756,7 +2919,7 @@ msgstr ""
 msgid "Re-create the default reminder template in the Email Designer. Useful if you deleted it by accident."
 msgstr ""
 
-#: packages/core/admin-ui/src/components/FollowUpPanel.tsx:312
+#: packages/core/admin-ui/src/components/FollowUpPanel.tsx:316
 msgid "Reason"
 msgstr ""
 
@@ -2764,7 +2927,7 @@ msgstr ""
 msgid "Recent exports"
 msgstr ""
 
-#: packages/core/admin-ui/src/pages/DashboardPage.tsx:158
+#: packages/core/admin-ui/src/pages/DashboardPage.tsx:161
 msgid "Recent Opt-Ins"
 msgstr ""
 
@@ -2775,6 +2938,10 @@ msgstr ""
 #: packages/core/admin-ui/src/components/forms/EmailTab.tsx:52
 #: packages/core/admin-ui/src/components/forms/formSettingsTypes.ts:149
 msgid "Recipient field"
+msgstr ""
+
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:354
+msgid "recommended"
 msgstr ""
 
 #: packages/core/admin-ui/src/pages/ApiPage.tsx:270
@@ -2922,15 +3089,15 @@ msgstr ""
 msgid "Resulting behavior"
 msgstr ""
 
-#: packages/core/admin-ui/src/pages/DashboardPage.tsx:224
+#: packages/core/admin-ui/src/pages/DashboardPage.tsx:227
 msgid "Retention"
 msgstr ""
 
-#: packages/core/admin-ui/src/components/FollowUpPanel.tsx:374
+#: packages/core/admin-ui/src/components/FollowUpPanel.tsx:378
 msgid "Retry actions with an unknown outcome?"
 msgstr ""
 
-#: packages/core/admin-ui/src/components/FollowUpPanel.tsx:384
+#: packages/core/admin-ui/src/components/FollowUpPanel.tsx:388
 msgid "Retry anyway"
 msgstr ""
 
@@ -2938,7 +3105,7 @@ msgstr ""
 msgid "Retry failed"
 msgstr ""
 
-#: packages/core/admin-ui/src/components/FollowUpPanel.tsx:275
+#: packages/core/admin-ui/src/components/FollowUpPanel.tsx:279
 msgid "Retry failed actions"
 msgstr ""
 
@@ -2966,7 +3133,7 @@ msgstr ""
 msgid "Running"
 msgstr ""
 
-#: packages/core/admin-ui/src/components/FollowUpPanel.tsx:275
+#: packages/core/admin-ui/src/components/FollowUpPanel.tsx:279
 msgid "Running..."
 msgstr ""
 
@@ -2980,7 +3147,7 @@ msgstr ""
 msgid "Save blocklist"
 msgstr ""
 
-#: packages/core/admin-ui/src/pages/SettingsPage.tsx:156
+#: packages/core/admin-ui/src/pages/SettingsPage.tsx:157
 msgid "Save Changes"
 msgstr ""
 
@@ -3011,7 +3178,7 @@ msgstr ""
 #: packages/core/admin-ui/src/pages/ApiPage.tsx:287
 #: packages/core/admin-ui/src/pages/FormSettingsPage.tsx:320
 #: packages/core/admin-ui/src/pages/OptOutPage.tsx:1310
-#: packages/core/admin-ui/src/pages/SettingsPage.tsx:156
+#: packages/core/admin-ui/src/pages/SettingsPage.tsx:157
 msgid "Saving..."
 msgstr ""
 
@@ -3024,8 +3191,16 @@ msgstr ""
 msgid "Search email or hash..."
 msgstr ""
 
-#: packages/core/admin-ui/src/pages/SettingsPage.tsx:250
+#: packages/core/admin-ui/src/pages/SettingsPage.tsx:251
 msgid "Security"
+msgstr ""
+
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:720
+msgid "See the %s addon"
+msgstr ""
+
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:322
+msgid "See the email editor (Pro)"
 msgstr ""
 
 #: packages/core/admin-ui/src/components/addon-settings/ConditionalSettingsPanel.tsx:388
@@ -3065,7 +3240,7 @@ msgstr ""
 
 #: packages/core/admin-ui/src/components/forms/GeneralTab.tsx:230
 #: packages/core/admin-ui/src/components/forms/GeneralTab.tsx:252
-#: packages/core/admin-ui/src/pages/SettingsPage.tsx:233
+#: packages/core/admin-ui/src/pages/SettingsPage.tsx:234
 msgid "Select page"
 msgstr ""
 
@@ -3085,6 +3260,10 @@ msgstr ""
 msgid "Send a follow-up email to subscribers who haven't confirmed their opt-in within the configured delay. The send is hourly via WP-Cron — make sure your site is reachable for loopback requests."
 msgstr ""
 
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:385
+msgid "Send me a test email"
+msgstr ""
+
 #: packages/core/admin-ui/src/components/addon-settings/ReminderSettingsPanel.tsx:216
 msgid "Send reminder emails"
 msgstr ""
@@ -3098,12 +3277,32 @@ msgstr ""
 msgid "Send WP password-reset email"
 msgstr ""
 
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:448
+msgid "Sender"
+msgstr ""
+
 #: packages/core/admin-ui/src/components/forms/EmailTab.tsx:44
 msgid "Sender & recipient"
 msgstr ""
 
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:245
+msgid "Sender address"
+msgstr ""
+
 #: packages/core/admin-ui/src/components/forms/EmailTab.tsx:89
 msgid "Sender address for the confirmation mail. Leave empty to use the WordPress default (site admin email)."
+msgstr ""
+
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:235
+msgid "Sender name"
+msgstr ""
+
+#: packages/core/admin-ui/src/components/SetupCards.tsx:69
+msgid "Sender, forms, confirmation email and page in four steps. Forms that already use Double Opt-In are not changed."
+msgstr ""
+
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:838
+msgid "Sender: %1$s <%2$s>"
 msgstr ""
 
 #: packages/core/admin-ui/src/pages/OptInDetailPage.tsx:241
@@ -3111,13 +3310,21 @@ msgstr ""
 msgid "Sending..."
 msgstr ""
 
-#: packages/core/admin-ui/src/pages/SettingsPage.tsx:193
+#: packages/core/admin-ui/src/pages/SettingsPage.tsx:194
 msgid "Set to 0 to disable. GDPR recommends regular cleanup."
+msgstr ""
+
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:427
+msgid "Set up Double Opt-In"
+msgstr ""
+
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:436
+msgid "Set up later"
 msgstr ""
 
 #: packages/core/admin-ui/src/components/AdminLayout.tsx:19
 #: packages/core/admin-ui/src/components/AppSidebar.tsx:47
-#: packages/core/admin-ui/src/pages/SettingsPage.tsx:151
+#: packages/core/admin-ui/src/pages/SettingsPage.tsx:152
 msgid "Settings"
 msgstr ""
 
@@ -3129,8 +3336,12 @@ msgstr ""
 msgid "Settings saved"
 msgstr ""
 
-#: packages/core/admin-ui/src/pages/SettingsPage.tsx:133
+#: packages/core/admin-ui/src/pages/SettingsPage.tsx:134
 msgid "Settings saved successfully"
+msgstr ""
+
+#: packages/core/admin-ui/src/components/SetupCards.tsx:67
+msgid "Setup wizard"
 msgstr ""
 
 #: packages/core/admin-ui/src/pages/AuditPage.tsx:194
@@ -3146,7 +3357,11 @@ msgstr ""
 msgid "Shortcode Reference"
 msgstr ""
 
-#: packages/core/admin-ui/src/pages/SettingsPage.tsx:337
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:696
+msgid "Show all %d forms"
+msgstr ""
+
+#: packages/core/admin-ui/src/pages/SettingsPage.tsx:338
 msgid "Show credit link"
 msgstr ""
 
@@ -3251,6 +3466,7 @@ msgstr ""
 msgid "Sitewide pool over the %d listed form%s"
 msgstr ""
 
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:285
 #: packages/core/admin-ui/src/pages/UserCreationPage.tsx:649
 msgid "Skip"
 msgstr ""
@@ -3271,16 +3487,25 @@ msgstr ""
 msgid "so you can translate it per language; without WPML the text is shown as-is."
 msgstr ""
 
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:76
+msgid "Something went wrong. Please try again."
+msgstr ""
+
 #: packages/core/admin-ui/src/pages/UserCreationPage.tsx:481
 msgid "Standard WP welcome flow — let the new user set their own password. Disable if you handle onboarding mails elsewhere."
 msgstr ""
 
+#: packages/core/admin-ui/src/components/SetupCards.tsx:74
+msgid "Start setup wizard"
+msgstr ""
+
 #: packages/core/admin-ui/src/components/addon-settings/ConsentExportSettingsPanel.tsx:474
-#: packages/core/admin-ui/src/components/FollowUpPanel.tsx:311
-#: packages/core/admin-ui/src/pages/DashboardPage.tsx:174
+#: packages/core/admin-ui/src/components/FollowUpPanel.tsx:315
+#: packages/core/admin-ui/src/pages/DashboardPage.tsx:177
 #: packages/core/admin-ui/src/pages/EmailTemplatesPage.tsx:161
 #: packages/core/admin-ui/src/pages/FormsPage.tsx:245
 #: packages/core/admin-ui/src/pages/OptInDetailPage.tsx:595
+#: packages/core/admin-ui/src/pages/OptInsPage.tsx:536
 #: packages/core/admin-ui/src/pages/OptInsPage.tsx:537
 #: packages/core/admin-ui/src/pages/OptInsPage.tsx:609
 msgid "Status"
@@ -3288,6 +3513,10 @@ msgstr ""
 
 #: packages/core/admin-ui/src/pages/OptOutPage.tsx:161
 msgid "Status badges"
+msgstr ""
+
+#: packages/core/admin-ui/src/components/SetupCards.tsx:31
+msgid "Step %1$d of %2$d. Your entries so far are saved."
 msgstr ""
 
 #: packages/core/admin-ui/src/components/addon-settings/ConsentExportSettingsPanel.tsx:703
@@ -3301,6 +3530,7 @@ msgstr ""
 #: packages/core/admin-ui/src/components/forms/EmailTab.tsx:118
 #: packages/core/admin-ui/src/components/forms/formSettingsTypes.ts:151
 #: packages/core/admin-ui/src/pages/OptOutPage.tsx:962
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:308
 msgid "Subject"
 msgstr ""
 
@@ -3364,7 +3594,11 @@ msgstr ""
 msgid "Table columns"
 msgstr ""
 
-#: packages/core/admin-ui/src/pages/SettingsPage.tsx:308
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:519
+msgid "Takes about 3 minutes"
+msgstr ""
+
+#: packages/core/admin-ui/src/pages/SettingsPage.tsx:309
 msgid "Telemetry"
 msgstr ""
 
@@ -3395,6 +3629,26 @@ msgstr ""
 
 #: packages/core/admin-ui/src/components/forms/EmailTab.tsx:150
 msgid "templates wrap it in a styled HTML shell. Custom templates are built in the Email Designer and override the body field below."
+msgstr ""
+
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:381
+msgid "Test"
+msgstr ""
+
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:849
+msgid "Test email sent"
+msgstr ""
+
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:395
+msgid "Test email sent to %s."
+msgstr ""
+
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:297
+msgid "Text and design apply to all selected forms. You can change them per form later."
+msgstr ""
+
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:736
+msgid "Text only"
 msgstr ""
 
 #: packages/core/admin-ui/src/components/ProGate.tsx:46
@@ -3437,7 +3691,7 @@ msgstr ""
 msgid "The confirmation email that was sent to the visitor."
 msgstr ""
 
-#: packages/core/admin-ui/src/components/FollowUpPanel.tsx:293
+#: packages/core/admin-ui/src/components/FollowUpPanel.tsx:297
 msgid "The confirmation stays valid either way. This shows whether the form's own actions — stored entry, notification mails, webhooks — ran after it."
 msgstr ""
 
@@ -3510,6 +3764,10 @@ msgstr ""
 msgid "The forms in this list form a sitewide pool. A submission on any of them is rejected if the email already opted into ANY OTHER form in the list. Forms not in the list are completely outside this check."
 msgstr ""
 
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:620
+msgid "The free plugin protects Contact Form 7 forms. Install it, create a form and come back here."
+msgstr ""
+
 #: packages/core/admin-ui/src/pages/AddonsPage.tsx:439
 msgid "The integration is registered but its isAvailable() check is currently failing. The third-party form plugin may have been deactivated after boot, or its class symbols are no longer present."
 msgstr ""
@@ -3542,12 +3800,20 @@ msgstr ""
 msgid "The license is fine, but a third-party plugin or PHP class the addon needs is not present. Check the addon's Requires Plugins header."
 msgstr ""
 
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:396
+msgid "The link in it leads to the confirmation page and confirms nothing."
+msgstr ""
+
 #: packages/core/admin-ui/src/components/FollowUpPanel.tsx:136
 msgid "The mail was not handed to the mailer."
 msgstr ""
 
 #: packages/core/admin-ui/src/pages/AddonsPage.tsx:461
 msgid "The plugin file is active but the addon never reached the registry. Look for a fatal during boot in the PHP error log."
+msgstr ""
+
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:277
+msgid "The regular form email is only sent after the visitor has clicked the confirmation link."
 msgstr ""
 
 #: packages/core/admin-ui/src/components/FollowUpPanel.tsx:124
@@ -3568,6 +3834,10 @@ msgstr ""
 
 #: packages/core/admin-ui/src/components/FollowUpPanel.tsx:120
 msgid "The server answered with an error (HTTP 5xx) — the action may have run."
+msgstr ""
+
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:129
+msgid "The setup wizard could not be loaded."
 msgstr ""
 
 #: packages/core/admin-ui/src/components/FollowUpPanel.tsx:123
@@ -3602,11 +3872,15 @@ msgstr ""
 msgid "The wording the user is asked to agree to. Stored alongside each opt-in for the GDPR Art. 7 audit trail. Should match the label of the acceptance field below."
 msgstr ""
 
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:631
+msgid "There is no Contact Form 7 form yet."
+msgstr ""
+
 #: packages/core/admin-ui/src/pages/DatabasePage.tsx:142
 msgid "These actions are irreversible. Please backup your database first."
 msgstr ""
 
-#: packages/core/admin-ui/src/components/FollowUpPanel.tsx:376
+#: packages/core/admin-ui/src/components/FollowUpPanel.tsx:380
 msgid "These actions may already have run — for example a mail that was sent before the connection broke. Retrying them can send a duplicate mail or create a duplicate entry. Check the recipient's mailbox or the form plugin's entries first."
 msgstr ""
 
@@ -3624,6 +3898,10 @@ msgstr ""
 
 #: packages/core/admin-ui/src/components/AddonGate.tsx:117
 msgid "This addon is part of the Double Opt-In Pro bundle. Activate your bundle license to unlock it — one key unlocks every included module."
+msgstr ""
+
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:263
+msgid "This address does not belong to the domain of this site (%s)."
 msgstr ""
 
 #: packages/core/admin-ui/src/components/addon-settings/UniqueEmailSettingsPanel.tsx:528
@@ -3645,8 +3923,20 @@ msgstr ""
 msgid "This form is already in the list."
 msgstr ""
 
-#: packages/core/admin-ui/src/components/FollowUpPanel.tsx:300
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:230
+msgid "This is how the email appears in your visitors' inbox. It also applies to forms you switch on later."
+msgstr ""
+
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:296
+msgid "This is what the confirmation email looks like"
+msgstr ""
+
+#: packages/core/admin-ui/src/components/FollowUpPanel.tsx:304
 msgid "This opt-in was confirmed before follow-up actions were recorded (or by an integration that does not report them). It is not replayed automatically, so historic mails are not sent again."
+msgstr ""
+
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:332
+msgid "This page appears as soon as someone has confirmed their address."
 msgstr ""
 
 #: packages/core/admin-ui/src/pages/DatabasePage.tsx:241
@@ -3687,15 +3977,15 @@ msgstr ""
 msgid "Toggle diagnostic info"
 msgstr ""
 
-#: packages/core/admin-ui/src/pages/SettingsPage.tsx:250
+#: packages/core/admin-ui/src/pages/SettingsPage.tsx:251
 msgid "Token and rate limiting configuration"
 msgstr ""
 
-#: packages/core/admin-ui/src/pages/DashboardPage.tsx:223
+#: packages/core/admin-ui/src/pages/DashboardPage.tsx:226
 msgid "Token Expiry"
 msgstr ""
 
-#: packages/core/admin-ui/src/pages/SettingsPage.tsx:253
+#: packages/core/admin-ui/src/pages/SettingsPage.tsx:254
 msgid "Token Expiry (Hours)"
 msgstr ""
 
@@ -3707,7 +3997,7 @@ msgstr ""
 msgid "Total Forms"
 msgstr ""
 
-#: packages/core/admin-ui/src/pages/DashboardPage.tsx:94
+#: packages/core/admin-ui/src/pages/DashboardPage.tsx:95
 msgid "Total Opt-Ins"
 msgstr ""
 
@@ -3788,7 +4078,7 @@ msgstr ""
 msgid "Unlock Double Opt-In support for %s with Pro."
 msgstr ""
 
-#: packages/core/admin-ui/src/pages/SettingsPage.tsx:402
+#: packages/core/admin-ui/src/pages/SettingsPage.tsx:404
 msgid "Unlock Pro Features"
 msgstr ""
 
@@ -3807,7 +4097,7 @@ msgstr ""
 
 #: packages/core/admin-ui/src/components/ProTeaser.tsx:44
 #: packages/core/admin-ui/src/pages/AddonsPage.tsx:590
-#: packages/core/admin-ui/src/pages/SettingsPage.tsx:416
+#: packages/core/admin-ui/src/pages/SettingsPage.tsx:418
 msgid "Upgrade to Pro"
 msgstr ""
 
@@ -3815,11 +4105,15 @@ msgstr ""
 msgid "Uploaded files needed for this action are missing."
 msgstr ""
 
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:359
+msgid "Use an existing page"
+msgstr ""
+
 #: packages/core/admin-ui/src/components/addon-settings/ReminderSettingsPanel.tsx:367
 msgid "Use opt-in data for placeholders"
 msgstr ""
 
-#: packages/core/admin-ui/src/pages/SettingsPage.tsx:244
+#: packages/core/admin-ui/src/pages/SettingsPage.tsx:245
 msgid "Used for [doubleoptin_privacy_url] placeholder"
 msgstr ""
 
@@ -3862,11 +4156,11 @@ msgstr ""
 msgid "Value"
 msgstr ""
 
-#: packages/core/admin-ui/src/pages/DashboardPage.tsx:222
+#: packages/core/admin-ui/src/pages/DashboardPage.tsx:225
 msgid "Version"
 msgstr ""
 
-#: packages/core/admin-ui/src/pages/DashboardPage.tsx:160
+#: packages/core/admin-ui/src/pages/DashboardPage.tsx:163
 msgid "View All"
 msgstr ""
 
@@ -3881,6 +4175,10 @@ msgstr ""
 
 #: packages/core/admin-ui/src/pages/AuditPage.tsx:138
 msgid "Warnings"
+msgstr ""
+
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:331
+msgid "What does the visitor see after clicking?"
 msgstr ""
 
 #: packages/core/admin-ui/src/components/forms/GeneralTab.tsx:94
@@ -3923,8 +4221,16 @@ msgstr ""
 msgid "Where the user lands after clicking the confirmation link. Leave on default to fall back to the site-wide confirmation page."
 msgstr ""
 
-#: packages/core/admin-ui/src/pages/SettingsPage.tsx:188
-#: packages/core/admin-ui/src/pages/SettingsPage.tsx:217
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:276
+msgid "Which forms should ask for confirmation?"
+msgstr ""
+
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:229
+msgid "Who sends the confirmation?"
+msgstr ""
+
+#: packages/core/admin-ui/src/pages/SettingsPage.tsx:189
+#: packages/core/admin-ui/src/pages/SettingsPage.tsx:218
 msgid "Years"
 msgstr ""
 
@@ -3934,4 +4240,8 @@ msgstr ""
 
 #: packages/core/admin-ui/src/pages/LicensePage.tsx:130
 msgid "Your license is currently active."
+msgstr ""
+
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx:320
+msgid "Your own designs with images, columns and logo?"
 msgstr ""

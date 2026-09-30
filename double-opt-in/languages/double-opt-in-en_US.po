@@ -3381,3 +3381,277 @@ msgstr "Double Opt-In Pro is not active, but this site still stores the markers 
 #: src/Health
 msgid "Clear the setup markers"
 msgstr "Clear the setup markers"
+
+# Setup wizard (5.7.0)
+msgid "Something went wrong. Please try again."
+msgstr "Something went wrong. Please try again."
+
+msgid "The setup wizard could not be loaded."
+msgstr "The setup wizard could not be loaded."
+
+msgid "Go to the dashboard"
+msgstr "Go to the dashboard"
+
+msgid "Who sends the confirmation?"
+msgstr "Who sends the confirmation?"
+
+msgid "This is how the email appears in your visitors' inbox. It also applies to forms you switch on later."
+msgstr "This is how the email appears in your visitors' inbox. It also applies to forms you switch on later."
+
+msgid "Sender name"
+msgstr "Sender name"
+
+msgid "Sender address"
+msgstr "Sender address"
+
+msgid "Ideally an address on your own domain."
+msgstr "Ideally an address on your own domain."
+
+msgid "This address does not belong to the domain of this site (%s)."
+msgstr "This address does not belong to the domain of this site (%s)."
+
+msgid "Many inboxes treat such mails as spam. Use an address ending in @%s."
+msgstr "Many inboxes treat such mails as spam. Use an address ending in @%s."
+
+msgid "Which forms should ask for confirmation?"
+msgstr "Which forms should ask for confirmation?"
+
+msgid "The regular form email is only sent after the visitor has clicked the confirmation link."
+msgstr "The regular form email is only sent after the visitor has clicked the confirmation link."
+
+msgid "This is what the confirmation email looks like"
+msgstr "This is what the confirmation email looks like"
+
+msgid "Text and design apply to all selected forms. You can change them per form later."
+msgstr "Text and design apply to all selected forms. You can change them per form later."
+
+msgid "Your own designs with images, columns and logo?"
+msgstr "Your own designs with images, columns and logo?"
+
+msgid "See the email editor (Pro)"
+msgstr "See the email editor (Pro)"
+
+msgid "What does the visitor see after clicking?"
+msgstr "What does the visitor see after clicking?"
+
+msgid "This page appears as soon as someone has confirmed their address."
+msgstr "This page appears as soon as someone has confirmed their address."
+
+msgid "Finish setup"
+msgstr "Finish setup"
+
+msgid "Create and publish the page “Email address confirmed”"
+msgstr "Create and publish the page “Email address confirmed”"
+
+msgid "recommended"
+msgstr "recommended"
+
+msgid "Use an existing page"
+msgstr "Use an existing page"
+
+msgid "Test"
+msgstr "Test"
+
+msgid "Send me a test email"
+msgstr "Send me a test email"
+
+msgid "goes to %s"
+msgstr "goes to %s"
+
+msgid "The link in it leads to the confirmation page and confirms nothing."
+msgstr "The link in it leads to the confirmation page and confirms nothing."
+
+msgid "Set up Double Opt-In"
+msgstr "Set up Double Opt-In"
+
+msgid "Set up later"
+msgstr "Set up later"
+
+msgid "Sender"
+msgstr "Sender"
+
+msgid "Confirmation email"
+msgstr "Confirmation email"
+
+msgid "After the click"
+msgstr "After the click"
+
+msgid "Progress"
+msgstr "Progress"
+
+msgid "Back"
+msgstr "Back"
+
+msgid "Takes about 3 minutes"
+msgstr "Takes about 3 minutes"
+
+msgid "Next"
+msgstr "Next"
+
+msgid "prefilled"
+msgstr "prefilled"
+
+msgid "Contact Form 7 is not installed."
+msgstr "Contact Form 7 is not installed."
+
+msgid "The free plugin protects Contact Form 7 forms. Install it, create a form and come back here."
+msgstr "The free plugin protects Contact Form 7 forms. Install it, create a form and come back here."
+
+msgid "Install Contact Form 7"
+msgstr "Install Contact Form 7"
+
+msgid "There is no Contact Form 7 form yet."
+msgstr "There is no Contact Form 7 form yet."
+
+msgid "Create one and come back here. You can also skip this step."
+msgstr "Create one and come back here. You can also skip this step."
+
+msgid "Create a form"
+msgstr "Create a form"
+
+msgid "Double Opt-In is already active — this form stays as it is."
+msgstr "Double Opt-In is already active — this form stays as it is."
+
+msgid "Email field detected automatically"
+msgstr "Email field detected automatically"
+
+msgid "No email field detected, please choose one"
+msgstr "No email field detected, please choose one"
+
+msgid "Email field for %s"
+msgstr "Email field for %s"
+
+msgid "Choose email field …"
+msgstr "Choose email field …"
+
+msgid "Show all %d forms"
+msgstr "Show all %d forms"
+
+msgid "%s detected."
+msgstr "%s detected."
+
+msgid "Forms built with %s do not have Double Opt-In yet. There is an addon for that."
+msgstr "Forms built with %s do not have Double Opt-In yet. There is an addon for that."
+
+msgid "See the %s addon"
+msgstr "See the %s addon"
+
+msgid "Light"
+msgstr "Light"
+
+msgid "Dark"
+msgstr "Dark"
+
+msgid "Accent"
+msgstr "Accent"
+
+msgid "Text only"
+msgstr "Text only"
+
+msgid "Design"
+msgstr "Design"
+
+msgid "Preview of the email text"
+msgstr "Preview of the email text"
+
+msgid "Hello, this email address was just entered on our site. To make sure it was really you, please confirm it with one click."
+msgstr "Hello, this email address was just entered on our site. To make sure it was really you, please confirm it with one click."
+
+msgid "Confirm email address"
+msgstr "Confirm email address"
+
+msgid "If you did not request this, simply ignore this email. Nothing happens without your confirmation."
+msgstr "If you did not request this, simply ignore this email. Nothing happens without your confirmation."
+
+msgid "Double Opt-In is set up"
+msgstr "Double Opt-In is set up"
+
+msgid "Sender: %1$s <%2$s>"
+msgstr "Sender: %1$s <%2$s>"
+
+msgid "Double Opt-In active for: %s"
+msgstr "Double Opt-In active for: %s"
+
+msgid "No form switched on yet — you can do that under Forms."
+msgstr "No form switched on yet — you can do that under Forms."
+
+msgid "Confirmation page “Email address confirmed” created and published"
+msgstr "Confirmation page “Email address confirmed” created and published"
+
+msgid "Confirmation page: existing page"
+msgstr "Confirmation page: existing page"
+
+msgid "Test email sent"
+msgstr "Test email sent"
+
+msgid "Not switched on because settings are missing: %s"
+msgstr "Not switched on because settings are missing: %s"
+
+msgid "Finish setting up Double Opt-In"
+msgstr "Finish setting up Double Opt-In"
+
+msgid "Step %1$d of %2$d. Your entries so far are saved."
+msgstr "Step %1$d of %2$d. Your entries so far are saved."
+
+msgid "Continue setup"
+msgstr "Continue setup"
+
+msgid "Setup wizard"
+msgstr "Setup wizard"
+
+msgid "Sender, forms, confirmation email and page in four steps. Forms that already use Double Opt-In are not changed."
+msgstr "Sender, forms, confirmation email and page in four steps. Forms that already use Double Opt-In are not changed."
+
+msgid "Start setup wizard"
+msgstr "Start setup wizard"
+
+msgid "Unknown setup step."
+msgstr "Unknown setup step."
+
+msgid "Please choose the email field for every selected form."
+msgstr "Please choose the email field for every selected form."
+
+msgid "Please enter a subject."
+msgstr "Please enter a subject."
+
+msgid "Please choose a published page."
+msgstr "Please choose a published page."
+
+msgid "The page could not be created. Please choose an existing page instead."
+msgstr "The page could not be created. Please choose an existing page instead."
+
+msgid "Thank you! Your email address has been confirmed."
+msgstr "Thank you! Your email address has been confirmed."
+
+msgid "Email address confirmed"
+msgstr "Email address confirmed"
+
+msgid "Your user account has no valid email address."
+msgstr "Your user account has no valid email address."
+
+msgid "You have sent several test emails in a short time. Please try again in an hour."
+msgstr "You have sent several test emails in a short time. Please try again in an hour."
+
+msgid "[Test] %s"
+msgstr "[Test] %s"
+
+msgid "WordPress could not send the email. Please check the mail settings of your site, for example with an SMTP plugin."
+msgstr "WordPress could not send the email. Please check the mail settings of your site, for example with an SMTP plugin."
+
+msgid "Please confirm your email address for %s"
+msgstr "Please confirm your email address for %s"
+
+msgid "Please confirm your email address"
+msgstr "Please confirm your email address"
+
+msgid "Hello,<br><br>this email address was just entered on %s. To make sure it was really you, please confirm it with one click."
+msgstr "Hello,<br><br>this email address was just entered on %s. To make sure it was really you, please confirm it with one click."
+
+msgid "If the button does not work, copy this link into your browser:"
+msgstr "If the button does not work, copy this link into your browser:"
+
+msgid "Kind regards,<br>%s"
+msgstr "Kind regards,<br>%s"
+
+msgid "The setup step could not be saved."
+msgstr "The setup step could not be saved."

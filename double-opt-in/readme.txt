@@ -1,11 +1,11 @@
 === Double Opt-In for Contact Form 7 – Secure, GDPR-Compliant Email Verification ===
 Contributors: forge12
 Donate link: https://www.paypal.com/donate?hosted_button_id=MGZTVZH3L5L2G
-Tags: contact form 7, double opt-in, gdpr, email verification
+Tags: contact form 7, double opt-in, gdpr, email verification, newsletter
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 5.6.3
+Stable tag: 5.7.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -43,11 +43,10 @@ Out-of-the-box support for **Contact Form 7**. Additional form systems — Avada
 
 = Free Features =
 
-* **Block-Based Email Templates** -- build your confirmation email from heading, text, button, spacer, divider and placeholder blocks
 * **Double Opt-In for Contact Form 7** -- per-form activation with full CF7 integration
 * **Centralized Form Settings** -- manage all form integrations from a single admin panel
-* **Email Template Presets** -- start from a pre-built template (one saved template on the free version)
-* **Send Test Email** -- preview your confirmation emails before going live
+* **Built-In Email Designs** -- write the confirmation email per form and pick one of three ready-made HTML layouts, or send it plain
+* **Resend Confirmation** -- resend the confirmation email to a single recipient from the opt-in detail view
 * **Custom Confirmation Pages** -- redirect users to a specific page after confirmation
 * **Dynamic Conditions** -- enable opt-in based on user input (e.g. only when a checkbox is checked)
 * **Delete Confirmation Modal** -- safety dialog before deleting an opt-in record to prevent accidental deletion
@@ -64,11 +63,11 @@ Out-of-the-box support for **Contact Form 7**. Additional form systems — Avada
 * **Pagination & Search** -- search and filter opt-in records in the admin dashboard
 * **Admin Tooltips** -- contextual help tooltips throughout the admin interface
 * **WordPress Multisite** -- network-wide activation creates tables on all sites automatically
-* **Developer Hooks** -- 44 action hooks, 72 filters, and 11 typed events for full extensibility
+* **Developer Hooks** -- 44 action hooks, 74 filters, and 11 typed events for full extensibility
 
 = Pro Features =
 
-Unlock the full potential of Double Opt-In with the [Pro version](https://www.forge12.com):
+Unlock the full potential of Double Opt-In with the [Pro version](https://www.forge12.com/shop/contact-form-7-double-opt-in?from=readme&utm_source=double-opt-in&utm_medium=plugin&utm_campaign=readme):
 
 **Additional Form Integrations:**
 
@@ -86,8 +85,7 @@ Unlock the full potential of Double Opt-In with the [Pro version](https://www.fo
 
 * **Double Opt-Out System** -- unique opt-out links per submission with confirmation emails
 * **Opt-In Reminder System** -- automatic reminders for unconfirmed opt-ins via cron
-* **Visual Email Editor** -- drag & drop editor with live preview and mobile preview, plus unlimited saved templates
-* **Resend Confirmation** -- resend the confirmation email to a single recipient from the admin dashboard
+* **Visual Email Editor** -- drag & drop block editor with live preview and mobile preview, template presets, unlimited saved templates and test emails
 * **Conditional Email Templates** -- dynamic content blocks based on form data
 * **Multi-Column Layouts** -- 2-column, 3-column, and sidebar layouts in the email editor
 * **Image & Social Blocks** -- add images and social media icons to your emails
@@ -154,7 +152,7 @@ If you configured Double Opt-In on an Avada form before Core 5.0, a one-time not
 
 = Can I customize the confirmation email? =
 
-Yes. The plugin includes a visual drag & drop email editor with block-based design. You can choose from pre-built template presets or create your own. Placeholders like `[doubleoptinlink]`, `[doubleoptin_form_date]`, and form field values are replaced automatically.
+Yes. In the free version you write subject and text of the confirmation email in each form's settings and choose one of three built-in designs or plain text. Placeholders like `[doubleoptinlink]`, `[doubleoptin_form_date]`, and form field values are replaced automatically. The Pro version adds a visual drag & drop editor with template presets, reusable templates and test emails.
 
 = What happens if the user does not confirm? =
 
@@ -194,7 +192,7 @@ The free version requires at least one supported form plugin. However, developer
 
 = Where can I find the developer documentation? =
 
-A hook, filter, and event reference with code examples ships at `docs/hooks-and-events.md` inside the plugin directory. It documents 27 of the 44 action hooks, 22 of the 72 filters, and all 11 typed events — the ones extensions actually reach for. The rest are discoverable in the source; if you need one documented, ask and we will add it.
+A hook, filter, and event reference with code examples ships at `docs/hooks-and-events.md` inside the plugin directory. It documents 27 of the 44 action hooks, 22 of the 74 filters, and all 11 typed events — the ones extensions actually reach for. The rest are discoverable in the source; if you need one documented, ask and we will add it.
 
 = How do I report a bug or request a feature? =
 
@@ -239,6 +237,9 @@ screens does not contact Google Fonts or any other third party. Inter is
 licensed under the SIL Open Font License 1.1 (see licenses/inter-OFL-1.1.txt).
 
 == Upgrade Notice ==
+
+= 5.7.0 =
+Adds a setup wizard for new installations. Existing forms and settings are not changed.
 
 = 5.6.3 =
 Ships the hook and Addon API reference the readme refers to. No functional changes.
@@ -336,6 +337,16 @@ New features: Visual email editor, centralized form settings, GDPR anonymization
 Adds optional anonymous telemetry (opt-out). No breaking changes.
 
 == Changelog ==
+
+= 5.7.0 =
+
+**A setup wizard gets new sites to the first working confirmation email**
+
+* New: after installing the plugin, a short wizard sets up the sender, the Contact Form 7 forms that should ask for confirmation, the confirmation email and the page visitors see after clicking the link. Everything is prefilled; it takes about three minutes and can be skipped at any time. A test email to yourself shows the result before visitors see it.
+* New: the sender name and address from the wizard are used for every form you switch on later. Confirmation emails without a sender name no longer arrive as "WordPress".
+* New: if you also use Elementor Pro, WPForms, Gravity Forms or Avada Forms, the wizard tells you which add-on protects those forms.
+* Improved: forms that already use Double Opt-In are left exactly as they are. Existing sites do not see the wizard unless you start it under Settings.
+* Fix: this description listed the visual email editor, saved templates and test emails as free features. They are part of the email editor add-on; the free plugin offers three built-in email designs. Resending a confirmation email from the opt-in details is free.
 
 = 5.6.3 =
 

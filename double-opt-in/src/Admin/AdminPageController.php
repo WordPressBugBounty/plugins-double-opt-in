@@ -264,6 +264,9 @@ class AdminPageController {
 			// above with action `wp_rest` — they live in different
 			// namespaces, so a single shared nonce won't work.
 			'consentExportNonce' => wp_create_nonce( 'doi_consent_export' ),
+			// Setup wizard state for the dashboard card. Null on sites that
+			// were installed before the wizard existed.
+			'setup'              => $this->setupState(),
 		);
 
 		/**
@@ -292,6 +295,22 @@ class AdminPageController {
 	 * @param string $from     Entry point recorded on the link.
 	 * @param string $fallback Used when core/feedback.php is not loaded.
 	 */
+	/**
+	 * @return array{status: string, step: int, steps: int}|null
+	 */
+	private function setupState(): ?array {
+		$state = new \Forge12\DoubleOptIn\Setup\SetupState();
+		if ( ! $state->exists() ) {
+			return null;
+		}
+		$current = $state->get();
+		return array(
+			'status' => $current['status'],
+			'step'   => $current['step'],
+			'steps'  => \Forge12\DoubleOptIn\Setup\SetupState::STEPS,
+		);
+	}
+
 	private function productUrl( string $from, string $fallback ): string {
 		$fn = '\\forge12\\contactform7\\CF7DoubleOptIn\\get_product_url';
 

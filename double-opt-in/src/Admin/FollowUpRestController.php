@@ -12,6 +12,7 @@ namespace Forge12\DoubleOptIn\Admin;
 
 use Forge12\DoubleOptIn\FollowUp\FollowUpAttempt;
 use Forge12\DoubleOptIn\FollowUp\FollowUpCoordinator;
+use Forge12\DoubleOptIn\Setup\FormPluginDetector;
 use forge12\contactform7\CF7DoubleOptIn\OptIn;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -204,17 +205,14 @@ class FollowUpRestController {
 				$versions[ 'addon_' . $key ] = (string) constant( $constant );
 			}
 		}
-		foreach ( array(
-			'elementor_pro' => 'ELEMENTOR_PRO_VERSION',
-			'cf7'           => 'WPCF7_VERSION',
-			'wpforms'       => 'WPFORMS_VERSION',
-		) as $key => $constant ) {
-			if ( defined( $constant ) ) {
-				$versions[ $key ] = (string) constant( $constant );
-			}
+		if ( defined( 'WPCF7_VERSION' ) ) {
+			$versions['cf7'] = (string) constant( 'WPCF7_VERSION' );
 		}
-		if ( class_exists( 'GFForms' ) && isset( \GFForms::$version ) ) {
-			$versions['gravityforms'] = (string) \GFForms::$version;
+		foreach ( array( 'elementor_pro', 'wpforms', 'gravityforms' ) as $key ) {
+			$version = FormPluginDetector::detectVersion( $key );
+			if ( $version !== null && $version !== '' ) {
+				$versions[ $key ] = $version;
+			}
 		}
 		return $versions;
 	}

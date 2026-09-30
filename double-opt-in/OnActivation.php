@@ -137,6 +137,11 @@ function onActivation( $network_wide = false ) {
 		\Forge12\DoubleOptIn\Repository\FollowUpSchema::install();
 	}
 
+	// Open the setup wizard once after a single-site activation.
+	if ( class_exists( '\Forge12\DoubleOptIn\Setup\SetupRedirect' ) ) {
+		\Forge12\DoubleOptIn\Setup\SetupRedirect::onActivation( (bool) $network_wide );
+	}
+
 	$logger->info( 'Plugin activation completed', [
 		'plugin'       => 'double-opt-in',
 		'network_wide' => $network_wide,

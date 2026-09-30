@@ -8,6 +8,8 @@
 
 namespace Forge12\DoubleOptIn\FormSettings;
 
+use Forge12\DoubleOptIn\Setup\FormDefaults;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -273,8 +275,10 @@ class FormSettingsDTO {
 	 * @return self
 	 */
 	public static function createDefault(): self {
-		$dto         = new self();
-		$dto->sender = get_bloginfo( 'admin_email' );
+		$dto = new self();
+
+		// Sender defaults from the setup wizard, if it ran.
+		list( $dto->sender, $dto->senderName ) = FormDefaults::forNewForm( (string) get_bloginfo( 'admin_email' ), '' );
 		return $dto;
 	}
 
