@@ -10,7 +10,9 @@ namespace Forge12\DoubleOptIn\Providers;
 
 use Forge12\DoubleOptIn\Admin\SingleConsentExportController;
 use Forge12\DoubleOptIn\Container\BootableProviderInterface;
+use Forge12\DoubleOptIn\Audit\ConsentAuditListener;
 use Forge12\DoubleOptIn\Container\Container;
+use Forge12\DoubleOptIn\EventSystem\EventDispatcherInterface;
 use Forge12\DoubleOptIn\Repository\OptInRepositoryInterface;
 use Forge12\DoubleOptIn\Service\PrivacyIntegration;
 use Forge12\Shared\LoggerInterface;
@@ -35,7 +37,9 @@ class GdprServiceProvider implements BootableProviderInterface {
 			function ( Container $c ) {
 				return new PrivacyIntegration(
 					$c->get( LoggerInterface::class ),
-					$c->get( OptInRepositoryInterface::class )
+					$c->get( OptInRepositoryInterface::class ),
+					// Bound by MailStatusServiceProvider (5.8.0); resolved lazily.
+					$c->get( \Forge12\DoubleOptIn\Repository\OptInMailStatusRepository::class )
 				);
 			}
 		);
@@ -60,5 +64,10 @@ class GdprServiceProvider implements BootableProviderInterface {
 
 		// Register single-record consent export (fallback if Pro is not active)
 		$container->get( SingleConsentExportController::class )->registerActions();
+
+		// A renewed consent is its own audit entry (5.8.0).
+		if ( $container->has( EventDispatcherInterface::class ) ) {
+			( new ConsentAuditListener() )->register( $container->get( EventDispatcherInterface::class ) );
+		}
 	}
 }

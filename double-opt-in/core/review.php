@@ -13,6 +13,55 @@ if ( ! function_exists( __NAMESPACE__ . '\\f12_cf7_doubleoptin_maybe_show_review
 	add_action( 'admin_init', __NAMESPACE__ . '\\f12_cf7_doubleoptin_handle_review_actions' );
 
 	/**
+	 * Confirmed opt-ins a site needs before we ask for a review.
+	 *
+	 * History: 3 at first — a site that has barely started, asked to vouch for
+	 * something it has not seen work yet. Then 25, which small sites rarely
+	 * reach: nine ratings in four years, and the count is what wp.org ranks
+	 * and visitors weigh. 10 (5.7.1) is past the "does it work at all" stage
+	 * and still within reach of a small site's first weeks.
+	 */
+	function f12_cf7_doubleoptin_review_threshold(): int {
+		/**
+		 * Filter the number of confirmed opt-ins before the review request shows.
+		 *
+		 * @param int $threshold Default 10.
+		 *
+		 * @since 5.7.1
+		 */
+		return max( 1, (int) apply_filters( 'f12_doi_review_min_confirmed', 10 ) );
+	}
+
+	/**
+	 * Whether the review request is due. Pure: every fact comes in.
+	 *
+	 * @param array{now:int, installedAt:int, confirmed:int, dismissed:bool, remindLater:int, remindCount:int, pagenow:string, page:string} $facts
+	 */
+	function f12_cf7_doubleoptin_review_is_due( array $facts ): bool {
+		// Only where someone looks at the plugin: the dashboard, the plugins
+		// screen and the plugin's own pages — not on every admin screen.
+		$onScreen = in_array( $facts['pagenow'], array( 'index.php', 'plugins.php' ), true )
+			|| ( $facts['pagenow'] === 'admin.php' && strpos( $facts['page'], 'f12-doi' ) === 0 );
+		if ( ! $onScreen ) {
+			return false;
+		}
+		if ( ( $facts['now'] - $facts['installedAt'] ) < DAY_IN_SECONDS * 10 ) {
+			return false;
+		}
+		if ( $facts['confirmed'] < f12_cf7_doubleoptin_review_threshold() ) {
+			return false;
+		}
+		if ( $facts['dismissed'] ) {
+			return false;
+		}
+		if ( $facts['remindLater'] > 0 && $facts['now'] < $facts['remindLater'] ) {
+			return false;
+		}
+		// Max 2 reminders.
+		return $facts['remindCount'] < 2;
+	}
+
+	/**
 	 * Show review notice if conditions are met.
 	 */
 	function f12_cf7_doubleoptin_maybe_show_review_notice() {
@@ -20,39 +69,24 @@ if ( ! function_exists( __NAMESPACE__ . '\\f12_cf7_doubleoptin_maybe_show_review
 			return;
 		}
 
-		$installed_at     = (int) get_option( 'f12_cf7_doubleoptin_installed_at', time() );
+		global $pagenow;
 		$optin_counters   = get_option( 'f12_cf7_doubleoptin_telemetry_counters', [] );
 		$confirmed_optins = isset( $optin_counters['confirmed_optins'] ) ? (int) $optin_counters['confirmed_optins'] : 0;
 
-		$dismissed    = get_option( 'f12_cf7_doubleoptin_review_dismissed', false );
-		$remind_later = (int) get_option( 'f12_cf7_doubleoptin_review_remind_later', 0 );
-		$remind_count = (int) get_option( 'f12_cf7_doubleoptin_review_remind_count', 0 );
-
-		// Conditions:
-		// - installed for at least 10 days
-		// - at least 25 confirmed opt-ins
-		//
-		// The threshold used to be 3. Three confirmations is a site that has
-		// barely started; asking for a public review at that point is asking
-		// someone to vouch for something they have not seen work yet.
-		if ( ( time() - $installed_at ) < DAY_IN_SECONDS * 10 ) {
-			return;
-		}
-
-		if ( $confirmed_optins < 25 ) {
-			return;
-		}
-
-		if ( $dismissed ) {
-			return;
-		}
-
-		if ( $remind_later > 0 && ( time() < $remind_later ) ) {
-			return;
-		}
-
-		// Max 2 reminders
-		if ( $remind_count >= 2 ) {
+		$due = f12_cf7_doubleoptin_review_is_due(
+			array(
+				'now'         => time(),
+				'installedAt' => (int) get_option( 'f12_cf7_doubleoptin_installed_at', time() ),
+				'confirmed'   => $confirmed_optins,
+				'dismissed'   => (bool) get_option( 'f12_cf7_doubleoptin_review_dismissed', false ),
+				'remindLater' => (int) get_option( 'f12_cf7_doubleoptin_review_remind_later', 0 ),
+				'remindCount' => (int) get_option( 'f12_cf7_doubleoptin_review_remind_count', 0 ),
+				'pagenow'     => isset( $pagenow ) ? (string) $pagenow : '',
+				// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only: which admin page is open.
+				'page'        => isset( $_GET['page'] ) ? sanitize_key( wp_unslash( $_GET['page'] ) ) : '',
+			)
+		);
+		if ( ! $due ) {
 			return;
 		}
 

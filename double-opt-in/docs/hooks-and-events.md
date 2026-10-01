@@ -243,6 +243,14 @@ add_action( 'f12_doi_register_follow_up_adapters', function ( $registry ) {
 
 The adapter plans one action per side effect (`planActions()`), executes the claimed ones and returns a `FollowUpResult` per action (`execute()`), and releases resources once everything is done (`onSettled()`). Return `FollowUpResult::unknown()` whenever you cannot tell whether a side effect happened.
 
+**Global adapters (since 5.8.0).** An adapter that applies to every form — a webhook, a CRM sync — implements `GlobalFollowUpAdapterInterface` instead and is registered the same way. Its actions are added to the plan of every opt-in whose form has an adapter, stored under its own `getIntegration()` name, and get the same status, retry and admin view. Rules:
+
+- every action id starts with `<getIntegration()>:` (e.g. `webhooks:42`); other ids are dropped when planning
+- `execute()` and `onSettled()` receive only the adapter's own actions; the form adapter always executes first
+- a failing `planActions()` or `execute()` affects only the adapter's own actions
+- if the add-on is deactivated later, its open actions are recorded as `failed_permanent` with code `adapter_missing`; a manual retry runs them once it is back
+- nothing runs after an opt-out, as for every other action
+
 ### `f12_doi_follow_up_backoff` (filter)
 
 Delays in seconds between automatic retries of actions that demonstrably did not run (e.g. the internal request never reached the server). The number of entries is the maximum number of automatic retries. Default `[60, 300, 1800]`; `[]` disables automatic retries. A manual retry from the admin starts a fresh budget: the schedule applies again from its first entry.
@@ -324,6 +332,7 @@ add_action( 'f12_cf7_doubleoptin_register_event_listeners', function ( $dispatch
 | `f12_cf7_doubleoptin_error_message` | `$message` (string), `$error` (OptInError), `$formId` (int) | `string` | Customize the error message per error code (since 4.2.0) |
 | `f12_cf7_doubleoptin_validate_recipient` | `$valid` (bool), `$recipient`, `$formData` | `bool\|string` | Validate recipient email; return error string to reject |
 | `f12_cf7_doubleoptin_send_default_mail` | `$send` (bool), `$formId` | `bool` | Whether to send the original form mail after confirmation |
+| `f12_doi_submit_notice_data` | `$notice` (array: `masked`, `lines`, `inbox`, `actions`), `$context` (array: `form_id`, `optin_id`, `integration`) | `array` | The hint shown after a CF7 double opt-in submission. Add `lines`, or `actions`: links (`type` `link`, `url` must be https) or buttons (`id`, `label`, optional `wait` in seconds and scalar `data`). A button fires the DOM event `f12-doi-notice-action` on the form with `{ id, data, button, form }`. `$context` stays on the server; sign your own token into `data` if your script needs to refer back to the opt-in (since 5.8.0) |
 | `f12_doi_enforce_consent_gate` | `$enforce` (bool), `$formId` (int), `$integration` (string) | `bool` | Return `false` to accept a submission whose configured acceptance field was not confirmed. The opt-in is then stored with a consent text nobody agreed to, so this is an escape hatch for an unforeseen edge case, not a setting (since 5.4.0) |
 
 ### Mail Filters
@@ -331,6 +340,7 @@ add_action( 'f12_cf7_doubleoptin_register_event_listeners', function ( $dispatch
 | Filter | Parameters | Return | Description |
 |--------|-----------|--------|-------------|
 | `f12_cf7_doubleoptin_body` | `$body` (string) | `string` | Modify the opt-in confirmation email body |
+| `f12_doi_mail_headers` | `$headers` (string[] header lines), `$optInId` (int), `$kind` (`confirmation`, `resend` or `reminder`) | `string[]` | Add or change headers of the double opt-in's own mails — whichever integration sends them. Other mails of the same request are not passed through. Line breaks inside a line are removed. Without a callback the mail is left exactly as built (since 5.8.0) |
 | `f12-cf7-doubleoptin-cf7-args` | `$args` (array) | `array` | Modify mail arguments (subject, body, headers, attachments) |
 | `f12_cf7_doubleoptin_files_mail_1` | `$include` (bool), `$optIn` | `bool` | Include file attachments in the first confirmation mail |
 | `f12_cf7_doubleoptin_files_mail_2` | `$include` (bool), `$optIn` | `bool` | Include file attachments in the second confirmation mail |
@@ -538,6 +548,37 @@ Dispatched during cleanup when expired records are removed.
 | `getThreshold()` | `DateTimeImmutable` | The cutoff date |
 
 **WordPress hook:** `f12_cf7_doubleoptin_expired`
+
+#### `OptInOptedOutEvent`
+
+Dispatched when a confirmed consent is withdrawn (since 5.8.0). The core
+never withdraws a consent itself: the Opt-Out add-on (1.5.0 or later) fires
+this once per opt-in that actually changed. Listen here instead of depending
+on the Opt-Out add-on.
+
+| Method | Return | Description |
+|--------|--------|-------------|
+| `getOptInId()` | `int` | The opt-in ID |
+| `getHash()` | `string` | The opt-in hash |
+| `getEmail()` | `string` | The subscriber email |
+| `getFormId()` | `int` | The form the consent was given in |
+| `getSource()` | `string` | `'link'` (opt-out link), `'bulk'` (all consents of one address) or `'one-click'` (mailbox unsubscribe button) |
+
+**WordPress hook:** `f12_doi_optin_opted_out` (receives the event object)
+
+#### `OptInReOptedInEvent`
+
+Dispatched when a withdrawn consent is given again from the subscriber's
+list in the Opt-Out add-on (since 5.8.0).
+
+| Method | Return | Description |
+|--------|--------|-------------|
+| `getOptInId()` | `int` | The opt-in ID |
+| `getHash()` | `string` | The opt-in hash |
+| `getEmail()` | `string` | The subscriber email |
+| `getFormId()` | `int` | The form ID |
+
+**WordPress hook:** `f12_doi_optin_reopted_in` (receives the event object)
 
 ---
 

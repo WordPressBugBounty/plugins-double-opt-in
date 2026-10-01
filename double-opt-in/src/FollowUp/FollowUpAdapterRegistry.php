@@ -28,16 +28,36 @@ final class FollowUpAdapterRegistry {
 	/** @var array<string, FollowUpAdapterInterface> */
 	private $adapters = array();
 
+	/** @var array<string, GlobalFollowUpAdapterInterface> */
+	private $globals = array();
+
 	/** @var bool */
 	private $hookFired = false;
 
 	public function register( FollowUpAdapterInterface $adapter ): void {
+		if ( $adapter instanceof GlobalFollowUpAdapterInterface ) {
+			$this->globals[ $adapter->getIntegration() ] = $adapter;
+			return;
+		}
 		$this->adapters[ $adapter->getIntegration() ] = $adapter;
 	}
 
+	/**
+	 * Form or global adapter by the integration stored on a row.
+	 */
 	public function get( string $integration ): ?FollowUpAdapterInterface {
 		$this->fireHookOnce();
-		return $this->adapters[ $integration ] ?? null;
+		return $this->adapters[ $integration ] ?? $this->globals[ $integration ] ?? null;
+	}
+
+	/**
+	 * Adapters that follow up every opt-in (since 5.8.0).
+	 *
+	 * @return array<string, GlobalFollowUpAdapterInterface>
+	 */
+	public function globals(): array {
+		$this->fireHookOnce();
+		return $this->globals;
 	}
 
 	/**

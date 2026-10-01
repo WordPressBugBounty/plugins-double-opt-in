@@ -51,6 +51,9 @@ function createTableOptIn() {
         consent_field varchar(64) DEFAULT '',
         reminder_sent_at varchar(255) DEFAULT '',
         mail_reminder LONGTEXT,
+        mail_status varchar(20) NOT NULL DEFAULT '',
+        mail_error varchar(255) NOT NULL DEFAULT '',
+        mail_status_at varchar(19) NOT NULL DEFAULT '',
         PRIMARY KEY  (id)
     )";
 

@@ -15,7 +15,7 @@ namespace forge12\contactform7\CF7DoubleOptIn {
 	 * Description: This plugin allows you to add a double OptIn System to your Contact Form 7 & Avada Forms.
 	 * Text Domain: double-opt-in
 	 * Domain Path: /languages
-	 * Version: 5.7.0
+	 * Version: 5.8.1
 	 * Requires at least: 6.0
 	 * Requires PHP: 7.4
 	 * Author: Forge12 Interactive GmbH
@@ -57,7 +57,7 @@ namespace forge12\contactform7\CF7DoubleOptIn {
 	}
 
 	if ( ! defined( 'FORGE12_OPTIN_VERSION' ) ) {
-		define( 'FORGE12_OPTIN_VERSION', '5.7.0' );
+		define( 'FORGE12_OPTIN_VERSION', '5.8.1' );
 	}
 
 	// Addon API version — semver-independent from the plugin's marketing
@@ -75,8 +75,16 @@ namespace forge12\contactform7\CF7DoubleOptIn {
 	// OptInFrontend::getLastCreationError(), ErrorNotification::forget().
 	// The Elementor, WPForms and Gravity Forms add-ons call them only when they
 	// exist (method_exists), so their requirement stays ^4.4.
+	//
+	// 4.6.0 (additive): Service\ConfirmationMailResender, Service\DoiMailHeaders
+	// (filter f12_doi_mail_headers), filter f12_doi_submit_notice_data,
+	// Events\Lifecycle\OptInOptedOutEvent / OptInReOptedInEvent,
+	// FollowUp\GlobalFollowUpAdapterInterface, OptInStatsRepository::activity(),
+	// OptInMailStatusRepository::countFailedBetween(). Opt-Out and Reminder use them
+	// only when they exist (class_exists), so their requirement does not change;
+	// the Welle-2 add-ons that build on them require ^4.6.
 	if ( ! defined( 'F12_DOI_CORE_API_VERSION' ) ) {
-		define( 'F12_DOI_CORE_API_VERSION', '4.5.0' );
+		define( 'F12_DOI_CORE_API_VERSION', '4.6.0' );
 	}
 	if ( ! defined( 'FORGE12_OPTIN_SLUG' ) ) {
 		define( 'FORGE12_OPTIN_SLUG', 'f12-cf7-doubleoptin' );
@@ -452,6 +460,9 @@ namespace forge12\contactform7\CF7DoubleOptIn {
 
 			// Setup wizard (v5.7.0+)
 			$container->addProvider( new \Forge12\DoubleOptIn\Providers\SetupServiceProvider() );
+
+			// Confirmation mail delivery status (v5.8.0+)
+			$container->addProvider( new \Forge12\DoubleOptIn\Providers\MailStatusServiceProvider() );
 
 			// Register licensing registry (v4.3.0+ — entitlement state for paid addons)
 			$container->addProvider( new \Forge12\DoubleOptIn\Providers\LicensingServiceProvider() );

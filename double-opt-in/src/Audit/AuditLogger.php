@@ -36,6 +36,7 @@ class AuditLogger {
 	const TYPE_EMAIL      = 'email';
 	const TYPE_AUTH       = 'auth';
 	const TYPE_FOLLOW_UP  = 'follow_up';
+	const TYPE_CONSENT    = 'consent';
 
 	/**
 	 * Severity levels.

@@ -2,7 +2,14 @@
 /**
  * Block Registry
  *
- * Central registry for email editor blocks with Free/Pro availability.
+ * Which block types the email renderer knows.
+ *
+ * Up to Core 5.7 this class also decided, by licence, which blocks and how
+ * many templates were allowed. Core on wordpress.org may not lock
+ * functionality behind a licence (plugin guideline 5), and editing
+ * templates is the email editor add-on's feature anyway; since 5.8 nothing
+ * here depends on a licence. The methods the add-on up to 1.0.5 calls are
+ * kept so an older add-on keeps working, but they no longer restrict.
  *
  * @package Forge12\DoubleOptIn\EmailTemplates
  * @since   4.2.0
@@ -16,13 +23,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /**
  * Class BlockRegistry
- *
- * Manages block availability based on Free/Pro status.
  */
 class BlockRegistry {
 
 	/**
-	 * Blocks available in the Free version.
+	 * Basic blocks.
 	 *
 	 * @var string[]
 	 */
@@ -44,7 +49,8 @@ class BlockRegistry {
 	);
 
 	/**
-	 * Blocks that require the Pro version.
+	 * Blocks the editor add-on labels as Pro. The renderer handles them
+	 * like any other block.
 	 *
 	 * @var string[]
 	 */
@@ -60,40 +66,32 @@ class BlockRegistry {
 	);
 
 	/**
-	 * Get the template limit based on Pro status.
+	 * Maximum number of published templates: no limit.
 	 *
-	 * @return int Maximum number of published templates allowed.
+	 * @deprecated 5.8.0 Kept for the email editor add-on up to 1.0.5.
 	 */
 	public function getTemplateLimit(): int {
-		return $this->isProActive() ? PHP_INT_MAX : 1;
+		return PHP_INT_MAX;
 	}
 
 	/**
-	 * Check if Pro is active.
+	 * Always true: Core no longer checks licences here.
 	 *
-	 * @return bool
+	 * @deprecated 5.8.0 Kept for the email editor add-on up to 1.0.5, which
+	 *             only runs with a licence anyway.
 	 */
 	public function isProActive(): bool {
-		/**
-		 * Filter to check if the Pro version is active and licensed.
-		 *
-		 * @param bool $isActive Whether Pro is active. Default false.
-		 *
-		 * @since 4.2.0
-		 */
-		return (bool) apply_filters( 'f12_doi_is_pro_active', false );
+		return true;
 	}
 
 	/**
-	 * Get block availability for all blocks.
+	 * Every known block, all available.
 	 *
-	 * Returns an associative array where each key is a block type
-	 * and the value indicates its availability status.
+	 * @deprecated 5.8.0 Kept for the email editor add-on up to 1.0.5.
 	 *
-	 * @return array
+	 * @return array<string, array{type: string, available: bool, requiresPro: bool}>
 	 */
 	public function getBlockAvailability(): array {
-		$isProActive  = $this->isProActive();
 		$availability = array();
 
 		foreach ( self::FREE_BLOCKS as $blockType ) {
@@ -107,77 +105,34 @@ class BlockRegistry {
 		foreach ( self::PRO_BLOCKS as $blockType ) {
 			$availability[ $blockType ] = array(
 				'type'        => $blockType,
-				'available'   => $isProActive,
+				'available'   => true,
 				'requiresPro' => true,
 			);
 		}
 
-		/**
-		 * Filter block availability.
-		 *
-		 * Allows extensions to modify block availability.
-		 *
-		 * @param array $availability The block availability array.
-		 * @param bool  $isProActive  Whether Pro is active.
-		 *
-		 * @since 4.2.0
-		 */
-		return apply_filters( 'f12_doi_block_availability', $availability, $isProActive );
+		return $availability;
 	}
 
 	/**
-	 * Check if a specific block type is available.
+	 * Every block type is available.
+	 *
+	 * @deprecated 5.8.0
 	 *
 	 * @param string $blockType The block type to check.
-	 *
-	 * @return bool True if the block is available.
 	 */
 	public function isBlockAvailable( string $blockType ): bool {
-		if ( in_array( $blockType, self::FREE_BLOCKS, true ) ) {
-			return true;
-		}
-
-		if ( in_array( $blockType, self::PRO_BLOCKS, true ) ) {
-			return $this->isProActive();
-		}
-
-		// Unknown block types are allowed by default
 		return true;
 	}
 
 	/**
-	 * Validate blocks recursively, checking that no Pro blocks are used without a license.
+	 * No block is refused.
 	 *
-	 * @param array $blocks The blocks array to validate.
+	 * @deprecated 5.8.0
 	 *
-	 * @return array Array of invalid block types found. Empty if all valid.
+	 * @param array $blocks The blocks array.
+	 * @return array Always empty.
 	 */
 	public function validateBlocks( array $blocks ): array {
-		$invalidBlocks = array();
-		$this->validateBlocksRecursive( $blocks, $invalidBlocks );
-
-		return $invalidBlocks;
-	}
-
-	/**
-	 * Recursively validate blocks.
-	 *
-	 * @param array $blocks        The blocks to validate.
-	 * @param array $invalidBlocks Reference to collect invalid block types.
-	 *
-	 * @return void
-	 */
-	private function validateBlocksRecursive( array $blocks, array &$invalidBlocks ): void {
-		foreach ( $blocks as $block ) {
-			$type = $block['type'] ?? '';
-
-			if ( ! empty( $type ) && ! $this->isBlockAvailable( $type ) ) {
-				$invalidBlocks[] = $type;
-			}
-
-			if ( ! empty( $block['children'] ) && is_array( $block['children'] ) ) {
-				$this->validateBlocksRecursive( $block['children'], $invalidBlocks );
-			}
-		}
+		return array();
 	}
 }

@@ -43,13 +43,6 @@ class EmailHtmlGenerator {
 	private array $globalStyles = array();
 
 	/**
-	 * Block Registry for Pro checks.
-	 *
-	 * @var BlockRegistry|null
-	 */
-	private ?BlockRegistry $blockRegistry = null;
-
-	/**
 	 * Generate email HTML from blocks.
 	 *
 	 * @param array $blocks       Array of block data.
@@ -57,8 +50,7 @@ class EmailHtmlGenerator {
 	 * @return string Generated HTML.
 	 */
 	public function generate( array $blocks, array $globalStyles = array() ): string {
-		$this->globalStyles  = wp_parse_args( $globalStyles, $this->defaultStyles );
-		$this->blockRegistry = new BlockRegistry();
+		$this->globalStyles = wp_parse_args( $globalStyles, $this->defaultStyles );
 
 		$contentWidth    = (int) $this->globalStyles['contentWidth'];
 		$backgroundColor = esc_attr( $this->globalStyles['backgroundColor'] );
@@ -154,8 +146,10 @@ HTML;
 
 		$html = $this->renderBlockContent( $type, $attributes, $children, $parentBgColor );
 
-		// Inject custom CSS as inline styles (Pro only)
-		if ( ! empty( $customCss ) && $this->blockRegistry && $this->blockRegistry->isProActive() ) {
+		// Custom CSS saved with the template is always rendered. Only admins
+		// can store it (the editor add-on, manage_options), and a mail must
+		// not change its look because a licence ran out.
+		if ( ! empty( $customCss ) ) {
 			$html = $this->injectCustomCss( $html, $customCss );
 		}
 

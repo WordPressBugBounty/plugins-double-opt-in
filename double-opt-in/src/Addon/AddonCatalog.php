@@ -139,6 +139,11 @@ final class AddonCatalog {
 				__( 'CleverReach', 'double-opt-in' ),
 				__( 'CleverReach API integration: OAuth handshake, list synchronisation, and subscriber export. Forwards confirmed opt-ins to your CleverReach account.', 'double-opt-in' )
 			),
+			'webhooks'                 => $entry(
+				'webhooks',
+				__( 'Webhooks', 'double-opt-in' ),
+				__( 'Sends a signed POST to your own URLs when an opt-in is confirmed, withdrawn or renewed. Connects Zapier, Make, n8n or your CRM, with retries.', 'double-opt-in' )
+			),
 		);
 
 		return $entries;

@@ -7202,3 +7202,854 @@ msgstr "Cordialement,<br>%s"
 
 msgid "The setup step could not be saved."
 msgstr "L'étape de configuration n'a pas pu être enregistrée."
+
+# Forms page add-on cards (5.7.1)
+msgid "%s is installed on this site, but its forms do not have Double Opt-In yet. The add-on adds it."
+msgstr "%s est installé sur ce site, mais ses formulaires n'ont pas encore de Double Opt-In. L'addon l'ajoute."
+
+msgid "The %s add-on is not active yet."
+msgstr "L'addon %s n'est pas encore actif."
+
+msgid "Open Add-ons"
+msgstr "Ouvrir les addons"
+
+# Guideline 5: add-on routes, health check (5.8.0)
+msgid "This feature is provided by the %s add-on. Install and activate the add-on with a valid license to use it."
+msgstr "Cette fonction est fournie par l'addon %s. Installez et activez l'addon avec une licence valide pour l'utiliser."
+
+msgid "This endpoint exports a single record. Bulk exports are provided by the Consent Export add-on."
+msgstr "Ce point d'accès exporte un seul enregistrement. Les exports groupés sont fournis par l'addon Consent Export."
+
+msgid "Double Opt-In add-on versions"
+msgstr "Versions des addons Double Opt-In"
+
+msgid "%1$s %2$s (needs %3$s)"
+msgstr "%1$s %2$s (requiert %3$s)"
+
+msgid "Double Opt-In add-ons match this version"
+msgstr "Les addons Double Opt-In correspondent à cette version"
+
+msgid "Update the Double Opt-In add-ons"
+msgstr "Mettre à jour les addons Double Opt-In"
+
+msgid "These add-ons are older than this version of Double Opt-In expects: %s. Until they are updated, the email editor shows no templates and \"Create opt-out page\" does not work. Your templates, settings and opt-ins are not affected."
+msgstr "Ces addons sont plus anciens que ce qu'attend cette version de Double Opt-In : %s. Tant qu'ils ne sont pas mis à jour, l'éditeur d'e-mails n'affiche aucun modèle et « Créer la page de désinscription » ne fonctionne pas. Vos modèles, réglages et opt-ins ne sont pas concernés."
+
+msgid "Go to updates"
+msgstr "Aller aux mises à jour"
+
+msgid "Available as add-ons"
+msgstr "Disponible en addons"
+
+msgid "See the add-ons"
+msgstr "Voir les addons"
+
+msgid "See the add-on"
+msgstr "Voir l'addon"
+
+# Confirmation mail status (5.8.0)
+msgid "The mail could not be handed to the mail server."
+msgstr "L'e-mail n'a pas pu être remis au serveur de messagerie."
+
+msgid "Confirmation mail delivery"
+msgstr "Envoi de l'e-mail de confirmation"
+
+msgid "Confirmation mails reach the mail server"
+msgstr "Les e-mails de confirmation atteignent le serveur de messagerie"
+
+msgid "No confirmation mail failed in the last seven days."
+msgstr "Aucun e-mail de confirmation n'a échoué au cours des sept derniers jours."
+
+msgid "In the last seven days WordPress could not hand these confirmation mails to the mail server, so the visitors never received a link. The opt-in list shows the error for each one. Check the mail settings of your site, for example with an SMTP plugin, then resend the confirmation from the opt-in."
+msgstr "Au cours des sept derniers jours, WordPress n'a pas pu remettre ces e-mails de confirmation au serveur de messagerie : les visiteurs n'ont jamais reçu de lien. La liste des opt-ins affiche l'erreur pour chacun. Vérifiez les réglages d'envoi de votre site, par exemple avec un plugin SMTP, puis renvoyez la confirmation depuis l'opt-in."
+
+msgid "Show the affected opt-ins"
+msgstr "Afficher les opt-ins concernés"
+
+msgid "Confirmation mail"
+msgstr "E-mail de confirmation"
+
+msgid "The confirmation mail could not be handed to the mail server."
+msgstr "L'e-mail de confirmation n'a pas pu être remis au serveur de messagerie."
+
+msgid "Mail failed"
+msgstr "E-mail en échec"
+
+msgid "All mails"
+msgstr "Tous les e-mails"
+
+msgid "Could not be sent (%s)"
+msgstr "N'a pas pu être envoyé (%s)"
+
+msgid "Check the mail settings of your site, then use “Resend Email”."
+msgstr "Vérifiez les réglages d'envoi de votre site, puis utilisez « Renvoyer l'e-mail »."
+
+msgid "Handed to the mail server (%s)"
+msgstr "Remis au serveur de messagerie (%s)"
+
+msgid "Whether it arrived in the inbox is beyond what WordPress can see."
+msgstr "WordPress ne peut pas savoir s'il est arrivé dans la boîte de réception."
+
+#, php-format
+msgid "%d confirmation mail could not be sent"
+msgid_plural "%d confirmation mails could not be sent"
+msgstr[0] "%d e-mail de confirmation n'a pas pu être envoyé"
+msgstr[1] "%d e-mails de confirmation n'ont pas pu être envoyés"
+
+# Confirmation hint after submit (5.8.0)
+msgid "Look for a mail from %1$s with the subject “%2$s”. If it is not in your inbox, check the spam folder."
+msgstr "Cherchez un e-mail de %1$s avec l'objet « %2$s ». S'il n'est pas dans votre boîte de réception, vérifiez le dossier spam."
+
+msgid "If it is not in your inbox, check the spam folder."
+msgstr "S'il n'est pas dans votre boîte de réception, vérifiez le dossier spam."
+
+msgid "Typo in the address? Just fill in the form again."
+msgstr "Faute de frappe dans l'adresse ? Remplissez simplement à nouveau le formulaire."
+
+msgid "Open %s"
+msgstr "Ouvrir %s"
+
+msgid "Almost done: please confirm your address. We have sent you a mail with a confirmation link."
+msgstr "Presque terminé : veuillez confirmer votre adresse. Nous vous avons envoyé un e-mail contenant un lien de confirmation."
+
+msgid "Almost done: please confirm your address. We have sent a confirmation link to %s."
+msgstr "Presque terminé : veuillez confirmer votre adresse. Nous avons envoyé un lien de confirmation à %s."
+
+msgid "The confirmation mail could not be sent. Please try again later."
+msgstr "L'e-mail de confirmation n'a pas pu être envoyé. Veuillez réessayer plus tard."
+
+# Sender domain check (5.8.0)
+msgid "Sender domain of the confirmation mail"
+msgstr "Domaine d'expédition de l'e-mail de confirmation"
+
+msgid "No sender domain to check"
+msgstr "Aucun domaine d'expédition à vérifier"
+
+msgid "No active form has a sender address yet."
+msgstr "Aucun formulaire actif n'a encore d'adresse d'expéditeur."
+
+msgid "Confirmation mails are sent from a free-mail address"
+msgstr "Les e-mails de confirmation sont envoyés depuis une adresse de messagerie gratuite"
+
+msgid "The sender address uses %s. Your web server is not allowed to send mail for that domain, so Gmail, Outlook and others reject these mails or file them as spam. Use an address of your own domain as the sender in the form settings."
+msgstr "L'adresse d'expéditeur utilise %s. Votre serveur web n'est pas autorisé à envoyer des e-mails pour ce domaine : Gmail, Outlook et d'autres les rejettent ou les classent en spam. Indiquez une adresse de votre propre domaine comme expéditeur dans les réglages du formulaire."
+
+msgid "Open the forms"
+msgstr "Ouvrir les formulaires"
+
+msgid "%1$s has no %2$s record."
+msgstr "%1$s n'a pas d'enregistrement %2$s."
+
+msgid "The sender domain has SPF and DMARC records"
+msgstr "Le domaine d'expédition possède des enregistrements SPF et DMARC"
+
+msgid "The sender domain could not be checked"
+msgstr "Le domaine d'expédition n'a pas pu être vérifié"
+
+msgid "Inboxes can verify that your server may send for the sender domain. DKIM is set up at your mail provider and is not checked here."
+msgstr "Les messageries peuvent vérifier que votre serveur est autorisé à envoyer pour ce domaine. DKIM se configure chez votre fournisseur de messagerie et n'est pas vérifié ici."
+
+msgid "DNS lookups are not available on this server."
+msgstr "Les requêtes DNS ne sont pas disponibles sur ce serveur."
+
+msgid "Without these records Gmail, Outlook and others cannot tell your confirmation mails from forged ones and file them as spam or reject them. Your host or domain provider can add them in the DNS settings."
+msgstr "Sans ces enregistrements, Gmail, Outlook et d'autres ne peuvent pas distinguer vos e-mails de confirmation de faux e-mails et les classent en spam ou les rejettent. Votre hébergeur ou fournisseur de domaine peut les ajouter dans les réglages DNS."
+
+msgid "No SMTP plugin is active, so the mails leave through the web server. An SMTP plugin that sends through your mail provider usually fixes delivery as well."
+msgstr "Aucune extension SMTP n'est active : les e-mails partent donc du serveur web. Une extension SMTP qui envoie via votre fournisseur de messagerie règle généralement aussi les problèmes de distribution."
+
+msgid "The sender domain is missing records that inboxes check"
+msgstr "Il manque au domaine d'expédition des enregistrements vérifiés par les messageries"
+
+# Confirmation/error page shortcodes (5.8.0)
+msgid "Too many sign-ups from your connection in a short time. Please try again later."
+msgstr "Trop d'inscriptions depuis votre connexion en peu de temps. Veuillez réessayer plus tard."
+
+msgid "This email address was signed up several times in a short time. Please check your inbox for the confirmation mail or try again later."
+msgstr "Cette adresse e-mail a été inscrite plusieurs fois en peu de temps. Vérifiez votre boîte de réception pour l'e-mail de confirmation ou réessayez plus tard."
+
+msgid "This email address cannot receive mail. Please check it and try again."
+msgstr "Cette adresse e-mail ne peut pas recevoir de messages. Veuillez la vérifier et réessayer."
+
+msgid "No valid email address was entered. Please try again."
+msgstr "Aucune adresse e-mail valide n'a été saisie. Veuillez réessayer."
+
+msgid "This email address is already signed up."
+msgstr "Cette adresse e-mail est déjà inscrite."
+
+msgid "Please agree to the consent text to sign up."
+msgstr "Veuillez accepter le texte de consentement pour vous inscrire."
+
+msgid "Your sign-up could not be saved. Please try again later."
+msgstr "Votre inscription n'a pas pu être enregistrée. Veuillez réessayer plus tard."
+
+msgid "Your sign-up could not be completed. Please try again later."
+msgstr "Votre inscription n'a pas pu être finalisée. Veuillez réessayer plus tard."
+
+# Spam trap (5.8.0)
+msgid "Leave this field empty"
+msgstr "Laissez ce champ vide"
+
+# Stuck opt-ins card (5.8.0)
+msgid "%1$d%% of the opt-ins from the last %2$d days are not confirmed"
+msgstr "%1$d %% des opt-ins des %2$d derniers jours ne sont pas confirmés"
+
+msgid "%1$d of %2$d people did not click the link in the confirmation mail. The last 24 hours are not counted."
+msgstr "%1$d personnes sur %2$d n'ont pas cliqué sur le lien de l'e-mail de confirmation. Les dernières 24 heures ne sont pas comptées."
+
+msgid "Check in Site Health whether inboxes trust your sender domain"
+msgstr "Vérifier dans Santé du site si les messageries font confiance à votre domaine d'expédition"
+
+msgid "Activate the license of the Reminder add-on: it sends a second mail to people who have not confirmed"
+msgstr "Activer la licence de l'extension Reminder : elle envoie un second e-mail aux personnes qui n'ont pas confirmé"
+
+msgid "The Reminder add-on sends a second mail to people who have not confirmed"
+msgstr "L'extension Reminder envoie un second e-mail aux personnes qui n'ont pas confirmé"
+
+#, php-format
+msgid "%d confirmation mail could not be sent. Show it"
+msgid_plural "%d confirmation mails could not be sent. Show them"
+msgstr[0] "%d e-mail de confirmation n'a pas pu être envoyé. L'afficher"
+msgstr[1] "%d e-mails de confirmation n'ont pas pu être envoyés. Les afficher"
+
+# Resend refused for opted-out contacts (5.8.0)
+msgid "This contact has opted out. The confirmation email is not sent again."
+msgstr "Ce contact s’est désinscrit. L’e-mail de confirmation n’est pas renvoyé."
+
+# Audit: renewed consent (5.8.0)
+#. translators: %d: opt-in ID
+#, php-format
+msgid "Consent for opt-in #%d given again from the opt-out list."
+msgstr "Consentement pour l’opt-in #%d donné à nouveau depuis la liste de désinscription."
+
+# Audit log type filter (5.8.0)
+msgid "Consent"
+msgstr "Consentement"
+
+# Analytics add-on: weekly report card (analytics 1.1.0)
+msgid "Weekly report by mail"
+msgstr "Rapport hebdomadaire par e-mail"
+
+msgid "New opt-ins, confirmation rate, opt-outs and failed confirmation mails of the last 7 days. Numbers only, no addresses."
+msgstr "Nouveaux opt-ins, taux de confirmation, désinscriptions et e-mails de confirmation non envoyés des 7 derniers jours. Uniquement des chiffres, aucune adresse."
+
+msgid "Send the weekly report"
+msgstr "Envoyer le rapport hebdomadaire"
+
+msgid "Recipients"
+msgstr "Destinataires"
+
+msgid "One address per line, up to 10. Each recipient gets a separate mail."
+msgstr "Une adresse par ligne, 10 au maximum. Chaque destinataire reçoit un e-mail séparé."
+
+msgid "Day"
+msgstr "Jour"
+
+msgid "Monday"
+msgstr "Lundi"
+
+msgid "Tuesday"
+msgstr "Mardi"
+
+msgid "Wednesday"
+msgstr "Mercredi"
+
+msgid "Thursday"
+msgstr "Jeudi"
+
+msgid "Friday"
+msgstr "Vendredi"
+
+msgid "Saturday"
+msgstr "Samedi"
+
+msgid "Sunday"
+msgstr "Dimanche"
+
+msgid "Send test report now"
+msgstr "Envoyer un rapport de test maintenant"
+
+msgid "The settings could not be saved."
+msgstr "Les réglages n’ont pas pu être enregistrés."
+
+msgid "The test report could not be sent."
+msgstr "Le rapport de test n’a pas pu être envoyé."
+
+# Webhooks add-on: catalog entry and admin page (webhooks 1.0.0)
+msgid "Webhooks"
+msgstr "Webhooks"
+
+msgid "Sends a signed POST to your own URLs when an opt-in is confirmed, withdrawn or renewed. Connects Zapier, Make, n8n or your CRM, with retries."
+msgstr "Envoie un POST signé à vos propres URL lorsqu’un opt-in est confirmé, retiré ou renouvelé. Connecte Zapier, Make, n8n ou votre CRM, avec nouvelles tentatives."
+
+msgid "Send a signed request to your own URL when an opt-in is confirmed, withdrawn or given again. For Zapier, Make, n8n or your CRM."
+msgstr "Envoyez une requête signée à votre propre URL lorsqu’un opt-in est confirmé, retiré ou donné à nouveau. Pour Zapier, Make, n8n ou votre CRM."
+
+msgid "Add webhook"
+msgstr "Ajouter un webhook"
+
+msgid "Signing secret"
+msgstr "Secret de signature"
+
+msgid "Copy it now and store it at the receiver. It will not be shown again."
+msgstr "Copiez-le maintenant et enregistrez-le chez le destinataire. Il ne sera plus affiché."
+
+msgid "Your webhooks"
+msgstr "Vos webhooks"
+
+msgid "No webhook yet."
+msgstr "Aucun webhook pour le moment."
+
+msgid "URL"
+msgstr "URL"
+
+msgid "Events"
+msgstr "Événements"
+
+msgid "Recent deliveries"
+msgstr "Envois récents"
+
+msgid "Nothing sent yet."
+msgstr "Rien n’a encore été envoyé."
+
+msgid "Time"
+msgstr "Heure"
+
+msgid "Webhook"
+msgstr "Webhook"
+
+msgid "Event"
+msgstr "Événement"
+
+msgid "Opt-In"
+msgstr "Opt-in"
+
+msgid "Result"
+msgstr "Résultat"
+
+msgid "How to check the signature"
+msgstr "Comment vérifier la signature"
+
+msgid "Every request carries X-DOI-Signature: t=<time>,v1=<signature>. The signature is HMAC-SHA256 of \"<time>.<request body>\" with your signing secret. Reject requests whose time is older than five minutes. X-DOI-Delivery stays the same when a delivery is retried, so you can ignore duplicates."
+msgstr "Chaque requête porte X-DOI-Signature: t=<heure>,v1=<signature>. La signature est un HMAC-SHA256 de \"<heure>.<corps de la requête>\" avec votre secret de signature. Refusez les requêtes dont l’heure date de plus de cinq minutes. X-DOI-Delivery reste identique lors d’une nouvelle tentative, vous pouvez donc ignorer les doublons."
+
+msgid "Paused"
+msgstr "En pause"
+
+msgid "Send test"
+msgstr "Envoyer un test"
+
+msgid "Really delete?"
+msgstr "Vraiment supprimer ?"
+
+msgid "Edit webhook"
+msgstr "Modifier le webhook"
+
+msgid "New webhook"
+msgstr "Nouveau webhook"
+
+msgid "Must start with https://. Local and private addresses are not allowed."
+msgstr "Doit commencer par https://. Les adresses locales et privées ne sont pas autorisées."
+
+msgid "Send when"
+msgstr "Envoyer lorsque"
+
+msgid "Withdrawn and given again need the Opt-Out add-on."
+msgstr "Retiré et donné à nouveau nécessitent le module Opt-Out."
+
+msgid "Only these forms"
+msgstr "Uniquement ces formulaires"
+
+msgid "Data sent"
+msgstr "Données envoyées"
+
+msgid "Always: event, record ID and form ID. Choose only what the receiver needs. IP addresses are never sent."
+msgstr "Toujours : événement, ID de l’enregistrement et ID du formulaire. Ne choisissez que ce dont le destinataire a besoin. Les adresses IP ne sont jamais envoyées."
+
+#. translators: %s: last characters of the secret
+#, php-format
+msgid "Signing secret ends in %s."
+msgstr "Le secret de signature se termine par %s."
+
+msgid "Create new secret"
+msgstr "Créer un nouveau secret"
+
+msgid "Delivered"
+msgstr "Livré"
+
+msgid "Temporary error"
+msgstr "Erreur temporaire"
+
+msgid "Opt-in confirmed"
+msgstr "Opt-in confirmé"
+
+msgid "Consent withdrawn"
+msgstr "Consentement retiré"
+
+msgid "Consent given again"
+msgstr "Consentement donné à nouveau"
+
+msgid "Form title"
+msgstr "Titre du formulaire"
+
+msgid "Request, confirmation and opt-out time"
+msgstr "Heure de la demande, de la confirmation et de la désinscription"
+
+msgid "Consent text"
+msgstr "Texte de consentement"
+
+msgid "All submitted form fields"
+msgstr "Tous les champs de formulaire envoyés"
+
+msgid "The webhooks could not be loaded."
+msgstr "Les webhooks n’ont pas pu être chargés."
+
+msgid "The webhook could not be saved."
+msgstr "Le webhook n’a pas pu être enregistré."
+
+msgid "Webhook saved."
+msgstr "Webhook enregistré."
+
+msgid "Webhook deleted."
+msgstr "Webhook supprimé."
+
+msgid "The webhook could not be deleted."
+msgstr "Le webhook n’a pas pu être supprimé."
+
+msgid "The test could not be sent."
+msgstr "Le test n’a pas pu être envoyé."
+
+msgid "New secret created. Update it at the receiver."
+msgstr "Nouveau secret créé. Mettez-le à jour chez le destinataire."
+
+msgid "The secret could not be renewed."
+msgstr "Le secret n’a pas pu être renouvelé."
+
+# Follow-up panel: Avada form without notification mails (5.8.0)
+msgid "The form has no notification mails set up."
+msgstr "Le formulaire n’a aucun e-mail de notification configuré."
+
+# addon-analytics admin UI: confirmation time with unit
+msgid "< 1 min"
+msgstr "< 1 min"
+
+#. translators: %d: minutes
+#, php-format
+msgid "%d min"
+msgstr "%d min"
+
+#. translators: %s: hours, one decimal
+#, php-format
+msgid "%s h"
+msgstr "%s h"
+
+#. translators: %s: days, one decimal
+#, php-format
+msgid "%s days"
+msgstr "%s jours"
+
+# addon-analytics dashboard widget
+msgid "No form data yet."
+msgstr "Pas encore de données de formulaire."
+
+#. translators: %s: error message
+#, php-format
+msgid "Analytics widget could not load: %s"
+msgstr "Le widget Analytics n’a pas pu être chargé : %s"
+
+#. translators: 1: confirmed opt-ins, 2: all opt-ins
+#, php-format
+msgid "%1$s of %2$s"
+msgstr "%1$s sur %2$s"
+
+# addon-email-editor admin UI
+#. translators: %s: number of columns.
+#, php-format
+msgid "%s Column(s)"
+msgstr "%s colonne(s)"
+
+msgid "(no field)"
+msgstr "(aucun champ)"
+
+msgid "Add Column"
+msgstr "Ajouter une colonne"
+
+msgid "Add Icon"
+msgstr "Ajouter une icône"
+
+msgid "Add an image"
+msgstr "Ajouter une image"
+
+msgid "Add block"
+msgstr "Ajouter un bloc"
+
+msgid "Add column"
+msgstr "Ajouter une colonne"
+
+msgid "Add social icons"
+msgstr "Ajouter des icônes de réseaux sociaux"
+
+msgid "Alignment"
+msgstr "Alignement"
+
+msgid "Alt Text"
+msgstr "Texte alternatif"
+
+msgid "Apply"
+msgstr "Appliquer"
+
+msgid "Auto"
+msgstr "Auto"
+
+msgid "Background Color"
+msgstr "Couleur d’arrière-plan"
+
+msgid "Base Font Size"
+msgstr "Taille de police de base"
+
+msgid "Bold (Ctrl+B)"
+msgstr "Gras (Ctrl+B)"
+
+msgid "Border Radius"
+msgstr "Rayon de bordure"
+
+msgid "Bullet List"
+msgstr "Liste à puces"
+
+msgid "Button Text"
+msgstr "Texte du bouton"
+
+msgid "Center"
+msgstr "Centre"
+
+#. translators: %d: column number.
+#, php-format
+msgid "Col %d"
+msgstr "Col. %d"
+
+msgid "Color"
+msgstr "Couleur"
+
+msgid "Column"
+msgstr "Colonne"
+
+msgid "Column Widths"
+msgstr "Largeurs des colonnes"
+
+msgid "Compare value"
+msgstr "Valeur de comparaison"
+
+msgid "Content (Text, Button, Image)"
+msgstr "Contenu (texte, bouton, image)"
+
+msgid "Content Width (px)"
+msgstr "Largeur du contenu (px)"
+
+msgid "Copied!"
+msgstr "Copié !"
+
+msgid "Dashed"
+msgstr "Tirets"
+
+msgid "Display As"
+msgstr "Afficher comme"
+
+msgid "Dotted"
+msgstr "Pointillés"
+
+msgid "Drag a Row or Columns block here first, then add content inside"
+msgstr "Faites d’abord glisser une ligne ou un bloc de colonnes ici, puis ajoutez du contenu à l’intérieur"
+
+msgid "Drag to insert field placeholder"
+msgstr "Faites glisser pour insérer un champ"
+
+msgid "Drag to reorder"
+msgstr "Faites glisser pour réorganiser"
+
+msgid "Drop blocks here"
+msgstr "Déposez les blocs ici"
+
+msgid "Drop content blocks here"
+msgstr "Déposez les blocs de contenu ici"
+
+msgid "Email Preview"
+msgstr "Aperçu de l’e-mail"
+
+msgid "Enter your text here..."
+msgstr "Saisissez votre texte ici…"
+
+msgid "Error saving"
+msgstr "Erreur lors de l’enregistrement"
+
+msgid "Failed to create template"
+msgstr "Impossible de créer le modèle"
+
+msgid "Failed to create template. Please try again."
+msgstr "Impossible de créer le modèle. Veuillez réessayer."
+
+msgid "Field Name"
+msgstr "Nom du champ"
+
+msgid "First, add a structure"
+msgstr "Ajoutez d’abord une structure"
+
+msgid "Font Family"
+msgstr "Police"
+
+msgid "Font Size"
+msgstr "Taille de police"
+
+msgid "Footer text..."
+msgstr "Texte du pied de page…"
+
+msgid "Full Width"
+msgstr "Pleine largeur"
+
+msgid "Height (px)"
+msgstr "Hauteur (px)"
+
+msgid "Horizontal Padding"
+msgstr "Marge intérieure horizontale"
+
+#. translators: 1: form field name, 2: comparison operator.
+#, php-format
+msgid "IF %1$s %2$s"
+msgstr "SI %1$s %2$s"
+
+#. translators: 1: form field name, 2: comparison operator, 3: compared value.
+#, php-format
+msgid "IF %1$s %2$s \"%3$s\""
+msgstr "SI %1$s %2$s « %3$s »"
+
+msgid "Icon Size"
+msgstr "Taille des icônes"
+
+msgid "Icons"
+msgstr "Icônes"
+
+msgid "Image URL"
+msgstr "URL de l’image"
+
+msgid "Inline Text"
+msgstr "Texte en ligne"
+
+msgid "Insert Link"
+msgstr "Insérer un lien"
+
+msgid "Italic (Ctrl+I)"
+msgstr "Italique (Ctrl+I)"
+
+msgid "Layout"
+msgstr "Mise en page"
+
+msgid "Left"
+msgstr "Gauche"
+
+msgid "Level"
+msgstr "Niveau"
+
+msgid "Line Break (Shift+Enter)"
+msgstr "Saut de ligne (Maj+Entrée)"
+
+msgid "Line Height"
+msgstr "Hauteur de ligne"
+
+msgid "Link Color"
+msgstr "Couleur des liens"
+
+msgid "Link URL"
+msgstr "URL du lien"
+
+msgid "Loading templates..."
+msgstr "Chargement des modèles…"
+
+msgid "Logo Alt Text"
+msgstr "Texte alternatif du logo"
+
+msgid "Main"
+msgstr "Principal"
+
+msgid "Narrow"
+msgstr "Étroit"
+
+msgid "No icons yet — add one below."
+msgstr "Aucune icône pour l’instant — ajoutez-en une ci-dessous."
+
+msgid "No settings available for this block type."
+msgstr "Aucun réglage disponible pour ce type de bloc."
+
+msgid "Normal"
+msgstr "Normal"
+
+msgid "Not Empty"
+msgstr "Non vide"
+
+msgid "Not Equals"
+msgstr "Différent de"
+
+msgid "Numbered List"
+msgstr "Liste numérotée"
+
+msgid "Padding"
+msgstr "Marge intérieure"
+
+msgid "Primary Color"
+msgstr "Couleur principale"
+
+msgid "Relaxed"
+msgstr "Aéré"
+
+msgid "Remove Formatting"
+msgstr "Supprimer la mise en forme"
+
+msgid "Remove Link"
+msgstr "Supprimer le lien"
+
+msgid "Remove column"
+msgstr "Supprimer la colonne"
+
+msgid "Remove icon"
+msgstr "Supprimer l’icône"
+
+msgid "Right"
+msgstr "Droite"
+
+msgid "Select a block to edit its settings"
+msgstr "Sélectionnez un bloc pour modifier ses réglages"
+
+msgid "Sidebar"
+msgstr "Barre latérale"
+
+msgid "Solid"
+msgstr "Plein"
+
+msgid "Spacing"
+msgstr "Espacement"
+
+msgid "Standard"
+msgstr "Standard"
+
+msgid "Standard Fields"
+msgstr "Champs standard"
+
+msgid "Start with a structure"
+msgstr "Commencer par une structure"
+
+msgid "Strikethrough"
+msgstr "Barré"
+
+msgid "Structure (Row, Columns)"
+msgstr "Structure (ligne, colonnes)"
+
+msgid "Style"
+msgstr "Style"
+
+msgid "System Fields"
+msgstr "Champs système"
+
+msgid "Text Color"
+msgstr "Couleur du texte"
+
+msgid "Then, add content inside"
+msgstr "Puis ajoutez du contenu à l’intérieur"
+
+msgid "Thickness"
+msgstr "Épaisseur"
+
+msgid "Tight"
+msgstr "Serré"
+
+#. translators: 1: current sum of the column widths incl. percent sign, 2: required sum (100%).
+#, php-format
+msgid "Total: %1$s (should be %2$s)"
+msgstr "Total : %1$s (devrait être %2$s)"
+
+msgid "Underline (Ctrl+U)"
+msgstr "Souligné (Ctrl+U)"
+
+#. translators: %s: block type identifier.
+#, php-format
+msgid "Unknown block type: %s"
+msgstr "Type de bloc inconnu : %s"
+
+msgid "Unsaved"
+msgstr "Non enregistré"
+
+msgid "Vertical Padding"
+msgstr "Marge intérieure verticale"
+
+msgid "Wide"
+msgstr "Large"
+
+msgid "Width"
+msgstr "Largeur"
+
+msgid "contains"
+msgstr "contient"
+
+#, php-format
+msgid "e.g., 100% or 300"
+msgstr "p. ex. 100% ou 300"
+
+msgid "e.g., 10px"
+msgstr "p. ex. 10px"
+
+msgid "e.g., 20px or 10px 20px"
+msgstr "p. ex. 20px ou 10px 20px"
+
+msgid "e.g., 28px"
+msgstr "p. ex. 28px"
+
+msgid "e.g., background: #fff; border: 1px solid #ccc;"
+msgstr "p. ex. background: #fff; border: 1px solid #ccc;"
+
+msgid "e.g., your-email"
+msgstr "p. ex. your-email"
+
+msgid "e.g., your-name"
+msgstr "p. ex. your-name"
+
+msgid "is empty"
+msgstr "est vide"
+
+msgid "is not empty"
+msgstr "n’est pas vide"
+
+# bundle-pro admin UI: bundled addons panel
+msgid "Loading addon status…"
+msgstr "Chargement de l’état des modules…"
+
+msgid "Bundled addons"
+msgstr "Modules inclus"
+
+#. translators: 1: active addons, 2: all bundled addons
+#, php-format
+msgid "%1$d of %2$d active."
+msgstr "%1$d sur %2$d actifs."
+
+#. translators: %d: addons not installed yet
+#, php-format
+msgid "%d pending install."
+msgstr "%d en attente d’installation."
+
+#. translators: %s: date and time of the last installer run
+#, php-format
+msgid "Last run: %s."
+msgstr "Dernière exécution : %s."
+
+msgid "Install / activate 1 addon"
+msgstr "Installer / activer 1 module"
+
+#. translators: %d: number of addons, more than one
+#, php-format
+msgid "Install / activate %d addons"
+msgstr "Installer / activer %d modules"
+
+msgid "Re-run installer"
+msgstr "Relancer l’installation"
+
+msgid "Installed"
+msgstr "Installé"
+
+msgid "Installed, not active"
+msgstr "Installé, non actif"

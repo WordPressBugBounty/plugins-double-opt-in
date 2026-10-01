@@ -3482,7 +3482,7 @@ msgstr "Fügen Sie unten ein Formular hinzu, um feldbezogene Vorlagenregeln daf�
 
 #: packages/core/admin-ui/src/components/addon-settings/UniqueEmailSettingsPanel.tsx:158
 msgid "Add at least one form to the list. Until you do, Unique Email is effectively off because mode=selected with no entries excludes every form."
-msgstr "Fügen Sie mindestens ein Formular zur Liste hinzu. Bis dahin ist Unique Email faktisch aus, weil mode=selected ohne Einträge jedes Formular ausschließt."
+msgstr "Fügen Sie mindestens ein Formular zur Liste hinzu. Bis dahin ist die eindeutige E-Mail-Validierung faktisch aus, weil mode=selected ohne Einträge jedes Formular ausschließt."
 
 #: packages/core/admin-ui/src/components/addon-settings/ConditionalSettingsPanel.tsx:406
 #: packages/core/admin-ui/src/pages/OptOutPage.tsx:1264
@@ -4421,11 +4421,11 @@ msgstr "Jedes Formular führt eine formularspezifische Duplikatprüfung an sich 
 
 #: packages/core/admin-ui/src/components/addon-settings/UniqueEmailSettingsPanel.tsx:97
 msgid "Every form runs Unique Email EXCEPT those in the conditions list."
-msgstr "Jedes Formular führt Unique Email aus, AUSSER denen in der Bedingungsliste."
+msgstr "Jedes Formular nutzt die eindeutige E-Mail-Validierung, AUSSER denen in der Bedingungsliste."
 
 #: packages/core/admin-ui/src/components/addon-settings/UniqueEmailSettingsPanel.tsx:89
 msgid "Every form runs Unique Email with the default settings below. Use the conditions list to override single forms only."
-msgstr "Jedes Formular führt Unique Email mit den untenstehenden Standardeinstellungen aus. Nutzen Sie die Bedingungsliste, um nur einzelne Formulare zu überschreiben."
+msgstr "Jedes Formular nutzt die eindeutige E-Mail-Validierung mit den untenstehenden Standardeinstellungen. Nutzen Sie die Bedingungsliste, um nur einzelne Formulare zu überschreiben."
 
 #: packages/core/admin-ui/src/components/addon-settings/ConsentExportSettingsPanel.tsx:63
 msgid "Every record — confirmed, unconfirmed, and opted-out."
@@ -4551,7 +4551,7 @@ msgstr "Zurücksetzen fehlgeschlagen"
 
 #: packages/core/admin-ui/src/components/addon-settings/ConditionalSettingsPanel.tsx:266
 msgid "Failed to save Conditional Templates settings."
-msgstr "Einstellungen für Conditional Templates konnten nicht gespeichert werden."
+msgstr "Einstellungen für bedingte Templates konnten nicht gespeichert werden."
 
 #: packages/core/admin-ui/src/components/addon-settings/DomainBlocklistSettingsPanel.tsx:94
 msgid "Failed to save domain blocklist settings."
@@ -4571,11 +4571,11 @@ msgstr "Einstellungen konnten nicht gespeichert werden"
 
 #: packages/core/admin-ui/src/components/addon-settings/UniqueEmailSettingsPanel.tsx:300
 msgid "Failed to save Unique Email settings."
-msgstr "Einstellungen für Unique Email konnten nicht gespeichert werden."
+msgstr "Einstellungen für die eindeutige E-Mail-Validierung konnten nicht gespeichert werden."
 
 #: packages/core/admin-ui/src/pages/UserCreationPage.tsx:260
 msgid "Failed to save User Creation settings."
-msgstr "Einstellungen für User Creation konnten nicht gespeichert werden."
+msgstr "Einstellungen für die automatische Benutzeranlage konnten nicht gespeichert werden."
 
 #: packages/core/admin-ui/src/pages/CategoriesPage.tsx:100
 msgid "Failed to update category"
@@ -4698,7 +4698,7 @@ msgstr "Formulare, auf die die automatische Erstellung angewendet wird"
 
 #: packages/core/admin-ui/src/components/addon-settings/UniqueEmailSettingsPanel.tsx:544
 msgid "Forms to apply Unique Email to"
-msgstr "Formulare, auf die Unique Email angewendet wird"
+msgstr "Formulare mit eindeutiger E-Mail-Validierung"
 
 #: packages/core/admin-ui/src/pages/UserCreationPage.tsx:532
 msgid "Forms to exclude from auto-creation"
@@ -4706,7 +4706,7 @@ msgstr "Formulare, die von der automatischen Erstellung ausgeschlossen werden"
 
 #: packages/core/admin-ui/src/components/addon-settings/UniqueEmailSettingsPanel.tsx:546
 msgid "Forms to exclude from Unique Email"
-msgstr "Formulare, die von Unique Email ausgeschlossen werden"
+msgstr "Formulare ohne eindeutige E-Mail-Validierung"
 
 #: packages/core/admin-ui/src/components/addon-settings/ConditionalSettingsPanel.tsx:377
 msgid "Forms with conditional templates"
@@ -4784,15 +4784,15 @@ msgstr "Hooks-Referenz"
 
 #: packages/core/admin-ui/src/components/addon-settings/ConditionalSettingsPanel.tsx:366
 msgid "How Conditional Templates work"
-msgstr "So funktionieren Conditional Templates"
+msgstr "So funktionieren bedingte Templates"
 
 #: packages/core/admin-ui/src/components/addon-settings/UniqueEmailSettingsPanel.tsx:379
 msgid "How Unique Email applies"
-msgstr "So wird Unique Email angewendet"
+msgstr "So wird die eindeutige E-Mail-Validierung angewendet"
 
 #: packages/core/admin-ui/src/pages/UserCreationPage.tsx:376
 msgid "How User Creation applies"
-msgstr "So wird User Creation angewendet"
+msgstr "So wird die automatische Benutzeranlage angewendet"
 
 #: packages/core/admin-ui/src/pages/OptOutPage.tsx:1012
 msgid "HTML email body..."
@@ -5134,7 +5134,7 @@ msgstr "Noch keine Exporte — die Tabelle füllt sich, sobald Sie welche ausfü
 
 #: packages/core/admin-ui/src/components/addon-settings/ConditionalSettingsPanel.tsx:414
 msgid "No forms configured yet. Conditional Templates is inactive on every form. Add at least one form above to start."
-msgstr "Noch keine Formulare konfiguriert. Conditional Templates ist auf jedem Formular inaktiv. Fügen Sie oben mindestens ein Formular hinzu, um zu beginnen."
+msgstr "Noch keine Formulare konfiguriert. Bedingte Templates sind auf keinem Formular aktiv. Fügen Sie oben mindestens ein Formular hinzu, um zu beginnen."
 
 #: packages/core/admin-ui/src/components/addon-settings/ConditionalSettingsPanel.tsx:393
 #: packages/core/admin-ui/src/components/addon-settings/UniqueEmailSettingsPanel.tsx:573
@@ -5269,7 +5269,7 @@ msgstr "Nur angezeigt, wenn das Verhalten gesetzt ist auf"
 
 #: packages/core/admin-ui/src/components/addon-settings/UniqueEmailSettingsPanel.tsx:555
 msgid "Only the forms in this list run Unique Email. Each listed form checks duplicates within itself — they do not affect each other."
-msgstr "Nur die Formulare in dieser Liste führen Unique Email aus. Jedes gelistete Formular prüft Duplikate in sich selbst — sie beeinflussen sich gegenseitig nicht."
+msgstr "Nur die Formulare in dieser Liste nutzen die eindeutige E-Mail-Validierung. Jedes gelistete Formular prüft Duplikate in sich selbst — sie beeinflussen sich gegenseitig nicht."
 
 #: packages/core/admin-ui/src/pages/UserCreationPage.tsx:151
 msgid "Only the listed forms trigger user creation. Forms not in the list are completely unaffected. %s"
@@ -5457,7 +5457,7 @@ msgstr "Wählen Sie, ob jede Bestätigung einen Benutzer erstellt, nur Bestätig
 
 #: packages/core/admin-ui/src/components/addon-settings/UniqueEmailSettingsPanel.tsx:381
 msgid "Pick whether Unique Email runs on every form, only the forms you select, or every form except the ones you exclude. The defaults below apply to every form that's in scope; the conditions list lets you override individual settings per form."
-msgstr "Wählen Sie, ob Unique Email auf jedem Formular läuft, nur auf den ausgewählten Formularen oder auf jedem Formular außer den ausgeschlossenen. Die Standardwerte unten gelten für jedes Formular im Geltungsbereich; über die Bedingungsliste können Sie einzelne Einstellungen pro Formular überschreiben."
+msgstr "Wählen Sie, ob die eindeutige E-Mail-Validierung auf jedem Formular läuft, nur auf den ausgewählten Formularen oder auf jedem Formular außer den ausgeschlossenen. Die Standardwerte unten gelten für jedes Formular im Geltungsbereich; über die Bedingungsliste können Sie einzelne Einstellungen pro Formular überschreiben."
 
 #: packages/core/admin-ui/src/components/addon-settings/ConsentExportSettingsPanel.tsx:59
 msgid "Pipe — |"
@@ -6235,27 +6235,27 @@ msgstr "Unbestätigt"
 
 #: packages/core/admin-ui/src/components/addon-settings/UniqueEmailSettingsPanel.tsx:602
 msgid "Unique Email is active on every form with a per-form check. Use this list to override settings per form."
-msgstr "Unique Email ist auf jedem Formular mit einer formularspezifischen Prüfung aktiv. Verwenden Sie diese Liste, um Einstellungen pro Formular zu überschreiben."
+msgstr "Die eindeutige E-Mail-Validierung ist auf jedem Formular mit einer formularspezifischen Prüfung aktiv. Verwenden Sie diese Liste, um Einstellungen pro Formular zu überschreiben."
 
 #: packages/core/admin-ui/src/components/addon-settings/UniqueEmailSettingsPanel.tsx:604
 msgid "Unique Email is active on every form with a sitewide check (equivalent to the legacy Single Mail Registration). Use this list only if you need per-form overrides."
-msgstr "Unique Email ist auf jedem Formular mit einer websiteweiten Prüfung aktiv (entspricht der alten Single Mail Registration). Verwenden Sie diese Liste nur, wenn Sie formularspezifische Überschreibungen benötigen."
+msgstr "Die eindeutige E-Mail-Validierung ist auf jedem Formular mit einer websiteweiten Prüfung aktiv (entspricht der früheren Single-Mail-Registrierung). Verwenden Sie diese Liste nur, wenn Sie formularspezifische Überschreibungen benötigen."
 
 #: packages/core/admin-ui/src/components/addon-settings/UniqueEmailSettingsPanel.tsx:600
 msgid "Unique Email is active on every form with the defaults above."
-msgstr "Unique Email ist auf jedem Formular mit den Standardwerten oben aktiv."
+msgstr "Die eindeutige E-Mail-Validierung ist auf jedem Formular mit den Standardwerten oben aktiv."
 
 #: packages/core/admin-ui/src/components/addon-settings/UniqueEmailSettingsPanel.tsx:596
 msgid "Unique Email is currently inactive on every form — add at least one above."
-msgstr "Unique Email ist derzeit auf jedem Formular inaktiv — fügen Sie oben mindestens eines hinzu."
+msgstr "Die eindeutige E-Mail-Validierung ist derzeit auf jedem Formular inaktiv — fügen Sie oben mindestens eines hinzu."
 
 #: packages/core/admin-ui/src/components/addon-settings/UniqueEmailSettingsPanel.tsx:598
 msgid "Unique Email is currently inactive on every form. Even though the match scope is sitewide, mode=selected with an empty list excludes everything. Add at least two forms to make the sitewide pool meaningful."
-msgstr "Unique Email ist derzeit auf jedem Formular inaktiv. Auch wenn der Abgleichsbereich websiteweit ist, schließt mode=selected mit einer leeren Liste alles aus. Fügen Sie mindestens zwei Formulare hinzu, damit der websiteweite Pool sinnvoll ist."
+msgstr "Die eindeutige E-Mail-Validierung ist derzeit auf jedem Formular inaktiv. Auch wenn der Abgleichsbereich websiteweit ist, schließt mode=selected mit einer leeren Liste alles aus. Fügen Sie mindestens zwei Formulare hinzu, damit der websiteweite Pool sinnvoll ist."
 
 #: packages/core/admin-ui/src/components/addon-settings/UniqueEmailSettingsPanel.tsx:93
 msgid "Unique Email runs ONLY for forms in the conditions list. Forms not listed are unaffected."
-msgstr "Unique Email läuft NUR für Formulare in der Bedingungsliste. Nicht aufgeführte Formulare sind nicht betroffen."
+msgstr "Die eindeutige E-Mail-Validierung läuft NUR für Formulare in der Bedingungsliste. Nicht aufgeführte Formulare sind nicht betroffen."
 
 #: packages/core/admin-ui/src/components/addon-settings/UniqueEmailSettingsPanel.tsx:296
 msgid "Unique Email settings saved."
@@ -7207,3 +7207,866 @@ msgstr "Mit freundlichen Grüßen<br>%s"
 
 msgid "The setup step could not be saved."
 msgstr "Der Einrichtungsschritt konnte nicht gespeichert werden."
+
+# Forms page add-on cards (5.7.1)
+msgid "%s is installed on this site, but its forms do not have Double Opt-In yet. The add-on adds it."
+msgstr "%s ist auf dieser Seite installiert, aber seine Formulare haben noch kein Double Opt-In. Das Addon ergänzt es."
+
+msgid "The %s add-on is not active yet."
+msgstr "Das Addon für %s ist noch nicht aktiv."
+
+msgid "Open Add-ons"
+msgstr "Addons öffnen"
+
+# Guideline 5: add-on routes, health check (5.8.0)
+msgid "This feature is provided by the %s add-on. Install and activate the add-on with a valid license to use it."
+msgstr "Diese Funktion kommt vom Addon %s. Installieren und aktivieren Sie das Addon mit einer gültigen Lizenz, um sie zu nutzen."
+
+msgid "This endpoint exports a single record. Bulk exports are provided by the Consent Export add-on."
+msgstr "Dieser Endpunkt exportiert einen einzelnen Datensatz. Sammel-Exporte kommen vom Addon Consent Export."
+
+msgid "Double Opt-In add-on versions"
+msgstr "Versionen der Double-Opt-In-Addons"
+
+msgid "%1$s %2$s (needs %3$s)"
+msgstr "%1$s %2$s (benötigt %3$s)"
+
+msgid "Double Opt-In add-ons match this version"
+msgstr "Die Double-Opt-In-Addons passen zu dieser Version"
+
+msgid "Update the Double Opt-In add-ons"
+msgstr "Double-Opt-In-Addons aktualisieren"
+
+msgid "These add-ons are older than this version of Double Opt-In expects: %s. Until they are updated, the email editor shows no templates and \"Create opt-out page\" does not work. Your templates, settings and opt-ins are not affected."
+msgstr "Diese Addons sind älter, als diese Version von Double Opt-In erwartet: %s. Bis sie aktualisiert sind, zeigt der E-Mail-Editor keine Vorlagen, und „Opt-Out-Seite erzeugen“ funktioniert nicht. Ihre Vorlagen, Einstellungen und Opt-Ins sind nicht betroffen."
+
+msgid "Go to updates"
+msgstr "Zu den Aktualisierungen"
+
+msgid "Available as add-ons"
+msgstr "Als Addons erhältlich"
+
+msgid "See the add-ons"
+msgstr "Addons ansehen"
+
+msgid "See the add-on"
+msgstr "Addon ansehen"
+
+# Confirmation mail status (5.8.0)
+msgid "The mail could not be handed to the mail server."
+msgstr "Die Mail konnte nicht an den Mailserver übergeben werden."
+
+msgid "Confirmation mail delivery"
+msgstr "Versand der Bestätigungsmail"
+
+msgid "Confirmation mails reach the mail server"
+msgstr "Bestätigungsmails erreichen den Mailserver"
+
+msgid "No confirmation mail failed in the last seven days."
+msgstr "In den letzten sieben Tagen ist keine Bestätigungsmail gescheitert."
+
+msgid "In the last seven days WordPress could not hand these confirmation mails to the mail server, so the visitors never received a link. The opt-in list shows the error for each one. Check the mail settings of your site, for example with an SMTP plugin, then resend the confirmation from the opt-in."
+msgstr "In den letzten sieben Tagen konnte WordPress diese Bestätigungsmails nicht an den Mailserver übergeben, die Besucher haben also nie einen Link bekommen. Die Opt-In-Liste zeigt den Fehler zu jedem Eintrag. Prüfen Sie die Mail-Einstellungen Ihrer Seite, zum Beispiel mit einem SMTP-Plugin, und senden Sie die Bestätigung danach aus dem Opt-In erneut."
+
+msgid "Show the affected opt-ins"
+msgstr "Betroffene Opt-Ins anzeigen"
+
+msgid "Confirmation mail"
+msgstr "Bestätigungsmail"
+
+msgid "The confirmation mail could not be handed to the mail server."
+msgstr "Die Bestätigungsmail konnte nicht an den Mailserver übergeben werden."
+
+msgid "Mail failed"
+msgstr "Mail fehlgeschlagen"
+
+msgid "All mails"
+msgstr "Alle Mails"
+
+msgid "Could not be sent (%s)"
+msgstr "Konnte nicht verschickt werden (%s)"
+
+msgid "Check the mail settings of your site, then use “Resend Email”."
+msgstr "Prüfen Sie die Mail-Einstellungen Ihrer Seite und nutzen Sie dann „E-Mail erneut senden“."
+
+msgid "Handed to the mail server (%s)"
+msgstr "An den Mailserver übergeben (%s)"
+
+msgid "Whether it arrived in the inbox is beyond what WordPress can see."
+msgstr "Ob sie im Postfach angekommen ist, kann WordPress nicht sehen."
+
+#, php-format
+msgid "%d confirmation mail could not be sent"
+msgid_plural "%d confirmation mails could not be sent"
+msgstr[0] "%d Bestätigungsmail konnte nicht verschickt werden"
+msgstr[1] "%d Bestätigungsmails konnten nicht verschickt werden"
+
+# Confirmation hint after submit (5.8.0)
+msgid "Look for a mail from %1$s with the subject “%2$s”. If it is not in your inbox, check the spam folder."
+msgstr "Suchen Sie nach einer Mail von %1$s mit dem Betreff „%2$s“. Ist sie nicht im Posteingang, sehen Sie bitte im Spam-Ordner nach."
+
+msgid "If it is not in your inbox, check the spam folder."
+msgstr "Ist sie nicht im Posteingang, sehen Sie bitte im Spam-Ordner nach."
+
+msgid "Typo in the address? Just fill in the form again."
+msgstr "Tippfehler in der Adresse? Füllen Sie das Formular einfach noch einmal aus."
+
+msgid "Open %s"
+msgstr "%s öffnen"
+
+msgid "Almost done: please confirm your address. We have sent you a mail with a confirmation link."
+msgstr "Fast geschafft: Bitte bestätigen Sie Ihre Adresse. Wir haben Ihnen eine Mail mit einem Bestätigungslink geschickt."
+
+msgid "Almost done: please confirm your address. We have sent a confirmation link to %s."
+msgstr "Fast geschafft: Bitte bestätigen Sie Ihre Adresse. Wir haben einen Bestätigungslink an %s geschickt."
+
+msgid "The confirmation mail could not be sent. Please try again later."
+msgstr "Die Bestätigungsmail konnte nicht verschickt werden. Bitte versuchen Sie es später noch einmal."
+
+# Sender domain check (5.8.0)
+msgid "Sender domain of the confirmation mail"
+msgstr "Absenderdomain der Bestätigungsmail"
+
+msgid "No sender domain to check"
+msgstr "Keine Absenderdomain zu prüfen"
+
+msgid "No active form has a sender address yet."
+msgstr "Noch kein aktives Formular hat eine Absenderadresse."
+
+msgid "Confirmation mails are sent from a free-mail address"
+msgstr "Bestätigungsmails werden von einer Freemail-Adresse verschickt"
+
+msgid "The sender address uses %s. Your web server is not allowed to send mail for that domain, so Gmail, Outlook and others reject these mails or file them as spam. Use an address of your own domain as the sender in the form settings."
+msgstr "Die Absenderadresse nutzt %s. Ihr Webserver darf für diese Domain keine Mails verschicken, deshalb lehnen Gmail, Outlook und andere diese Mails ab oder sortieren sie in den Spam. Tragen Sie in den Formulareinstellungen eine Adresse Ihrer eigenen Domain als Absender ein."
+
+msgid "Open the forms"
+msgstr "Formulare öffnen"
+
+msgid "%1$s has no %2$s record."
+msgstr "%1$s hat keinen %2$s-Eintrag."
+
+msgid "The sender domain has SPF and DMARC records"
+msgstr "Die Absenderdomain hat SPF- und DMARC-Einträge"
+
+msgid "The sender domain could not be checked"
+msgstr "Die Absenderdomain konnte nicht geprüft werden"
+
+msgid "Inboxes can verify that your server may send for the sender domain. DKIM is set up at your mail provider and is not checked here."
+msgstr "Postfächer können prüfen, dass Ihr Server für die Absenderdomain senden darf. DKIM richtet Ihr Mail-Anbieter ein, es wird hier nicht geprüft."
+
+msgid "DNS lookups are not available on this server."
+msgstr "DNS-Abfragen sind auf diesem Server nicht verfügbar."
+
+msgid "Without these records Gmail, Outlook and others cannot tell your confirmation mails from forged ones and file them as spam or reject them. Your host or domain provider can add them in the DNS settings."
+msgstr "Ohne diese Einträge können Gmail, Outlook und andere Ihre Bestätigungsmails nicht von gefälschten unterscheiden und sortieren sie in den Spam oder lehnen sie ab. Ihr Hoster oder Domain-Anbieter kann sie in den DNS-Einstellungen anlegen."
+
+msgid "No SMTP plugin is active, so the mails leave through the web server. An SMTP plugin that sends through your mail provider usually fixes delivery as well."
+msgstr "Es ist kein SMTP-Plugin aktiv, die Mails verlassen die Seite also über den Webserver. Ein SMTP-Plugin, das über Ihren Mail-Anbieter sendet, behebt Zustellprobleme meist ebenfalls."
+
+msgid "The sender domain is missing records that inboxes check"
+msgstr "Der Absenderdomain fehlen Einträge, die Postfächer prüfen"
+
+# Confirmation/error page shortcodes (5.8.0)
+msgid "Too many sign-ups from your connection in a short time. Please try again later."
+msgstr "Zu viele Anmeldungen von Ihrer Verbindung in kurzer Zeit. Bitte versuchen Sie es später noch einmal."
+
+msgid "This email address was signed up several times in a short time. Please check your inbox for the confirmation mail or try again later."
+msgstr "Diese E-Mail-Adresse wurde in kurzer Zeit mehrfach angemeldet. Sehen Sie in Ihrem Postfach nach der Bestätigungsmail oder versuchen Sie es später noch einmal."
+
+msgid "This email address cannot receive mail. Please check it and try again."
+msgstr "An diese E-Mail-Adresse kann nicht zugestellt werden. Bitte prüfen Sie sie und versuchen Sie es noch einmal."
+
+msgid "No valid email address was entered. Please try again."
+msgstr "Es wurde keine gültige E-Mail-Adresse eingegeben. Bitte versuchen Sie es noch einmal."
+
+msgid "This email address is already signed up."
+msgstr "Diese E-Mail-Adresse ist bereits angemeldet."
+
+msgid "Please agree to the consent text to sign up."
+msgstr "Bitte stimmen Sie dem Einwilligungstext zu, um sich anzumelden."
+
+msgid "Your sign-up could not be saved. Please try again later."
+msgstr "Ihre Anmeldung konnte nicht gespeichert werden. Bitte versuchen Sie es später noch einmal."
+
+msgid "Your sign-up could not be completed. Please try again later."
+msgstr "Ihre Anmeldung konnte nicht abgeschlossen werden. Bitte versuchen Sie es später noch einmal."
+
+# Spam trap (5.8.0)
+msgid "Leave this field empty"
+msgstr "Dieses Feld leer lassen"
+
+# Stuck opt-ins card (5.8.0)
+msgid "%1$d%% of the opt-ins from the last %2$d days are not confirmed"
+msgstr "%1$d %% der Opt-Ins der letzten %2$d Tage sind nicht bestätigt"
+
+msgid "%1$d of %2$d people did not click the link in the confirmation mail. The last 24 hours are not counted."
+msgstr "%1$d von %2$d Personen haben den Link in der Bestätigungsmail nicht angeklickt. Die letzten 24 Stunden zählen nicht mit."
+
+msgid "Check in Site Health whether inboxes trust your sender domain"
+msgstr "In Website-Zustand prüfen, ob Postfächer Ihrer Absenderdomain vertrauen"
+
+msgid "Activate the license of the Reminder add-on: it sends a second mail to people who have not confirmed"
+msgstr "Lizenz des Reminder-Add-ons aktivieren: Es schickt Personen, die nicht bestätigt haben, eine zweite Mail"
+
+msgid "The Reminder add-on sends a second mail to people who have not confirmed"
+msgstr "Das Reminder-Add-on schickt Personen, die nicht bestätigt haben, eine zweite Mail"
+
+#, php-format
+msgid "%d confirmation mail could not be sent. Show it"
+msgid_plural "%d confirmation mails could not be sent. Show them"
+msgstr[0] "%d Bestätigungsmail konnte nicht verschickt werden. Anzeigen"
+msgstr[1] "%d Bestätigungsmails konnten nicht verschickt werden. Anzeigen"
+
+# Resend refused for opted-out contacts (5.8.0)
+msgid "This contact has opted out. The confirmation email is not sent again."
+msgstr "Dieser Kontakt hat sich abgemeldet. Die Bestätigungsmail wird nicht erneut verschickt."
+
+# Audit: renewed consent (5.8.0)
+#. translators: %d: opt-in ID
+#, php-format
+msgid "Consent for opt-in #%d given again from the opt-out list."
+msgstr "Einwilligung für Opt-In #%d über die Abmeldeliste erneut erteilt."
+
+# Audit log type filter (5.8.0)
+msgid "Consent"
+msgstr "Einwilligung"
+
+# Analytics add-on: weekly report card (analytics 1.1.0)
+msgid "Weekly report by mail"
+msgstr "Wochenbericht per Mail"
+
+msgid "New opt-ins, confirmation rate, opt-outs and failed confirmation mails of the last 7 days. Numbers only, no addresses."
+msgstr "Neue Opt-Ins, Bestätigungsquote, Abmeldungen und nicht verschickte Bestätigungsmails der letzten 7 Tage. Nur Zahlen, keine Adressen."
+
+msgid "Send the weekly report"
+msgstr "Wochenbericht verschicken"
+
+msgid "Recipients"
+msgstr "Empfänger"
+
+msgid "One address per line, up to 10. Each recipient gets a separate mail."
+msgstr "Eine Adresse pro Zeile, höchstens 10. Jeder Empfänger erhält eine eigene Mail."
+
+msgid "Day"
+msgstr "Tag"
+
+msgid "Monday"
+msgstr "Montag"
+
+msgid "Tuesday"
+msgstr "Dienstag"
+
+msgid "Wednesday"
+msgstr "Mittwoch"
+
+msgid "Thursday"
+msgstr "Donnerstag"
+
+msgid "Friday"
+msgstr "Freitag"
+
+msgid "Saturday"
+msgstr "Samstag"
+
+msgid "Sunday"
+msgstr "Sonntag"
+
+msgid "Send test report now"
+msgstr "Testbericht jetzt senden"
+
+msgid "The settings could not be saved."
+msgstr "Die Einstellungen konnten nicht gespeichert werden."
+
+msgid "The test report could not be sent."
+msgstr "Der Testbericht konnte nicht verschickt werden."
+
+# Webhooks add-on: catalog entry and admin page (webhooks 1.0.0)
+msgid "Webhooks"
+msgstr "Webhooks"
+
+msgid "Sends a signed POST to your own URLs when an opt-in is confirmed, withdrawn or renewed. Connects Zapier, Make, n8n or your CRM, with retries."
+msgstr "Schickt einen signierten POST an Ihre eigenen URLs, wenn ein Opt-In bestätigt, widerrufen oder erneuert wird. Verbindet Zapier, Make, n8n oder Ihr CRM, mit Wiederholung bei Fehlern."
+
+msgid "Send a signed request to your own URL when an opt-in is confirmed, withdrawn or given again. For Zapier, Make, n8n or your CRM."
+msgstr "Schicken Sie eine signierte Anfrage an Ihre eigene URL, wenn ein Opt-In bestätigt, widerrufen oder erneut erteilt wird. Für Zapier, Make, n8n oder Ihr CRM."
+
+msgid "Add webhook"
+msgstr "Webhook hinzufügen"
+
+msgid "Signing secret"
+msgstr "Signatur-Geheimnis"
+
+msgid "Copy it now and store it at the receiver. It will not be shown again."
+msgstr "Kopieren Sie es jetzt und hinterlegen Sie es beim Empfänger. Es wird nicht noch einmal angezeigt."
+
+msgid "Your webhooks"
+msgstr "Ihre Webhooks"
+
+msgid "No webhook yet."
+msgstr "Noch kein Webhook."
+
+msgid "URL"
+msgstr "URL"
+
+msgid "Events"
+msgstr "Ereignisse"
+
+msgid "Recent deliveries"
+msgstr "Letzte Zustellungen"
+
+msgid "Nothing sent yet."
+msgstr "Noch nichts verschickt."
+
+msgid "Time"
+msgstr "Zeit"
+
+msgid "Webhook"
+msgstr "Webhook"
+
+msgid "Event"
+msgstr "Ereignis"
+
+msgid "Opt-In"
+msgstr "Opt-In"
+
+msgid "Result"
+msgstr "Ergebnis"
+
+msgid "How to check the signature"
+msgstr "So prüfen Sie die Signatur"
+
+msgid "Every request carries X-DOI-Signature: t=<time>,v1=<signature>. The signature is HMAC-SHA256 of \"<time>.<request body>\" with your signing secret. Reject requests whose time is older than five minutes. X-DOI-Delivery stays the same when a delivery is retried, so you can ignore duplicates."
+msgstr "Jede Anfrage trägt X-DOI-Signature: t=<Zeit>,v1=<Signatur>. Die Signatur ist HMAC-SHA256 über \"<Zeit>.<Anfrage-Body>\" mit Ihrem Signatur-Geheimnis. Lehnen Sie Anfragen ab, deren Zeit älter als fünf Minuten ist. X-DOI-Delivery bleibt bei Wiederholungen gleich, so können Sie Doppelte ignorieren."
+
+msgid "Paused"
+msgstr "Pausiert"
+
+msgid "Send test"
+msgstr "Test senden"
+
+msgid "Really delete?"
+msgstr "Wirklich löschen?"
+
+msgid "Edit webhook"
+msgstr "Webhook bearbeiten"
+
+msgid "New webhook"
+msgstr "Neuer Webhook"
+
+msgid "Must start with https://. Local and private addresses are not allowed."
+msgstr "Muss mit https:// beginnen. Lokale und private Adressen sind nicht erlaubt."
+
+msgid "Send when"
+msgstr "Senden, wenn"
+
+msgid "Withdrawn and given again need the Opt-Out add-on."
+msgstr "Widerrufen und erneut erteilt brauchen das Opt-Out-Add-on."
+
+msgid "Only these forms"
+msgstr "Nur diese Formulare"
+
+msgid "Data sent"
+msgstr "Übermittelte Daten"
+
+msgid "Always: event, record ID and form ID. Choose only what the receiver needs. IP addresses are never sent."
+msgstr "Immer: Ereignis, Datensatz-ID und Formular-ID. Wählen Sie nur, was der Empfänger braucht. IP-Adressen werden nie übertragen."
+
+#. translators: %s: last characters of the secret
+#, php-format
+msgid "Signing secret ends in %s."
+msgstr "Das Signatur-Geheimnis endet auf %s."
+
+msgid "Create new secret"
+msgstr "Neues Geheimnis erzeugen"
+
+msgid "Delivered"
+msgstr "Zugestellt"
+
+msgid "Temporary error"
+msgstr "Vorübergehender Fehler"
+
+msgid "Opt-in confirmed"
+msgstr "Opt-In bestätigt"
+
+msgid "Consent withdrawn"
+msgstr "Einwilligung widerrufen"
+
+msgid "Consent given again"
+msgstr "Einwilligung erneut erteilt"
+
+msgid "Form title"
+msgstr "Formulartitel"
+
+msgid "Request, confirmation and opt-out time"
+msgstr "Zeitpunkt von Anforderung, Bestätigung und Abmeldung"
+
+msgid "Consent text"
+msgstr "Einwilligungstext"
+
+msgid "All submitted form fields"
+msgstr "Alle übermittelten Formularfelder"
+
+msgid "The webhooks could not be loaded."
+msgstr "Die Webhooks konnten nicht geladen werden."
+
+msgid "The webhook could not be saved."
+msgstr "Der Webhook konnte nicht gespeichert werden."
+
+msgid "Webhook saved."
+msgstr "Webhook gespeichert."
+
+msgid "Webhook deleted."
+msgstr "Webhook gelöscht."
+
+msgid "The webhook could not be deleted."
+msgstr "Der Webhook konnte nicht gelöscht werden."
+
+msgid "The test could not be sent."
+msgstr "Der Test konnte nicht verschickt werden."
+
+msgid "New secret created. Update it at the receiver."
+msgstr "Neues Geheimnis erzeugt. Aktualisieren Sie es beim Empfänger."
+
+msgid "The secret could not be renewed."
+msgstr "Das Geheimnis konnte nicht erneuert werden."
+
+# Follow-up panel: Avada form without notification mails (5.8.0)
+msgid "The form has no notification mails set up."
+msgstr "Das Formular hat keine Benachrichtigungs-Mails eingerichtet."
+
+# addon-analytics admin UI: confirmation time with unit
+msgid "< 1 min"
+msgstr "< 1 Min."
+
+#. translators: %d: minutes
+#, php-format
+msgid "%d min"
+msgstr "%d Min."
+
+#. translators: %s: hours, one decimal
+#, php-format
+msgid "%s h"
+msgstr "%s Std."
+
+#. translators: %s: days, one decimal
+#, php-format
+msgid "%s days"
+msgstr "%s Tage"
+
+# addon-analytics dashboard widget
+msgid "No form data yet."
+msgstr "Noch keine Formulardaten."
+
+#. translators: %s: error message
+#, php-format
+msgid "Analytics widget could not load: %s"
+msgstr "Das Analytics-Widget konnte nicht geladen werden: %s"
+
+#. translators: 1: confirmed opt-ins, 2: all opt-ins
+#, php-format
+msgid "%1$s of %2$s"
+msgstr "%1$s von %2$s"
+
+# addon-email-editor admin UI
+#. translators: %s: number of columns.
+#, php-format
+msgid "%s Column(s)"
+msgstr "%s Spalte(n)"
+
+msgid "(no field)"
+msgstr "(kein Feld)"
+
+msgid "Add Column"
+msgstr "Spalte hinzufügen"
+
+msgid "Add Icon"
+msgstr "Icon hinzufügen"
+
+msgid "Add an image"
+msgstr "Bild hinzufügen"
+
+msgid "Add block"
+msgstr "Block hinzufügen"
+
+msgid "Add column"
+msgstr "Spalte hinzufügen"
+
+msgid "Add social icons"
+msgstr "Social-Media-Icons hinzufügen"
+
+msgid "Alignment"
+msgstr "Ausrichtung"
+
+msgid "Alt Text"
+msgstr "Alternativtext"
+
+msgid "Apply"
+msgstr "Übernehmen"
+
+msgid "Auto"
+msgstr "Automatisch"
+
+msgid "Background Color"
+msgstr "Hintergrundfarbe"
+
+msgid "Base Font Size"
+msgstr "Grundschriftgröße"
+
+msgid "Bold (Ctrl+B)"
+msgstr "Fett (Strg+B)"
+
+msgid "Border Radius"
+msgstr "Eckenradius"
+
+msgid "Bullet List"
+msgstr "Aufzählung"
+
+msgid "Button Text"
+msgstr "Button-Text"
+
+msgid "Center"
+msgstr "Mitte"
+
+#. translators: %d: column number.
+#, php-format
+msgid "Col %d"
+msgstr "Sp. %d"
+
+msgid "Color"
+msgstr "Farbe"
+
+msgid "Column"
+msgstr "Spalte"
+
+msgid "Column Widths"
+msgstr "Spaltenbreiten"
+
+msgid "Compare value"
+msgstr "Vergleichswert"
+
+msgid "Content (Text, Button, Image)"
+msgstr "Inhalt (Text, Button, Bild)"
+
+msgid "Content Width (px)"
+msgstr "Inhaltsbreite (px)"
+
+msgid "Copied!"
+msgstr "Kopiert!"
+
+msgid "Dashed"
+msgstr "Gestrichelt"
+
+msgid "Display As"
+msgstr "Anzeigen als"
+
+msgid "Dotted"
+msgstr "Gepunktet"
+
+msgid "Drag a Row or Columns block here first, then add content inside"
+msgstr "Zuerst eine Zeile oder einen Spalten-Block hierher ziehen, dann Inhalte hineinlegen"
+
+msgid "Drag to insert field placeholder"
+msgstr "Ziehen, um einen Feld-Platzhalter einzufügen"
+
+msgid "Drag to reorder"
+msgstr "Ziehen zum Verschieben"
+
+msgid "Drop blocks here"
+msgstr "Blöcke hier ablegen"
+
+msgid "Drop content blocks here"
+msgstr "Inhaltsblöcke hier ablegen"
+
+msgid "Email Preview"
+msgstr "E-Mail-Vorschau"
+
+msgid "Enter your text here..."
+msgstr "Text hier eingeben …"
+
+msgid "Error saving"
+msgstr "Fehler beim Speichern"
+
+msgid "Failed to create template"
+msgstr "Vorlage konnte nicht angelegt werden"
+
+msgid "Failed to create template. Please try again."
+msgstr "Die Vorlage konnte nicht angelegt werden. Bitte versuchen Sie es erneut."
+
+msgid "Field Name"
+msgstr "Feldname"
+
+msgid "First, add a structure"
+msgstr "Zuerst eine Struktur einfügen"
+
+msgid "Font Family"
+msgstr "Schriftart"
+
+msgid "Font Size"
+msgstr "Schriftgröße"
+
+msgid "Footer text..."
+msgstr "Fußzeilentext …"
+
+msgid "Full Width"
+msgstr "Volle Breite"
+
+msgid "Height (px)"
+msgstr "Höhe (px)"
+
+msgid "Horizontal Padding"
+msgstr "Innenabstand horizontal"
+
+#. translators: 1: form field name, 2: comparison operator.
+#, php-format
+msgid "IF %1$s %2$s"
+msgstr "WENN %1$s %2$s"
+
+#. translators: 1: form field name, 2: comparison operator, 3: compared value.
+#, php-format
+msgid "IF %1$s %2$s \"%3$s\""
+msgstr "WENN %1$s %2$s „%3$s“"
+
+msgid "Icon Size"
+msgstr "Icon-Größe"
+
+msgid "Icons"
+msgstr "Icons"
+
+msgid "Image URL"
+msgstr "Bild-URL"
+
+msgid "Inline Text"
+msgstr "Text in der Zeile"
+
+msgid "Insert Link"
+msgstr "Link einfügen"
+
+msgid "Italic (Ctrl+I)"
+msgstr "Kursiv (Strg+I)"
+
+msgid "Layout"
+msgstr "Layout"
+
+msgid "Left"
+msgstr "Links"
+
+msgid "Level"
+msgstr "Ebene"
+
+msgid "Line Break (Shift+Enter)"
+msgstr "Zeilenumbruch (Umschalt+Enter)"
+
+msgid "Line Height"
+msgstr "Zeilenhöhe"
+
+msgid "Link Color"
+msgstr "Linkfarbe"
+
+msgid "Link URL"
+msgstr "Link-URL"
+
+msgid "Loading templates..."
+msgstr "Vorlagen werden geladen …"
+
+msgid "Logo Alt Text"
+msgstr "Alternativtext des Logos"
+
+msgid "Main"
+msgstr "Hauptbereich"
+
+msgid "Narrow"
+msgstr "Schmal"
+
+msgid "No icons yet — add one below."
+msgstr "Noch keine Icons – unten eines hinzufügen."
+
+msgid "No settings available for this block type."
+msgstr "Für diesen Blocktyp gibt es keine Einstellungen."
+
+msgid "Normal"
+msgstr "Normal"
+
+msgid "Not Empty"
+msgstr "Nicht leer"
+
+msgid "Not Equals"
+msgstr "Ist ungleich"
+
+msgid "Numbered List"
+msgstr "Nummerierte Liste"
+
+msgid "Padding"
+msgstr "Innenabstand"
+
+msgid "Primary Color"
+msgstr "Primärfarbe"
+
+msgid "Relaxed"
+msgstr "Locker"
+
+msgid "Remove Formatting"
+msgstr "Formatierung entfernen"
+
+msgid "Remove Link"
+msgstr "Link entfernen"
+
+msgid "Remove column"
+msgstr "Spalte entfernen"
+
+msgid "Remove icon"
+msgstr "Icon entfernen"
+
+msgid "Right"
+msgstr "Rechts"
+
+msgid "Select a block to edit its settings"
+msgstr "Einen Block auswählen, um ihn zu bearbeiten"
+
+msgid "Sidebar"
+msgstr "Seitenleiste"
+
+msgid "Solid"
+msgstr "Durchgezogen"
+
+msgid "Spacing"
+msgstr "Abstände"
+
+msgid "Standard"
+msgstr "Standard"
+
+msgid "Standard Fields"
+msgstr "Standardfelder"
+
+msgid "Start with a structure"
+msgstr "Mit einer Struktur beginnen"
+
+msgid "Strikethrough"
+msgstr "Durchgestrichen"
+
+msgid "Structure (Row, Columns)"
+msgstr "Struktur (Zeile, Spalten)"
+
+msgid "Style"
+msgstr "Stil"
+
+msgid "System Fields"
+msgstr "Systemfelder"
+
+msgid "Text Color"
+msgstr "Textfarbe"
+
+msgid "Then, add content inside"
+msgstr "Dann Inhalte hineinlegen"
+
+msgid "Thickness"
+msgstr "Stärke"
+
+msgid "Tight"
+msgstr "Eng"
+
+#. translators: 1: current sum of the column widths incl. percent sign, 2: required sum (100%).
+#, php-format
+msgid "Total: %1$s (should be %2$s)"
+msgstr "Summe: %1$s (sollte %2$s sein)"
+
+msgid "Underline (Ctrl+U)"
+msgstr "Unterstrichen (Strg+U)"
+
+#. translators: %s: block type identifier.
+#, php-format
+msgid "Unknown block type: %s"
+msgstr "Unbekannter Blocktyp: %s"
+
+msgid "Unsaved"
+msgstr "Nicht gespeichert"
+
+msgid "Vertical Padding"
+msgstr "Innenabstand vertikal"
+
+msgid "Wide"
+msgstr "Breit"
+
+msgid "Width"
+msgstr "Breite"
+
+msgid "contains"
+msgstr "enthält"
+
+#, php-format
+msgid "e.g., 100% or 300"
+msgstr "z. B. 100% oder 300"
+
+msgid "e.g., 10px"
+msgstr "z. B. 10px"
+
+msgid "e.g., 20px or 10px 20px"
+msgstr "z. B. 20px oder 10px 20px"
+
+msgid "e.g., 28px"
+msgstr "z. B. 28px"
+
+msgid "e.g., background: #fff; border: 1px solid #ccc;"
+msgstr "z. B. background: #fff; border: 1px solid #ccc;"
+
+msgid "e.g., your-email"
+msgstr "z. B. your-email"
+
+msgid "e.g., your-name"
+msgstr "z. B. your-name"
+
+msgid "is empty"
+msgstr "ist leer"
+
+msgid "is not empty"
+msgstr "ist nicht leer"
+
+# bundle-pro admin UI: bundled addons panel
+msgid "Loading addon status…"
+msgstr "Addon-Status wird geladen …"
+
+msgid "Bundled addons"
+msgstr "Enthaltene Addons"
+
+#. translators: 1: active addons, 2: all bundled addons
+#, php-format
+msgid "%1$d of %2$d active."
+msgstr "%1$d von %2$d aktiv."
+
+#. translators: %d: addons not installed yet
+#, php-format
+msgid "%d pending install."
+msgstr "%d noch zu installieren."
+
+#. translators: %s: date and time of the last installer run
+#, php-format
+msgid "Last run: %s."
+msgstr "Letzter Lauf: %s."
+
+msgid "Install / activate 1 addon"
+msgstr "1 Addon installieren / aktivieren"
+
+#. translators: %d: number of addons, more than one
+#, php-format
+msgid "Install / activate %d addons"
+msgstr "%d Addons installieren / aktivieren"
+
+msgid "Re-run installer"
+msgstr "Installation erneut ausführen"
+
+msgid "Installed"
+msgstr "Installiert"
+
+msgid "Installed, not active"
+msgstr "Installiert, nicht aktiv"
+
+#: packages/core/admin-ui/src/pages/UserCreationPage.tsx:164
+msgid "%1$s form is excluded; everything else triggers user creation. %2$s"
+msgid_plural "%1$s forms are excluded; everything else triggers user creation. %2$s"
+msgstr[0] "%1$s Formular ist ausgeschlossen; alle anderen lösen die Benutzererstellung aus. %2$s"
+msgstr[1] "%1$s Formulare sind ausgeschlossen; alle anderen lösen die Benutzererstellung aus. %2$s"
+
+#: packages/core/admin-ui/src/pages/UserCreationPage.tsx:142
+msgid "Auto-create a %1$s on confirmations from the %2$s listed form"
+msgid_plural "Auto-create a %1$s on confirmations from the %2$s listed forms"
+msgstr[0] "Bei Bestätigungen aus dem %2$s gelisteten Formular wird automatisch ein %1$s angelegt"
+msgstr[1] "Bei Bestätigungen aus den %2$s gelisteten Formularen wird automatisch ein %1$s angelegt"

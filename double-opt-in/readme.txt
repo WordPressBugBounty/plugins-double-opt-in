@@ -3,9 +3,9 @@ Contributors: forge12
 Donate link: https://www.paypal.com/donate?hosted_button_id=MGZTVZH3L5L2G
 Tags: contact form 7, double opt-in, gdpr, email verification, newsletter
 Requires at least: 6.0
-Tested up to: 7.0
+Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 5.7.0
+Stable tag: 5.8.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -26,6 +26,7 @@ This ensures:
 * Only **valid, verified email addresses** reach your inbox.
 * **GDPR / DSGVO requirements** are met with proper consent tracking, IP logging, and data retention.
 * Your database stays **clean and reliable** -- no fake or mistyped addresses.
+* The form mail **arrives after the confirmation** -- every action that runs after the click is recorded, and temporary failures are retried automatically.
 
 Out-of-the-box support for **Contact Form 7**. Additional form systems — Avada, Elementor, Gravity Forms, WPForms — are available as separate addon plugins.
 
@@ -38,6 +39,8 @@ Out-of-the-box support for **Contact Form 7**. Additional form systems — Avada
 5. The confirmed opt-in is logged in the admin dashboard with timestamps and IP addresses for full GDPR compliance.
 
 = Quick Start =
+
+After activation, a setup wizard asks for the sender, the forms that should ask for confirmation, the confirmation email and the page visitors see after the click. Everything is prefilled; it takes about three minutes and can be skipped.
 
 [Read the Quick Guide](https://www.forge12.com/blog/so-verwendest-du-das-double-opt-in-fuer-contact-form-7/)
 
@@ -63,7 +66,7 @@ Out-of-the-box support for **Contact Form 7**. Additional form systems — Avada
 * **Pagination & Search** -- search and filter opt-in records in the admin dashboard
 * **Admin Tooltips** -- contextual help tooltips throughout the admin interface
 * **WordPress Multisite** -- network-wide activation creates tables on all sites automatically
-* **Developer Hooks** -- 44 action hooks, 74 filters, and 11 typed events for full extensibility
+* **Developer Hooks** -- 48 action hooks, 82 filters, and 13 typed events for full extensibility
 
 = Pro Features =
 
@@ -142,6 +145,18 @@ When a visitor submits your form, the plugin stores the submission and sends a c
 
 Yes. The plugin tracks all data required for GDPR compliance: consent text, registration and confirmation timestamps, IP addresses, and form data. It integrates with WordPress Privacy Tools for personal data export and erasure requests. You can configure automatic data retention and anonymization policies.
 
+= Is double opt-in mandatory? =
+
+For newsletters and other advertising emails in Germany, practically yes: the sender has to prove consent, and without the confirmation click that proof rarely holds up. No law names the procedure, but courts and data protection authorities expect it. This is general information, not legal advice. [More on the legal situation](https://www.forge12.com/de/blog/double-opt-in-wordpress-pflicht-rechtslage)
+
+= Do I need double opt-in for a contact form? =
+
+A plain contact request does not need a consent checkbox or double opt-in. It becomes necessary as soon as the form also signs people up for a newsletter or other advertising. You can switch double opt-in on per form, or only when a checkbox is ticked (see "Conditions" below).
+
+= What about Switzerland and Austria? =
+
+Advertising emails need prior consent there as well, and the sender has to be able to prove it. Double opt-in is the common way to do that, even where the law does not name it.
+
 = Which form plugins are supported? =
 
 The free Core plugin supports **Contact Form 7** out of the box. Support for **Avada Forms**, **Elementor Pro Forms**, **WPForms**, and **Gravity Forms** is available through separate paid addon plugins (install alongside Core).
@@ -161,6 +176,16 @@ Unconfirmed opt-ins are stored in the database and can be cleaned up automatical
 = Can I redirect the user to a specific page after confirmation? =
 
 Yes. In the per-form settings, you can select a **Confirmation Page**. The user will be redirected there after clicking the confirmation link.
+
+= How do I show the right message on the confirmation and error pages? =
+
+Put these shortcodes on the page:
+
+* `[doi_confirmation_status]` says whether the link just confirmed the address, was already used, has expired or is invalid. Each text can be replaced, for example `[doi_confirmation_status confirmed="Welcome aboard!"]`.
+* `[doi_field name="your-name"]` shows a value from the form, only right after the confirmation.
+* `[doi_error_message]` on the error page explains why a sign-up was refused (too many attempts, address already signed up, and so on).
+
+A page without `[doi_confirmation_status]` still shows a short notice when the link has expired or is invalid.
 
 = Does the plugin work with CAPTCHA plugins? =
 
@@ -192,7 +217,7 @@ The free version requires at least one supported form plugin. However, developer
 
 = Where can I find the developer documentation? =
 
-A hook, filter, and event reference with code examples ships at `docs/hooks-and-events.md` inside the plugin directory. It documents 27 of the 44 action hooks, 22 of the 74 filters, and all 11 typed events — the ones extensions actually reach for. The rest are discoverable in the source; if you need one documented, ask and we will add it.
+A hook, filter, and event reference with code examples ships at `docs/hooks-and-events.md` inside the plugin directory. It documents 29 of the 48 action hooks, 24 of the 82 filters, and all 13 typed events — the ones extensions actually reach for. The rest are discoverable in the source; if you need one documented, ask and we will add it.
 
 = How do I report a bug or request a feature? =
 
@@ -200,13 +225,14 @@ Please visit [forge12.com](https://www.forge12.com) or contact us via the WordPr
 
 == Screenshots ==
 
-1. **Opt-In Dashboard** -- Overview of all opt-in records with status, email, form, date, and actions.
-2. **Form Settings** -- Per-form configuration with sender, subject, recipient field, confirmation page, and conditions.
-3. **Email Template Editor** -- Visual drag & drop editor with blocks, live preview, and mobile preview.
-4. **Template Presets** -- Choose from pre-built email template designs.
-5. **Single Opt-In View** -- Detailed view of an opt-in record with form data, timestamps, and IP addresses.
-6. **Global Settings** -- Configure data retention, token expiry, telemetry, and opt-out settings.
-7. **Category Management** -- Organize opt-in records into categories.
+1. **Dashboard** -- Total, confirmed and pending opt-ins at a glance, with the latest submissions.
+2. **Opt-In list** -- Every record with form, status and date; search and filter by status, follow-up actions and mail delivery.
+3. **Opt-in detail** -- Timestamps and IP addresses of request and confirmation, the consent text, and whether the form mail ran after the click.
+4. **Forms** -- All Contact Form 7 forms with Double Opt-In switched on or off per form.
+5. **Form settings** -- Consent text, acceptance field, category, sender, subject and confirmation page for one form.
+6. **Setup wizard** -- Sender, forms, confirmation email and the page after the click, in four steps.
+7. **Settings** -- Data retention, privacy policy page, token expiry and rate limits.
+8. **What the visitor sees** -- After submitting: where the confirmation mail comes from and what to do if it does not arrive.
 
 == Privacy & Telemetry ==
 
@@ -237,6 +263,12 @@ screens does not contact Google Fonts or any other third party. Inter is
 licensed under the SIL Open Font License 1.1 (see licenses/inter-OFL-1.1.txt).
 
 == Upgrade Notice ==
+
+= 5.8.1 =
+Fixes German admin texts. No functional changes.
+
+= 5.8.0 =
+Shows whether each confirmation email reached your mail server and tells Contact Form 7 visitors to confirm their address. Pro users: update the email editor and opt-out add-ons too.
 
 = 5.7.0 =
 Adds a setup wizard for new installations. Existing forms and settings are not changed.
@@ -337,6 +369,30 @@ New features: Visual email editor, centralized form settings, GDPR anonymization
 Adds optional anonymous telemetry (opt-out). No breaking changes.
 
 == Changelog ==
+
+= 5.8.1 =
+* Fix: on sites in formal German (Sie), a sentence on the user creation page was shown in English, and the role appeared as its internal key ("subscriber") instead of its name.
+* Fix: German admin texts used the English names "Conditional Templates", "User Creation" and "Unique Email"; they now use the German terms throughout.
+* Fix: the breadcrumb on add-on settings pages read "Page".
+
+= 5.8.0 =
+
+**Know whether the confirmation email went out**
+
+* New: every opt-in records whether its confirmation email was handed to your mail server or failed, and why. Shown in the opt-in list (with a filter), on the detail page and in Site Health; included in the WordPress privacy export and eraser.
+* New: after a Contact Form 7 submission, visitors read "please confirm your address" with the sender and subject to look for, instead of "Thank you for your message". When the email could not be sent, they are told so.
+* New: Site Health checks SPF and DMARC of the sender domain, the two most common reasons confirmation emails land in spam.
+* New: a dashboard hint when many recent opt-ins stay unconfirmed.
+* New: shortcodes [doi_confirmation_status], [doi_error_message] and [doi_field] for the confirmation and error pages, and a readable message when a link is broken or expired.
+* New: a hidden honeypot field and a minimum fill time keep simple bots away from Contact Form 7 double opt-in forms.
+* New: the forms page suggests add-ons only for form plugins that are installed on the site.
+* New: after ten confirmations, a one-time request for a review, only on the plugin's own pages.
+* Changed: the free plugin no longer contains locked Pro features. Email template management and the opt-out page generator now live in their add-ons. If you use them, update the email editor add-on to 1.1.0 and the opt-out add-on to 1.5.0; Site Health reminds you.
+* Changed: a renewed consent after an opt-out no longer overwrites the original confirmation; it gets its own entry in the audit log.
+* Fix: the Activate button on the Add-ons page and links in REST responses were broken ("&amp;" in the URL).
+* Fix: Avada forms without a notification were reported as a failed follow-up action.
+* Fix: several admin texts stayed English on translated sites; the breadcrumb read "Page" on detail pages; a waiting button now shows a countdown.
+* Developers: Core API 4.6.0 with the filters f12_doi_submit_notice_data and f12_doi_mail_headers, the events f12_doi_optin_opted_out and f12_doi_optin_reopted_in, follow-up adapters for add-ons and a shared resend service.
 
 = 5.7.0 =
 

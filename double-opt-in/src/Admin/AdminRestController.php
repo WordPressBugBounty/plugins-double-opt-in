@@ -16,6 +16,8 @@ use Forge12\DoubleOptIn\FormSettings\FormSettingsDTO;
 use Forge12\DoubleOptIn\FormSettings\FormSettingsService;
 use Forge12\DoubleOptIn\FormSettings\FormSettingsValidator;
 use Forge12\DoubleOptIn\Integration\SubmittedContent;
+use Forge12\DoubleOptIn\Service\ConfirmationMailResender;
+use Forge12\DoubleOptIn\Service\ResendResult;
 use Forge12\Shared\LoggerInterface;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -510,17 +512,6 @@ class AdminRestController {
 			)
 		);
 
-		// ── Database Export (Pro-extensible) ────────────────────────
-		register_rest_route(
-			self::API_NAMESPACE,
-			'/database/export',
-			array(
-				'methods'             => \WP_REST_Server::CREATABLE,
-				'callback'            => array( $this, 'exportDatabase' ),
-				'permission_callback' => array( $this, 'checkPermission' ),
-			)
-		);
-
 		// ── Addons manifest (UI mount-point system, plan §9) ────────
 		register_rest_route(
 			self::API_NAMESPACE,
@@ -738,6 +729,12 @@ class AdminRestController {
 			$params[] = (int) $formId;
 		}
 
+		// Opt-ins whose confirmation mail could not be sent (5.8.0).
+		if ( sanitize_text_field( (string) ( $request->get_param( 'mail' ) ?? '' ) ) === 'failed' ) {
+			$where[]  = 'mail_status = %s';
+			$params[] = \Forge12\DoubleOptIn\Repository\OptInMailStatusRepository::FAILED;
+		}
+
 		// Confirmed opt-ins whose follow-up actions failed or have an
 		// unknown outcome — the admin's "needs attention" list.
 		if ( sanitize_text_field( (string) ( $request->get_param( 'follow_up' ) ?? '' ) ) === 'problem' ) {
@@ -844,7 +841,7 @@ class AdminRestController {
 		// pre-delete cascade hook from pre-doi-data-retention Step 1
 		// can fire with a payload that lets listeners reach into
 		// integration storage. ARRAY_A — listener-friendly.
-		$row = $wpdb->get_row(
+		$row  = $wpdb->get_row(
 			$wpdb->prepare( "SELECT id, hash, content, files, cf_form_id FROM {$table} WHERE id = %d", $id ),
 			ARRAY_A
 		);
@@ -904,6 +901,30 @@ class AdminRestController {
 		);
 	}
 
+	/**
+	 * The admin's answer for a resend that did not go out.
+	 */
+	private static function resendRefusal( string $reason ): \WP_REST_Response {
+		$map     = array(
+			ResendResult::NOT_FOUND    => array( __( 'Opt-In not found.', 'double-opt-in' ), 404 ),
+			ResendResult::CONFIRMED    => array( __( 'Opt-In is already confirmed.', 'double-opt-in' ), 400 ),
+			ResendResult::OPTED_OUT    => array( __( 'This contact has opted out. The confirmation email is not sent again.', 'double-opt-in' ), 400 ),
+			ResendResult::NO_BODY      => array( __( 'No email data available for resend.', 'double-opt-in' ), 400 ),
+			ResendResult::NO_RECIPIENT => array( __( 'Email data is incomplete.', 'double-opt-in' ), 400 ),
+		);
+		$entry   = $map[ $reason ] ?? array( __( 'Failed to send email.', 'double-opt-in' ), 500 );
+		$message = $entry[0];
+		$status  = $entry[1];
+
+		return new \WP_REST_Response(
+			array(
+				'success' => false,
+				'message' => $message,
+			),
+			$status
+		);
+	}
+
 	public function resendOptinEmail( \WP_REST_Request $request ): \WP_REST_Response {
 		global $wpdb;
 		$id    = (int) $request->get_param( 'id' );
@@ -945,94 +966,21 @@ class AdminRestController {
 		$result = apply_filters( 'f12_doi_rest_resend_optin_email', null, $optin, $row );
 
 		if ( $result === null ) {
-			// Default resend logic: use stored mail data.
-			//
-			// `mail_optin` is shipped by every integration via
-			// {@see \forge12\contactform7\CF7DoubleOptIn\OptIn::set_mail_optin()}.
-			// That method takes a STRING (the rendered HTML body) — the
-			// admin opt-in-detail UI reads it as-is for the body
-			// preview. Earlier versions of this handler expected a
-			// serialized `['to' => ..., 'subject' => ..., 'body' => ...]`
-			// array and bailed with "Email data is incomplete" whenever
-			// the stored value was the (correct) plain body string —
-			// which is the production case for every free-version
-			// integration (CF7 / Avada / WPForms / Gravity / Elementor).
-			// User-reported 2026-05-13: clicking Resend yielded that
-			// error 100 % of the time.
-			//
-			// Both shapes are accepted now: the array form for Pro and
-			// any future caller that stores structured payloads, the
-			// plain string for the free-version integrations whose
-			// contract is documented in
-			// {@see \Forge12\DoubleOptIn\Wpforms\Tests\Unit\Integration\WPFormsSettingsApplyTest}.
-			$mailOptin = $row['mail_optin'] ?? '';
-			if ( empty( $mailOptin ) ) {
-				return new \WP_REST_Response(
-					array(
-						'success' => false,
-						'message' => __( 'No email data available for resend.', 'double-opt-in' ),
-					),
-					400
-				);
+			$outcome = \Forge12\DoubleOptIn\Container\Container::getInstance()
+				->get( ConfirmationMailResender::class )
+				->resend( $id );
+
+			if ( ! $outcome->isSent() ) {
+				return self::resendRefusal( $outcome->getReason() );
 			}
-
-			$unserialized = maybe_unserialize( $mailOptin );
-
-			if ( is_array( $unserialized ) ) {
-				// Structured payload (Pro / future writers).
-				$to      = $unserialized['to']      ?? '';
-				$subject = $unserialized['subject'] ?? '';
-				$body    = $unserialized['body']    ?? '';
-				$from    = $unserialized['from']    ?? '';
-			} else {
-				// Plain body string — the production case. Reconstruct
-				// `to` from the OptIn record's own `email` column and
-				// `subject` from the form's central settings.
-				$to      = $row['email'] ?? '';
-				$body    = is_string( $unserialized ) ? $unserialized : (string) $mailOptin;
-				$subject = '';
-				$from    = '';
-
-				$formId = isset( $row['cf_form_id'] ) ? (int) $row['cf_form_id'] : 0;
-				if ( $formId > 0 && class_exists( '\\forge12\\contactform7\\CF7DoubleOptIn\\CF7DoubleOptIn' ) ) {
-					$formParam = \forge12\contactform7\CF7DoubleOptIn\CF7DoubleOptIn::getInstance()->getParameter( $formId );
-					$subject   = (string) ( $formParam['subject']     ?? '' );
-					$senderEmail = (string) ( $formParam['sender']      ?? '' );
-					$senderName  = (string) ( $formParam['sender_name'] ?? '' );
-					if ( $senderEmail !== '' ) {
-						$from = $senderName !== ''
-							? $senderName . ' <' . $senderEmail . '>'
-							: $senderEmail;
-					}
-				}
-			}
-
-			if ( empty( $to ) || empty( $body ) ) {
-				return new \WP_REST_Response(
-					array(
-						'success' => false,
-						'message' => __( 'Email data is incomplete.', 'double-opt-in' ),
-					),
-					400
-				);
-			}
-
-			$headers = array( 'Content-Type: text/html; charset=UTF-8' );
-			if ( ! empty( $from ) ) {
-				$headers[] = 'From: ' . $from;
-			}
-
-			$result = wp_mail( $to, $subject !== '' ? $subject : __( 'Confirmation Email (resent)', 'double-opt-in' ), $body, $headers );
+			$result = true;
+		} else {
+			// An extension sent it; record the outcome all the same.
+			do_action( 'f12_doi_optin_mail_result', $id, (bool) $result, '' );
 		}
 
 		if ( ! $result ) {
-			return new \WP_REST_Response(
-				array(
-					'success' => false,
-					'message' => __( 'Failed to send email.', 'double-opt-in' ),
-				),
-				500
-			);
+			return self::resendRefusal( ResendResult::SEND_FAILED );
 		}
 
 		AuditLogger::log(
@@ -1931,20 +1879,39 @@ class AdminRestController {
 	}
 
 	// ═══════════════════════════════════════════════════════════════
-	// PRO-EXTENSIBLE STUBS
-	// These return minimal responses; Pro overrides via filters or
-	// registers its own REST routes that take precedence.
+	// ADD-ON ROUTES
+	// Core owns the route; the data comes from the add-on through a
+	// filter. Without a handler the answer is ADDON_INACTIVE. Core
+	// itself never checks a licence here (wordpress.org guideline 5):
+	// the functionality lives in the add-on, which only hooks in when
+	// it runs licensed.
 	// ═══════════════════════════════════════════════════════════════
 
-	public function getAnalyticsOverview( \WP_REST_Request $request ): \WP_REST_Response {
-		if ( ! apply_filters( 'f12_doi_is_pro_active', false ) ) {
-			return new \WP_REST_Response(
-				array(
-					'success' => false,
-					'message' => __( 'Pro version required.', 'double-opt-in' ),
+	/**
+	 * Answer for a route whose add-on is not running.
+	 *
+	 * 404 with `code` so the SPA can tell it from an unknown route
+	 * (`rest_no_route`); `ApiError` reads `body.code`.
+	 */
+	private function addonInactive( string $addonId, string $addonName ): \WP_REST_Response {
+		return new \WP_REST_Response(
+			array(
+				'success' => false,
+				'code'    => 'ADDON_INACTIVE',
+				'addon'   => $addonId,
+				'message' => sprintf(
+					/* translators: %s: add-on name */
+					__( 'This feature is provided by the %s add-on. Install and activate the add-on with a valid license to use it.', 'double-opt-in' ),
+					$addonName
 				),
-				403
-			);
+			),
+			404
+		);
+	}
+
+	public function getAnalyticsOverview( \WP_REST_Request $request ): \WP_REST_Response {
+		if ( ! has_filter( 'f12_doi_rest_analytics_overview' ) ) {
+			return $this->addonInactive( 'analytics', 'Analytics' );
 		}
 
 		$data = apply_filters( 'f12_doi_rest_analytics_overview', array(), $request );
@@ -1959,14 +1926,8 @@ class AdminRestController {
 	}
 
 	public function getAnalyticsForm( \WP_REST_Request $request ): \WP_REST_Response {
-		if ( ! apply_filters( 'f12_doi_is_pro_active', false ) ) {
-			return new \WP_REST_Response(
-				array(
-					'success' => false,
-					'message' => __( 'Pro version required.', 'double-opt-in' ),
-				),
-				403
-			);
+		if ( ! has_filter( 'f12_doi_rest_analytics_form' ) ) {
+			return $this->addonInactive( 'analytics', 'Analytics' );
 		}
 
 		$formId = (int) $request->get_param( 'form_id' );
@@ -1982,14 +1943,8 @@ class AdminRestController {
 	}
 
 	public function getOptoutSettings( \WP_REST_Request $request ): \WP_REST_Response {
-		if ( ! apply_filters( 'f12_doi_is_pro_active', false ) ) {
-			return new \WP_REST_Response(
-				array(
-					'success' => false,
-					'message' => __( 'Pro version required.', 'double-opt-in' ),
-				),
-				403
-			);
+		if ( ! has_filter( 'f12_doi_rest_optout_settings' ) ) {
+			return $this->addonInactive( 'opt-out', 'Opt-Out' );
 		}
 
 		$data = apply_filters( 'f12_doi_rest_optout_settings', array(), $request );
@@ -2004,14 +1959,8 @@ class AdminRestController {
 	}
 
 	public function updateOptoutSettings( \WP_REST_Request $request ): \WP_REST_Response {
-		if ( ! apply_filters( 'f12_doi_is_pro_active', false ) ) {
-			return new \WP_REST_Response(
-				array(
-					'success' => false,
-					'message' => __( 'Pro version required.', 'double-opt-in' ),
-				),
-				403
-			);
+		if ( ! has_filter( 'f12_doi_rest_optout_settings_save' ) ) {
+			return $this->addonInactive( 'opt-out', 'Opt-Out' );
 		}
 
 		$data = apply_filters( 'f12_doi_rest_optout_settings_save', array(), $request );
@@ -2028,138 +1977,30 @@ class AdminRestController {
 	/**
 	 * POST /f12-doi/v1/optout/page/generate
 	 *
-	 * One-click generator for the opt-out landing page. Eliminates the
-	 * onboarding-friction loop where the user has to manually create a
-	 * page and paste the shortcodes before opt-out works at all.
-	 *
-	 * Algorithm:
-	 *   1. Idempotent fast-path — scan `published` pages for the list
-	 *      shortcode. If one already exists, return its ID untouched
-	 *      (no duplicate creation, no content overwrite).
-	 *   2. Title-collision safety — if a page named "Opt-Out" exists
-	 *      but WITHOUT the list shortcode, refuse to auto-modify. The
-	 *      user might have intentionally repurposed that title; we'd
-	 *      rather show a 409 with a clear message than clobber.
-	 *   3. Insert a fresh page with both shortcodes (form + list) so
-	 *      the page is functional end-to-end out of the box.
-	 *
-	 * Response shape (always 200 unless error):
-	 *   { page_id, page_title, edit_url, view_url, created: bool }
+	 * One-click generator for the opt-out landing page. The logic lives in
+	 * the opt-out add-on (OptOutPageGenerator, 1.4.0+), which answers through
+	 * the filter below; Core only owns the route.
 	 *
 	 * @return \WP_REST_Response
 	 */
 	public function generateOptoutPage( \WP_REST_Request $request ): \WP_REST_Response {
-		if ( ! apply_filters( 'f12_doi_is_pro_active', false ) ) {
-			return new \WP_REST_Response(
-				array(
-					'success' => false,
-					'message' => __( 'Pro version required.', 'double-opt-in' ),
-				),
-				403
-			);
+		if ( ! has_filter( 'f12_doi_rest_optout_generate_page' ) ) {
+			return $this->addonInactive( 'opt-out', 'Opt-Out' );
 		}
 
-		if ( ! current_user_can( 'publish_pages' ) ) {
-			return new \WP_REST_Response(
-				array(
-					'success' => false,
-					'message' => __( 'You do not have permission to create pages.', 'double-opt-in' ),
-				),
-				403
-			);
-		}
+		/**
+		 * Filter: answer the opt-out page generator request.
+		 *
+		 * @param \WP_REST_Response|null $response Null until a handler answers.
+		 * @param \WP_REST_Request       $request  The request.
+		 *
+		 * @since 5.8.0
+		 */
+		$response = apply_filters( 'f12_doi_rest_optout_generate_page', null, $request );
 
-		$listShortcode = '[f12-cf7-doubleoptin-optout-list]';
-		$formShortcode = '[f12-cf7-doubleoptin-optout-form]';
-
-		// 1. Idempotent fast-path — first page with the list shortcode wins.
-		$existing = get_posts(
-			array(
-				'post_type'      => 'page',
-				'post_status'    => 'publish',
-				'posts_per_page' => 1,
-				's'              => $listShortcode,
-				'fields'         => 'ids',
-				'no_found_rows'  => true,
-			)
-		);
-		if ( ! empty( $existing ) ) {
-			$pageId = (int) $existing[0];
-			return new \WP_REST_Response(
-				array(
-					'success'    => true,
-					'created'    => false,
-					'page_id'    => $pageId,
-					'page_title' => get_the_title( $pageId ),
-					'edit_url'   => get_edit_post_link( $pageId, 'raw' ),
-					'view_url'   => get_permalink( $pageId ),
-					'message'    => __( 'An existing opt-out page was selected.', 'double-opt-in' ),
-				),
-				200
-			);
-		}
-
-		// 2. Title collision — a page literally titled "Opt-Out" but
-		//    without the shortcode is the user's own content. Refuse
-		//    to silently modify it.
-		$desiredTitle  = __( 'Opt-Out', 'double-opt-in' );
-		$collisionPage = get_page_by_path( sanitize_title( $desiredTitle ), OBJECT, 'page' );
-		// Plain null check, not instanceof: this replaces `?->ID`, which only
-		// short-circuits on null and does not care about the concrete class.
-		$collisionId   = is_object( $collisionPage ) ? (int) $collisionPage->ID : 0;
-		if ( $collisionId > 0 ) {
-			return new \WP_REST_Response(
-				array(
-					'success'      => false,
-					'code'         => 'TITLE_COLLISION',
-					'page_id'      => $collisionId,
-					'edit_url'     => get_edit_post_link( $collisionId, 'raw' ),
-					'message'      => sprintf(
-						/* translators: %s = page title */
-						__( 'A page titled "%s" already exists but doesn\'t contain the opt-out shortcode. Add the shortcode manually, or rename the page, then try again.', 'double-opt-in' ),
-						$desiredTitle
-					),
-				),
-				409
-			);
-		}
-
-		// 3. Insert.
-		$pageId = wp_insert_post(
-			array(
-				'post_type'    => 'page',
-				'post_status'  => 'publish',
-				'post_title'   => $desiredTitle,
-				'post_content' => $formShortcode . "\n\n" . $listShortcode,
-				'post_author'  => get_current_user_id(),
-				'comment_status' => 'closed',
-				'ping_status'    => 'closed',
-			),
-			true
-		);
-
-		if ( is_wp_error( $pageId ) ) {
-			return new \WP_REST_Response(
-				array(
-					'success' => false,
-					'message' => $pageId->get_error_message(),
-				),
-				500
-			);
-		}
-
-		return new \WP_REST_Response(
-			array(
-				'success'    => true,
-				'created'    => true,
-				'page_id'    => (int) $pageId,
-				'page_title' => $desiredTitle,
-				'edit_url'   => get_edit_post_link( (int) $pageId, 'raw' ),
-				'view_url'   => get_permalink( (int) $pageId ),
-				'message'    => __( 'Opt-out page created and selected.', 'double-opt-in' ),
-			),
-			200
-		);
+		return $response instanceof \WP_REST_Response
+			? $response
+			: $this->addonInactive( 'opt-out', 'Opt-Out' );
 	}
 
 	/**
@@ -2181,13 +2022,7 @@ class AdminRestController {
 
 	public function getUserCreationSettings( \WP_REST_Request $request ): \WP_REST_Response {
 		if ( ! $this->userCreationAuthorized() ) {
-			return new \WP_REST_Response(
-				array(
-					'success' => false,
-					'message' => __( 'User Registration addon is not licensed for this site.', 'double-opt-in' ),
-				),
-				403
-			);
+			return $this->addonInactive( 'user-registration', 'User Registration' );
 		}
 
 		$data = apply_filters( 'f12_doi_rest_user_creation_settings', array(), $request );
@@ -2203,13 +2038,7 @@ class AdminRestController {
 
 	public function updateUserCreationSettings( \WP_REST_Request $request ): \WP_REST_Response {
 		if ( ! $this->userCreationAuthorized() ) {
-			return new \WP_REST_Response(
-				array(
-					'success' => false,
-					'message' => __( 'User Registration addon is not licensed for this site.', 'double-opt-in' ),
-				),
-				403
-			);
+			return $this->addonInactive( 'user-registration', 'User Registration' );
 		}
 
 		$data = apply_filters( 'f12_doi_rest_user_creation_settings_save', array(), $request );
@@ -2224,14 +2053,8 @@ class AdminRestController {
 	}
 
 	public function getApiSettings( \WP_REST_Request $request ): \WP_REST_Response {
-		if ( ! apply_filters( 'f12_doi_is_pro_active', false ) ) {
-			return new \WP_REST_Response(
-				array(
-					'success' => false,
-					'message' => __( 'Pro version required.', 'double-opt-in' ),
-				),
-				403
-			);
+		if ( ! has_filter( 'f12_doi_rest_api_settings' ) ) {
+			return $this->addonInactive( 'cleverreach', 'CleverReach' );
 		}
 
 		$data = apply_filters( 'f12_doi_rest_api_settings', array(), $request );
@@ -2246,14 +2069,8 @@ class AdminRestController {
 	}
 
 	public function updateApiSettings( \WP_REST_Request $request ): \WP_REST_Response {
-		if ( ! apply_filters( 'f12_doi_is_pro_active', false ) ) {
-			return new \WP_REST_Response(
-				array(
-					'success' => false,
-					'message' => __( 'Pro version required.', 'double-opt-in' ),
-				),
-				403
-			);
+		if ( ! has_filter( 'f12_doi_rest_api_settings_save' ) ) {
+			return $this->addonInactive( 'cleverreach', 'CleverReach' );
 		}
 
 		$data = apply_filters( 'f12_doi_rest_api_settings_save', array(), $request );
@@ -2349,38 +2166,6 @@ class AdminRestController {
 		return new \WP_REST_Response( $result, $status );
 	}
 
-	public function exportDatabase( \WP_REST_Request $request ): \WP_REST_Response {
-		if ( ! apply_filters( 'f12_doi_is_pro_active', false ) ) {
-			return new \WP_REST_Response(
-				array(
-					'success' => false,
-					'message' => __( 'Pro version required.', 'double-opt-in' ),
-				),
-				403
-			);
-		}
-
-		$input = $request->get_json_params();
-
-		/**
-		 * Filter to let Pro handle database export.
-		 *
-		 * @param array $result Result.
-		 * @param array $input  Export parameters.
-		 * @since 4.2.0
-		 */
-		$result = apply_filters(
-			'f12_doi_rest_database_export',
-			array(
-				'success' => false,
-				'message' => __( 'Export not available.', 'double-opt-in' ),
-			),
-			$input
-		);
-
-		return new \WP_REST_Response( $result, ( $result['success'] ?? false ) ? 200 : 400 );
-	}
-
 	// ═══════════════════════════════════════════════════════════════
 	// HELPERS
 	// ═══════════════════════════════════════════════════════════════
@@ -2404,6 +2189,9 @@ class AdminRestController {
 			'formName'   => $post ? $post->post_title : sprintf( '#%d', $row['cf_form_id'] ),
 			'category'   => (int) $row['category'],
 			'confirmed'  => (int) $row['doubleoptin'] === 1,
+			// Confirmation mail: 'sent' (handed to the mail server), 'failed',
+			// or '' (recorded before 5.8.0). Since 5.8.0.
+			'mailStatus' => (string) ( $row['mail_status'] ?? '' ),
 			'createtime' => $this->toSiteLocalTime( $row['createtime'] ),
 			'updatetime' => $this->toSiteLocalTime( $row['updatetime'] ),
 		);
@@ -2416,6 +2204,8 @@ class AdminRestController {
 			$data['consentText']    = $row['consent_text'];
 			$data['consentField']   = $row['consent_field'] ?? '';
 			$data['reminderSentAt'] = $this->toSiteLocalTime( $row['reminder_sent_at'] );
+			$data['mailError']      = (string) ( $row['mail_error'] ?? '' );
+			$data['mailStatusAt']   = $this->toSiteLocalTime( (string) ( $row['mail_status_at'] ?? '' ) );
 
 			// Category name
 			$cat                  = \forge12\contactform7\CF7DoubleOptIn\Category::get_by_id( (int) $row['category'] );
@@ -2637,8 +2427,8 @@ class AdminRestController {
 		// it contributes no UI. That lets the client show per-addon
 		// licensing/boot state without a second round-trip.
 		foreach ( $registered as $id => $addon ) {
-			$fragment        = is_array( $fragments[ $id ] ?? null ) ? $fragments[ $id ] : array();
-			$addons[ $id ]   = $this->buildAddonEntry( $id, $addon, $fragment );
+			$fragment      = is_array( $fragments[ $id ] ?? null ) ? $fragments[ $id ] : array();
+			$addons[ $id ] = $this->buildAddonEntry( $id, $addon, $fragment );
 			unset( $fragments[ $id ] );
 		}
 
@@ -2878,9 +2668,16 @@ class AdminRestController {
 
 			$activateUrl = null;
 			if ( $installed && ! $active ) {
-				$activateUrl = wp_nonce_url(
-					self_admin_url( 'plugins.php?action=activate&plugin=' . rawurlencode( $pluginFile ) ),
-					'activate-plugin_' . $pluginFile
+				// Not wp_nonce_url(): it HTML-escapes & to &amp;, and this URL
+				// goes as JSON into an href — "plugin" and "_wpnonce" then
+				// arrived as "amp;plugin" and the activation failed.
+				$activateUrl = add_query_arg(
+					array(
+						'action'   => 'activate',
+						'plugin'   => rawurlencode( $pluginFile ),
+						'_wpnonce' => wp_create_nonce( 'activate-plugin_' . $pluginFile ),
+					),
+					self_admin_url( 'plugins.php' )
 				);
 			}
 

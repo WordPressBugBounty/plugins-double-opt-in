@@ -17,6 +17,7 @@ use Forge12\DoubleOptIn\Health\LegacyMonolithCheck;
 use Forge12\DoubleOptIn\Health\SiteHealthIntegration;
 use Forge12\DoubleOptIn\Health\StaleConsentFieldCheck;
 use Forge12\DoubleOptIn\Health\StaleProMarkersCheck;
+use Forge12\DoubleOptIn\Health\AddonCompatibilityCheck;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -104,6 +105,9 @@ class HealthServiceProvider implements BootableProviderInterface {
 		// thing not loaded when it is needed.
 		$registry->register( new LegacyMonolithCheck() );
 		$registry->register( new StaleProMarkersCheck() );
+
+		// Add-ons that predate the 5.8 move of editing code out of Core.
+		$registry->register( new AddonCompatibilityCheck() );
 
 		( new HealthRepairController() )->register();
 

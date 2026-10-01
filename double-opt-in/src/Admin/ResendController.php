@@ -9,7 +9,8 @@
 namespace Forge12\DoubleOptIn\Admin;
 
 use Forge12\DoubleOptIn\Container\Container;
-use Forge12\DoubleOptIn\Repository\OptInRepositoryInterface;
+use Forge12\DoubleOptIn\Service\ConfirmationMailResender;
+use Forge12\DoubleOptIn\Service\ResendResult;
 use Forge12\Shared\LoggerInterface;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -40,19 +41,17 @@ class ResendController {
 	 * @return void
 	 */
 	public function renderResendButton( $optin ): void {
-		$is_pro       = apply_filters( 'f12_doi_is_pro_active', false );
+		// Free since 5.8, like the resend in the SPA: no licence check.
 		$is_confirmed = $optin->is_confirmed();
 		$has_mail     = ! empty( $optin->get_mail_optin() );
-		$disabled     = ! $is_pro || $is_confirmed || ! $has_mail;
+		$disabled     = $is_confirmed || ! $has_mail;
 
 		$nonce = wp_create_nonce( 'doi_resend_mail' );
 		$id    = $optin->get_id();
 
 		// Build tooltip explaining why the button is disabled
 		$title = '';
-		if ( ! $is_pro ) {
-			$title = __( 'This feature is available in the Pro version.', 'double-opt-in' );
-		} elseif ( $is_confirmed ) {
+		if ( $is_confirmed ) {
 			$title = __( 'This Opt-In has already been confirmed.', 'double-opt-in' );
 		} elseif ( ! $has_mail ) {
 			$title = __( 'No mail body stored for this Opt-In.', 'double-opt-in' );
@@ -70,12 +69,6 @@ class ResendController {
 				_e( 'Resend Confirmation Mail', 'double-opt-in' );
 				?>
 		</button>
-		<?php
-		if ( ! $is_pro ) :
-			?>
-			<span style="display:inline-block;background:linear-gradient(135deg,#e6a817,#d4941a);color:#fff;font-size:10px;font-weight:700;line-height:1;padding:3px 6px;border-radius:3px;letter-spacing:.5px;text-transform:uppercase;"
-					title="<?php esc_attr_e( 'This feature is available in the Pro version.', 'double-opt-in' ); ?>">PRO</span>
-		<?php endif; ?>
 		<span class="doi-tooltip">
 			<span class="dashicons dashicons-info-outline"></span>
 			<span class="doi-tooltip-text">
@@ -85,7 +78,7 @@ class ResendController {
 			</span>
 		</span>
 		<span id="doi-resend-feedback" style="font-size:13px;"></span>
-		<?php if ( $is_pro && ! $disabled ) : ?>
+		<?php if ( ! $disabled ) : ?>
 		<script>
 		(function() {
 			var btn = document.getElementById('doi-resend-btn');
@@ -138,10 +131,6 @@ class ResendController {
 	 * @return void
 	 */
 	public function handleResend(): void {
-		if ( ! apply_filters( 'f12_doi_is_pro_active', false ) ) {
-			wp_send_json_error( array( 'message' => __( 'This feature requires the Pro version.', 'double-opt-in' ) ), 403 );
-		}
-
 		if ( ! current_user_can( 'manage_options' ) ) {
 			wp_send_json_error( array( 'message' => __( 'You do not have permission to perform this action.', 'double-opt-in' ) ), 403 );
 		}
@@ -157,9 +146,7 @@ class ResendController {
 		}
 
 		try {
-			$container  = Container::getInstance();
-			$repository = $container->get( OptInRepositoryInterface::class );
-			$entity     = $repository->findById( $optinId );
+			$outcome = Container::getInstance()->get( ConfirmationMailResender::class )->resend( $optinId );
 		} catch ( \Exception $e ) {
 			$this->logger->error(
 				'Failed to load OptIn for resend',
@@ -172,63 +159,40 @@ class ResendController {
 			wp_send_json_error( array( 'message' => __( 'Failed to load Opt-In.', 'double-opt-in' ) ) );
 		}
 
-		if ( ! $entity ) {
-			wp_send_json_error( array( 'message' => __( 'Opt-In not found.', 'double-opt-in' ) ) );
-		}
-
-		if ( $entity->isConfirmed() ) {
-			wp_send_json_error( array( 'message' => __( 'This Opt-In is already confirmed.', 'double-opt-in' ) ) );
-		}
-
-		$body = $entity->getMailOptIn();
-		if ( empty( $body ) ) {
-			wp_send_json_error( array( 'message' => __( 'No mail body stored for this Opt-In.', 'double-opt-in' ) ) );
-		}
-
-		$email = $entity->getEmail();
-		if ( empty( $email ) ) {
-			wp_send_json_error( array( 'message' => __( 'No recipient email found.', 'double-opt-in' ) ) );
-		}
-
-		// Load subject from form settings with fallback
-		$formId        = $entity->getFormId();
-		$formParameter = \forge12\contactform7\CF7DoubleOptIn\CF7DoubleOptIn::getInstance()->getParameter( $formId );
-		$subject       = ! empty( $formParameter['subject'] )
-			? $formParameter['subject']
-			: __( 'Please confirm your opt-in', 'double-opt-in' );
-
-		$headers = array( 'Content-Type: text/html; charset=UTF-8' );
-
-		if ( ! empty( $formParameter['sender'] ) ) {
-			if ( ! empty( $formParameter['sender_name'] ) ) {
-				$headers[] = 'From: ' . $formParameter['sender_name'] . ' <' . $formParameter['sender'] . '>';
-			} else {
-				$headers[] = 'From: ' . $formParameter['sender'];
-			}
-		}
-
-		$sent = wp_mail( $email, $subject, $body, $headers );
-
-		if ( $sent ) {
+		if ( $outcome->isSent() ) {
 			$this->logger->info(
 				'Confirmation mail resent',
 				array(
 					'plugin'   => 'double-opt-in',
 					'optin_id' => $optinId,
-					'email'    => $email,
 				)
 			);
 			wp_send_json_success( array( 'message' => __( 'Confirmation mail has been resent.', 'double-opt-in' ) ) );
-		} else {
+		}
+
+		$messages = array(
+			ResendResult::NOT_FOUND    => __( 'Opt-In not found.', 'double-opt-in' ),
+			ResendResult::CONFIRMED    => __( 'This Opt-In is already confirmed.', 'double-opt-in' ),
+			ResendResult::OPTED_OUT    => __( 'This contact has opted out. The confirmation email is not sent again.', 'double-opt-in' ),
+			ResendResult::NO_BODY      => __( 'No mail body stored for this Opt-In.', 'double-opt-in' ),
+			ResendResult::NO_RECIPIENT => __( 'No recipient email found.', 'double-opt-in' ),
+		);
+
+		if ( $outcome->getReason() === ResendResult::SEND_FAILED ) {
 			$this->logger->error(
 				'Failed to resend confirmation mail',
 				array(
 					'plugin'   => 'double-opt-in',
 					'optin_id' => $optinId,
-					'email'    => $email,
 				)
 			);
-			wp_send_json_error( array( 'message' => __( 'Failed to send mail. Please check your mail configuration.', 'double-opt-in' ) ) );
 		}
+
+		wp_send_json_error(
+			array(
+				'message' => $messages[ $outcome->getReason() ]
+					?? __( 'Failed to send mail. Please check your mail configuration.', 'double-opt-in' ),
+			)
+		);
 	}
 }

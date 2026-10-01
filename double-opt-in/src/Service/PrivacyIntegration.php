@@ -11,6 +11,7 @@
 namespace Forge12\DoubleOptIn\Service;
 
 use Forge12\DoubleOptIn\Entity\OptIn;
+use Forge12\DoubleOptIn\Repository\OptInMailStatusRepository;
 use Forge12\DoubleOptIn\Repository\OptInRepositoryInterface;
 use Forge12\Shared\LoggerInterface;
 
@@ -28,9 +29,18 @@ class PrivacyIntegration {
 	private LoggerInterface $logger;
 	private OptInRepositoryInterface $repository;
 
-	public function __construct( LoggerInterface $logger, OptInRepositoryInterface $repository ) {
+	/**
+	 * Delivery status of the confirmation mail (5.8.0). Optional so existing
+	 * callers keep working.
+	 *
+	 * @var OptInMailStatusRepository|null
+	 */
+	private $mailStatus;
+
+	public function __construct( LoggerInterface $logger, OptInRepositoryInterface $repository, ?OptInMailStatusRepository $mailStatus = null ) {
 		$this->logger     = $logger;
 		$this->repository = $repository;
+		$this->mailStatus = $mailStatus;
 	}
 
 	/**
@@ -148,6 +158,16 @@ class PrivacyIntegration {
 				),
 			);
 
+			if ( $this->mailStatus !== null ) {
+				$mail = $this->mailStatus->find( $optIn->getId() );
+				if ( $mail['status'] !== '' ) {
+					$data[] = array(
+						'name'  => __( 'Confirmation mail', 'double-opt-in' ),
+						'value' => trim( $mail['status'] . ' ' . $mail['at'] . ( $mail['error'] !== '' ? ' — ' . $mail['error'] : '' ) ),
+					);
+				}
+			}
+
 			$items[] = array(
 				'group_id'    => 'double-opt-in',
 				'group_label' => __( 'Double Opt-In Records', 'double-opt-in' ),
@@ -160,7 +180,7 @@ class PrivacyIntegration {
 			'Personal data exported',
 			array(
 				'plugin' => 'double-opt-in',
-				'email'  => $email,
+				// No address in the log (rules/gdpr.md).
 				'count'  => count( $items ),
 			)
 		);
@@ -193,6 +213,10 @@ class PrivacyIntegration {
 
 			try {
 				$this->repository->save( $anonymized );
+				// The mail error text can quote the address.
+				if ( $this->mailStatus !== null ) {
+					$this->mailStatus->clearError( $optIn->getId() );
+				}
 				++$retained;
 			} catch ( \RuntimeException $e ) {
 				$this->logger->error(
@@ -218,7 +242,7 @@ class PrivacyIntegration {
 			'Personal data anonymized',
 			array(
 				'plugin'   => 'double-opt-in',
-				'email'    => $email,
+				// No address in the log (rules/gdpr.md).
 				'retained' => $retained,
 			)
 		);

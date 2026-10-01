@@ -314,9 +314,9 @@ class SetupService {
 			return 0;
 		}
 
-		$content = '<!-- wp:paragraph --><p>'
-			. esc_html__( 'Thank you! Your email address has been confirmed.', 'double-opt-in' )
-			. '</p><!-- /wp:paragraph -->';
+		// The shortcode tells a confirmed link from an expired or invalid one
+		// (5.8.0); a fixed "confirmed" text said so for every click.
+		$content = '<!-- wp:shortcode -->[doi_confirmation_status]<!-- /wp:shortcode -->';
 
 		$id = wp_insert_post(
 			array(

@@ -201,6 +201,20 @@ function onUpdate() {
 		update_option( FORGE12_OPTIN_SLUG . '_version', '5.6.0' );
 	}
 
+	if ( version_compare( $currentVersion, '5.8.0' ) < 0 ) {
+		$logger->info( 'Updating to version 5.8.0 (adds confirmation mail status columns)', [
+			'plugin'  => 'double-opt-in',
+			'current' => $currentVersion,
+			'target'  => '5.8.0',
+		] );
+
+		// mail_status / mail_error / mail_status_at. Existing rows keep an
+		// empty status ("recorded before 5.8"), nothing is back-filled.
+		createTableOptin();
+
+		update_option( FORGE12_OPTIN_SLUG . '_version', '5.8.0' );
+	}
+
 	// Safety net: Ensure both tables always exist regardless of stored version.
 	// Handles edge cases such as database migrations, manual file uploads, or
 	// restored backups that are missing the custom tables.

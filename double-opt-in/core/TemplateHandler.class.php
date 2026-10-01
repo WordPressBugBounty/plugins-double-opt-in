@@ -37,17 +37,21 @@ class TemplateHandler {
 	 *
 	 * @param string $template_name The name of the template file.
 	 * @param array  $atts          The parameters sent to the template.
+	 * @param string $base_dir      Directory holding the template (with trailing
+	 *                              slash). Add-ons pass their own; empty means
+	 *                              Core's templates/ directory. Since 5.8.0.
 	 *
 	 * @return string The content of the template.
 	 */
-	public function getTemplate( $template_name, $atts = array() ) {
+	public function getTemplate( $template_name, $atts = array(), $base_dir = '' ) {
 		$this->get_logger()->info( 'Attempting to load a template file.', [
 			'plugin'        => 'double-opt-in',
 			'template_name' => $template_name,
 			'attributes'    => array_keys($atts), // Log only keys to avoid sensitive data
 		] );
 
-		$template_path = plugin_dir_path( dirname( __FILE__ ) ) . 'templates/' . $template_name . '.php';
+		$directory     = $base_dir !== '' ? trailingslashit( (string) $base_dir ) : plugin_dir_path( dirname( __FILE__ ) ) . 'templates/';
+		$template_path = $directory . sanitize_file_name( (string) $template_name ) . '.php';
 
 		if ( ! is_readable( $template_path ) ) {
 			$this->get_logger()->error( 'Template file is not readable or does not exist.', [

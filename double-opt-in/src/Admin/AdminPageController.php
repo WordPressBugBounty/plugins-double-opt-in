@@ -267,6 +267,9 @@ class AdminPageController {
 			// Setup wizard state for the dashboard card. Null on sites that
 			// were installed before the wizard existed.
 			'setup'              => $this->setupState(),
+			// Installed form plugins, so the forms page offers only add-ons
+			// for plugins this site actually runs.
+			'formPlugins'        => $this->formPlugins(),
 		);
 
 		/**
@@ -295,6 +298,22 @@ class AdminPageController {
 	 * @param string $from     Entry point recorded on the link.
 	 * @param string $fallback Used when core/feedback.php is not loaded.
 	 */
+	/**
+	 * @return array<int, array{id: string, name: string, addonLoaded: bool, productUrl: string}>
+	 */
+	private function formPlugins(): array {
+		$plugins = array();
+		foreach ( ( new \Forge12\DoubleOptIn\Setup\FormPluginDetector() )->installed() as $plugin ) {
+			$plugins[] = array(
+				'id'          => $plugin['id'],
+				'name'        => $plugin['name'],
+				'addonLoaded' => $plugin['addonLoaded'],
+				'productUrl'  => $this->productUrl( 'forms-detected-' . $plugin['id'], '' ),
+			);
+		}
+		return $plugins;
+	}
+
 	/**
 	 * @return array{status: string, step: int, steps: int}|null
 	 */

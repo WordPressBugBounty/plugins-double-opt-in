@@ -165,6 +165,7 @@ final class FollowUpCoordinator {
 			$actions = array( new FollowUpAction( 'plan', FollowUpAction::KIND_MARKER, 'Plan', false ) );
 			$this->repository->plan( $optIn->get_id(), $adapter->getIntegration(), $actions, array(), FollowUpAction::fingerprint( $actions ), $this->now() );
 			$this->completeImmediately( $optIn, 'plan', FollowUpResult::failedPermanent( 'plan_failed' ) );
+			$this->planGlobals( $optIn );
 			return true;
 		}
 
@@ -202,7 +203,65 @@ final class FollowUpCoordinator {
 			)
 		);
 
+		$this->planGlobals( $optIn );
+
 		return true;
+	}
+
+	/**
+	 * Add the actions of every global adapter (webhooks …) to the plan.
+	 *
+	 * A global adapter that fails or plans nothing leaves no trace and
+	 * never disturbs the form's own plan. Actions outside the adapter's
+	 * id prefix are dropped.
+	 */
+	private function planGlobals( OptIn $optIn ): void {
+		foreach ( $this->registry->globals() as $integration => $adapter ) {
+			try {
+				$actions = $adapter->planActions( $optIn );
+			} catch ( \Throwable $e ) {
+				$this->logger->error(
+					'Follow-up planning of a global adapter failed',
+					array(
+						'plugin'      => 'double-opt-in',
+						'optin_id'    => $optIn->get_id(),
+						'integration' => $integration,
+						'exception'   => get_class( $e ),
+					)
+				);
+				continue;
+			}
+
+			$prefix = $integration . ':';
+			$own    = array();
+			$skip   = array();
+			foreach ( $actions as $action ) {
+				if ( ! $action instanceof FollowUpAction || strpos( $action->getId(), $prefix ) !== 0 ) {
+					continue;
+				}
+				$own[] = $action;
+				if ( $action->getSkipReason() !== '' ) {
+					$skip[ $action->getId() ] = $action->getSkipReason();
+				}
+			}
+
+			if ( count( $own ) !== count( $actions ) ) {
+				$this->logger->warning(
+					'Follow-up actions outside the adapter prefix were dropped',
+					array(
+						'plugin'      => 'double-opt-in',
+						'optin_id'    => $optIn->get_id(),
+						'integration' => $integration,
+						'dropped'     => count( $actions ) - count( $own ),
+					)
+				);
+			}
+			if ( empty( $own ) ) {
+				continue;
+			}
+
+			$this->repository->plan( $optIn->get_id(), $integration, $own, $skip, FollowUpAction::fingerprint( $own ), $this->now() );
+		}
 	}
 
 	/**
@@ -271,11 +330,6 @@ final class FollowUpCoordinator {
 			return $this->repository->findByOptIn( $optInId );
 		}
 
-		$actions = array();
-		foreach ( $claimed as $record ) {
-			$actions[] = $record->toAction();
-		}
-
 		$this->logger->info(
 			'Follow-up attempt started',
 			array(
@@ -290,20 +344,51 @@ final class FollowUpCoordinator {
 
 		$startedAt = microtime( true );
 		$results   = array();
-		$fallback  = 'action_outcome_unknown';
-		try {
-			$results = $adapter->execute( $optIn, $actions, $attempt );
-		} catch ( \Throwable $e ) {
-			$fallback = 'adapter_exception';
-			$this->logger->error(
-				'Follow-up adapter threw',
-				array(
-					'plugin'     => 'double-opt-in',
-					'optin_id'   => $optInId,
-					'attempt_id' => $attempt->getId(),
-					'exception'  => get_class( $e ),
-				)
-			);
+		$fallbacks = array();
+
+		// Each adapter executes its own rows: the form adapter first (its
+		// replay may need the request to itself), then the global ones.
+		foreach ( $this->groupByAdapter( $claimed, $adapter ) as $integration => $group ) {
+			$handler = $this->handlerFor( $integration, $adapter );
+			if ( $handler === null ) {
+				// The add-on that planned these is gone. Recorded honestly;
+				// a manual retry runs them once it is back.
+				foreach ( array_keys( $group ) as $actionId ) {
+					$results[ $actionId ] = FollowUpResult::failedPermanent( 'adapter_missing' );
+				}
+				continue;
+			}
+
+			$actions = array();
+			foreach ( $group as $record ) {
+				$actions[] = $record->toAction();
+			}
+
+			$own = array();
+			try {
+				$own = $handler->execute( $optIn, $actions, $attempt );
+			} catch ( \Throwable $e ) {
+				foreach ( array_keys( $group ) as $actionId ) {
+					$fallbacks[ $actionId ] = 'adapter_exception';
+				}
+				$this->logger->error(
+					'Follow-up adapter threw',
+					array(
+						'plugin'      => 'double-opt-in',
+						'optin_id'    => $optInId,
+						'attempt_id'  => $attempt->getId(),
+						'integration' => $integration,
+						'exception'   => get_class( $e ),
+					)
+				);
+			}
+
+			// An adapter reports for its own actions only.
+			foreach ( array_keys( $group ) as $actionId ) {
+				if ( is_array( $own ) && isset( $own[ $actionId ] ) ) {
+					$results[ $actionId ] = $own[ $actionId ];
+				}
+			}
 		}
 		$durationMs = (int) round( ( microtime( true ) - $startedAt ) * 1000 );
 
@@ -313,7 +398,7 @@ final class FollowUpCoordinator {
 		foreach ( $claimed as $actionId => $record ) {
 			$result = $results[ $actionId ] ?? null;
 			if ( ! $result instanceof FollowUpResult ) {
-				$result = FollowUpResult::unknown( $fallback );
+				$result = FollowUpResult::unknown( $fallbacks[ $actionId ] ?? 'action_outcome_unknown' );
 			}
 
 			$attemptNumber = $record->attempts + 1;
@@ -351,21 +436,32 @@ final class FollowUpCoordinator {
 
 		$records  = $this->repository->findByOptIn( $optInId );
 		$statuses = array();
+		$byOwner  = array( $adapter->getIntegration() => array() );
 		foreach ( $records as $record ) {
-			$statuses[ $record->actionId ] = $record->status;
+			$statuses[ $record->actionId ]                        = $record->status;
+			$byOwner[ $record->integration ][ $record->actionId ] = $record->status;
 		}
 
-		try {
-			$adapter->onSettled( $optIn, $statuses );
-		} catch ( \Throwable $e ) {
-			$this->logger->error(
-				'Follow-up onSettled threw',
-				array(
-					'plugin'    => 'double-opt-in',
-					'optin_id'  => $optInId,
-					'exception' => get_class( $e ),
-				)
-			);
+		// Each adapter settles its own rows — the form adapter's upload
+		// cleanup must not wait for a webhook.
+		foreach ( $byOwner as $integration => $own ) {
+			$handler = $this->handlerFor( (string) $integration, $adapter );
+			if ( $handler === null ) {
+				continue;
+			}
+			try {
+				$handler->onSettled( $optIn, $own );
+			} catch ( \Throwable $e ) {
+				$this->logger->error(
+					'Follow-up onSettled threw',
+					array(
+						'plugin'      => 'double-opt-in',
+						'optin_id'    => $optInId,
+						'integration' => $integration,
+						'exception'   => get_class( $e ),
+					)
+				);
+			}
 		}
 
 		$this->auditAttempt( $optIn, $adapter, $attempt, $statuses, $report, $durationMs );
@@ -476,6 +572,36 @@ final class FollowUpCoordinator {
 		if ( $optInId > 0 ) {
 			$this->repository->deleteByOptIn( $optInId );
 		}
+	}
+
+	/**
+	 * Claimed rows by the integration that planned them, the form
+	 * adapter's group first.
+	 *
+	 * @param array<string, FollowUpRecord> $claimed Keyed by action id.
+	 *
+	 * @return array<string, array<string, FollowUpRecord>>
+	 */
+	private function groupByAdapter( array $claimed, FollowUpAdapterInterface $formAdapter ): array {
+		$groups = array( $formAdapter->getIntegration() => array() );
+		foreach ( $claimed as $actionId => $record ) {
+			$groups[ $record->integration ][ $actionId ] = $record;
+		}
+
+		return array_filter( $groups );
+	}
+
+	/**
+	 * The adapter that owns rows of an integration: the opt-in's form
+	 * adapter or a global one. Null when the add-on that planned them is
+	 * no longer there.
+	 */
+	private function handlerFor( string $integration, FollowUpAdapterInterface $formAdapter ): ?FollowUpAdapterInterface {
+		if ( $integration === $formAdapter->getIntegration() ) {
+			return $formAdapter;
+		}
+
+		return $this->registry->globals()[ $integration ] ?? null;
 	}
 
 	/**

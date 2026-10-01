@@ -14,6 +14,7 @@ use Forge12\DoubleOptIn\Integration\FormIntegrationRegistry;
 use Forge12\DoubleOptIn\Integration\CF7Integration;
 use Forge12\DoubleOptIn\Integration\CF7FollowUpAdapter;
 use Forge12\DoubleOptIn\FollowUp\FollowUpAdapterRegistry;
+use Forge12\DoubleOptIn\Frontend\ConfirmationShortcodes;
 use Forge12\DoubleOptIn\Frontend\ErrorNotification;
 use Forge12\Shared\LoggerInterface;
 
@@ -105,6 +106,9 @@ class IntegrationServiceProvider implements BootableProviderInterface {
 		// Register universal error notification system
 		$errorNotification = new ErrorNotification();
 		$errorNotification->register();
+
+		// Confirmation/error page shortcodes + message for failed links (5.8.0).
+		( new ConfirmationShortcodes() )->register();
 
 		$registry = $container->get( FormIntegrationRegistry::class );
 

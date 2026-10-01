@@ -12,7 +12,6 @@ use Forge12\DoubleOptIn\Container\Container;
 use Forge12\DoubleOptIn\Container\BootableProviderInterface;
 use Forge12\DoubleOptIn\EmailTemplates\EmailTemplatePostType;
 use Forge12\DoubleOptIn\EmailTemplates\EmailTemplateRepository;
-use Forge12\DoubleOptIn\EmailTemplates\EmailTemplateRestController;
 use Forge12\DoubleOptIn\EmailTemplates\EmailHtmlGenerator;
 use Forge12\DoubleOptIn\EmailTemplates\EmailTemplateIntegration;
 use Forge12\DoubleOptIn\EmailTemplates\BlockRegistry;
@@ -56,16 +55,9 @@ class EmailTemplateServiceProvider implements BootableProviderInterface {
 			}
 		);
 
-		// Register REST Controller
-		$container->singleton(
-			EmailTemplateRestController::class,
-			function ( Container $c ) {
-				return new EmailTemplateRestController(
-					$c->get( EmailTemplateRepository::class ),
-					$c->get( EmailHtmlGenerator::class )
-				);
-			}
-		);
+		// The template REST routes (editing) belong to the email editor
+		// add-on since Core 5.8 / add-on 1.1.0. Core keeps what renders
+		// saved templates at send time.
 
 		// Register Block Registry
 		$container->singleton(
@@ -94,11 +86,8 @@ class EmailTemplateServiceProvider implements BootableProviderInterface {
 		$postType = $container->get( EmailTemplatePostType::class );
 		$postType->init();
 
-		// REST controller registration is OWNED BY addon-email-editor:
-		// its boot() picks the controller up from the same container
-		// and calls init() only when the addon is licensed + active.
-		// Free / unlicensed sites get no API surface, which is the
-		// intent of Pro-gating the editor + templates feature.
+		// The template REST routes live in addon-email-editor (1.1.0+),
+		// which registers them itself. Core ships no editing code.
 
 		// Initialize Integration with CF7/Avada — used by the email
 		// pipeline for templates referenced in form settings, so it

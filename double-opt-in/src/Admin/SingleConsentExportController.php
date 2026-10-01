@@ -58,9 +58,10 @@ class SingleConsentExportController {
 
 		$scope = isset( $_REQUEST['scope'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['scope'] ) ) : '';
 
-		// Free version only supports single-record export
+		// Core exports a single record. Bulk and filtered exports are the
+		// Consent Export add-on's own endpoints, not a locked mode of this one.
 		if ( $scope !== 'single' ) {
-			wp_die( __( 'Bulk export requires the Pro version.', 'double-opt-in' ) );
+			wp_die( esc_html__( 'This endpoint exports a single record. Bulk exports are provided by the Consent Export add-on.', 'double-opt-in' ) );
 		}
 
 		$id = isset( $_REQUEST['id'] ) ? absint( $_REQUEST['id'] ) : 0;

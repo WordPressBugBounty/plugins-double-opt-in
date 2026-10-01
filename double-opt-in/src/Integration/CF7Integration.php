@@ -14,6 +14,8 @@ use Forge12\DoubleOptIn\FollowUp\FollowUpAttempt;
 use Forge12\DoubleOptIn\FollowUp\FollowUpCoordinator;
 use Forge12\DoubleOptIn\FollowUp\FollowUpResult;
 use Forge12\DoubleOptIn\Frontend\ErrorNotification;
+use Forge12\DoubleOptIn\Frontend\SubmitNotice;
+use Forge12\DoubleOptIn\Spam\SubmissionTrap;
 use forge12\contactform7\CF7DoubleOptIn\Category;
 use forge12\contactform7\CF7DoubleOptIn\CF7DoubleOptIn;
 use forge12\contactform7\CF7DoubleOptIn\HTMLSelect;
@@ -39,6 +41,21 @@ class CF7Integration extends AbstractFormIntegration implements AdminPanelInterf
 	 * @var OptIn|null
 	 */
 	private ?OptIn $currentOptIn = null;
+
+	/**
+	 * The confirmation mail sent in this request, for the feedback response
+	 * (5.8.0): recipient, resolved sender and subject, and the outcome.
+	 *
+	 * @var array{email: string, sender: string, subject: string, sent: bool}|null
+	 */
+	private $lastOptInMail = null;
+
+	/**
+	 * The DOI submission of this request, keyed to its form (5.8.0).
+	 *
+	 * @var array{form_id: int, email: string, sender: string, subject: string, sent: bool}|null
+	 */
+	private $submitted = null;
 
 	/**
 	 * {@inheritdoc}
@@ -82,6 +99,14 @@ class CF7Integration extends AbstractFormIntegration implements AdminPanelInterf
 		// Frontend hooks
 		add_action( 'wpcf7_before_send_mail', array( $this, 'onSubmit' ), $this->getHookPriority(), 3 );
 		add_action( 'init', array( $this, 'handleOptInConfirmation' ) );
+
+		// Honest success message + "open your inbox" (5.8.0).
+		add_filter( 'wpcf7_feedback_response', array( $this, 'filterFeedbackResponse' ), 10, 2 );
+		add_action( 'wpcf7_enqueue_scripts', array( $this, 'enqueueSubmitNotice' ) );
+
+		// Honeypot + minimum fill time, through CF7's own spam flow (5.8.0).
+		add_filter( 'wpcf7_form_elements', array( $this, 'addSubmissionTrap' ) );
+		add_filter( 'wpcf7_spam', array( $this, 'checkSubmissionTrap' ), 9, 2 );
 
 		// Register recipient filter
 		add_filter( 'f12_cf7_doubleoptin_get_recipient_cf7', array( $this, 'getRecipientFilter' ), 10, 3 );
@@ -304,7 +329,11 @@ class CF7Integration extends AbstractFormIntegration implements AdminPanelInterf
 		}
 
 		// Send opt-in mail
+		$this->lastOptInMail = null;
 		$this->sendOptInMail( $optIn, $formData, $formParameter );
+		if ( $this->lastOptInMail !== null ) {
+			$this->submitted = array( 'form_id' => (int) $formId ) + $this->lastOptInMail;
+		}
 
 		// Skip original mail
 		add_filter( 'wpcf7_skip_mail', '__return_true' );
@@ -352,19 +381,255 @@ class CF7Integration extends AbstractFormIntegration implements AdminPanelInterf
 			$args['additional_headers'] .= 'From: ' . $args['sender_name'] . ' <' . $args['sender'] . '>';
 		}
 
-		// Send via CF7 mail system
-		\WPCF7_Mail::send( $args, 'mail' );
+		// Send via CF7 mail system. Up to 5.7 the result was dropped and a
+		// failed send looked exactly like a successful one.
+		$sent = (bool) \WPCF7_Mail::send( $args, 'mail' );
+
+		// Record the outcome on the opt-in (OptInMailTracker). No address in
+		// the log: the id identifies the record.
+		do_action( 'f12_doi_optin_mail_result', (int) $optIn->get_id(), $sent, '' );
+
+		// What the visitor is told to look for — with CF7's mail tags resolved,
+		// as WPCF7_Mail::send() did for the mail itself.
+		$sender  = (string) $args['sender'];
+		$subject = (string) $args['subject'];
+		if ( function_exists( 'wpcf7_mail_replace_tags' ) ) {
+			$sender  = (string) wpcf7_mail_replace_tags( $sender );
+			$subject = (string) wpcf7_mail_replace_tags( $subject );
+		}
+		$this->lastOptInMail = array(
+			'optin_id' => (int) $optIn->get_id(),
+			'email'    => (string) $optIn->get_email(),
+			'sender'   => SubmitNotice::senderAddress( $sender ),
+			'subject'  => trim( wp_strip_all_tags( $subject ) ),
+			'sent'     => $sent,
+		);
 
 		$this->getLogger()->info(
-			'OptIn mail sent via CF7',
+			$sent ? 'OptIn mail handed to the mail server via CF7' : 'OptIn mail could not be sent via CF7',
 			array(
-				'plugin'    => 'double-opt-in',
-				'form_id'   => $formData->getFormId(),
-				'recipient' => $args['recipient'],
+				'plugin'   => 'double-opt-in',
+				'form_id'  => $formData->getFormId(),
+				'optin_id' => (int) $optIn->get_id(),
+			)
+		);
+
+		return $sent;
+	}
+
+	/**
+	 * Make CF7's answer to a double opt-in submission tell the truth (5.8.0).
+	 *
+	 * CF7 answers "Thank you for your message. It has been sent." — but
+	 * nothing is sent until the address is confirmed, and when the
+	 * confirmation mail itself failed CF7 still said so and cleared the form.
+	 * CF7 overwrites any response set during the submission, so this runs on
+	 * the finished feedback response.
+	 *
+	 * @param mixed $response CF7 feedback response.
+	 * @param mixed $result   CF7 submission result.
+	 *
+	 * @return mixed
+	 */
+	public function filterFeedbackResponse( $response, $result = null ) {
+		if ( ! is_array( $response ) || $this->submitted === null ) {
+			return $response;
+		}
+
+		$formId = (int) ( $response['contact_form_id'] ?? 0 );
+		if ( $formId !== $this->submitted['form_id'] || ( $response['status'] ?? '' ) !== 'mail_sent' ) {
+			return $response;
+		}
+
+		$submitted       = $this->submitted;
+		$this->submitted = null;
+		$form            = class_exists( '\WPCF7_ContactForm' ) ? \WPCF7_ContactForm::get_instance( $formId ) : null;
+
+		if ( ! $submitted['sent'] ) {
+			// CF7 then keeps the visitor's input and fires wpcf7mailfailed.
+			$response['status']  = 'mail_failed';
+			$response['message'] = $form ? (string) $form->message( 'mail_sent_ng' ) : __( 'The confirmation mail could not be sent. Please try again later.', 'double-opt-in' );
+			return $response;
+		}
+
+		/**
+		 * Whether to show the confirmation hint (masked address, what to look
+		 * for, "open your inbox" link) after a double opt-in submission.
+		 *
+		 * @since 5.8.0
+		 *
+		 * @param bool $show   Default true.
+		 * @param int  $formId Form ID.
+		 */
+		if ( ! apply_filters( 'f12_doi_submit_notice', true, $formId ) ) {
+			return $response;
+		}
+
+		$notice = SubmitNotice::extend(
+			SubmitNotice::build( $submitted['email'], $submitted['sender'], $submitted['subject'] ),
+			array(
+				'form_id'     => $formId,
+				'optin_id'    => (int) ( $submitted['optin_id'] ?? 0 ),
+				'integration' => 'cf7',
+			)
+		);
+
+		// A message the site owner wrote stays; only CF7's own default is wrong.
+		if ( $form && self::isDefaultSentMessage( (string) $form->message( 'mail_sent_ok', false ) ) ) {
+			$response['message'] = SubmitNotice::message( $notice['masked'] );
+		}
+
+		$response['doi'] = $notice;
+
+		return $response;
+	}
+
+	/**
+	 * Whether a form's success message is still CF7's default, in English or
+	 * in the current language.
+	 */
+	public static function isDefaultSentMessage( string $message ): bool {
+		$defaults = array( 'Thank you for your message. It has been sent.' );
+		if ( function_exists( 'wpcf7_messages' ) ) {
+			$messages   = wpcf7_messages();
+			$defaults[] = (string) ( $messages['mail_sent_ok']['default'] ?? '' );
+		}
+
+		return in_array( trim( $message ), array_filter( $defaults ), true );
+	}
+
+	/**
+	 * Whether a form gets the honeypot and the minimum fill time.
+	 */
+	private function trapEnabled( int $formId ): bool {
+		/**
+		 * Whether a double opt-in form gets the honeypot and the minimum
+		 * fill time.
+		 *
+		 * @since 5.8.0
+		 *
+		 * @param bool $enabled Default true.
+		 * @param int  $formId  Form ID.
+		 */
+		return $formId > 0 && $this->isOptInEnabled( $formId ) && (bool) apply_filters( 'f12_doi_spam_trap', true, $formId );
+	}
+
+	/**
+	 * Add the trap fields to a double opt-in form.
+	 *
+	 * @param mixed $elements Form HTML.
+	 *
+	 * @return mixed
+	 */
+	public function addSubmissionTrap( $elements ) {
+		if ( ! is_string( $elements ) || ! function_exists( 'wpcf7_get_current_contact_form' ) ) {
+			return $elements;
+		}
+		$form = wpcf7_get_current_contact_form();
+		if ( ! $form || ! $this->trapEnabled( (int) $form->id() ) ) {
+			return $elements;
+		}
+
+		return $elements . SubmissionTrap::markup( time() );
+	}
+
+	/**
+	 * Mark a bot submission as spam before any opt-in or mail exists.
+	 *
+	 * @param mixed $spam       CF7's verdict so far.
+	 * @param mixed $submission The submission.
+	 *
+	 * @return mixed
+	 */
+	public function checkSubmissionTrap( $spam, $submission = null ) {
+		if ( $spam || self::isReplaying() || ! is_object( $submission ) || ! method_exists( $submission, 'get_contact_form' ) ) {
+			return $spam;
+		}
+		$form   = $submission->get_contact_form();
+		$formId = $form ? (int) $form->id() : 0;
+		if ( ! $this->trapEnabled( $formId ) ) {
+			return $spam;
+		}
+
+		/**
+		 * Minimum seconds between rendering a double opt-in form and
+		 * submitting it; faster submissions are treated as bots.
+		 *
+		 * @since 5.8.0
+		 *
+		 * @param int $seconds Default 2.
+		 * @param int $formId  Form ID.
+		 */
+		$minSeconds = (int) apply_filters( 'f12_doi_min_fill_seconds', SubmissionTrap::DEFAULT_MIN_SECONDS, $formId );
+
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing -- CF7 verified the submission; only our two trap fields are read.
+		$reason = SubmissionTrap::check( wp_unslash( $_POST ), time(), $minSeconds );
+		if ( $reason === '' ) {
+			return $spam;
+		}
+
+		if ( method_exists( $submission, 'add_spam_log' ) ) {
+			$submission->add_spam_log(
+				array(
+					'agent'  => 'double-opt-in',
+					'reason' => $reason,
+				)
+			);
+		}
+
+		/**
+		 * A double opt-in submission was stopped by the honeypot or the
+		 * minimum fill time. No personal data is passed.
+		 *
+		 * @since 5.8.0
+		 *
+		 * @param string $reason      'honeypot', 'stamp_invalid' or 'too_fast'.
+		 * @param int    $formId      Form ID.
+		 * @param string $integration Integration identifier.
+		 */
+		do_action( 'f12_doi_spam_trap_hit', $reason, $formId, 'cf7' );
+
+		$this->getLogger()->info(
+			'Submission stopped by the spam trap',
+			array(
+				'plugin'  => 'double-opt-in',
+				'form_id' => $formId,
+				'reason'  => $reason,
 			)
 		);
 
 		return true;
+	}
+
+	/**
+	 * The script that renders the confirmation hint under the CF7 message.
+	 * Runs only where CF7 enqueues its own scripts.
+	 *
+	 * @return void
+	 */
+	public function enqueueSubmitNotice(): void {
+		$version = defined( 'FORGE12_OPTIN_VERSION' ) ? FORGE12_OPTIN_VERSION : false;
+
+		wp_enqueue_script(
+			'f12-doi-submit-notice',
+			plugins_url( 'assets/js/doi-submit-notice.js', F12_DOUBLEOPTIN_PLUGIN_FILE ),
+			array(),
+			$version,
+			true
+		);
+
+		wp_register_style( 'f12-doi-submit-notice', false, array(), $version );
+		wp_enqueue_style( 'f12-doi-submit-notice' );
+		wp_add_inline_style(
+			'f12-doi-submit-notice',
+			'.f12-doi-notice{margin:.5em 0 1em;padding:0 1em}'
+			. '.f12-doi-notice p{margin:.4em 0}'
+			. '.f12-doi-notice .f12-doi-inbox{display:inline-block;margin-top:.4em;padding:.5em 1em;border:1px solid currentColor;border-radius:4px;text-decoration:none;font-weight:600}'
+			// Buttons and links of add-ons (f12_doi_submit_notice_data) look like
+			// the inbox link instead of a bare browser button.
+			. '.f12-doi-notice .f12-doi-action{display:inline-block;margin-top:.4em;padding:.5em 1em;border:1px solid currentColor;border-radius:4px;background:transparent;color:inherit;font:inherit;font-weight:600;text-decoration:none;cursor:pointer}'
+			. '.f12-doi-notice button.f12-doi-action:disabled{opacity:.5;cursor:default}'
+		);
 	}
 
 	/**
