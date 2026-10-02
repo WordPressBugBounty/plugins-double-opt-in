@@ -53,36 +53,127 @@ class SetupService {
 	/** @var SetupMailComposer */
 	private $composer;
 
-	/** @var callable():array<int, array{id:int, title:string, enabled:bool}> */
-	private $cf7Forms;
+	/**
+	 * Lists the forms of every available integration. Entries without an
+	 * `integration` are Contact Form 7 forms.
+	 *
+	 * @var callable():array<int, array{id:int|string, title:string, enabled:bool, integration?:string, integrationName?:string}>
+	 */
+	private $formLister;
 
-	/** @var callable(int):string[] */
-	private $cf7Fields;
+	/**
+	 * Lists the fields of one form as key => label.
+	 *
+	 * @var callable(int|string, string):array<int|string, string>
+	 */
+	private $fieldLister;
 
 	/** @var callable():array<int, array{id:int, title:string}> */
 	private $pages;
 
+	/** @var array<string, array<string, string>> Fields per form key, per request. */
+	private $fieldCache = array();
+
 	/**
-	 * @param callable|null $cf7Forms  Lists CF7 forms (test seam).
-	 * @param callable|null $cf7Fields Lists the field names of a CF7 form (test seam).
-	 * @param callable|null $pages     Lists published pages (test seam).
+	 * @param callable|null $forms  Lists the forms of all integrations (test seam).
+	 * @param callable|null $fields Lists the fields of a form (test seam).
+	 * @param callable|null $pages  Lists published pages (test seam).
 	 */
 	public function __construct(
 		SetupState $state,
 		FormSettingsService $settings,
 		FormPluginDetector $detector,
 		SetupMailComposer $composer,
-		?callable $cf7Forms = null,
-		?callable $cf7Fields = null,
+		?callable $forms = null,
+		?callable $fields = null,
 		?callable $pages = null
 	) {
-		$this->state     = $state;
-		$this->settings  = $settings;
-		$this->detector  = $detector;
-		$this->composer  = $composer;
-		$this->cf7Forms  = $cf7Forms ?? array( self::class, 'listCf7Forms' );
-		$this->cf7Fields = $cf7Fields ?? array( self::class, 'listCf7Fields' );
-		$this->pages     = $pages ?? array( self::class, 'listPublishedPages' );
+		$this->state       = $state;
+		$this->settings    = $settings;
+		$this->detector    = $detector;
+		$this->composer    = $composer;
+		$this->formLister  = $forms ?? array( self::class, 'listForms' );
+		$this->fieldLister = $fields ?? array( self::class, 'listFields' );
+		$this->pages       = $pages ?? array( self::class, 'listPublishedPages' );
+	}
+
+	/**
+	 * All forms, keyed "integration:id".
+	 *
+	 * @return array<string, array{key:string, integration:string, integrationName:string, id:int|string, title:string, enabled:bool}>
+	 */
+	private function forms(): array {
+		$forms = array();
+		foreach ( (array) call_user_func( $this->formLister ) as $form ) {
+			if ( ! is_array( $form ) || ! isset( $form['id'] ) ) {
+				continue;
+			}
+			$integration   = (string) ( $form['integration'] ?? 'cf7' );
+			$id            = $form['id'];
+			$key           = self::formKey( $integration, $id );
+			$forms[ $key ] = array(
+				'key'             => $key,
+				'integration'     => $integration,
+				'integrationName' => (string) ( $form['integrationName'] ?? ( $integration === 'cf7' ? 'Contact Form 7' : $integration ) ),
+				'id'              => $id,
+				'title'           => (string) ( $form['title'] ?? '' ),
+				'enabled'         => ! empty( $form['enabled'] ),
+			);
+		}
+		return $forms;
+	}
+
+	/**
+	 * Fields of a form as key => label.
+	 *
+	 * @param array{key:string, integration:string, id:int|string} $form
+	 *
+	 * @return array<string, string>
+	 */
+	private function fieldsOf( array $form ): array {
+		if ( isset( $this->fieldCache[ $form['key'] ] ) ) {
+			return $this->fieldCache[ $form['key'] ];
+		}
+		$fields = array();
+		foreach ( (array) call_user_func( $this->fieldLister, $form['id'], $form['integration'] ) as $key => $label ) {
+			if ( ! is_scalar( $label ) ) {
+				continue;
+			}
+			$name            = (string) $key;
+			$fields[ $name ] = trim( (string) $label ) !== '' ? (string) $label : $name;
+		}
+		$this->fieldCache[ $form['key'] ] = $fields;
+		return $fields;
+	}
+
+	public static function formKey( string $integration, $id ): string {
+		return $integration . ':' . (string) $id;
+	}
+
+	/**
+	 * Where a form's settings live: the post ID, also for Elementor's
+	 * "page_widget" IDs — the same rule the Forms page uses.
+	 *
+	 * @param int|string $id
+	 */
+	private static function storageId( $id ): int {
+		return (int) explode( '_', (string) $id )[0];
+	}
+
+	/**
+	 * Draft forms keyed by form key. Drafts from 5.7 used bare CF7 IDs.
+	 *
+	 * @param array<int|string, mixed> $forms
+	 *
+	 * @return array<string, string>
+	 */
+	private static function normalizeDraftForms( array $forms ): array {
+		$out = array();
+		foreach ( $forms as $key => $field ) {
+			$key         = is_int( $key ) || ctype_digit( (string) $key ) ? self::formKey( 'cf7', $key ) : (string) $key;
+			$out[ $key ] = (string) $field;
+		}
+		return $out;
 	}
 
 	/**
@@ -95,30 +186,42 @@ class SetupService {
 		$draft    = $state['draft'];
 		$defaults = FormDefaults::get();
 
-		$forms      = array();
-		$draftForms = isset( $draft['forms'] ) && is_array( $draft['forms'] ) ? $draft['forms'] : null;
-		foreach ( (array) call_user_func( $this->cf7Forms ) as $form ) {
-			$id       = (int) $form['id'];
-			$fields   = array_values( array_map( 'strval', (array) call_user_func( $this->cf7Fields, $id ) ) );
-			$detected = self::detectEmailField( $fields );
-			$enabled  = ! empty( $form['enabled'] );
+		$forms        = array();
+		$integrations = array();
+		$draftForms   = isset( $draft['forms'] ) && is_array( $draft['forms'] ) ? self::normalizeDraftForms( $draft['forms'] ) : null;
+		foreach ( $this->forms() as $key => $form ) {
+			$fields   = $this->fieldsOf( $form );
+			$detected = self::detectEmailFieldIn( $fields );
+			$enabled  = $form['enabled'];
 
 			if ( $draftForms !== null ) {
-				$selected = array_key_exists( (string) $id, $draftForms ) || array_key_exists( $id, $draftForms );
-				$field    = $selected ? (string) ( $draftForms[ $id ] ?? $draftForms[ (string) $id ] ?? '' ) : $detected;
+				$selected = array_key_exists( $key, $draftForms );
+				$field    = $selected ? $draftForms[ $key ] : $detected;
 			} else {
 				$selected = ! $enabled && $detected !== '';
 				$field    = $detected;
 			}
 
-			$forms[] = array(
-				'id'            => $id,
-				'title'         => (string) $form['title'],
-				'enabled'       => $enabled,
-				'fields'        => $fields,
-				'detectedField' => $detected,
-				'field'         => $field,
-				'selected'      => ! $enabled && $selected,
+			$fieldList = array();
+			foreach ( $fields as $name => $label ) {
+				$fieldList[] = array(
+					'key'   => (string) $name,
+					'label' => $label,
+				);
+			}
+
+			$integrations[ $form['integration'] ] = $form['integrationName'];
+			$forms[]                              = array(
+				'key'             => $key,
+				'id'              => $form['id'],
+				'integration'     => $form['integration'],
+				'integrationName' => $form['integrationName'],
+				'title'           => $form['title'],
+				'enabled'         => $enabled,
+				'fields'          => $fieldList,
+				'detectedField'   => $detected,
+				'field'           => $field,
+				'selected'        => ! $enabled && $selected,
 			);
 		}
 
@@ -131,33 +234,35 @@ class SetupService {
 		$pageId = (int) ( $draft['pageId'] ?? 0 );
 
 		return array(
-			'status'      => $state['status'],
-			'step'        => $state['step'],
-			'steps'       => SetupState::STEPS,
-			'sender'      => array(
+			'status'       => $state['status'],
+			'step'         => $state['step'],
+			'steps'        => SetupState::STEPS,
+			'sender'       => array(
 				'email'  => (string) ( $draft['sender'] ?? ( $defaults['sender'] !== '' ? $defaults['sender'] : get_bloginfo( 'admin_email' ) ) ),
 				'name'   => (string) ( $draft['sender_name'] ?? ( $defaults['sender_name'] !== '' ? $defaults['sender_name'] : wp_specialchars_decode( (string) get_bloginfo( 'name' ), ENT_QUOTES ) ) ),
 				'domain' => self::siteDomain(),
 			),
-			'cf7'         => array(
+			'cf7'          => array(
 				'installed'  => defined( 'WPCF7_VERSION' ) || class_exists( 'WPCF7_ContactForm' ),
 				'newFormUrl' => admin_url( 'admin.php?page=wpcf7-new' ),
 				'installUrl' => admin_url( 'plugin-install.php?s=contact+form+7&tab=search&type=term' ),
-				'forms'      => $forms,
 			),
-			'mail'        => array(
+			// Every available integration, not only Contact Form 7 (5.9.0).
+			'forms'        => $forms,
+			'integrations' => $integrations,
+			'mail'         => array(
 				'subject' => (string) ( $draft['subject'] ?? $this->composer->subject() ),
 				'design'  => SetupMailComposer::isDesign( (string) ( $draft['design'] ?? '' ) ) ? (string) $draft['design'] : SetupMailComposer::DEFAULT_DESIGN,
 				'designs' => SetupMailComposer::DESIGNS,
 			),
-			'page'        => array(
+			'page'         => array(
 				'mode'   => $pageId > 0 && empty( $draft['pageCreated'] ) ? 'existing' : 'new',
 				'pageId' => $this->isPublishedPage( $pageId ) ? $pageId : 0,
 				'pages'  => array_values( (array) call_user_func( $this->pages ) ),
 			),
-			'testMailTo'  => self::currentUserEmail(),
-			'formPlugins' => $plugins,
-			'editorUrl'   => self::productUrl( 'wizard-editor' ),
+			'testMailTo'   => self::currentUserEmail(),
+			'formPlugins'  => $plugins,
+			'editorUrl'    => self::productUrl( 'wizard-editor' ),
 		);
 	}
 
@@ -205,35 +310,34 @@ class SetupService {
 	}
 
 	/**
-	 * @param array<string, mixed> $data `forms`: list of {id, field}.
+	 * @param array<string, mixed> $data `forms`: list of {key, field}; a bare `id` means a CF7 form.
 	 */
 	private function saveForms( array $data ): array {
-		$known = array();
-		foreach ( (array) call_user_func( $this->cf7Forms ) as $form ) {
-			if ( empty( $form['enabled'] ) ) {
-				$known[ (int) $form['id'] ] = true;
+		$known = array_filter(
+			$this->forms(),
+			static function ( array $form ): bool {
+				return ! $form['enabled'];
 			}
-		}
+		);
 
 		$chosen = array();
 		foreach ( (array) ( $data['forms'] ?? array() ) as $entry ) {
 			if ( ! is_array( $entry ) ) {
 				continue;
 			}
-			$id    = (int) ( $entry['id'] ?? 0 );
+			$key   = isset( $entry['key'] ) ? sanitize_text_field( (string) $entry['key'] ) : self::formKey( 'cf7', (int) ( $entry['id'] ?? 0 ) );
 			$field = sanitize_text_field( (string) ( $entry['field'] ?? '' ) );
 
-			if ( ! isset( $known[ $id ] ) ) {
+			if ( ! isset( $known[ $key ] ) ) {
 				continue;
 			}
-			$fields = array_map( 'strval', (array) call_user_func( $this->cf7Fields, $id ) );
-			if ( ! in_array( $field, $fields, true ) ) {
+			if ( ! array_key_exists( $field, $this->fieldsOf( $known[ $key ] ) ) ) {
 				return self::fail(
 					'forms',
 					__( 'Please choose the email field for every selected form.', 'double-opt-in' )
 				);
 			}
-			$chosen[ $id ] = $field;
+			$chosen[ $key ] = $field;
 		}
 
 		$this->state->saveStep( self::STEPS[ self::STEP_FORMS ], array( 'forms' => $chosen ) );
@@ -400,27 +504,28 @@ class SetupService {
 	 */
 	public function finish(): array {
 		$draft   = $this->state->draft();
-		$forms   = isset( $draft['forms'] ) && is_array( $draft['forms'] ) ? $draft['forms'] : array();
+		$forms   = isset( $draft['forms'] ) && is_array( $draft['forms'] ) ? self::normalizeDraftForms( $draft['forms'] ) : array();
 		$design  = (string) ( $draft['design'] ?? SetupMailComposer::DEFAULT_DESIGN );
 		$subject = (string) ( $draft['subject'] ?? $this->composer->subject() );
 		$pageId  = (int) ( $draft['pageId'] ?? 0 );
 		$sender  = FormDefaults::get();
 		$body    = $this->composer->body( $design );
 
-		$stillFree = array();
-		foreach ( (array) call_user_func( $this->cf7Forms ) as $form ) {
-			if ( empty( $form['enabled'] ) ) {
-				$stillFree[ (int) $form['id'] ] = true;
-			}
-		}
+		$known = $this->forms();
 
 		$enabled    = array();
 		$incomplete = array();
-		foreach ( $forms as $formId => $field ) {
-			$formId = (int) $formId;
-			if ( ! isset( $stillFree[ $formId ] ) ) {
+		$stored     = array();
+		foreach ( $forms as $key => $field ) {
+			if ( ! isset( $known[ $key ] ) || $known[ $key ]['enabled'] ) {
 				continue;
 			}
+			$formId = self::storageId( $known[ $key ]['id'] );
+			// Elementor forms on one page share their settings.
+			if ( $formId <= 0 || isset( $stored[ $formId ] ) ) {
+				continue;
+			}
+			$stored[ $formId ] = true;
 
 			$dto            = $this->settings->getSettings( $formId );
 			$dto->recipient = '[' . (string) $field . ']';
@@ -440,7 +545,7 @@ class SetupService {
 			$missing = $dto->getMissingRequiredFields();
 			if ( $missing !== array() ) {
 				$incomplete[] = array(
-					'id'      => $formId,
+					'id'      => $key,
 					'missing' => $missing,
 				);
 				continue;
@@ -448,7 +553,7 @@ class SetupService {
 
 			$dto->enabled = true;
 			$this->settings->saveSettings( $formId, $dto );
-			$enabled[] = $formId;
+			$enabled[] = $key;
 		}
 
 		$this->state->complete();
@@ -474,6 +579,25 @@ class SetupService {
 		return isset( $mapping['doi_email'] ) ? (string) $mapping['doi_email'] : '';
 	}
 
+	/**
+	 * Same, for key => label fields. WPForms, Gravity Forms and Elementor
+	 * key their fields by number or random ID, so the label decides there.
+	 *
+	 * @param array<string, string> $fields
+	 */
+	public static function detectEmailFieldIn( array $fields ): string {
+		$byKey = self::detectEmailField( array_map( 'strval', array_keys( $fields ) ) );
+		if ( $byKey !== '' ) {
+			return $byKey;
+		}
+		$byLabel = self::detectEmailField( array_values( $fields ) );
+		if ( $byLabel === '' ) {
+			return '';
+		}
+		$key = array_search( $byLabel, $fields, true );
+		return $key === false ? '' : (string) $key;
+	}
+
 	private function isPublishedPage( int $pageId ): bool {
 		if ( $pageId <= 0 ) {
 			return false;
@@ -487,33 +611,51 @@ class SetupService {
 	}
 
 	/**
-	 * @return array<int, array{id: int, title: string, enabled: bool}>
+	 * Forms of every available integration (Contact Form 7 and the form
+	 * add-ons that registered one).
+	 *
+	 * @return array<int, array{id: int|string, title: string, enabled: bool, integration: string, integrationName: string}>
 	 */
-	public static function listCf7Forms(): array {
-		$integration = self::cf7Integration();
-		if ( $integration === null ) {
+	public static function listForms(): array {
+		if ( ! class_exists( FormIntegrationRegistry::class ) ) {
 			return array();
 		}
 		$forms = array();
-		foreach ( $integration->getForms() as $form ) {
-			$forms[] = array(
-				'id'      => (int) $form['id'],
-				'title'   => (string) $form['title'],
-				'enabled' => ! empty( $form['enabled'] ),
-			);
+		foreach ( FormIntegrationRegistry::getInstance()->getAvailable() as $identifier => $integration ) {
+			foreach ( $integration->getForms() as $form ) {
+				if ( ! is_array( $form ) || ! isset( $form['id'] ) ) {
+					continue;
+				}
+				$forms[] = array(
+					'id'              => is_int( $form['id'] ) ? $form['id'] : (string) $form['id'],
+					'title'           => (string) ( $form['title'] ?? '' ),
+					'enabled'         => ! empty( $form['enabled'] ),
+					'integration'     => (string) $identifier,
+					'integrationName' => $integration->getName(),
+				);
+			}
 		}
 		return $forms;
 	}
 
 	/**
-	 * @return string[]
+	 * @param int|string $formId
+	 *
+	 * @return array<string, string> key => label
 	 */
-	public static function listCf7Fields( int $formId ): array {
-		$integration = self::cf7Integration();
-		if ( $integration === null ) {
+	public static function listFields( $formId, string $integration = 'cf7' ): array {
+		if ( ! class_exists( FormIntegrationRegistry::class ) ) {
 			return array();
 		}
-		return array_values( array_map( 'strval', array_keys( $integration->getFormFields( $formId ) ) ) );
+		$instance = FormIntegrationRegistry::getInstance()->get( $integration );
+		if ( $instance === null || ! $instance->isAvailable() ) {
+			return array();
+		}
+		$fields = array();
+		foreach ( $instance->getFormFields( $formId ) as $key => $label ) {
+			$fields[ (string) $key ] = is_scalar( $label ) ? (string) $label : (string) $key;
+		}
+		return $fields;
 	}
 
 	/**
@@ -528,14 +670,6 @@ class SetupService {
 			);
 		}
 		return $pages;
-	}
-
-	private static function cf7Integration(): ?\Forge12\DoubleOptIn\Integration\FormIntegrationInterface {
-		if ( ! class_exists( FormIntegrationRegistry::class ) ) {
-			return null;
-		}
-		$integration = FormIntegrationRegistry::getInstance()->get( 'cf7' );
-		return ( $integration !== null && $integration->isAvailable() ) ? $integration : null;
 	}
 
 	private static function currentUserEmail(): string {

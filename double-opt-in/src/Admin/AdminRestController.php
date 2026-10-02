@@ -33,6 +33,12 @@ class AdminRestController {
 
 	const API_NAMESPACE = 'f12-doi/v1';
 
+	/**
+	 * SQL form of OptIn::isOptedOut(): not confirmed, withdrawal IP and time
+	 * recorded. A re-opt-in clears the time, so the row counts as confirmed again.
+	 */
+	private const REVOKED_SQL = "(doubleoptin = 0 AND ipaddr_optout IS NOT NULL AND ipaddr_optout <> '' AND optouttime IS NOT NULL AND optouttime NOT IN ('', '0'))";
+
 	private LoggerInterface $logger;
 	private FormSettingsService $formService;
 	private FormSettingsValidator $formValidator;
@@ -618,7 +624,8 @@ class AdminRestController {
 
 		$total     = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$table}" );
 		$confirmed = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$table} WHERE doubleoptin = 1" );
-		$pending   = $total - $confirmed;
+		$revoked   = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$table} WHERE " . self::REVOKED_SQL ); // phpcs:ignore WordPress.DB.PreparedSQL -- fixed SQL, no input.
+		$pending   = max( 0, $total - $confirmed - $revoked );
 		$rate      = $total > 0 ? round( ( $confirmed / $total ) * 100, 1 ) : 0;
 
 		// Recent opt-ins (raw activity feed — not analytics).
@@ -626,7 +633,7 @@ class AdminRestController {
 		// conversion-rate card moved into addon-analytics, which
 		// renders them at the `dashboard.widget` mount point.
 		$recent = $wpdb->get_results(
-			"SELECT id, email, cf_form_id, doubleoptin, createtime FROM {$table} ORDER BY id DESC LIMIT 5",
+			"SELECT id, email, cf_form_id, doubleoptin, createtime, ipaddr_optout, optouttime FROM {$table} ORDER BY id DESC LIMIT 5",
 			ARRAY_A
 		);
 
@@ -634,12 +641,16 @@ class AdminRestController {
 			$post             = get_post( (int) $row['cf_form_id'] );
 			$row['formName']  = $post ? $post->post_title : sprintf( '#%d', $row['cf_form_id'] );
 			$row['confirmed'] = (int) $row['doubleoptin'] === 1;
+			$row['revoked']   = self::isRevokedRow( $row );
+			unset( $row['ipaddr_optout'], $row['optouttime'] );
 		}
+		unset( $row );
 
 		$data = array(
 			'totalOptins'    => $total,
 			'confirmed'      => $confirmed,
 			'pending'        => $pending,
+			'revoked'        => $revoked,
 			'conversionRate' => $rate,
 			'recentOptins'   => $recent ?: array(),
 		);
@@ -722,6 +733,9 @@ class AdminRestController {
 			$where[] = 'doubleoptin = 1';
 		} elseif ( $status === 'pending' ) {
 			$where[] = '(doubleoptin = 0 OR doubleoptin IS NULL)';
+			$where[] = 'NOT ' . self::REVOKED_SQL;
+		} elseif ( $status === 'revoked' ) {
+			$where[] = self::REVOKED_SQL;
 		}
 
 		if ( $formId !== null && $formId !== '' ) {
@@ -2171,6 +2185,19 @@ class AdminRestController {
 	// ═══════════════════════════════════════════════════════════════
 
 	/**
+	 * PHP form of REVOKED_SQL for a raw table row.
+	 *
+	 * @param array<string, mixed> $row The database row.
+	 */
+	private static function isRevokedRow( array $row ): bool {
+		$optOutTime = (string) ( $row['optouttime'] ?? '' );
+
+		return (int) ( $row['doubleoptin'] ?? 0 ) !== 1
+			&& (string) ( $row['ipaddr_optout'] ?? '' ) !== ''
+			&& $optOutTime !== '' && $optOutTime !== '0';
+	}
+
+	/**
 	 * Format an opt-in database row for the API response.
 	 *
 	 * @param array $row     The database row.
@@ -2189,6 +2216,8 @@ class AdminRestController {
 			'formName'   => $post ? $post->post_title : sprintf( '#%d', $row['cf_form_id'] ),
 			'category'   => (int) $row['category'],
 			'confirmed'  => (int) $row['doubleoptin'] === 1,
+			// Consent withdrawn via the opt-out (5.9.0). Not "pending".
+			'revoked'    => self::isRevokedRow( $row ),
 			// Confirmation mail: 'sent' (handed to the mail server), 'failed',
 			// or '' (recorded before 5.8.0). Since 5.8.0.
 			'mailStatus' => (string) ( $row['mail_status'] ?? '' ),

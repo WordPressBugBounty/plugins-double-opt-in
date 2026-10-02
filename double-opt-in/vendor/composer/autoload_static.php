@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit052d6acfccd0df03b6d759bfd1ca7d46
+class ComposerStaticInitb899a680d97d7b477c43bebd8a3f6076
 {
     public static $prefixLengthsPsr4 = array (
         'F' => 
@@ -101,6 +101,7 @@ class ComposerStaticInit052d6acfccd0df03b6d759bfd1ca7d46
         'Forge12\\DoubleOptIn\\Integration\\AdminPanelInterface' => __DIR__ . '/../..' . '/src/Integration/AdminPanelInterface.php',
         'Forge12\\DoubleOptIn\\Integration\\CF7FollowUpAdapter' => __DIR__ . '/../..' . '/src/Integration/CF7FollowUpAdapter.php',
         'Forge12\\DoubleOptIn\\Integration\\CF7Integration' => __DIR__ . '/../..' . '/src/Integration/CF7Integration.php',
+        'Forge12\\DoubleOptIn\\Integration\\FieldTextProviderInterface' => __DIR__ . '/../..' . '/src/Integration/FieldTextProviderInterface.php',
         'Forge12\\DoubleOptIn\\Integration\\FormData' => __DIR__ . '/../..' . '/src/Integration/FormData.php',
         'Forge12\\DoubleOptIn\\Integration\\FormDataInterface' => __DIR__ . '/../..' . '/src/Integration/FormDataInterface.php',
         'Forge12\\DoubleOptIn\\Integration\\FormIntegrationInterface' => __DIR__ . '/../..' . '/src/Integration/FormIntegrationInterface.php',
@@ -159,9 +160,9 @@ class ComposerStaticInit052d6acfccd0df03b6d759bfd1ca7d46
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit052d6acfccd0df03b6d759bfd1ca7d46::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit052d6acfccd0df03b6d759bfd1ca7d46::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit052d6acfccd0df03b6d759bfd1ca7d46::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitb899a680d97d7b477c43bebd8a3f6076::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitb899a680d97d7b477c43bebd8a3f6076::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInitb899a680d97d7b477c43bebd8a3f6076::$classMap;
 
         }, null, ClassLoader::class);
     }

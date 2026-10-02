@@ -33,7 +33,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Integration for Contact Form 7.
  * Handles opt-in creation, confirmation mail sending, and admin panel.
  */
-class CF7Integration extends AbstractFormIntegration implements AdminPanelInterface {
+class CF7Integration extends AbstractFormIntegration implements AdminPanelInterface, FieldTextProviderInterface {
 
 	/**
 	 * Current OptIn for mail attachment handling.
@@ -907,6 +907,43 @@ class CF7Integration extends AbstractFormIntegration implements AdminPanelInterf
 		}
 
 		return $fields;
+	}
+
+	/**
+	 * The text of each [acceptance]…[/acceptance] tag, as the visitor reads it.
+	 *
+	 * @param int|string $formId
+	 *
+	 * @return array<string, string>
+	 */
+	public function getFieldTexts( $formId ): array {
+		$formId = (int) $formId;
+		$post   = get_post( $formId );
+		if ( ! $post || $post->post_type !== 'wpcf7_contact_form' || ! class_exists( '\WPCF7_ContactForm' ) ) {
+			return array();
+		}
+
+		$contactForm = \WPCF7_ContactForm::get_instance( $formId );
+		if ( ! $contactForm ) {
+			return array();
+		}
+
+		$texts = array();
+		foreach ( $contactForm->scan_form_tags( array( 'basetype' => 'acceptance' ) ) as $tag ) {
+			$text = self::plainText( (string) ( $tag->content ?? '' ) );
+			if ( ! empty( $tag->name ) && $text !== '' ) {
+				$texts[ (string) $tag->name ] = $text;
+			}
+		}
+		return $texts;
+	}
+
+	/**
+	 * Markup as the visitor reads it: tags removed, whitespace collapsed.
+	 */
+	public static function plainText( string $html ): string {
+		$text = html_entity_decode( wp_strip_all_tags( $html ), ENT_QUOTES, 'UTF-8' );
+		return trim( (string) preg_replace( '/\s+/u', ' ', $text ) );
 	}
 
 	/**

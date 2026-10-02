@@ -86,6 +86,7 @@ return array(
     'Forge12\\DoubleOptIn\\Integration\\AdminPanelInterface' => $baseDir . '/src/Integration/AdminPanelInterface.php',
     'Forge12\\DoubleOptIn\\Integration\\CF7FollowUpAdapter' => $baseDir . '/src/Integration/CF7FollowUpAdapter.php',
     'Forge12\\DoubleOptIn\\Integration\\CF7Integration' => $baseDir . '/src/Integration/CF7Integration.php',
+    'Forge12\\DoubleOptIn\\Integration\\FieldTextProviderInterface' => $baseDir . '/src/Integration/FieldTextProviderInterface.php',
     'Forge12\\DoubleOptIn\\Integration\\FormData' => $baseDir . '/src/Integration/FormData.php',
     'Forge12\\DoubleOptIn\\Integration\\FormDataInterface' => $baseDir . '/src/Integration/FormDataInterface.php',
     'Forge12\\DoubleOptIn\\Integration\\FormIntegrationInterface' => $baseDir . '/src/Integration/FormIntegrationInterface.php',

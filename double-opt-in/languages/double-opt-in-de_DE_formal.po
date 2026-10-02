@@ -1198,6 +1198,10 @@ msgstr "Letzte Opt-Ins"
 msgid "View All"
 msgstr "Alle anzeigen"
 
+#: packages/core/admin-ui/src/components/OptInStatusBadge.tsx
+msgid "Revoked"
+msgstr "Widerrufen"
+
 #: packages/core/admin-ui/src/pages/DashboardPage.tsx:106
 #: packages/core/admin-ui/src/pages/DashboardPage.tsx:188
 #: packages/core/admin-ui/src/pages/OptInDetailPage.tsx:223
@@ -8070,3 +8074,124 @@ msgid "Auto-create a %1$s on confirmations from the %2$s listed form"
 msgid_plural "Auto-create a %1$s on confirmations from the %2$s listed forms"
 msgstr[0] "Bei Bestätigungen aus dem %2$s gelisteten Formular wird automatisch ein %1$s angelegt"
 msgstr[1] "Bei Bestätigungen aus den %2$s gelisteten Formularen wird automatisch ein %1$s angelegt"
+
+#: packages/bundle-pro/admin-ui/src/components/BundleAddonsManager.tsx
+#, php-format
+msgid "%1$d of %2$d addons could not be installed. The reason is shown next to each addon."
+msgstr "%1$d von %2$d Addons konnten nicht installiert werden. Den Grund sehen Sie neben dem jeweiligen Addon."
+
+#: packages/core/admin-ui/src/pages/FormsPage.tsx
+#, php-format
+msgid "%s form"
+msgid_plural "%s forms"
+msgstr[0] "%s Formular"
+msgstr[1] "%s Formulare"
+
+#: packages/core/admin-ui/src/pages/DashboardPage.tsx
+msgid "Consent withdrawn via the opt-out"
+msgstr "Einwilligung über den Opt-Out widerrufen"
+
+#: packages/core/src/FollowUp/FollowUpCoordinator.php
+msgid "Follow-up actions failed, retry scheduled"
+msgstr "Folgeaktionen fehlgeschlagen, neuer Versuch geplant"
+
+#: packages/core/src/FollowUp/FollowUpCoordinator.php
+msgid "Follow-up actions with unknown outcome"
+msgstr "Folgeaktionen mit unbekanntem Ergebnis"
+
+#: packages/core/src/FollowUp/FollowUpCoordinator.php
+msgid "Follow-up actions partially failed"
+msgstr "Folgeaktionen teilweise fehlgeschlagen"
+
+#: packages/core/src/FollowUp/FollowUpCoordinator.php
+msgid "Follow-up actions failed"
+msgstr "Folgeaktionen fehlgeschlagen"
+
+#: packages/core/core/admin_links.php
+msgid "Feedback & Support"
+msgstr "Feedback & Support"
+
+#: packages/core/core/credit_link.php
+msgid "Double Opt-In by Forge12"
+msgstr "Double Opt-In von Forge12"
+
+#: packages/core/core/credit_nudge.php
+#, php-format
+msgid "Double Opt-In has confirmed <strong>%s opt-ins</strong> on this site so far."
+msgstr "Double Opt-In hat auf dieser Website bisher <strong>%s Opt-Ins</strong> bestätigt."
+
+#: packages/core/core/credit_nudge.php
+msgid "Would you show a small credit on your confirmation page? It helps other site owners find the plugin, and it is what keeps it free."
+msgstr "Würden Sie auf Ihrer Bestätigungsseite einen kleinen Hinweis auf das Plugin zeigen? Er hilft anderen Website-Betreibern, das Plugin zu finden, und hält es kostenlos."
+
+#: packages/core/core/credit_nudge.php
+msgid "This is exactly what would appear, on the page a subscriber lands on after confirming:"
+msgstr "Genau das würde erscheinen, auf der Seite, die Abonnenten nach der Bestätigung sehen:"
+
+#: packages/core/core/credit_nudge.php
+msgid "Yes, show the link"
+msgstr "Ja, Link anzeigen"
+
+#: packages/core/core/credit_nudge.php
+msgid "No thanks"
+msgstr "Nein, danke"
+
+#: packages/core/core/credit_nudge.php
+msgid "Asked once. You can change it any time under Settings."
+msgstr "Wir fragen nur einmal. Sie können es jederzeit in den Einstellungen ändern."
+
+#: packages/core/core/deactivation_survey.php
+msgid "Only switching it off for a moment"
+msgstr "Ich schalte es nur kurz ab"
+
+#: packages/core/core/deactivation_survey.php
+msgid "Confirmation emails did not arrive"
+msgstr "Bestätigungs-E-Mails kamen nicht an"
+
+#: packages/core/core/deactivation_survey.php
+msgid "I could not get it configured"
+msgstr "Ich habe es nicht eingerichtet bekommen"
+
+#: packages/core/core/deactivation_survey.php
+msgid "It clashed with another plugin or my theme"
+msgstr "Es kollidierte mit einem anderen Plugin oder meinem Theme"
+
+#: packages/core/core/deactivation_survey.php
+msgid "It did not work with my form plugin"
+msgstr "Es funktionierte nicht mit meinem Formular-Plugin"
+
+#: packages/core/core/deactivation_survey.php
+msgid "I switched to something else"
+msgstr "Ich nutze jetzt etwas anderes"
+
+#: packages/core/core/deactivation_survey.php
+msgid "Before you go — what went wrong?"
+msgstr "Bevor Sie gehen – was ist schiefgelaufen?"
+
+#: packages/core/core/deactivation_survey.php
+msgid "Optional. Picking a reason opens our feedback form; nothing is sent from this page."
+msgstr "Optional. Ein Grund öffnet unser Feedback-Formular; von dieser Seite wird nichts gesendet."
+
+#: packages/core/core/deactivation_survey.php
+msgid "Just deactivate"
+msgstr "Nur deaktivieren"
+
+#: packages/core/core/review.php
+msgid "Something not working? Tell us"
+msgstr "Funktioniert etwas nicht? Sagen Sie es uns"
+
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx
+msgid "There is no form yet."
+msgstr "Es gibt noch kein Formular."
+
+#: packages/core/admin-ui/src/components/forms/GeneralTab.tsx
+msgid "The form shows this text next to the checkbox:"
+msgstr "Das Formular zeigt diesen Text neben dem Häkchen:"
+
+#: packages/core/admin-ui/src/components/forms/GeneralTab.tsx
+msgid "The consent text differs from what the form shows next to the checkbox. Each opt-in stores the consent text above, not the wording the visitor actually saw:"
+msgstr "Der Einwilligungstext weicht von dem ab, was das Formular neben dem Häkchen zeigt. Jedes Opt-In speichert den Einwilligungstext oben, nicht den Wortlaut, den die Besucher tatsächlich gesehen haben:"
+
+#: packages/core/admin-ui/src/components/forms/GeneralTab.tsx
+msgid "Use the form's text"
+msgstr "Text aus dem Formular übernehmen"

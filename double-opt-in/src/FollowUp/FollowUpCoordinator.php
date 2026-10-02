@@ -715,23 +715,23 @@ final class FollowUpCoordinator {
 		switch ( $aggregate ) {
 			case FollowUpStatus::AGGREGATE_COMPLETED:
 				$severity = AuditLogger::SEVERITY_INFO;
-				$message  = 'Follow-up actions completed';
+				$message  = __( 'Follow-up actions completed', 'double-opt-in' );
 				break;
 			case FollowUpStatus::AGGREGATE_PENDING:
 				$severity = AuditLogger::SEVERITY_WARNING;
-				$message  = 'Follow-up actions failed, retry scheduled';
+				$message  = __( 'Follow-up actions failed, retry scheduled', 'double-opt-in' );
 				break;
 			case FollowUpStatus::AGGREGATE_UNKNOWN:
 				$severity = AuditLogger::SEVERITY_WARNING;
-				$message  = 'Follow-up actions with unknown outcome';
+				$message  = __( 'Follow-up actions with unknown outcome', 'double-opt-in' );
 				break;
 			case FollowUpStatus::AGGREGATE_PARTIAL:
 				$severity = AuditLogger::SEVERITY_ERROR;
-				$message  = 'Follow-up actions partially failed';
+				$message  = __( 'Follow-up actions partially failed', 'double-opt-in' );
 				break;
 			default:
 				$severity = AuditLogger::SEVERITY_ERROR;
-				$message  = 'Follow-up actions failed';
+				$message  = __( 'Follow-up actions failed', 'double-opt-in' );
 		}
 
 		$details = array(

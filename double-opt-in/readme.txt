@@ -5,7 +5,7 @@ Tags: contact form 7, double opt-in, gdpr, email verification, newsletter
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 5.8.1
+Stable tag: 5.9.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -66,7 +66,7 @@ After activation, a setup wizard asks for the sender, the forms that should ask 
 * **Pagination & Search** -- search and filter opt-in records in the admin dashboard
 * **Admin Tooltips** -- contextual help tooltips throughout the admin interface
 * **WordPress Multisite** -- network-wide activation creates tables on all sites automatically
-* **Developer Hooks** -- 48 action hooks, 82 filters, and 13 typed events for full extensibility
+* **Developer Hooks** -- 48 action hooks, 83 filters, and 13 typed events for full extensibility
 
 = Pro Features =
 
@@ -183,6 +183,7 @@ Put these shortcodes on the page:
 
 * `[doi_confirmation_status]` says whether the link just confirmed the address, was already used, has expired or is invalid. Each text can be replaced, for example `[doi_confirmation_status confirmed="Welcome aboard!"]`.
 * `[doi_field name="your-name"]` shows a value from the form, only right after the confirmation.
+* `[doi_if status="confirmed"]…[/doi_if]` shows its content only for the listed outcomes (`confirmed`, `already_confirmed`, `expired`, `not_found`, or `none` for a visit without a link), so one page can carry a different text and different buttons for each case.
 * `[doi_error_message]` on the error page explains why a sign-up was refused (too many attempts, address already signed up, and so on).
 
 A page without `[doi_confirmation_status]` still shows a short notice when the link has expired or is invalid.
@@ -217,7 +218,7 @@ The free version requires at least one supported form plugin. However, developer
 
 = Where can I find the developer documentation? =
 
-A hook, filter, and event reference with code examples ships at `docs/hooks-and-events.md` inside the plugin directory. It documents 29 of the 48 action hooks, 24 of the 82 filters, and all 13 typed events — the ones extensions actually reach for. The rest are discoverable in the source; if you need one documented, ask and we will add it.
+A hook, filter, and event reference with code examples ships at `docs/hooks-and-events.md` inside the plugin directory. It documents 29 of the 48 action hooks, 25 of the 83 filters, and all 13 typed events — the ones extensions actually reach for. The rest are discoverable in the source; if you need one documented, ask and we will add it.
 
 = How do I report a bug or request a feature? =
 
@@ -263,6 +264,9 @@ screens does not contact Google Fonts or any other third party. Inter is
 licensed under the SIL Open Font License 1.1 (see licenses/inter-OFL-1.1.txt).
 
 == Upgrade Notice ==
+
+= 5.9.0 =
+Withdrawn opt-ins show as "Revoked", the setup wizard covers every form plugin, and the confirmation page can show content per outcome. Pro users: update the add-ons too.
 
 = 5.8.1 =
 Fixes German admin texts. No functional changes.
@@ -369,6 +373,20 @@ New features: Visual email editor, centralized form settings, GDPR anonymization
 Adds optional anonymous telemetry (opt-out). No breaking changes.
 
 == Changelog ==
+
+= 5.9.0 =
+
+**Withdrawals, every form plugin in the setup wizard, a confirmation page per outcome**
+
+* New: opt-ins withdrawn through the opt-out show as "Revoked" (filter in the list, detail page, its own dashboard card) instead of "Pending"; the original confirmation stays visible.
+* New: the setup wizard offers the forms of every installed form plugin (WPForms, Elementor Pro, Gravity Forms and Avada with their add-ons), not only Contact Form 7, and finds the email field by its label.
+* New: [doi_if status="confirmed"]…[/doi_if] shows its content only for the given outcome of the confirmation link, so one page can greet, explain an expired link and offer the form again.
+* New: the form settings warn when the stored consent text differs from the text next to the checkbox in the form (Contact Form 7), and take that text over in one click. Developers: FieldTextProviderInterface and the filter f12_doi_form_field_texts.
+* Fix: an add-on installed or activated on the Add-ons page works without reloading the page.
+* Fix: the audit log showed event types as internal keys and some messages in English; its rate-limit filter found nothing.
+* Fix: the WordPress personal data export described the mail status as "sent" instead of in words.
+* Fix: the opt-in list showed category numbers instead of names; the forms page said "1 forms".
+* Fix: the credit request, the deactivation survey and the feedback links were not translated; the French translation had no plural rules.
 
 = 5.8.1 =
 * Fix: on sites in formal German (Sie), a sentence on the user creation page was shown in English, and the role appeared as its internal key ("subscriber") instead of its name.

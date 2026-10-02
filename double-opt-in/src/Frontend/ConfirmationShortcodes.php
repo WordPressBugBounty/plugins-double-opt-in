@@ -8,6 +8,8 @@
  *   submission is redirected with. Up to 5.7 nothing read that parameter.
  * - [doi_field name="…"] greets with a value from the form, only in the
  *   request that confirmed it.
+ * - [doi_if status="…"]…[/doi_if] shows its content only for the listed
+ *   validation statuses, so one page can carry a text per outcome.
  *
  * Without a shortcode on the page, a failed link still gets its message in
  * front of the content — the new integration system set the status but
@@ -54,6 +56,7 @@ class ConfirmationShortcodes {
 		add_shortcode( 'doi_confirmation_status', array( $this, 'renderStatus' ) );
 		add_shortcode( 'doi_error_message', array( $this, 'renderError' ) );
 		add_shortcode( 'doi_field', array( $this, 'renderField' ) );
+		add_shortcode( 'doi_if', array( $this, 'renderIf' ) );
 
 		add_action( 'f12_cf7_doubleoptin_after_confirm', array( $this, 'rememberConfirmed' ), 1, 2 );
 		// After do_shortcode (11): by then a [doi_confirmation_status] on the page has run.
@@ -188,6 +191,37 @@ class ConfirmationShortcodes {
 		}
 
 		return esc_html( (string) $value );
+	}
+
+	/**
+	 * [doi_if status="confirmed,already_confirmed"]…[/doi_if]
+	 *
+	 * Statuses are those of [doi_confirmation_status]; "none" matches a visit
+	 * without a confirmation link. Content shown for a real status counts as
+	 * the page's status message, so the fallback notice stays away.
+	 *
+	 * @param mixed       $atts    Shortcode attributes.
+	 * @param string|null $content Enclosed content.
+	 */
+	public function renderIf( $atts = array(), $content = null ): string {
+		if ( ! is_string( $content ) || $content === '' ) {
+			return '';
+		}
+
+		$atts   = shortcode_atts( array( 'status' => '' ), is_array( $atts ) ? $atts : array(), 'doi_if' );
+		$wanted = array_filter( array_map( 'trim', explode( ',', strtolower( (string) $atts['status'] ) ) ) );
+		$status = (string) call_user_func( $this->status );
+		$key    = $status === '' ? 'none' : $status;
+
+		if ( ! in_array( $key, $wanted, true ) ) {
+			return '';
+		}
+
+		if ( $key !== 'none' ) {
+			$this->statusShown = true;
+		}
+
+		return do_shortcode( $content );
 	}
 
 	/**

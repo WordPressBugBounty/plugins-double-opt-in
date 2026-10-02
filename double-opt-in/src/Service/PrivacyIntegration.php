@@ -161,9 +161,15 @@ class PrivacyIntegration {
 			if ( $this->mailStatus !== null ) {
 				$mail = $this->mailStatus->find( $optIn->getId() );
 				if ( $mail['status'] !== '' ) {
+					// Same wording as the opt-in detail page, not the stored key.
+					$value = $mail['status'] === 'failed'
+						/* translators: %s: date and time of the attempt */
+						? sprintf( __( 'Could not be sent (%s)', 'double-opt-in' ), $mail['at'] )
+						/* translators: %s: date and time the mail was handed over */
+						: sprintf( __( 'Handed to the mail server (%s)', 'double-opt-in' ), $mail['at'] );
 					$data[] = array(
 						'name'  => __( 'Confirmation mail', 'double-opt-in' ),
-						'value' => trim( $mail['status'] . ' ' . $mail['at'] . ( $mail['error'] !== '' ? ' — ' . $mail['error'] : '' ) ),
+						'value' => $value . ( $mail['error'] !== '' ? ' — ' . $mail['error'] : '' ),
 					);
 				}
 			}

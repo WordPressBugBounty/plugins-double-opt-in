@@ -9,13 +9,13 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2026-05-18T09:35:43+02:00\n"
 "PO-Revision-Date: 2026-05-18T09:35:43+02:00\n"
-"Language: \n"
+"Language: fr_FR\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: addon-avada/compatibility/avada/AvadaFormOptions.class.php:134
 #: addon-avada/src/Integration/AvadaIntegration.php:227
 #: core/compatibility/cf7/CF7Backend.class.php:102
 #: core/src/Integration/CF7Integration.php:161
-#, fuzzy
 msgid "Please wait while we load the template..."
 msgstr "Veuillez patienter pendant le chargement du modèle..."
 
@@ -2516,6 +2516,10 @@ msgstr "Vue d'ensemble de votre activité Double Opt-In"
 #: packages/core/admin-ui/src/pages/DashboardPage.tsx:94
 msgid "Total Opt-Ins"
 msgstr "Total des Opt-In"
+
+#: packages/core/admin-ui/src/components/OptInStatusBadge.tsx
+msgid "Revoked"
+msgstr "Révoqué"
 
 #: packages/core/admin-ui/src/pages/DashboardPage.tsx:106
 #: packages/core/admin-ui/src/pages/DashboardPage.tsx:188
@@ -8053,3 +8057,124 @@ msgstr "Installé"
 
 msgid "Installed, not active"
 msgstr "Installé, non actif"
+
+#: packages/bundle-pro/admin-ui/src/components/BundleAddonsManager.tsx
+#, php-format
+msgid "%1$d of %2$d addons could not be installed. The reason is shown next to each addon."
+msgstr "%1$d extension(s) sur %2$d n'ont pas pu être installées. La raison est indiquée à côté de chaque extension."
+
+#: packages/core/admin-ui/src/pages/FormsPage.tsx
+#, php-format
+msgid "%s form"
+msgid_plural "%s forms"
+msgstr[0] "%s formulaire"
+msgstr[1] "%s formulaires"
+
+#: packages/core/admin-ui/src/pages/DashboardPage.tsx
+msgid "Consent withdrawn via the opt-out"
+msgstr "Consentement retiré via le désabonnement"
+
+#: packages/core/src/FollowUp/FollowUpCoordinator.php
+msgid "Follow-up actions failed, retry scheduled"
+msgstr "Échec des actions de suivi, nouvel essai planifié"
+
+#: packages/core/src/FollowUp/FollowUpCoordinator.php
+msgid "Follow-up actions with unknown outcome"
+msgstr "Actions de suivi au résultat inconnu"
+
+#: packages/core/src/FollowUp/FollowUpCoordinator.php
+msgid "Follow-up actions partially failed"
+msgstr "Actions de suivi partiellement échouées"
+
+#: packages/core/src/FollowUp/FollowUpCoordinator.php
+msgid "Follow-up actions failed"
+msgstr "Échec des actions de suivi"
+
+#: packages/core/core/admin_links.php
+msgid "Feedback & Support"
+msgstr "Avis & assistance"
+
+#: packages/core/core/credit_link.php
+msgid "Double Opt-In by Forge12"
+msgstr "Double Opt-In par Forge12"
+
+#: packages/core/core/credit_nudge.php
+#, php-format
+msgid "Double Opt-In has confirmed <strong>%s opt-ins</strong> on this site so far."
+msgstr "Double Opt-In a confirmé jusqu'ici <strong>%s opt-ins</strong> sur ce site."
+
+#: packages/core/core/credit_nudge.php
+msgid "Would you show a small credit on your confirmation page? It helps other site owners find the plugin, and it is what keeps it free."
+msgstr "Accepteriez-vous d'afficher une petite mention sur votre page de confirmation ? Elle aide d'autres propriétaires de sites à trouver l'extension, et c'est ce qui la garde gratuite."
+
+#: packages/core/core/credit_nudge.php
+msgid "This is exactly what would appear, on the page a subscriber lands on after confirming:"
+msgstr "Voici exactement ce qui apparaîtrait sur la page qu'un abonné voit après sa confirmation :"
+
+#: packages/core/core/credit_nudge.php
+msgid "Yes, show the link"
+msgstr "Oui, afficher le lien"
+
+#: packages/core/core/credit_nudge.php
+msgid "No thanks"
+msgstr "Non merci"
+
+#: packages/core/core/credit_nudge.php
+msgid "Asked once. You can change it any time under Settings."
+msgstr "Nous ne demandons qu'une fois. Vous pouvez le modifier à tout moment dans les réglages."
+
+#: packages/core/core/deactivation_survey.php
+msgid "Only switching it off for a moment"
+msgstr "Je le désactive juste un instant"
+
+#: packages/core/core/deactivation_survey.php
+msgid "Confirmation emails did not arrive"
+msgstr "Les e-mails de confirmation ne sont pas arrivés"
+
+#: packages/core/core/deactivation_survey.php
+msgid "I could not get it configured"
+msgstr "Je n'ai pas réussi à le configurer"
+
+#: packages/core/core/deactivation_survey.php
+msgid "It clashed with another plugin or my theme"
+msgstr "Il entrait en conflit avec une autre extension ou mon thème"
+
+#: packages/core/core/deactivation_survey.php
+msgid "It did not work with my form plugin"
+msgstr "Il ne fonctionnait pas avec mon extension de formulaires"
+
+#: packages/core/core/deactivation_survey.php
+msgid "I switched to something else"
+msgstr "Je suis passé à autre chose"
+
+#: packages/core/core/deactivation_survey.php
+msgid "Before you go — what went wrong?"
+msgstr "Avant de partir — qu'est-ce qui n'a pas fonctionné ?"
+
+#: packages/core/core/deactivation_survey.php
+msgid "Optional. Picking a reason opens our feedback form; nothing is sent from this page."
+msgstr "Facultatif. Choisir une raison ouvre notre formulaire de retour ; rien n'est envoyé depuis cette page."
+
+#: packages/core/core/deactivation_survey.php
+msgid "Just deactivate"
+msgstr "Simplement désactiver"
+
+#: packages/core/core/review.php
+msgid "Something not working? Tell us"
+msgstr "Quelque chose ne fonctionne pas ? Dites-le-nous"
+
+#: packages/core/admin-ui/src/pages/SetupWizardPage.tsx
+msgid "There is no form yet."
+msgstr "Il n'y a pas encore de formulaire."
+
+#: packages/core/admin-ui/src/components/forms/GeneralTab.tsx
+msgid "The form shows this text next to the checkbox:"
+msgstr "Le formulaire affiche ce texte à côté de la case à cocher :"
+
+#: packages/core/admin-ui/src/components/forms/GeneralTab.tsx
+msgid "The consent text differs from what the form shows next to the checkbox. Each opt-in stores the consent text above, not the wording the visitor actually saw:"
+msgstr "Le texte de consentement diffère de ce que le formulaire affiche à côté de la case à cocher. Chaque opt-in enregistre le texte de consentement ci-dessus, et non la formulation que le visiteur a réellement vue :"
+
+#: packages/core/admin-ui/src/components/forms/GeneralTab.tsx
+msgid "Use the form's text"
+msgstr "Reprendre le texte du formulaire"

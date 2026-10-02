@@ -11,6 +11,7 @@ namespace Forge12\DoubleOptIn\FormSettings;
 use Forge12\DoubleOptIn\EmailTemplates\EmailTemplateRepository;
 use Forge12\DoubleOptIn\Health\StaleConsentFieldCheck;
 use Forge12\DoubleOptIn\Integration\FormIntegrationRegistry;
+use Forge12\DoubleOptIn\Integration\FieldTextProviderInterface;
 use Forge12\DoubleOptIn\Integration\SubmittedContent;
 use Forge12\Shared\LoggerInterface;
 
@@ -339,6 +340,29 @@ class FormSettingsService {
 				'name'  => (string) $name,
 				'label' => $label,
 			);
+		}
+
+		// The wording next to each field, where the integration knows it,
+		// so the consent tab can compare it with the stored consent text.
+		$texts = $integrationInstance instanceof FieldTextProviderInterface ? $integrationInstance->getFieldTexts( $formId ) : array();
+		/**
+		 * Visible text per field name (e.g. the label of a consent checkbox).
+		 *
+		 * @since 5.9.0
+		 *
+		 * @param array<string, string> $texts       Field name => plain text.
+		 * @param int|string            $formId      The form ID.
+		 * @param string                $integration The integration identifier.
+		 */
+		$texts = apply_filters( 'f12_doi_form_field_texts', $texts, $formId, $integrationInstance->getIdentifier() );
+		if ( is_array( $texts ) ) {
+			foreach ( $fieldsList as &$entry ) {
+				$text = $texts[ $entry['name'] ] ?? '';
+				if ( is_string( $text ) && trim( $text ) !== '' ) {
+					$entry['text'] = trim( $text );
+				}
+			}
+			unset( $entry );
 		}
 
 		// Reconcile the stored consent field with the form's real field
