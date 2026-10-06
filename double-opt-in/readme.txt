@@ -5,7 +5,7 @@ Tags: contact form 7, double opt-in, gdpr, email verification, newsletter
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 5.9.0
+Stable tag: 5.10.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -373,6 +373,10 @@ New features: Visual email editor, centralized form settings, GDPR anonymization
 Adds optional anonymous telemetry (opt-out). No breaking changes.
 
 == Changelog ==
+
+= 5.10.0 =
+* New: the Opt-Out settings page (part of the paid Opt-Out add-on) has a "Notify me about unsubscribes" card. Needs Opt-Out add-on 1.6.0.
+* Improved: German and French texts for the new card.
 
 = 5.9.0 =
 

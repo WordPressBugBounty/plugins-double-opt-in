@@ -4645,3 +4645,24 @@ msgstr "The consent text differs from what the form shows next to the checkbox. 
 #: packages/core/admin-ui/src/components/forms/GeneralTab.tsx
 msgid "Use the form's text"
 msgstr "Use the form's text"
+
+msgid "Empty = the site administrator's address"
+msgstr "Empty = the site administrator's address"
+
+msgid "Name the email address in the mail"
+msgstr "Name the email address in the mail"
+
+msgid "Notify me about unsubscribes"
+msgstr "Notify me about unsubscribes"
+
+msgid "Off by default: the mail then only names the opt-in ID, not the person."
+msgstr "Off by default: the mail then only names the opt-in ID, not the person."
+
+msgid "Send a notification mail"
+msgstr "Send a notification mail"
+
+msgid "Sends you a mail when a visitor withdraws a consent. Several withdrawals at once (Cancel all) arrive as one mail."
+msgstr "Sends you a mail when a visitor withdraws a consent. Several withdrawals at once (Cancel all) arrive as one mail."
+
+msgid "Separate several addresses with a comma."
+msgstr "Separate several addresses with a comma."

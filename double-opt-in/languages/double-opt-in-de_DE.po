@@ -8201,3 +8201,24 @@ msgstr "Der Einwilligungstext weicht von dem ab, was das Formular neben dem Häk
 #: packages/core/admin-ui/src/components/forms/GeneralTab.tsx
 msgid "Use the form's text"
 msgstr "Text aus dem Formular übernehmen"
+
+msgid "Empty = the site administrator's address"
+msgstr "Leer = Adresse des Website-Administrators"
+
+msgid "Name the email address in the mail"
+msgstr "E-Mail-Adresse in der Mail nennen"
+
+msgid "Notify me about unsubscribes"
+msgstr "Bei Abmeldungen benachrichtigen"
+
+msgid "Off by default: the mail then only names the opt-in ID, not the person."
+msgstr "Standardmäßig aus: Die Mail nennt dann nur die Opt-in-ID, nicht die Person."
+
+msgid "Send a notification mail"
+msgstr "Benachrichtigungsmail senden"
+
+msgid "Sends you a mail when a visitor withdraws a consent. Several withdrawals at once (Cancel all) arrive as one mail."
+msgstr "Schickt dir eine Mail, wenn ein Besucher eine Einwilligung widerruft. Mehrere Abmeldungen auf einmal („Alle abmelden“) kommen als eine Mail."
+
+msgid "Separate several addresses with a comma."
+msgstr "Mehrere Adressen mit Komma trennen."

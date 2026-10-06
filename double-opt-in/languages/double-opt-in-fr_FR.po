@@ -8178,3 +8178,24 @@ msgstr "Le texte de consentement diffère de ce que le formulaire affiche à cô
 #: packages/core/admin-ui/src/components/forms/GeneralTab.tsx
 msgid "Use the form's text"
 msgstr "Reprendre le texte du formulaire"
+
+msgid "Empty = the site administrator's address"
+msgstr "Vide = adresse de l'administrateur du site"
+
+msgid "Name the email address in the mail"
+msgstr "Indiquer l'adresse e-mail dans le message"
+
+msgid "Notify me about unsubscribes"
+msgstr "Me prévenir des désinscriptions"
+
+msgid "Off by default: the mail then only names the opt-in ID, not the person."
+msgstr "Désactivé par défaut : le message n'indique alors que l'ID de l'opt-in, pas la personne."
+
+msgid "Send a notification mail"
+msgstr "Envoyer un e-mail de notification"
+
+msgid "Sends you a mail when a visitor withdraws a consent. Several withdrawals at once (Cancel all) arrive as one mail."
+msgstr "Vous envoie un e-mail lorsqu’un visiteur retire un consentement. Plusieurs retraits simultanés (« Tout annuler ») arrivent dans un seul e-mail."
+
+msgid "Separate several addresses with a comma."
+msgstr "Séparez plusieurs adresses par une virgule."
