@@ -224,9 +224,8 @@ class WordPressHookBridge {
 				$this->logger->debug(
 					'MailPreparingEvent dispatched',
 					array(
-						'plugin'    => 'double-opt-in',
-						'optin_id'  => $event->getOptInId(),
-						'recipient' => $event->getRecipient(),
+						'plugin'   => 'double-opt-in',
+						'optin_id' => $event->getOptInId(),
 					)
 				);
 			},

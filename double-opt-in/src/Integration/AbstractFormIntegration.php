@@ -361,7 +361,6 @@ abstract class AbstractFormIntegration implements FormIntegrationInterface {
 				'Rate limit exceeded for IP',
 				array(
 					'plugin'  => 'double-opt-in',
-					'ip'      => $ip,
 					'form_id' => $formData->getFormId(),
 				)
 			);
@@ -384,7 +383,6 @@ abstract class AbstractFormIntegration implements FormIntegrationInterface {
 				'Rate limit exceeded for email',
 				array(
 					'plugin'  => 'double-opt-in',
-					'email'   => $recipient,
 					'form_id' => $formData->getFormId(),
 				)
 			);
@@ -424,7 +422,6 @@ abstract class AbstractFormIntegration implements FormIntegrationInterface {
 				'Recipient validation failed',
 				array(
 					'plugin'  => 'double-opt-in',
-					'email'   => $recipient,
 					'form_id' => $formData->getFormId(),
 					'reason'  => $errorMsg,
 				)

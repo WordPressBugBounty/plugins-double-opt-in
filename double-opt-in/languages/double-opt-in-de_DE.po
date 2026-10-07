@@ -6400,8 +6400,8 @@ msgid "Where the user is sent on opt-in errors (invalid email, expired link, etc
 msgstr "Wohin der Nutzer bei Opt-In-Fehlern geleitet wird (ungültige E-Mail, abgelaufener Link usw.). Auf Standard belassen, um statt einer Weiterleitung eine Toast-Benachrichtigung anzuzeigen."
 
 #: packages/core/admin-ui/src/components/forms/GeneralTab.tsx:207
-msgid "Where the user lands after clicking the confirmation link. Leave on default to fall back to the site-wide confirmation page."
-msgstr "Wo der Nutzer landet, nachdem er auf den Bestätigungslink geklickt hat. Auf Standard belassen, um auf die websiteweite Bestätigungsseite zurückzugreifen."
+msgid "Where the user lands after clicking the confirmation link. If no page is selected, the link opens the site's start page."
+msgstr "Wo der Nutzer landet, nachdem er auf den Bestätigungslink geklickt hat. Ist keine Seite gewählt, öffnet der Link die Startseite der Website."
 
 #: packages/core/admin-ui/src/pages/SettingsPage.tsx:187
 #: packages/core/admin-ui/src/pages/SettingsPage.tsx:216
@@ -8222,3 +8222,36 @@ msgstr "Schickt dir eine Mail, wenn ein Besucher eine Einwilligung widerruft. Me
 
 msgid "Separate several addresses with a comma."
 msgstr "Mehrere Adressen mit Komma trennen."
+
+msgid "Help"
+msgstr "Hilfe"
+
+msgid "Getting started"
+msgstr "Erste Schritte"
+
+msgid "Form integrations"
+msgstr "Formular-Integrationen"
+
+msgid "Pro modules"
+msgstr "Pro-Module"
+
+msgid "Guides for setting up Double Opt-In and every module, with screenshots."
+msgstr "Anleitungen zur Einrichtung von Double Opt-In und jedem Modul, mit Screenshots."
+
+msgid "Help articles"
+msgstr "Hilfeartikel"
+
+msgid "No help articles found."
+msgstr "Keine Hilfeartikel gefunden."
+
+msgid "This article could not be loaded."
+msgstr "Dieser Artikel konnte nicht geladen werden."
+
+msgid "Still stuck?"
+msgstr "Noch Fragen?"
+
+msgid "Contact support"
+msgstr "Support kontaktieren"
+
+msgid "This help article does not exist."
+msgstr "Diesen Hilfeartikel gibt es nicht."

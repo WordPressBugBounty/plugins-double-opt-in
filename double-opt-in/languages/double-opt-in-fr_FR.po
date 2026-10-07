@@ -6377,8 +6377,8 @@ msgid "Where the user is sent on opt-in errors (invalid email, expired link, etc
 msgstr "Où l'utilisateur est redirigé en cas d'erreurs d'Opt-In (e-mail invalide, lien expiré, etc.). Laissez sur la valeur par défaut pour afficher une notification toast au lieu d'une redirection."
 
 #: packages/core/admin-ui/src/components/forms/GeneralTab.tsx:207
-msgid "Where the user lands after clicking the confirmation link. Leave on default to fall back to the site-wide confirmation page."
-msgstr "Où l'utilisateur arrive après avoir cliqué sur le lien de confirmation. Laissez sur la valeur par défaut pour revenir à la page de confirmation à l'échelle du site."
+msgid "Where the user lands after clicking the confirmation link. If no page is selected, the link opens the site's start page."
+msgstr "Où l'utilisateur arrive après avoir cliqué sur le lien de confirmation. Si aucune page n'est sélectionnée, le lien ouvre la page d'accueil du site."
 
 #: packages/core/admin-ui/src/pages/SettingsPage.tsx:187
 #: packages/core/admin-ui/src/pages/SettingsPage.tsx:216
@@ -8199,3 +8199,36 @@ msgstr "Vous envoie un e-mail lorsqu’un visiteur retire un consentement. Plusi
 
 msgid "Separate several addresses with a comma."
 msgstr "Séparez plusieurs adresses par une virgule."
+
+msgid "Help"
+msgstr "Aide"
+
+msgid "Getting started"
+msgstr "Premiers pas"
+
+msgid "Form integrations"
+msgstr "Intégrations de formulaires"
+
+msgid "Pro modules"
+msgstr "Modules Pro"
+
+msgid "Guides for setting up Double Opt-In and every module, with screenshots."
+msgstr "Guides de configuration de Double Opt-In et de chaque module, avec captures d'écran."
+
+msgid "Help articles"
+msgstr "Articles d'aide"
+
+msgid "No help articles found."
+msgstr "Aucun article d'aide trouvé."
+
+msgid "This article could not be loaded."
+msgstr "Cet article n'a pas pu être chargé."
+
+msgid "Still stuck?"
+msgstr "Toujours bloqué ?"
+
+msgid "Contact support"
+msgstr "Contacter le support"
+
+msgid "This help article does not exist."
+msgstr "Cet article d'aide n'existe pas."

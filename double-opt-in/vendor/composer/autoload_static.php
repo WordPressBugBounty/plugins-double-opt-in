@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit6abc498ca94ec4e6945bea6156fef732
+class ComposerStaticInit742d0986a3a2caabd20e1370e2b60070
 {
     public static $prefixLengthsPsr4 = array (
         'F' => 
@@ -97,6 +97,11 @@ class ComposerStaticInit6abc498ca94ec4e6945bea6156fef732
         'Forge12\\DoubleOptIn\\Health\\SiteHealthIntegration' => __DIR__ . '/../..' . '/src/Health/SiteHealthIntegration.php',
         'Forge12\\DoubleOptIn\\Health\\StaleConsentFieldCheck' => __DIR__ . '/../..' . '/src/Health/StaleConsentFieldCheck.php',
         'Forge12\\DoubleOptIn\\Health\\StaleProMarkersCheck' => __DIR__ . '/../..' . '/src/Health/StaleProMarkersCheck.php',
+        'Forge12\\DoubleOptIn\\Help\\HelpRepository' => __DIR__ . '/../..' . '/src/Help/HelpRepository.php',
+        'Forge12\\DoubleOptIn\\Help\\HelpRestController' => __DIR__ . '/../..' . '/src/Help/HelpRestController.php',
+        'Forge12\\DoubleOptIn\\Help\\HelpSource' => __DIR__ . '/../..' . '/src/Help/HelpSource.php',
+        'Forge12\\DoubleOptIn\\Help\\HelpSourceLocator' => __DIR__ . '/../..' . '/src/Help/HelpSourceLocator.php',
+        'Forge12\\DoubleOptIn\\Help\\MarkdownRenderer' => __DIR__ . '/../..' . '/src/Help/MarkdownRenderer.php',
         'Forge12\\DoubleOptIn\\Integration\\AbstractFormIntegration' => __DIR__ . '/../..' . '/src/Integration/AbstractFormIntegration.php',
         'Forge12\\DoubleOptIn\\Integration\\AdminPanelInterface' => __DIR__ . '/../..' . '/src/Integration/AdminPanelInterface.php',
         'Forge12\\DoubleOptIn\\Integration\\CF7FollowUpAdapter' => __DIR__ . '/../..' . '/src/Integration/CF7FollowUpAdapter.php',
@@ -124,6 +129,7 @@ class ComposerStaticInit6abc498ca94ec4e6945bea6156fef732
         'Forge12\\DoubleOptIn\\Providers\\FormSettingsServiceProvider' => __DIR__ . '/../..' . '/src/Providers/FormSettingsServiceProvider.php',
         'Forge12\\DoubleOptIn\\Providers\\GdprServiceProvider' => __DIR__ . '/../..' . '/src/Providers/GdprServiceProvider.php',
         'Forge12\\DoubleOptIn\\Providers\\HealthServiceProvider' => __DIR__ . '/../..' . '/src/Providers/HealthServiceProvider.php',
+        'Forge12\\DoubleOptIn\\Providers\\HelpServiceProvider' => __DIR__ . '/../..' . '/src/Providers/HelpServiceProvider.php',
         'Forge12\\DoubleOptIn\\Providers\\IntegrationServiceProvider' => __DIR__ . '/../..' . '/src/Providers/IntegrationServiceProvider.php',
         'Forge12\\DoubleOptIn\\Providers\\LicensingServiceProvider' => __DIR__ . '/../..' . '/src/Providers/LicensingServiceProvider.php',
         'Forge12\\DoubleOptIn\\Providers\\MailStatusServiceProvider' => __DIR__ . '/../..' . '/src/Providers/MailStatusServiceProvider.php',
@@ -160,9 +166,9 @@ class ComposerStaticInit6abc498ca94ec4e6945bea6156fef732
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit6abc498ca94ec4e6945bea6156fef732::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit6abc498ca94ec4e6945bea6156fef732::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit6abc498ca94ec4e6945bea6156fef732::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit742d0986a3a2caabd20e1370e2b60070::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit742d0986a3a2caabd20e1370e2b60070::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit742d0986a3a2caabd20e1370e2b60070::$classMap;
 
         }, null, ClassLoader::class);
     }

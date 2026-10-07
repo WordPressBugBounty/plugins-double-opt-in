@@ -5,7 +5,7 @@ Tags: contact form 7, double opt-in, gdpr, email verification, newsletter
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 5.10.0
+Stable tag: 5.11.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -66,7 +66,7 @@ After activation, a setup wizard asks for the sender, the forms that should ask 
 * **Pagination & Search** -- search and filter opt-in records in the admin dashboard
 * **Admin Tooltips** -- contextual help tooltips throughout the admin interface
 * **WordPress Multisite** -- network-wide activation creates tables on all sites automatically
-* **Developer Hooks** -- 48 action hooks, 83 filters, and 13 typed events for full extensibility
+* **Developer Hooks** -- 48 action hooks, 84 filters, and 13 typed events for full extensibility
 
 = Pro Features =
 
@@ -218,7 +218,7 @@ The free version requires at least one supported form plugin. However, developer
 
 = Where can I find the developer documentation? =
 
-A hook, filter, and event reference with code examples ships at `docs/hooks-and-events.md` inside the plugin directory. It documents 29 of the 48 action hooks, 25 of the 83 filters, and all 13 typed events — the ones extensions actually reach for. The rest are discoverable in the source; if you need one documented, ask and we will add it.
+A hook, filter, and event reference with code examples ships at `docs/hooks-and-events.md` inside the plugin directory. It documents 29 of the 48 action hooks, 26 of the 84 filters, and all 13 typed events — the ones extensions actually reach for. The rest are discoverable in the source; if you need one documented, ask and we will add it.
 
 = How do I report a bug or request a feature? =
 
@@ -373,6 +373,12 @@ New features: Visual email editor, centralized form settings, GDPR anonymization
 Adds optional anonymous telemetry (opt-out). No breaking changes.
 
 == Changelog ==
+
+= 5.11.0 =
+* New: a Help page inside the plugin with the setup guide, troubleshooting and shortcode reference, written in screenshots and short steps. Guides of installed add-ons appear there automatically (add-ons need their next release to bring their guide).
+* Fix: e-mail addresses, recipients and IP addresses are no longer written to the log (rate limit, recipient check, mail event).
+* Fix: the help text of the confirmation page field said a site-wide confirmation page would be used; without a page the link opens the site's start page.
+* New: filter `f12_doi_help_sources` to add help articles from another plugin.
 
 = 5.10.0 =
 * New: the Opt-Out settings page (part of the paid Opt-Out add-on) has a "Notify me about unsubscribes" card. Needs Opt-Out add-on 1.6.0.

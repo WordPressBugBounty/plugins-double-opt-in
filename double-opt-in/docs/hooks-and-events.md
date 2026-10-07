@@ -353,13 +353,13 @@ add_action( 'f12_cf7_doubleoptin_register_event_listeners', function ( $dispatch
 |--------|-----------|--------|-------------|
 | `f12_cf7_doubleoptin_save_form` | `$data` (array) | `array` | Modify form settings before saving |
 | `f12_cf7_doubleoptin_metadata_cf7` | `$metadata` (array) | `array` | Modify CF7 form metadata |
-| `f12_cf7_doubleoptin_metadata_avada` | `$metadata` (array) | `array` | Modify Avada form metadata |
 | `f12_doi_form_settings_data` | `$formData`, `$formId` | `array` | Modify form settings data before sending to frontend |
 | `f12_doi_form_settings_before_save` | `$settings`, `$storageId`, `$settingsData` | `FormSettingsDTO` | Modify FormSettingsDTO before saving |
 | `f12_doi_settings_dto_from_array` | `$dto`, `$data` | `FormSettingsDTO` | Modify DTO when creating from array |
 | `f12_doi_settings_dto_to_array` | `$array`, `$dto` | `array` | Modify array representation of DTO |
 | `f12_doi_is_pro_active` | `$isActive` (bool) | `bool` | Whether the Pro version is active |
 | `f12_cf7_doubleoptin_use_new_integration_system` | `$use` (bool) | `bool` | Enable/disable the new integration system |
+| `f12_doi_help_sources` | `$sources` (HelpSource[]) | `HelpSource[]` | Add or replace the sources of the in-plugin help articles (an add-on whose `help/` folder is not next to its `src/`) |
 
 ### Filter Examples
 
