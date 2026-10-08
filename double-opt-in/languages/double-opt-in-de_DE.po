@@ -8349,3 +8349,41 @@ msgstr "Deine Abonnements"
 
 msgid "Show several forms as one subscription, for example two sign-up forms for the same newsletter. The sign-ups stay separate records; only how they are presented changes."
 msgstr "Zeige mehrere Formulare als ein Abonnement, zum Beispiel zwei Anmeldeformulare für denselben Newsletter. Die Anmeldungen bleiben getrennte Datensätze; nur die Darstellung ändert sich."
+
+# Owner notifications card (opt-out 1.8.0)
+msgid "Notifications"
+msgstr "Benachrichtigungen"
+
+msgid "Sends you a mail when a consent is withdrawn, confirmed or reactivated. Several changes at once (Cancel all) arrive as one mail."
+msgstr "Schickt dir eine Mail, wenn eine Einwilligung widerrufen, bestätigt oder reaktiviert wird. Mehrere Änderungen auf einmal (Alle kündigen) kommen als eine Mail."
+
+msgid "Notify me about confirmed opt-ins"
+msgstr "Bei bestätigten Opt-Ins benachrichtigen"
+
+msgid "Notify me about reactivations"
+msgstr "Bei Reaktivierungen benachrichtigen"
+
+msgid "Notifications about confirmed opt-ins and reactivations, and your own wording, need Opt-Out add-on 1.8.0 or newer."
+msgstr "Benachrichtigungen zu bestätigten Opt-Ins und Reaktivierungen sowie ein eigener Wortlaut brauchen das Opt-Out-Addon ab Version 1.8.0."
+
+msgid "Wording of the mail"
+msgstr "Wortlaut der Mail"
+
+msgid "Leave a field empty to use the default. Click a placeholder to add it to the field you edited last."
+msgstr "Ein leeres Feld verwendet den Standardtext. Ein Klick auf einen Platzhalter fügt ihn in das zuletzt bearbeitete Feld ein."
+
+msgid "Introduction"
+msgstr "Einleitung"
+
+msgid "Line per change"
+msgstr "Zeile pro Änderung"
+
+# Sample values of the notifications preview
+msgid "Newsletter"
+msgstr "Newsletter"
+
+msgid "Customers"
+msgstr "Kunden"
+
+msgid "consent centre"
+msgstr "Consent-Center"

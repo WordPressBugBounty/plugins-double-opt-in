@@ -5,7 +5,7 @@ Tags: contact form 7, double opt-in, gdpr, email verification, newsletter
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 5.12.0
+Stable tag: 5.13.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -373,6 +373,12 @@ New features: Visual email editor, centralized form settings, GDPR anonymization
 Adds optional anonymous telemetry (opt-out). No breaking changes.
 
 == Changelog ==
+
+= 5.13.1 =
+* New: the Opt-Out settings page (part of the paid Opt-Out add-on) shows a hint on the "Opt-Out Email" card when the saved mail has no opt-out link placeholder, for example when an opt-in template with [doubleoptinlink] is chosen. Needs Opt-Out add-on 1.8.1.
+
+= 5.13.0 =
+* New: the Notifications card on the Opt-Out settings page (part of the paid Opt-Out add-on) can also notify you about confirmed opt-ins and reactivations, and lets you write the subject, introduction and line of the mail with placeholders such as {form_title} and {category}, with a live preview. Needs Opt-Out add-on 1.8.0.
 
 = 5.12.0 =
 * New: every new sign-up stores which form it came from when a page holds several forms (Elementor), so such forms can be told apart. Existing sign-ups are not changed. For Elementor forms this needs Elementor add-on 1.3.0.

@@ -5022,3 +5022,41 @@ msgstr ""
 
 msgid "Show several forms as one subscription, for example two sign-up forms for the same newsletter. The sign-ups stay separate records; only how they are presented changes."
 msgstr ""
+
+# Owner notifications card (opt-out 1.8.0)
+msgid "Notifications"
+msgstr ""
+
+msgid "Sends you a mail when a consent is withdrawn, confirmed or reactivated. Several changes at once (Cancel all) arrive as one mail."
+msgstr ""
+
+msgid "Notify me about confirmed opt-ins"
+msgstr ""
+
+msgid "Notify me about reactivations"
+msgstr ""
+
+msgid "Notifications about confirmed opt-ins and reactivations, and your own wording, need Opt-Out add-on 1.8.0 or newer."
+msgstr ""
+
+msgid "Wording of the mail"
+msgstr ""
+
+msgid "Leave a field empty to use the default. Click a placeholder to add it to the field you edited last."
+msgstr ""
+
+msgid "Introduction"
+msgstr ""
+
+msgid "Line per change"
+msgstr ""
+
+# Sample values of the notifications preview
+msgid "Newsletter"
+msgstr ""
+
+msgid "Customers"
+msgstr ""
+
+msgid "consent centre"
+msgstr ""
