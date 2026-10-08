@@ -1563,6 +1563,19 @@ abstract class OptInFrontend {
 			'email'           => $recipient,
 			'consent_text'    => $consentText,
 			'consent_field'   => $consentField,
+			'form_ref'        => $this->resolveFormRef( $parameter ),
 		];
+	}
+
+	/**
+	 * Instance of the form inside the form id, stored as `form_ref`.
+	 *
+	 * Integrations that can host several forms under one form id (Elementor
+	 * pages) override this. Empty ties the opt-in to the whole form.
+	 *
+	 * @param array<string, mixed> $parameter The merged request parameters.
+	 */
+	protected function resolveFormRef( array $parameter ): string {
+		return '';
 	}
 }

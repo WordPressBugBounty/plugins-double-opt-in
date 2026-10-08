@@ -360,6 +360,7 @@ add_action( 'f12_cf7_doubleoptin_register_event_listeners', function ( $dispatch
 | `f12_doi_is_pro_active` | `$isActive` (bool) | `bool` | Whether the Pro version is active |
 | `f12_cf7_doubleoptin_use_new_integration_system` | `$use` (bool) | `bool` | Enable/disable the new integration system |
 | `f12_doi_help_sources` | `$sources` (HelpSource[]) | `HelpSource[]` | Add or replace the sources of the in-plugin help articles (an add-on whose `help/` folder is not next to its `src/`) |
+| `f12_doi_subscription_group_resolver` | `$resolver` (SubscriptionGroupResolverInterface) | `SubscriptionGroupResolverInterface` | Supply the object that tells which subscription group a form belongs to. Without an add-on the default answers "no groups" and every screen behaves as before |
 
 ### Filter Examples
 

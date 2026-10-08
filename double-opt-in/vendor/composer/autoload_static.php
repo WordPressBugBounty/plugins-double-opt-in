@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit742d0986a3a2caabd20e1370e2b60070
+class ComposerStaticInit81d1c77751b06cd6792d0cbc53a6f511
 {
     public static $prefixLengthsPsr4 = array (
         'F' => 
@@ -160,15 +160,19 @@ class ComposerStaticInit742d0986a3a2caabd20e1370e2b60070
         'Forge12\\DoubleOptIn\\Setup\\SetupService' => __DIR__ . '/../..' . '/src/Setup/SetupService.php',
         'Forge12\\DoubleOptIn\\Setup\\SetupState' => __DIR__ . '/../..' . '/src/Setup/SetupState.php',
         'Forge12\\DoubleOptIn\\Spam\\SubmissionTrap' => __DIR__ . '/../..' . '/src/Spam/SubmissionTrap.php',
+        'Forge12\\DoubleOptIn\\Subscription\\NullSubscriptionGroupResolver' => __DIR__ . '/../..' . '/src/Subscription/NullSubscriptionGroupResolver.php',
+        'Forge12\\DoubleOptIn\\Subscription\\SubscriptionGroup' => __DIR__ . '/../..' . '/src/Subscription/SubscriptionGroup.php',
+        'Forge12\\DoubleOptIn\\Subscription\\SubscriptionGroupResolverInterface' => __DIR__ . '/../..' . '/src/Subscription/SubscriptionGroupResolverInterface.php',
+        'Forge12\\DoubleOptIn\\Subscription\\SubscriptionGroups' => __DIR__ . '/../..' . '/src/Subscription/SubscriptionGroups.php',
         'Forge12\\DoubleOptIn\\Versioning\\SemverConstraint' => __DIR__ . '/../..' . '/src/Versioning/SemverConstraint.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit742d0986a3a2caabd20e1370e2b60070::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit742d0986a3a2caabd20e1370e2b60070::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit742d0986a3a2caabd20e1370e2b60070::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit81d1c77751b06cd6792d0cbc53a6f511::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit81d1c77751b06cd6792d0cbc53a6f511::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit81d1c77751b06cd6792d0cbc53a6f511::$classMap;
 
         }, null, ClassLoader::class);
     }

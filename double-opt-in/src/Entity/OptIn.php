@@ -40,6 +40,7 @@ class OptIn {
 	private string $email          = '';
 	private string $consentText    = '';
 	private string $consentField   = '';
+	private string $formRef        = '';
 	private int $reminderSentAt    = 0;
 	private string $mailReminder   = '';
 
@@ -97,6 +98,7 @@ class OptIn {
 		$optIn->email          = (string) ( $data['email'] ?? '' );
 		$optIn->consentText    = (string) ( $data['consent_text'] ?? '' );
 		$optIn->consentField   = (string) ( $data['consent_field'] ?? '' );
+		$optIn->formRef        = (string) ( $data['form_ref'] ?? '' );
 		$optIn->reminderSentAt = self::parseTimestamp( $data['reminder_sent_at'] ?? 0 );
 		$optIn->mailReminder   = (string) ( $data['mail_reminder'] ?? '' );
 
@@ -139,6 +141,7 @@ class OptIn {
 			'email'               => $this->email,
 			'consent_text'        => $this->consentText,
 			'consent_field'       => $this->consentField,
+			'form_ref'            => $this->formRef,
 			'reminder_sent_at'    => $this->reminderSentAt > 0 ? gmdate( 'Y-m-d H:i:s', $this->reminderSentAt ) : '',
 			'mail_reminder'       => $this->mailReminder,
 		);
@@ -308,6 +311,14 @@ class OptIn {
 
 	public function getConsentField(): string {
 		return $this->consentField;
+	}
+
+	/**
+	 * Instance of the form inside the form id, e.g. the Elementor widget id.
+	 * Empty means the record is tied to the whole form (or page) only.
+	 */
+	public function getFormRef(): string {
+		return $this->formRef;
 	}
 
 	public function getReminderSentAt(): int {
@@ -511,6 +522,12 @@ class OptIn {
 	public function withConsentField( string $consentField ): self {
 		$clone               = clone $this;
 		$clone->consentField = $consentField;
+		return $clone;
+	}
+
+	public function withFormRef( string $formRef ): self {
+		$clone          = clone $this;
+		$clone->formRef = $formRef;
 		return $clone;
 	}
 

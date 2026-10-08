@@ -18,6 +18,7 @@ use Forge12\DoubleOptIn\FormSettings\FormSettingsValidator;
 use Forge12\DoubleOptIn\Integration\SubmittedContent;
 use Forge12\DoubleOptIn\Service\ConfirmationMailResender;
 use Forge12\DoubleOptIn\Service\ResendResult;
+use Forge12\DoubleOptIn\Subscription\SubscriptionGroups;
 use Forge12\Shared\LoggerInterface;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -110,6 +111,17 @@ class AdminRestController {
 			array(
 				'methods'             => \WP_REST_Server::READABLE,
 				'callback'            => array( $this, 'getDashboardQuickInfo' ),
+				'permission_callback' => array( $this, 'checkPermission' ),
+			)
+		);
+
+		// ── Subscription groups (read-only; managed by an add-on) ──
+		register_rest_route(
+			self::API_NAMESPACE,
+			'/subscription-groups',
+			array(
+				'methods'             => \WP_REST_Server::READABLE,
+				'callback'            => array( $this, 'getSubscriptionGroups' ),
 				'permission_callback' => array( $this, 'checkPermission' ),
 			)
 		);
@@ -704,6 +716,33 @@ class AdminRestController {
 	// OPT-INS
 	// ═══════════════════════════════════════════════════════════════
 
+	/**
+	 * Subscription groups for the filter in the opt-in list. `available`
+	 * is false when no add-on provides groups, so the SPA hides the
+	 * controls instead of showing an empty filter.
+	 */
+	public function getSubscriptionGroups( \WP_REST_Request $request ): \WP_REST_Response {
+		$groups = array();
+		foreach ( SubscriptionGroups::resolver()->groups() as $group ) {
+			$groups[] = array(
+				'key'         => $group->getKey(),
+				'label'       => $group->getLabel(),
+				'memberCount' => count( $group->getMembers() ),
+			);
+		}
+
+		return new \WP_REST_Response(
+			array(
+				'success' => true,
+				'data'    => array(
+					'available' => SubscriptionGroups::isAvailable(),
+					'groups'    => $groups,
+				),
+			),
+			200
+		);
+	}
+
 	public function getOptins( \WP_REST_Request $request ): \WP_REST_Response {
 		$page     = max( 1, (int) $request->get_param( 'page' ) ?: 1 );
 		$perPage  = max( 1, min( 100, (int) $request->get_param( 'per_page' ) ?: 20 ) );
@@ -741,6 +780,20 @@ class AdminRestController {
 		if ( $formId !== null && $formId !== '' ) {
 			$where[]  = 'cf_form_id = %d';
 			$params[] = (int) $formId;
+		}
+
+		// Subscription group (5.12.0). An unknown key selects nothing, so a
+		// stale link can never widen into the unfiltered list.
+		$groupKey = sanitize_text_field( (string) ( $request->get_param( 'group' ) ?? '' ) );
+		if ( $groupKey !== '' ) {
+			$group = SubscriptionGroups::resolver()->findGroup( $groupKey );
+			if ( $group === null ) {
+				$where[] = '1 = 0';
+			} else {
+				list( $groupSql, $groupParams ) = $group->toSqlCondition();
+				$where[]                        = $groupSql;
+				$params                         = array_merge( $params, $groupParams );
+			}
 		}
 
 		// Opt-ins whose confirmation mail could not be sent (5.8.0).
@@ -812,6 +865,10 @@ class AdminRestController {
 		}
 
 		$data = $this->formatOptinRow( $row, true );
+
+		// Other sign-ups of the same address in the same subscription
+		// group (5.12.0). The records stay separate; this only links them.
+		$data['linkedOptIns'] = $this->linkedOptIns( $row );
 
 		// Dev-mode UI hint: surface whether the reset-confirmation
 		// endpoint is reachable for this request, so the React detail
@@ -2205,6 +2262,72 @@ class AdminRestController {
 	 *
 	 * @return array Formatted data.
 	 */
+	/**
+	 * @param array<string, mixed> $row A database row.
+	 *
+	 * @return array{key:string, label:string}|null
+	 */
+	private function subscriptionOfRow( array $row ): ?array {
+		$group = SubscriptionGroups::resolver()->groupForForm(
+			(int) ( $row['cf_form_id'] ?? 0 ),
+			(string) ( $row['form_ref'] ?? '' )
+		);
+
+		return $group === null ? null : array(
+			'key'   => $group->getKey(),
+			'label' => $group->getLabel(),
+		);
+	}
+
+	/**
+	 * The other records of the same address that belong to the same
+	 * subscription group as the given record.
+	 *
+	 * @param array<string, mixed> $row A database row.
+	 *
+	 * @return array<int, array<string, mixed>>
+	 */
+	private function linkedOptIns( array $row ): array {
+		$group = SubscriptionGroups::resolver()->groupForForm(
+			(int) ( $row['cf_form_id'] ?? 0 ),
+			(string) ( $row['form_ref'] ?? '' )
+		);
+		$email = (string) ( $row['email'] ?? '' );
+		if ( $group === null || $email === '' ) {
+			return array();
+		}
+
+		global $wpdb;
+		$table                          = $wpdb->prefix . 'f12_cf7_doubleoptin';
+		list( $groupSql, $groupParams ) = $group->toSqlCondition();
+
+		// The group condition is built from fixed column names and `%d`/`%s`
+		// placeholders only; every value travels in the parameter list.
+		$found = $wpdb->get_results(
+			$wpdb->prepare( // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber -- placeholders come from SubscriptionGroup::toSqlCondition().
+				"SELECT * FROM {$table} WHERE email = %s AND id <> %d AND {$groupSql} ORDER BY id DESC LIMIT 50", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				array_merge( array( $email, (int) $row['id'] ), $groupParams )
+			),
+			ARRAY_A
+		);
+
+		$linked = array();
+		foreach ( (array) $found as $other ) {
+			$data     = $this->formatOptinRow( $other );
+			$linked[] = array(
+				'id'         => $data['id'],
+				'formId'     => $data['formId'],
+				'formName'   => $data['formName'],
+				'formRef'    => $data['formRef'],
+				'confirmed'  => $data['confirmed'],
+				'revoked'    => $data['revoked'],
+				'createtime' => $data['createtime'],
+			);
+		}
+
+		return $linked;
+	}
+
 	private function formatOptinRow( array $row, bool $detailed = false ): array {
 		$post = get_post( (int) $row['cf_form_id'] );
 
@@ -2224,6 +2347,11 @@ class AdminRestController {
 			'createtime' => $this->toSiteLocalTime( $row['createtime'] ),
 			'updatetime' => $this->toSiteLocalTime( $row['updatetime'] ),
 		);
+
+		// Instance inside the form id, e.g. the Elementor widget (5.12.0).
+		$data['formRef'] = (string) ( $row['form_ref'] ?? '' );
+		// Subscription group of the record, or null (5.12.0).
+		$data['subscription'] = $this->subscriptionOfRow( $row );
 
 		if ( $detailed ) {
 			$data['ipRegister']     = $row['ipaddr_register'];

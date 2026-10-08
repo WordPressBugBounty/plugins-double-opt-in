@@ -4925,3 +4925,100 @@ msgstr ""
 #: packages/core/admin-ui/src/components/forms/GeneralTab.tsx
 msgid "Use the form's text"
 msgstr ""
+
+# Subscription groups: catalog entry, opt-in views, export and the add-on admin page (core 5.12.0, subscription-groups 1.0.0)
+msgid "Subscription"
+msgstr ""
+
+msgid "All subscriptions"
+msgstr ""
+
+msgid "Subscription: %s"
+msgstr ""
+
+msgid "Linked sign-ups"
+msgstr ""
+
+msgid "Limit to the sign-ups of one subscription. The file still has one row per sign-up, with the subscription named in the last column."
+msgstr ""
+
+msgid "Subscription Groups"
+msgstr ""
+
+msgid "Presents several forms as one subscription in the opt-in list, the opt-out page and exports. The sign-ups themselves stay separate."
+msgstr ""
+
+msgid "(one of several forms on its page)"
+msgstr ""
+
+msgid "Add subscription"
+msgstr ""
+
+msgid "Cancelling the subscription withdraws every sign-up in it. Each one is recorded on its own."
+msgstr ""
+
+msgid "Edit subscription"
+msgstr ""
+
+msgid "Forms in this subscription"
+msgstr ""
+
+msgid "Let visitors expand the single sign-ups"
+msgstr ""
+
+msgid "New subscription"
+msgstr ""
+
+msgid "No subscription yet. Without one, every form is shown on its own."
+msgstr ""
+
+msgid "One row"
+msgstr ""
+
+msgid "Opt-out page"
+msgstr ""
+
+msgid "Really remove?"
+msgstr ""
+
+msgid "Remove %s"
+msgstr ""
+
+msgid "Remove"
+msgstr ""
+
+msgid "Separate rows"
+msgstr ""
+
+msgid "Show one row per address instead of one per sign-up"
+msgstr ""
+
+msgid "Sign-ups from before this feature cannot be told apart when several forms share one page. They are only grouped if the page has a single form."
+msgstr ""
+
+msgid "Subscription groups"
+msgstr ""
+
+msgid "Subscription removed. The sign-ups were not changed."
+msgstr ""
+
+msgid "Subscription saved."
+msgstr ""
+
+msgid "The subscription could not be removed."
+msgstr ""
+
+msgid "The subscription could not be saved."
+msgstr ""
+
+msgid "The subscriptions could not be loaded."
+msgstr ""
+
+msgid "This is the name visitors see in their subscription list."
+msgstr ""
+
+msgid "Your subscriptions"
+msgstr ""
+
+msgid "Show several forms as one subscription, for example two sign-up forms for the same newsletter. The sign-ups stay separate records; only how they are presented changes."
+msgstr ""

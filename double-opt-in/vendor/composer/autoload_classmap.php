@@ -145,5 +145,9 @@ return array(
     'Forge12\\DoubleOptIn\\Setup\\SetupService' => $baseDir . '/src/Setup/SetupService.php',
     'Forge12\\DoubleOptIn\\Setup\\SetupState' => $baseDir . '/src/Setup/SetupState.php',
     'Forge12\\DoubleOptIn\\Spam\\SubmissionTrap' => $baseDir . '/src/Spam/SubmissionTrap.php',
+    'Forge12\\DoubleOptIn\\Subscription\\NullSubscriptionGroupResolver' => $baseDir . '/src/Subscription/NullSubscriptionGroupResolver.php',
+    'Forge12\\DoubleOptIn\\Subscription\\SubscriptionGroup' => $baseDir . '/src/Subscription/SubscriptionGroup.php',
+    'Forge12\\DoubleOptIn\\Subscription\\SubscriptionGroupResolverInterface' => $baseDir . '/src/Subscription/SubscriptionGroupResolverInterface.php',
+    'Forge12\\DoubleOptIn\\Subscription\\SubscriptionGroups' => $baseDir . '/src/Subscription/SubscriptionGroups.php',
     'Forge12\\DoubleOptIn\\Versioning\\SemverConstraint' => $baseDir . '/src/Versioning/SemverConstraint.php',
 );

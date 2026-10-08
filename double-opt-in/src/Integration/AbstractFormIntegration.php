@@ -726,6 +726,9 @@ abstract class AbstractFormIntegration implements FormIntegrationInterface {
 			'email'           => $recipient,
 			'consent_text'    => (string) ( $formParameter['consent_text'] ?? '' ),
 			'consent_field'   => (string) ( $formParameter['consent_field'] ?? '' ),
+			// Instance of the form inside the form id (Elementor widget id).
+			// Integrations that cannot tell instances apart leave it empty.
+			'form_ref'        => (string) $formData->getMetaValue( 'form_ref', '' ),
 		);
 
 		/**

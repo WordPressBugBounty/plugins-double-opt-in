@@ -49,6 +49,7 @@ function createTableOptIn() {
         mail_optin LONGTEXT,
         consent_text TEXT,
         consent_field varchar(64) DEFAULT '',
+        form_ref varchar(64) NOT NULL DEFAULT '',
         reminder_sent_at varchar(255) DEFAULT '',
         mail_reminder LONGTEXT,
         mail_status varchar(20) NOT NULL DEFAULT '',

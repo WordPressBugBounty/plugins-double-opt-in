@@ -144,6 +144,11 @@ final class AddonCatalog {
 				__( 'Webhooks', 'double-opt-in' ),
 				__( 'Sends a signed POST to your own URLs when an opt-in is confirmed, withdrawn or renewed. Connects Zapier, Make, n8n or your CRM, with retries.', 'double-opt-in' )
 			),
+			'subscription-groups'      => $entry(
+				'subscription-groups',
+				__( 'Subscription Groups', 'double-opt-in' ),
+				__( 'Presents several forms as one subscription in the opt-in list, the opt-out page and exports. The sign-ups themselves stay separate.', 'double-opt-in' )
+			),
 		);
 
 		return $entries;

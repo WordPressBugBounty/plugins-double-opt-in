@@ -4666,3 +4666,100 @@ msgstr "Sends you a mail when a visitor withdraws a consent. Several withdrawals
 
 msgid "Separate several addresses with a comma."
 msgstr "Separate several addresses with a comma."
+
+# Subscription groups: catalog entry, opt-in views, export and the add-on admin page (core 5.12.0, subscription-groups 1.0.0)
+msgid "Subscription"
+msgstr "Subscription"
+
+msgid "All subscriptions"
+msgstr "All subscriptions"
+
+msgid "Subscription: %s"
+msgstr "Subscription: %s"
+
+msgid "Linked sign-ups"
+msgstr "Linked sign-ups"
+
+msgid "Limit to the sign-ups of one subscription. The file still has one row per sign-up, with the subscription named in the last column."
+msgstr "Limit to the sign-ups of one subscription. The file still has one row per sign-up, with the subscription named in the last column."
+
+msgid "Subscription Groups"
+msgstr "Subscription Groups"
+
+msgid "Presents several forms as one subscription in the opt-in list, the opt-out page and exports. The sign-ups themselves stay separate."
+msgstr "Presents several forms as one subscription in the opt-in list, the opt-out page and exports. The sign-ups themselves stay separate."
+
+msgid "(one of several forms on its page)"
+msgstr "(one of several forms on its page)"
+
+msgid "Add subscription"
+msgstr "Add subscription"
+
+msgid "Cancelling the subscription withdraws every sign-up in it. Each one is recorded on its own."
+msgstr "Cancelling the subscription withdraws every sign-up in it. Each one is recorded on its own."
+
+msgid "Edit subscription"
+msgstr "Edit subscription"
+
+msgid "Forms in this subscription"
+msgstr "Forms in this subscription"
+
+msgid "Let visitors expand the single sign-ups"
+msgstr "Let visitors expand the single sign-ups"
+
+msgid "New subscription"
+msgstr "New subscription"
+
+msgid "No subscription yet. Without one, every form is shown on its own."
+msgstr "No subscription yet. Without one, every form is shown on its own."
+
+msgid "One row"
+msgstr "One row"
+
+msgid "Opt-out page"
+msgstr "Opt-out page"
+
+msgid "Really remove?"
+msgstr "Really remove?"
+
+msgid "Remove %s"
+msgstr "Remove %s"
+
+msgid "Remove"
+msgstr "Remove"
+
+msgid "Separate rows"
+msgstr "Separate rows"
+
+msgid "Show one row per address instead of one per sign-up"
+msgstr "Show one row per address instead of one per sign-up"
+
+msgid "Sign-ups from before this feature cannot be told apart when several forms share one page. They are only grouped if the page has a single form."
+msgstr "Sign-ups from before this feature cannot be told apart when several forms share one page. They are only grouped if the page has a single form."
+
+msgid "Subscription groups"
+msgstr "Subscription groups"
+
+msgid "Subscription removed. The sign-ups were not changed."
+msgstr "Subscription removed. The sign-ups were not changed."
+
+msgid "Subscription saved."
+msgstr "Subscription saved."
+
+msgid "The subscription could not be removed."
+msgstr "The subscription could not be removed."
+
+msgid "The subscription could not be saved."
+msgstr "The subscription could not be saved."
+
+msgid "The subscriptions could not be loaded."
+msgstr "The subscriptions could not be loaded."
+
+msgid "This is the name visitors see in their subscription list."
+msgstr "This is the name visitors see in their subscription list."
+
+msgid "Your subscriptions"
+msgstr "Your subscriptions"
+
+msgid "Show several forms as one subscription, for example two sign-up forms for the same newsletter. The sign-ups stay separate records; only how they are presented changes."
+msgstr "Show several forms as one subscription, for example two sign-up forms for the same newsletter. The sign-ups stay separate records; only how they are presented changes."

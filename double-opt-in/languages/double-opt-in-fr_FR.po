@@ -8232,3 +8232,97 @@ msgstr "Contacter le support"
 
 msgid "This help article does not exist."
 msgstr "Cet article d'aide n'existe pas."
+
+# Subscription groups: catalog entry, opt-in views, export and the add-on admin page (core 5.12.0, subscription-groups 1.0.0)
+msgid "Subscription"
+msgstr "Abonnement"
+
+msgid "All subscriptions"
+msgstr "Tous les abonnements"
+
+msgid "Subscription: %s"
+msgstr "Abonnement : %s"
+
+msgid "Linked sign-ups"
+msgstr "Inscriptions liées"
+
+msgid "Limit to the sign-ups of one subscription. The file still has one row per sign-up, with the subscription named in the last column."
+msgstr "Limiter aux inscriptions d'un abonnement. Le fichier contient toujours une ligne par inscription, l'abonnement figurant dans la dernière colonne."
+
+msgid "Subscription Groups"
+msgstr "Groupes d'abonnements"
+
+msgid "Presents several forms as one subscription in the opt-in list, the opt-out page and exports. The sign-ups themselves stay separate."
+msgstr "Présente plusieurs formulaires comme un seul abonnement dans la liste des opt-ins, la page de désinscription et les exports. Les inscriptions elles-mêmes restent séparées."
+
+msgid "(one of several forms on its page)"
+msgstr "(l'un de plusieurs formulaires de sa page)"
+
+msgid "Add subscription"
+msgstr "Ajouter un abonnement"
+
+msgid "Cancelling the subscription withdraws every sign-up in it. Each one is recorded on its own."
+msgstr "L'annulation de l'abonnement révoque toutes les inscriptions qu'il contient. Chacune est enregistrée séparément."
+
+msgid "Edit subscription"
+msgstr "Modifier l'abonnement"
+
+msgid "Forms in this subscription"
+msgstr "Formulaires de cet abonnement"
+
+msgid "Let visitors expand the single sign-ups"
+msgstr "Les visiteurs peuvent déplier les inscriptions individuelles"
+
+msgid "New subscription"
+msgstr "Nouvel abonnement"
+
+msgid "No subscription yet. Without one, every form is shown on its own."
+msgstr "Aucun abonnement pour le moment. Sans abonnement, chaque formulaire est affiché séparément."
+
+msgid "One row"
+msgstr "Une ligne"
+
+msgid "Really remove?"
+msgstr "Vraiment supprimer ?"
+
+msgid "Remove %s"
+msgstr "Supprimer %s"
+
+msgid "Remove"
+msgstr "Supprimer"
+
+msgid "Separate rows"
+msgstr "Lignes séparées"
+
+msgid "Show one row per address instead of one per sign-up"
+msgstr "Afficher une ligne par adresse plutôt qu'une par inscription"
+
+msgid "Sign-ups from before this feature cannot be told apart when several forms share one page. They are only grouped if the page has a single form."
+msgstr "Les inscriptions antérieures à cette fonction ne peuvent pas être distinguées lorsque plusieurs formulaires partagent une page. Elles ne sont regroupées que si la page ne contient qu'un seul formulaire."
+
+msgid "Subscription groups"
+msgstr "Groupes d'abonnements"
+
+msgid "Subscription removed. The sign-ups were not changed."
+msgstr "Abonnement supprimé. Les inscriptions n'ont pas été modifiées."
+
+msgid "Subscription saved."
+msgstr "Abonnement enregistré."
+
+msgid "The subscription could not be removed."
+msgstr "L'abonnement n'a pas pu être supprimé."
+
+msgid "The subscription could not be saved."
+msgstr "L'abonnement n'a pas pu être enregistré."
+
+msgid "The subscriptions could not be loaded."
+msgstr "Les abonnements n'ont pas pu être chargés."
+
+msgid "This is the name visitors see in their subscription list."
+msgstr "C'est le nom que les visiteurs voient dans leur liste d'abonnements."
+
+msgid "Your subscriptions"
+msgstr "Vos abonnements"
+
+msgid "Show several forms as one subscription, for example two sign-up forms for the same newsletter. The sign-ups stay separate records; only how they are presented changes."
+msgstr "Affichez plusieurs formulaires comme un seul abonnement, par exemple deux formulaires d'inscription pour la même newsletter. Les inscriptions restent des enregistrements distincts ; seule la présentation change."

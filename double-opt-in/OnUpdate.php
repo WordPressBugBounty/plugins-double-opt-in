@@ -215,6 +215,21 @@ function onUpdate() {
 		update_option( FORGE12_OPTIN_SLUG . '_version', '5.8.0' );
 	}
 
+	if ( version_compare( $currentVersion, '5.12.0' ) < 0 ) {
+		$logger->info( 'Updating to version 5.12.0 (adds form_ref column)', [
+			'plugin'  => 'double-opt-in',
+			'current' => $currentVersion,
+			'target'  => '5.12.0',
+		] );
+
+		// form_ref tells two forms on the same page apart. Existing rows
+		// keep an empty value and stay tied to the whole form; nothing is
+		// guessed or back-filled.
+		createTableOptin();
+
+		update_option( FORGE12_OPTIN_SLUG . '_version', '5.12.0' );
+	}
+
 	// Safety net: Ensure both tables always exist regardless of stored version.
 	// Handles edge cases such as database migrations, manual file uploads, or
 	// restored backups that are missing the custom tables.

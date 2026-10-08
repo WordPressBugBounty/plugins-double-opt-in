@@ -359,6 +359,14 @@ class OptIn {
 		return $this->entity->getFormId();
 	}
 
+	/**
+	 * Instance of the form inside the form id (e.g. the Elementor widget);
+	 * empty for records stored before 5.12.0 and for forms without instances.
+	 */
+	public function get_form_ref(): string {
+		return $this->entity->getFormRef();
+	}
+
 	public function is_confirmed(): bool {
 		return $this->entity->isConfirmed();
 	}
@@ -805,6 +813,7 @@ class OptIn {
 			'id'                  => 'id',
 			'consent_text'        => 'consent_text',
 			'consent_field'       => 'consent_field',
+			'form_ref'            => 'form_ref',
 		];
 
 		$result = [];
