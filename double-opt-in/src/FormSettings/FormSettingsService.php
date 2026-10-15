@@ -399,6 +399,27 @@ class FormSettingsService {
 			}
 		}
 
+		// The settings above are what is stored on the form. When a
+		// subscription group supplies the shared ones at run time, the admin
+		// needs to say so, otherwise a change here looks like it did nothing.
+		$source        = FormConfigInheritance::sourceGroup( $settingsId );
+		$inheritedFrom = null;
+		if ( null !== $source ) {
+			$inheritedFrom = array(
+				'key'      => $source->getKey(),
+				'label'    => $source->getLabel(),
+				'provides' => FormConfigInheritance::providedRequiredFields( $source ),
+				'shared'   => array_values(
+					array_filter(
+						FormConfigInheritance::SHARED_KEYS,
+						static function ( $key ) use ( $source ) {
+							return array_key_exists( $key, $source->getSharedConfig() );
+						}
+					)
+				),
+			);
+		}
+
 		return array(
 			'id'              => $formId,
 			'title'           => $title,
@@ -407,6 +428,7 @@ class FormSettingsService {
 			'editUrl'         => $integrationInstance->getFormEditUrl( $formId ),
 			'settings'        => $settingsArray,
 			'fields'          => $fieldsList,
+			'inheritedFrom'   => $inheritedFrom,
 		);
 	}
 

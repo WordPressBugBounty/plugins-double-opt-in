@@ -11,6 +11,7 @@
 
 namespace Forge12\DoubleOptIn\Frontend;
 
+use Forge12\DoubleOptIn\FormSettings\FormConfigInheritance;
 use Forge12\DoubleOptIn\Integration\OptInError;
 use forge12\contactform7\CF7DoubleOptIn\IPHelper;
 
@@ -264,9 +265,10 @@ class ErrorNotification {
 	 * @return string The redirect URL, or empty string if not configured.
 	 */
 	private static function getErrorRedirectUrl( int $formId, string $errorCode ): string {
-		$meta = get_post_meta( $formId, 'f12-cf7-doubleoptin', true );
+		// Effective, not stored: a form in a subscription group sends its visitors to the group's error page.
+		$meta = FormConfigInheritance::effective( $formId );
 
-		if ( empty( $meta ) || ! is_array( $meta ) ) {
+		if ( empty( $meta ) ) {
 			return '';
 		}
 

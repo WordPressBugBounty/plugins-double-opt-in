@@ -23,10 +23,12 @@ class FormSettingsValidator {
 	 * Validate form settings.
 	 *
 	 * @param FormSettingsDTO $settings The settings to validate.
+	 * @param int             $formId   The form being saved. With it, a value the form's subscription
+	 *                                  group supplies counts as present; 0 checks the settings alone.
 	 *
 	 * @return array Array of validation errors. Empty if valid.
 	 */
-	public function validate( FormSettingsDTO $settings ): array {
+	public function validate( FormSettingsDTO $settings, int $formId = 0 ): array {
 		$errors = array();
 
 		// Only validate if enabled
@@ -37,7 +39,10 @@ class FormSettingsValidator {
 		// Hart-required fields — delegate to the DTO so save-time and
 		// completeness-gate share one source of truth (plan/doi-completeness-gate.md §2.1).
 		// The DTO returns stable string IDs; we map them to translatable messages here.
-		foreach ( $settings->getMissingRequiredFields() as $field ) {
+		$missing = $formId > 0
+			? FormConfigInheritance::missingRequiredFields( $settings, $formId )
+			: $settings->getMissingRequiredFields();
+		foreach ( $missing as $field ) {
 			$errors[ $field ] = $this->messageForMissingField( $field );
 		}
 

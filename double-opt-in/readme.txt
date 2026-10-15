@@ -5,7 +5,7 @@ Tags: contact form 7, double opt-in, gdpr, email verification, newsletter
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 5.13.1
+Stable tag: 5.14.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -66,7 +66,7 @@ After activation, a setup wizard asks for the sender, the forms that should ask 
 * **Pagination & Search** -- search and filter opt-in records in the admin dashboard
 * **Admin Tooltips** -- contextual help tooltips throughout the admin interface
 * **WordPress Multisite** -- network-wide activation creates tables on all sites automatically
-* **Developer Hooks** -- 48 action hooks, 85 filters, and 13 typed events for full extensibility
+* **Developer Hooks** -- 48 action hooks, 86 filters, and 13 typed events for full extensibility
 
 = Pro Features =
 
@@ -218,7 +218,7 @@ The free version requires at least one supported form plugin. However, developer
 
 = Where can I find the developer documentation? =
 
-A hook, filter, and event reference with code examples ships at `docs/hooks-and-events.md` inside the plugin directory. It documents 29 of the 48 action hooks, 27 of the 85 filters, and all 13 typed events — the ones extensions actually reach for. The rest are discoverable in the source; if you need one documented, ask and we will add it.
+A hook, filter, and event reference with code examples ships at `docs/hooks-and-events.md` inside the plugin directory. It documents 29 of the 48 action hooks, 28 of the 86 filters, and all 13 typed events — the ones extensions actually reach for. The rest are discoverable in the source; if you need one documented, ask and we will add it.
 
 = How do I report a bug or request a feature? =
 
@@ -373,6 +373,11 @@ New features: Visual email editor, centralized form settings, GDPR anonymization
 Adds optional anonymous telemetry (opt-out). No breaking changes.
 
 == Changelog ==
+
+= 5.14.0 =
+* New: forms that a Pro module groups into a subscription can take their sender, subject, mail, confirmation and error page and category from that subscription. The consent text and consent field always stay with the form, and the settings stored on each form are never changed. Nothing changes without that module.
+* New: filter `f12_doi_form_config_inherited` and the admin extension point `forms.banner` on the form settings page.
+* Improved: a form whose required fields are supplied by its subscription is no longer reported as incomplete.
 
 = 5.13.1 =
 * New: the Opt-Out settings page (part of the paid Opt-Out add-on) shows a hint on the "Opt-Out Email" card when the saved mail has no opt-out link placeholder, for example when an opt-in template with [doubleoptinlink] is chosen. Needs Opt-Out add-on 1.8.1.

@@ -155,7 +155,7 @@ class FormSettingsController {
 		// INCOMPLETE_CONFIG error code on the explicit enable-attempt
 		// path. Auto-disable applies on the silent-drift path (was
 		// enabled, save makes it incomplete).
-		$missingRequired = $settings->getMissingRequiredFields();
+		$missingRequired = \Forge12\DoubleOptIn\FormSettings\FormConfigInheritance::missingRequiredFields( $settings, $storageId );
 		$autoDisabled    = false;
 
 		if ( $settings->enabled && ! empty( $missingRequired ) ) {
@@ -194,7 +194,7 @@ class FormSettingsController {
 		}
 
 		// Validate (format-only checks remaining after completeness-gate)
-		$errors = $this->validator->validate( $settings );
+		$errors = $this->validator->validate( $settings, $storageId );
 		if ( ! empty( $errors ) ) {
 			$this->sendError( __( 'Validation failed.', 'double-opt-in' ), $errors );
 		}
@@ -280,7 +280,7 @@ class FormSettingsController {
 		// blocked when the config is incomplete.
 		$currentSettings = $this->service->getSettings( $storageId );
 		if ( ! $currentSettings->enabled ) {
-			$missing = $currentSettings->getMissingRequiredFields();
+			$missing = \Forge12\DoubleOptIn\FormSettings\FormConfigInheritance::missingRequiredFields( $currentSettings, $storageId );
 			if ( ! empty( $missing ) ) {
 				$this->sendIncompleteConfigError( $missing );
 				return;

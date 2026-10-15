@@ -361,6 +361,7 @@ add_action( 'f12_cf7_doubleoptin_register_event_listeners', function ( $dispatch
 | `f12_cf7_doubleoptin_use_new_integration_system` | `$use` (bool) | `bool` | Enable/disable the new integration system |
 | `f12_doi_help_sources` | `$sources` (HelpSource[]) | `HelpSource[]` | Add or replace the sources of the in-plugin help articles (an add-on whose `help/` folder is not next to its `src/`) |
 | `f12_doi_subscription_group_resolver` | `$resolver` (SubscriptionGroupResolverInterface) | `SubscriptionGroupResolverInterface` | Supply the object that tells which subscription group a form belongs to. Without an add-on the default answers "no groups" and every screen behaves as before |
+| `f12_doi_form_config_inherited` | `$params` (array), `$formId` (int), `$group` (SubscriptionGroup) | `array` | Adjust the settings a form runs with after its subscription group has been applied. The stored settings of the form are not affected |
 
 ### Filter Examples
 

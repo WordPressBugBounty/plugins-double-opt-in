@@ -210,8 +210,9 @@ class PlaceholderMapper {
 
 		// Try to get mapping from central form settings if not provided
 		if ( empty( $customMapping ) ) {
-			$centralSettings = get_post_meta( $formId, 'f12-cf7-doubleoptin', true );
-			if ( is_array( $centralSettings ) && ! empty( $centralSettings['field_mapping'] ) ) {
+			// Effective: a group can supply the mapping, the form's own entries win.
+			$centralSettings = \Forge12\DoubleOptIn\FormSettings\FormConfigInheritance::effective( (int) $formId );
+			if ( ! empty( $centralSettings['field_mapping'] ) ) {
 				$customMapping = $centralSettings['field_mapping'];
 			}
 		}

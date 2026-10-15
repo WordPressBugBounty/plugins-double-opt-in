@@ -1194,7 +1194,7 @@ class AdminRestController {
 				}
 
 				$dto                   = $this->formService->getSettings( $storageId );
-				$missing               = $dto->getMissingRequiredFields();
+				$missing               = \Forge12\DoubleOptIn\FormSettings\FormConfigInheritance::missingRequiredFields( $dto, $storageId );
 				$form['isComplete']    = empty( $missing );
 				$form['missingFields'] = array_values( $missing );
 
@@ -1301,7 +1301,7 @@ class AdminRestController {
 		$settings     = $this->formValidator->sanitize( $settingsData );
 
 		// Completeness-gate
-		$missingRequired = $settings->getMissingRequiredFields();
+		$missingRequired = \Forge12\DoubleOptIn\FormSettings\FormConfigInheritance::missingRequiredFields( $settings, $storageId );
 		$autoDisabled    = false;
 
 		if ( $settings->enabled && ! empty( $missingRequired ) ) {
@@ -1326,7 +1326,7 @@ class AdminRestController {
 		}
 
 		// Format-only validation (sender email format, page/category existence)
-		$errors = $this->formValidator->validate( $settings );
+		$errors = $this->formValidator->validate( $settings, $storageId );
 		if ( ! empty( $errors ) ) {
 			return new \WP_REST_Response(
 				array(
@@ -1388,7 +1388,7 @@ class AdminRestController {
 		// Toggling-to-disabled is always allowed.
 		$currentSettings = $this->formService->getSettings( $storageId );
 		if ( ! $currentSettings->enabled ) {
-			$missing = $currentSettings->getMissingRequiredFields();
+			$missing = \Forge12\DoubleOptIn\FormSettings\FormConfigInheritance::missingRequiredFields( $currentSettings, $storageId );
 			if ( ! empty( $missing ) ) {
 				return $this->incompleteConfigResponse( $missing );
 			}

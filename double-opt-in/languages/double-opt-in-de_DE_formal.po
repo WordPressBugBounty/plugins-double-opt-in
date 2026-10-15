@@ -8381,3 +8381,138 @@ msgstr "Kunden"
 
 msgid "consent centre"
 msgstr "Consent-Center"
+
+msgid "Shared settings"
+msgstr "Gemeinsame Einstellungen"
+
+msgid "These forms use the same settings"
+msgstr "Diese Formulare verwenden dieselben Einstellungen"
+
+msgid "One mail, one confirmation page and one consent text for every form in this subscription. A form that is left out keeps its own settings. Whether double opt-in is switched on stays a choice of each form."
+msgstr "Eine Mail, eine Bestätigungsseite und ein Einwilligungstext für jedes Formular in diesem Abonnement. Ein Formular, das nicht dazugehört, behält seine eigenen Einstellungen. Ob Double Opt-In eingeschaltet ist, entscheidet weiterhin jedes Formular selbst."
+
+msgid "Your Double Opt-In core is too old to apply shared settings. Update the core plugin first; the settings are kept."
+msgstr "Ihr Double-Opt-In-Core ist zu alt, um gemeinsame Einstellungen anzuwenden. Aktualisieren Sie zuerst das Core-Plugin; die Einstellungen bleiben erhalten."
+
+msgid "Start from a form that is already set up"
+msgstr "Von einem bereits eingerichteten Formular ausgehen"
+
+msgid "Choose a form"
+msgstr "Formular wählen"
+
+msgid "Take over settings"
+msgstr "Einstellungen übernehmen"
+
+msgid "Fills the fields below. The form itself is not changed."
+msgstr "Füllt die Felder darunter. Das Formular selbst wird nicht verändert."
+
+msgid "Choose the forms above first, then you can start from one of them."
+msgstr "Wählen Sie zuerst oben die Formulare aus, dann können Sie von einem davon ausgehen."
+
+msgid "The settings of this form could not be read."
+msgstr "Die Einstellungen dieses Formulars konnten nicht gelesen werden."
+
+msgid "Mail template"
+msgstr "Mail-Vorlage"
+
+msgid "Own text below"
+msgstr "Eigener Text unten"
+
+msgid "Mail text"
+msgstr "Mailtext"
+
+msgid "Used when no template is chosen. It must contain [doubleoptinlink]."
+msgstr "Gilt, wenn keine Vorlage gewählt ist. Er muss [doubleoptinlink] enthalten."
+
+msgid "Error page"
+msgstr "Fehlerseite"
+
+msgid "What visitors agree to. Each sign-up keeps the wording it was made with, even if you change it later."
+msgstr "Wozu Besucher einwilligen. Jede Anmeldung behält den Wortlaut, mit dem sie erfolgt ist, auch wenn Sie ihn später ändern."
+
+msgid "Suggested field names"
+msgstr "Vorgeschlagene Feldnamen"
+
+msgid "Used only by a form that has not named the field itself. Field names differ from form to form, so a form's own choice always wins."
+msgstr "Gilt nur für Formulare, die das Feld nicht selbst benannt haben. Feldnamen unterscheiden sich von Formular zu Formular, deshalb gilt die eigene Wahl eines Formulars immer."
+
+msgid "Email field"
+msgstr "E-Mail-Feld"
+
+msgid "Consent field"
+msgstr "Einwilligungsfeld"
+
+msgid "Shared"
+msgstr "Gemeinsam"
+
+msgid "These settings come from the subscription “%s”."
+msgstr "Diese Einstellungen kommen aus dem Abonnement „%s“."
+
+msgid "For these the subscription decides, whatever this form stores:"
+msgstr "Hierüber entscheidet das Abonnement, egal was dieses Formular speichert:"
+
+msgid "No subscription yet. Create one to give several forms the same settings."
+msgstr "Noch kein Abonnement. Legen Sie eines an, um mehreren Formularen dieselben Einstellungen zu geben."
+
+msgid "Create a subscription"
+msgstr "Abonnement anlegen"
+
+msgid "Which subscription is this form part of?"
+msgstr "Zu welchem Abonnement gehört dieses Formular?"
+
+msgid "None, this form stands on its own"
+msgstr "Keines, dieses Formular steht für sich"
+
+msgid "Forms in a subscription are shown as one subscription to visitors and can share one set of settings."
+msgstr "Formulare in einem Abonnement erscheinen Besuchern als ein Abonnement und können dieselben Einstellungen teilen."
+
+msgid "The subscription could not be changed."
+msgstr "Das Abonnement konnte nicht geändert werden."
+
+msgid "Subscription changed."
+msgstr "Abonnement geändert."
+
+msgid "View"
+msgstr "Ansicht"
+
+msgid "List"
+msgstr "Liste"
+
+msgid "Canvas"
+msgstr "Fläche"
+
+msgid "Forms and subscriptions"
+msgstr "Formulare und Abonnements"
+
+msgid "Drag from the dot of a form onto a subscription to add it. Click a line to take the form out. The list view does the same with checkboxes."
+msgstr "Ziehen Sie vom Punkt eines Formulars auf ein Abonnement, um es hinzuzufügen. Ein Klick auf eine Linie nimmt das Formular wieder heraus. Die Listenansicht kann dasselbe mit Kontrollkästchen."
+
+msgid "Remove %1$s from %2$s"
+msgstr "%1$s aus %2$s entfernen"
+
+msgid "Drag to a subscription: %s"
+msgstr "Auf ein Abonnement ziehen: %s"
+
+msgid "Edit subscription %s"
+msgstr "Abonnement %s bearbeiten"
+
+msgid "%d forms"
+msgstr "%d Formulare"
+
+msgid "Drop here for a new subscription"
+msgstr "Hier ablegen für ein neues Abonnement"
+
+msgid "The form could not be moved."
+msgstr "Das Formular konnte nicht verschoben werden."
+
+msgid "Form added to the subscription."
+msgstr "Formular zum Abonnement hinzugefügt."
+
+msgid "Form removed from the subscription."
+msgstr "Formular aus dem Abonnement entfernt."
+
+msgid "Suggested field name"
+msgstr "Vorgeschlagener Feldname"
+
+msgid "The consent text and the consent field stay with each form. They record what visitors saw on that form, which a subscription cannot know."
+msgstr "Einwilligungstext und Einwilligungsfeld bleiben bei jedem Formular. Sie halten fest, was Besucher auf diesem Formular gesehen haben, und das kann ein Abonnement nicht wissen."

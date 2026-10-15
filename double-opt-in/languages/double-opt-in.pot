@@ -5060,3 +5060,141 @@ msgstr ""
 
 msgid "consent centre"
 msgstr ""
+
+msgid "Shared settings"
+msgstr ""
+
+msgid "These forms use the same settings"
+msgstr ""
+
+msgid "One mail, one confirmation page and one consent text for every form in this subscription. A form that is left out keeps its own settings. Whether double opt-in is switched on stays a choice of each form."
+msgstr ""
+
+msgid "Your Double Opt-In core is too old to apply shared settings. Update the core plugin first; the settings are kept."
+msgstr ""
+
+msgid "Start from a form that is already set up"
+msgstr ""
+
+msgid "Choose a form"
+msgstr ""
+
+msgid "Take over settings"
+msgstr ""
+
+msgid "Fills the fields below. The form itself is not changed."
+msgstr ""
+
+msgid "Choose the forms above first, then you can start from one of them."
+msgstr ""
+
+msgid "The settings of this form could not be read."
+msgstr ""
+
+msgid "Mail template"
+msgstr ""
+
+msgid "Own text below"
+msgstr ""
+
+msgid "Mail text"
+msgstr ""
+
+msgid "Used when no template is chosen. It must contain [doubleoptinlink]."
+msgstr ""
+
+msgid "Error page"
+msgstr ""
+
+msgid "What visitors agree to. Each sign-up keeps the wording it was made with, even if you change it later."
+msgstr ""
+
+msgid "Suggested field names"
+msgstr ""
+
+msgid "Used only by a form that has not named the field itself. Field names differ from form to form, so a form's own choice always wins."
+msgstr ""
+
+msgid "Email field"
+msgstr ""
+
+msgid "Consent field"
+msgstr ""
+
+msgid "Shared"
+msgstr ""
+
+msgid "Per form"
+msgstr ""
+
+msgid "These settings come from the subscription “%s”."
+msgstr ""
+
+msgid "For these the subscription decides, whatever this form stores:"
+msgstr ""
+
+msgid "No subscription yet. Create one to give several forms the same settings."
+msgstr ""
+
+msgid "Create a subscription"
+msgstr ""
+
+msgid "Which subscription is this form part of?"
+msgstr ""
+
+msgid "None, this form stands on its own"
+msgstr ""
+
+msgid "Forms in a subscription are shown as one subscription to visitors and can share one set of settings."
+msgstr ""
+
+msgid "The subscription could not be changed."
+msgstr ""
+
+msgid "Subscription changed."
+msgstr ""
+
+msgid "View"
+msgstr ""
+
+msgid "List"
+msgstr ""
+
+msgid "Canvas"
+msgstr ""
+
+msgid "Forms and subscriptions"
+msgstr ""
+
+msgid "Drag from the dot of a form onto a subscription to add it. Click a line to take the form out. The list view does the same with checkboxes."
+msgstr ""
+
+msgid "Remove %1$s from %2$s"
+msgstr ""
+
+msgid "Drag to a subscription: %s"
+msgstr ""
+
+msgid "Edit subscription %s"
+msgstr ""
+
+msgid "%d forms"
+msgstr ""
+
+msgid "Drop here for a new subscription"
+msgstr ""
+
+msgid "The form could not be moved."
+msgstr ""
+
+msgid "Form added to the subscription."
+msgstr ""
+
+msgid "Form removed from the subscription."
+msgstr ""
+
+msgid "Suggested field name"
+msgstr ""
+
+msgid "The consent text and the consent field stay with each form. They record what visitors saw on that form, which a subscription cannot know."
+msgstr ""

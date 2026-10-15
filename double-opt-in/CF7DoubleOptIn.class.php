@@ -15,7 +15,7 @@ namespace forge12\contactform7\CF7DoubleOptIn {
 	 * Description: This plugin allows you to add a double OptIn System to your Contact Form 7 & Avada Forms.
 	 * Text Domain: double-opt-in
 	 * Domain Path: /languages
-	 * Version: 5.13.1
+	 * Version: 5.14.0
 	 * Requires at least: 6.0
 	 * Requires PHP: 7.4
 	 * Author: Forge12 Interactive GmbH
@@ -57,7 +57,7 @@ namespace forge12\contactform7\CF7DoubleOptIn {
 	}
 
 	if ( ! defined( 'FORGE12_OPTIN_VERSION' ) ) {
-		define( 'FORGE12_OPTIN_VERSION', '5.13.1' );
+		define( 'FORGE12_OPTIN_VERSION', '5.14.0' );
 	}
 
 	// Addon API version — semver-independent from the plugin's marketing
@@ -206,7 +206,28 @@ namespace forge12\contactform7\CF7DoubleOptIn {
 		 * }
 		 * @formatter:on
 		 */
-		public function getParameter( $postID ) {
+		public function getParameter( $postID, $raw = false ) {
+			$parameter = $this->readStoredParameter( $postID );
+
+			if ( $raw || ! $postID ) {
+				return $parameter;
+			}
+
+			// A form in a subscription group runs with the group's shared
+			// settings. The admin passes $raw to read and write what is stored
+			// on the form itself; writing back an inherited value would copy
+			// the group into the form.
+			return \Forge12\DoubleOptIn\FormSettings\FormConfigInheritance::apply( $parameter, (int) $postID );
+		}
+
+		/**
+		 * The settings as stored on the form, merged over the defaults.
+		 *
+		 * @param int $postID The form id.
+		 *
+		 * @return array
+		 */
+		private function readStoredParameter( $postID ) {
 			$this->get_logger()->debug(
 				'Fetching parameters',
 				array(

@@ -207,7 +207,8 @@ namespace forge12\contactform7\CF7DoubleOptIn {
 			}
 
 			$parameter = SanitizeHelper::sanitize_array( $_POST['doubleoptin'] );
-			$metadata  = CF7DoubleOptIn::getInstance()->getParameter( $postID );
+			// Raw: this is read-modify-write, and must not copy a group's settings into the form.
+			$metadata  = CF7DoubleOptIn::getInstance()->getParameter( $postID, true );
 
 			foreach ( $metadata as $key => $value ) {
 				if ( isset( $parameter[ $key ] ) ) {

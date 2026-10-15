@@ -4801,3 +4801,141 @@ msgstr "Customers"
 
 msgid "consent centre"
 msgstr "consent centre"
+
+msgid "Shared settings"
+msgstr "Shared settings"
+
+msgid "These forms use the same settings"
+msgstr "These forms use the same settings"
+
+msgid "One mail, one confirmation page and one consent text for every form in this subscription. A form that is left out keeps its own settings. Whether double opt-in is switched on stays a choice of each form."
+msgstr "One mail, one confirmation page and one consent text for every form in this subscription. A form that is left out keeps its own settings. Whether double opt-in is switched on stays a choice of each form."
+
+msgid "Your Double Opt-In core is too old to apply shared settings. Update the core plugin first; the settings are kept."
+msgstr "Your Double Opt-In core is too old to apply shared settings. Update the core plugin first; the settings are kept."
+
+msgid "Start from a form that is already set up"
+msgstr "Start from a form that is already set up"
+
+msgid "Choose a form"
+msgstr "Choose a form"
+
+msgid "Take over settings"
+msgstr "Take over settings"
+
+msgid "Fills the fields below. The form itself is not changed."
+msgstr "Fills the fields below. The form itself is not changed."
+
+msgid "Choose the forms above first, then you can start from one of them."
+msgstr "Choose the forms above first, then you can start from one of them."
+
+msgid "The settings of this form could not be read."
+msgstr "The settings of this form could not be read."
+
+msgid "Mail template"
+msgstr "Mail template"
+
+msgid "Own text below"
+msgstr "Own text below"
+
+msgid "Mail text"
+msgstr "Mail text"
+
+msgid "Used when no template is chosen. It must contain [doubleoptinlink]."
+msgstr "Used when no template is chosen. It must contain [doubleoptinlink]."
+
+msgid "Error page"
+msgstr "Error page"
+
+msgid "What visitors agree to. Each sign-up keeps the wording it was made with, even if you change it later."
+msgstr "What visitors agree to. Each sign-up keeps the wording it was made with, even if you change it later."
+
+msgid "Suggested field names"
+msgstr "Suggested field names"
+
+msgid "Used only by a form that has not named the field itself. Field names differ from form to form, so a form's own choice always wins."
+msgstr "Used only by a form that has not named the field itself. Field names differ from form to form, so a form's own choice always wins."
+
+msgid "Email field"
+msgstr "Email field"
+
+msgid "Consent field"
+msgstr "Consent field"
+
+msgid "Shared"
+msgstr "Shared"
+
+msgid "Per form"
+msgstr "Per form"
+
+msgid "These settings come from the subscription “%s”."
+msgstr "These settings come from the subscription “%s”."
+
+msgid "For these the subscription decides, whatever this form stores:"
+msgstr "For these the subscription decides, whatever this form stores:"
+
+msgid "No subscription yet. Create one to give several forms the same settings."
+msgstr "No subscription yet. Create one to give several forms the same settings."
+
+msgid "Create a subscription"
+msgstr "Create a subscription"
+
+msgid "Which subscription is this form part of?"
+msgstr "Which subscription is this form part of?"
+
+msgid "None, this form stands on its own"
+msgstr "None, this form stands on its own"
+
+msgid "Forms in a subscription are shown as one subscription to visitors and can share one set of settings."
+msgstr "Forms in a subscription are shown as one subscription to visitors and can share one set of settings."
+
+msgid "The subscription could not be changed."
+msgstr "The subscription could not be changed."
+
+msgid "Subscription changed."
+msgstr "Subscription changed."
+
+msgid "View"
+msgstr "View"
+
+msgid "List"
+msgstr "List"
+
+msgid "Canvas"
+msgstr "Canvas"
+
+msgid "Forms and subscriptions"
+msgstr "Forms and subscriptions"
+
+msgid "Drag from the dot of a form onto a subscription to add it. Click a line to take the form out. The list view does the same with checkboxes."
+msgstr "Drag from the dot of a form onto a subscription to add it. Click a line to take the form out. The list view does the same with checkboxes."
+
+msgid "Remove %1$s from %2$s"
+msgstr "Remove %1$s from %2$s"
+
+msgid "Drag to a subscription: %s"
+msgstr "Drag to a subscription: %s"
+
+msgid "Edit subscription %s"
+msgstr "Edit subscription %s"
+
+msgid "%d forms"
+msgstr "%d forms"
+
+msgid "Drop here for a new subscription"
+msgstr "Drop here for a new subscription"
+
+msgid "The form could not be moved."
+msgstr "The form could not be moved."
+
+msgid "Form added to the subscription."
+msgstr "Form added to the subscription."
+
+msgid "Form removed from the subscription."
+msgstr "Form removed from the subscription."
+
+msgid "Suggested field name"
+msgstr "Suggested field name"
+
+msgid "The consent text and the consent field stay with each form. They record what visitors saw on that form, which a subscription cannot know."
+msgstr "The consent text and the consent field stay with each form. They record what visitors saw on that form, which a subscription cannot know."

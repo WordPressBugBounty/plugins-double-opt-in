@@ -40,19 +40,37 @@ final class SubscriptionGroup {
 	/** @var bool */
 	private $showDetails;
 
+	/** @var array<string, mixed> */
+	private $sharedConfig;
+
 	/**
 	 * @param string             $key             Stable identifier.
 	 * @param string             $label           Name shown to visitors and admins.
 	 * @param array<int, mixed>  $members         Members, each with `form_id` and optional `form_ref`.
 	 * @param bool               $mergeInFrontend One row per address in the consent center.
 	 * @param bool               $showDetails     Let visitors expand the single sign-ups.
+	 * @param array<string, mixed> $sharedConfig  Double opt-in settings the members share, in the stored
+	 *                                            (legacy) key format. Empty when the group shares none.
 	 */
-	public function __construct( string $key, string $label, array $members, bool $mergeInFrontend, bool $showDetails ) {
+	public function __construct( string $key, string $label, array $members, bool $mergeInFrontend, bool $showDetails, array $sharedConfig = array() ) {
 		$this->key             = $key;
 		$this->label           = $label;
 		$this->members         = self::normaliseMembers( $members );
 		$this->mergeInFrontend = $mergeInFrontend;
 		$this->showDetails     = $showDetails;
+		$this->sharedConfig    = $sharedConfig;
+	}
+
+	/**
+	 * Settings every member form takes from the group, see
+	 * {@see \Forge12\DoubleOptIn\FormSettings\FormConfigInheritance}.
+	 *
+	 * @since 5.14.0
+	 *
+	 * @return array<string, mixed>
+	 */
+	public function getSharedConfig(): array {
+		return $this->sharedConfig;
 	}
 
 	public function getKey(): string {

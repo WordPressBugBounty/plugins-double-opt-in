@@ -16,6 +16,7 @@ namespace Forge12\DoubleOptIn\Providers;
 use Forge12\DoubleOptIn\Container\BootableProviderInterface;
 use Forge12\DoubleOptIn\Container\Container;
 use Forge12\DoubleOptIn\EventSystem\EventDispatcherInterface;
+use Forge12\DoubleOptIn\FormSettings\FormConfigInheritance;
 use Forge12\DoubleOptIn\FormSettings\FormSettingsService;
 use Forge12\DoubleOptIn\Health\MailFailuresHealthCheck;
 use Forge12\DoubleOptIn\Health\SenderDomainCheck;
@@ -160,7 +161,9 @@ class MailStatusServiceProvider implements BootableProviderInterface {
 			$service = $container->get( FormSettingsService::class );
 			foreach ( $service->getAllFormsFlat() as $form ) {
 				if ( ! empty( $form['enabled'] ) && is_numeric( $form['id'] ?? null ) ) {
-					$senders[] = $service->getSettings( (int) $form['id'] )->sender;
+					// The sender the mail really goes out with, which a subscription group may set.
+					$effective = FormConfigInheritance::apply( array( 'sender' => $service->getSettings( (int) $form['id'] )->sender ), (int) $form['id'] );
+					$senders[] = (string) $effective['sender'];
 				}
 			}
 		}

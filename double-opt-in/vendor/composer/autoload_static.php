@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit39735d1610270dbb29262ab474db6fde
+class ComposerStaticInit6fad4f0932cef61ed4bf57144f6a7495
 {
     public static $prefixLengthsPsr4 = array (
         'F' => 
@@ -77,6 +77,7 @@ class ComposerStaticInit39735d1610270dbb29262ab474db6fde
         'Forge12\\DoubleOptIn\\FollowUp\\FollowUpStatus' => __DIR__ . '/../..' . '/src/FollowUp/FollowUpStatus.php',
         'Forge12\\DoubleOptIn\\FollowUp\\GlobalFollowUpAdapterInterface' => __DIR__ . '/../..' . '/src/FollowUp/GlobalFollowUpAdapterInterface.php',
         'Forge12\\DoubleOptIn\\FollowUp\\LoopbackClassifier' => __DIR__ . '/../..' . '/src/FollowUp/LoopbackClassifier.php',
+        'Forge12\\DoubleOptIn\\FormSettings\\FormConfigInheritance' => __DIR__ . '/../..' . '/src/FormSettings/FormConfigInheritance.php',
         'Forge12\\DoubleOptIn\\FormSettings\\FormSettingsDTO' => __DIR__ . '/../..' . '/src/FormSettings/FormSettingsDTO.php',
         'Forge12\\DoubleOptIn\\FormSettings\\FormSettingsService' => __DIR__ . '/../..' . '/src/FormSettings/FormSettingsService.php',
         'Forge12\\DoubleOptIn\\FormSettings\\FormSettingsValidator' => __DIR__ . '/../..' . '/src/FormSettings/FormSettingsValidator.php',
@@ -170,9 +171,9 @@ class ComposerStaticInit39735d1610270dbb29262ab474db6fde
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit39735d1610270dbb29262ab474db6fde::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit39735d1610270dbb29262ab474db6fde::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit39735d1610270dbb29262ab474db6fde::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit6fad4f0932cef61ed4bf57144f6a7495::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit6fad4f0932cef61ed4bf57144f6a7495::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit6fad4f0932cef61ed4bf57144f6a7495::$classMap;
 
         }, null, ClassLoader::class);
     }

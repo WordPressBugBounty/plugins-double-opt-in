@@ -62,6 +62,7 @@ return array(
     'Forge12\\DoubleOptIn\\FollowUp\\FollowUpStatus' => $baseDir . '/src/FollowUp/FollowUpStatus.php',
     'Forge12\\DoubleOptIn\\FollowUp\\GlobalFollowUpAdapterInterface' => $baseDir . '/src/FollowUp/GlobalFollowUpAdapterInterface.php',
     'Forge12\\DoubleOptIn\\FollowUp\\LoopbackClassifier' => $baseDir . '/src/FollowUp/LoopbackClassifier.php',
+    'Forge12\\DoubleOptIn\\FormSettings\\FormConfigInheritance' => $baseDir . '/src/FormSettings/FormConfigInheritance.php',
     'Forge12\\DoubleOptIn\\FormSettings\\FormSettingsDTO' => $baseDir . '/src/FormSettings/FormSettingsDTO.php',
     'Forge12\\DoubleOptIn\\FormSettings\\FormSettingsService' => $baseDir . '/src/FormSettings/FormSettingsService.php',
     'Forge12\\DoubleOptIn\\FormSettings\\FormSettingsValidator' => $baseDir . '/src/FormSettings/FormSettingsValidator.php',

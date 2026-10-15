@@ -12,6 +12,7 @@ namespace Forge12\DoubleOptIn\Health;
 
 use Forge12\DoubleOptIn\Consent\ConsentGate;
 use Forge12\DoubleOptIn\Container\Container;
+use Forge12\DoubleOptIn\FormSettings\FormConfigInheritance;
 use Forge12\DoubleOptIn\FormSettings\FormSettingsService;
 use Forge12\DoubleOptIn\Integration\FormIntegrationRegistry;
 use Forge12\DoubleOptIn\Integration\SubmittedContent;
@@ -158,7 +159,9 @@ final class StaleConsentFieldCheck implements HealthCheckInterface {
 				}
 
 				try {
-					$field = (string) ( $settings->getSettings( $formId )->consentField ?? '' );
+					// The field the form really uses: its own, or the one its subscription group suggests.
+					$own   = (string) ( $settings->getSettings( $formId )->consentField ?? '' );
+					$field = (string) ( FormConfigInheritance::apply( array( 'consent_field' => $own ), $formId )['consent_field'] ?? '' );
 					if ( $field === '' ) {
 						continue;
 					}
